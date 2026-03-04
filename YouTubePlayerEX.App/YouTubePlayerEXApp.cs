@@ -32,7 +32,6 @@ using YouTubePlayerEX.App.Extensions;
 using YouTubePlayerEX.App.Graphics;
 using YouTubePlayerEX.App.Graphics.Containers;
 using YouTubePlayerEX.App.Graphics.UserInterface;
-using YouTubePlayerEX.App.Input.Binding;
 using YouTubePlayerEX.App.Localisation;
 using YouTubePlayerEX.App.Online;
 using YouTubePlayerEX.App.Overlays;
@@ -58,7 +57,7 @@ namespace YouTubePlayerEX.App
         private FPSCounter fpsCounter;
         private Container topMostOverlayContent, overlayContainer, leftFloatingOverlayContent;
 
-        public const float UI_CORNER_RADIUS = 16f;
+        public const float UI_CORNER_RADIUS = 18f;
 
         private OnScreenDisplay onScreenDisplay;
 

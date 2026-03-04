@@ -42,6 +42,8 @@ namespace YouTubePlayerEX.App.Config
             SetDefault(AudioEffectsSetting.DistortionEnabled, false);
             SetDefault(AudioEffectsSetting.DistortionVolume, 0.3f, 0f, 2f, 0.01f);
             SetDefault(AudioEffectsSetting.DistortionDrive, 0f, 0f, 5f, 0.1f);
+
+            SetDefault(AudioEffectsSetting.KaraokeEnabled, false);
         }
 
         public AudioEffectsConfigManager(Storage storage, IDictionary<AudioEffectsSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -72,6 +74,9 @@ namespace YouTubePlayerEX.App.Config
         //distortion
         DistortionEnabled,
         DistortionVolume,
-        DistortionDrive
+        DistortionDrive,
+
+        //karaoke (what else)
+        KaraokeEnabled
     }
 }

@@ -22,7 +22,6 @@ using osu.Framework.IO.Stores;
 using osu.Framework.Localisation;   
 using osu.Framework.Logging;
 using osu.Framework.Platform;
-using osuTK;
 using osuTK.Graphics;
 using YoutubeExplode;
 using YouTubePlayerEX.App.Audio;
@@ -382,6 +381,7 @@ namespace YouTubePlayerEX.App
         private Bindable<bool> rotateEnabled = null!;
         private Bindable<bool> echoEnabled = null!;
         private Bindable<bool> distortionEnabled = null!;
+        private Bindable<bool> karaokeEnabled = null!;
 
         private Bindable<float> reverbWetMix = null!;
         private Bindable<float> reverbRoomSize = null!;
@@ -402,14 +402,7 @@ namespace YouTubePlayerEX.App
         private RotateParameters rotateParameters = new RotateParameters();
         private EchoParameters echoParameters = new EchoParameters();
         private DistortionParameters distortionParameters = new DistortionParameters();
-
-        public virtual void AttemptExit()
-        {
-            if (!OnExiting())
-                Exit();
-            else
-                Scheduler.AddDelayed(AttemptExit, 2000);
-        }
+        private BQFParameters karaokeModeParameters = new BQFParameters();
 
         private void trackAudioEffects()
         {
@@ -555,8 +548,23 @@ namespace YouTubePlayerEX.App
                     Audio.TrackMixer.UpdateEffect(distortionParameters);
             }, true);
             #endregion
+
+            #region Karaoke Mode (BQF)
+            karaokeModeParameters.fCenter = 100;
+            karaokeModeParameters.lFilter = BQFType.HighPass;
+            karaokeModeParameters.fBandwidth = 0;
+            karaokeModeParameters.fQ = 0.7f;
+            #endregion
         }
         #endregion
+
+        public virtual void AttemptExit()
+        {
+            if (!OnExiting())
+                Exit();
+            else
+                Scheduler.AddDelayed(AttemptExit, 2000);
+        }
 
         protected virtual Container CreateScalingContainer() => new DrawSizePreservingFillContainer();
 

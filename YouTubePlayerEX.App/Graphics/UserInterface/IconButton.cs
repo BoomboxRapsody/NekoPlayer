@@ -64,7 +64,7 @@ namespace YouTubePlayerEX.App.Graphics.UserInterface
         {
             Size = new Vector2(DEFAULT_BUTTON_SIZE);
 
-            Add(icon = new SpriteIcon
+            ForegroundContent.Add(icon = new SpriteIcon
             {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,

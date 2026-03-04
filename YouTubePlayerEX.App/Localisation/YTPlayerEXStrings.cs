@@ -935,6 +935,11 @@ namespace YouTubePlayerEX.App.Localisation
         /// </summary>
         public static LocalisableString AudioNormalization => new TranslatableString(getKey(@"audio_normalization"), @"Normalize Audio");
 
+        /// <summary>
+        /// "Karaoke"
+        /// </summary>
+        public static LocalisableString KaraokeEffect => new TranslatableString(getKey(@"karaoke_effect"), "Karaoke");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

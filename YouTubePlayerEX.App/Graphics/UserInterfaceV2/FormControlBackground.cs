@@ -42,7 +42,7 @@ namespace YouTubePlayerEX.App.Graphics.UserInterfaceV2
             RelativeSizeAxes = Axes.Both;
 
             Masking = true;
-            CornerRadius = 5;
+            CornerRadius = YouTubePlayerEXApp.UI_CORNER_RADIUS / 1.5f;
 
             CornerExponent = CORNER_EXPONENT;
             BorderThickness = BORDER_THICKNESS;

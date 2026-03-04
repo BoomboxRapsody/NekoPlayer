@@ -28,7 +28,7 @@ namespace YouTubePlayerEX.App.Screens
         private LoadingSpinner spinner;
         private ScheduledDelegate spinnerShow;
 
-        protected virtual YouTubePlayerEXScreen CreateLoadableScreen() => new IntroScreen();
+        protected virtual YouTubePlayerEXScreen CreateLoadableScreen() => new MainAppView();
 
         protected virtual ShaderPrecompiler CreateShaderPrecompiler() => new ShaderPrecompiler();
 

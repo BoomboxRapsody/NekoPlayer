@@ -478,7 +478,7 @@ namespace YouTubePlayerEX.App.Graphics.UserInterfaceV2
                     {
                         RelativeSizeAxes = Axes.Both,
                         Masking = true,
-                        CornerRadius = 5,
+                        CornerRadius = YouTubePlayerEXApp.UI_CORNER_RADIUS / 1.5f,
                         Children = new Drawable[]
                         {
                             leftBox = new Box

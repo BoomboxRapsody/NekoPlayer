@@ -13,7 +13,6 @@ using osuTK.Graphics;
 using YoutubeExplode.Videos.ClosedCaptions;
 using YouTubePlayerEX.App.Config;
 using YouTubePlayerEX.App.Graphics.Sprites;
-using YouTubePlayerEX.App.Graphics.UserInterface;
 using YouTubePlayerEX.App.Graphics.Videos;
 
 namespace YouTubePlayerEX.App.Graphics.Caption
@@ -67,6 +66,7 @@ namespace YouTubePlayerEX.App.Graphics.Caption
                 AutoSizeDuration = 350,
                 AutoSizeEasing = Easing.OutQuart,
                 Masking = true,
+                CornerRadius = YouTubePlayerEXApp.UI_CORNER_RADIUS / 2,
                 Children = new Drawable[]
                 {
                     new Box

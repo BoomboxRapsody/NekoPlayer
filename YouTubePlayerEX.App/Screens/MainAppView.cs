@@ -263,7 +263,7 @@ namespace YouTubePlayerEX.App.Screens
 #nullable disable
 
         //effects
-        private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled;
+        private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled, karaokeEnabled;
         private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings;
 
         protected T GetShaderByType<T>() where T : InternalShader, new()
@@ -294,6 +294,7 @@ namespace YouTubePlayerEX.App.Screens
             rotateEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.RotateEnabled);
             echoEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.EchoEnabled);
             distortionEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.DistortionEnabled);
+            karaokeEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
 
             scalingMode = appConfig.GetBindable<ScalingMode>(YTPlayerEXSetting.Scaling);
             scalingSizeX = appConfig.GetBindable<float>(YTPlayerEXSetting.ScalingSizeX);
@@ -3627,6 +3628,7 @@ namespace YouTubePlayerEX.App.Screens
                 DuckDuration = 100,
                 RestoreDuration = 100,
             });
+
             if (overlayContent is SideOverlayContainer)
             {
                 isAnyOverlayOpen.Value = true;
@@ -5542,7 +5544,14 @@ namespace YouTubePlayerEX.App.Screens
 
             protected override LocalisableString GenerateItemText(YouTubeI18nLangItem item)
             {
-                return item.Name;
+                try
+                {
+                    return item.Name;
+                }
+                catch
+                {
+                    return base.GenerateItemText(item);
+                }
             }
         }
 
