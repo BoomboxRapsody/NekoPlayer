@@ -54,8 +54,8 @@ body:
 
         ### Desktop platforms
 
-        If the game has not yet been closed since you found the bug:
-          1. Head on to game settings and click on "Export logs"
+        If the app has not yet been closed since you found the bug:
+          1. Head on to app settings and click on "Export logs"
           2. Click the notification to locate the file
           3. Drag the generated `.zip` files into the github issue window
 
