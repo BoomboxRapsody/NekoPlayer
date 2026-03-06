@@ -41,7 +41,7 @@ namespace NekoPlayer.Desktop.Updater
 
             try
             {
-                IUpdateSource updateSource = new GithubSource(@"https://github.com/BoomboxRapsody/YouTubePlayerEX", null, false);
+                IUpdateSource updateSource = new GithubSource(@"https://github.com/BoomboxRapsody/NekoPlayer", null, false);
                 Velopack.UpdateManager updateManager = new Velopack.UpdateManager(updateSource, new UpdateOptions
                 {
                     AllowVersionDowngrade = true

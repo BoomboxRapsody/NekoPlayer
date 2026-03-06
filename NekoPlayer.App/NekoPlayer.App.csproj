@@ -4,7 +4,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\YouTubePlayerEX-framework\osu.Framework/osu.Framework.csproj" />
+    <ProjectReference Include="..\NekoPlayer-framework\osu.Framework/osu.Framework.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Crypto.AES" Version="1.0.4" />

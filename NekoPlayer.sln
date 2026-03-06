@@ -16,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NekoPlayer.sln.DotSettings = NekoPlayer.sln.DotSettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework", "YouTubePlayerEX-framework\osu.Framework\osu.Framework.csproj", "{F4375DB2-4D7E-D1DB-89EB-E1F65D6458AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework", "NekoPlayer-framework\osu.Framework\osu.Framework.csproj", "{F4375DB2-4D7E-D1DB-89EB-E1F65D6458AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework.NativeLibs", "YouTubePlayerEX-framework\osu.Framework.NativeLibs\osu.Framework.NativeLibs.csproj", "{4A103F64-0F18-12CE-EAB1-6F7F9A63B0A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework.NativeLibs", "NekoPlayer-framework\osu.Framework.NativeLibs\osu.Framework.NativeLibs.csproj", "{4A103F64-0F18-12CE-EAB1-6F7F9A63B0A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework.Tests", "YouTubePlayerEX-framework\osu.Framework.Tests\osu.Framework.Tests.csproj", "{6DC508DC-8D1A-4644-963F-9C7D6D4D68EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework.Tests", "NekoPlayer-framework\osu.Framework.Tests\osu.Framework.Tests.csproj", "{6DC508DC-8D1A-4644-963F-9C7D6D4D68EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysis", "{FB156649-D457-4D1A-969C-D3A23FD31513}"
 	ProjectSection(SolutionItems) = preProject
