@@ -95,10 +95,10 @@ Please also note that app resources are covered by a separate licence. Please se
 
 ## Star History
 
-<a href="https://www.star-history.com/#BoomboxRapsody/NekoPlayer&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=BoomboxRapsody%2FNekoPlayer&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
  </picture>
 </a>
