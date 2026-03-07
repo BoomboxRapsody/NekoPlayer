@@ -21,7 +21,7 @@
     <PackageReference Include="McEndu.FreeTypeSharp" Version="4.1.5" />
     <PackageReference Include="YoutubeExplode" Version="6.5.7" />
     <PackageReference Include="YoutubeExplode.Converter" Version="6.5.7" />
-    <PackageReference Include="YouTubePlayerEX.App.Resources" Version="2026.307.1" />
+    <PackageReference Include="YouTubePlayerEX.App.Resources" Version="2026.307.2" />
     <PackageReference Include="OSVersionExt" Version="4.1.0" />
     <PackageReference Include="Sentry" Version="6.1.0" />
     <PackageReference Include="ppy.LocalisationAnalyser" Version="2025.1208.0">
