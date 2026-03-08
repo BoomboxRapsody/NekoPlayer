@@ -73,6 +73,7 @@ namespace NekoPlayer.App.Config
 
             SetDefault(NekoPlayerSetting.AccessToken, string.Empty);
             SetDefault(NekoPlayerSetting.AudioQuality, AudioQuality.PreferHighQuality);
+            SetDefault(NekoPlayerSetting.CloseButtonAction, CloseButtonAction.HideToTrayIcon);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -140,5 +141,6 @@ namespace NekoPlayer.App.Config
 
         AccessToken,
         AudioQuality,
+        CloseButtonAction,
     }
 }

@@ -16,7 +16,7 @@ using Windows.Storage.Streams;
 using NekoPlayer.App;
 using NekoPlayer.App.Online;
 
-namespace NekoPlayer.Desktop.Windows.MediaSessionHandler
+namespace NekoPlayer.Desktop.Windows
 {
     public partial class WindowsMediaSessionHandler : MediaSession
     {

@@ -633,7 +633,7 @@ namespace NekoPlayer.App.Online
             return result;
         }
 
-        public async Task<IList<Playlist>> GetMyPlaylistItems()
+        public async Task<IList<Playlist>> GetMyPlaylistItemsAsync()
         {
             if (!googleOAuth2.SignedIn.Value)
                 return new List<Playlist>();
@@ -646,6 +646,25 @@ namespace NekoPlayer.App.Online
             request.AccessToken = googleOAuth2.GetAccessToken();
 
             var response = await request.ExecuteAsync();
+
+            var result = response.Items;
+
+            return result;
+        }
+
+        public IList<Playlist> GetMyPlaylistItems()
+        {
+            if (!googleOAuth2.SignedIn.Value)
+                return new List<Playlist>();
+
+            var part = "snippet";
+            var request = youtubeService.Playlists.List(part);
+
+            request.Mine = true;
+
+            request.AccessToken = googleOAuth2.GetAccessToken();
+
+            var response = request.Execute();
 
             var result = response.Items;
 

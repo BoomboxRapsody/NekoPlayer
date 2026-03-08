@@ -61,12 +61,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private Bindable<string> localeBindable = new Bindable<string>();
 
-        private int index;
+        public int Index;
 
         public PlaylistItemView(int index)
             : base(HoverSampleSet.Default)
         {
-            this.index = index;
+            this.Index = index;
             Height = 110;
         }
 
@@ -133,7 +133,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Padding = new MarginPadding(8),
-                                    Text = $"#{index + 1}",
+                                    Text = $"#{Index + 1}",
                                     Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"),
                                     Colour = overlayColourProvider.Content2,
                                 },

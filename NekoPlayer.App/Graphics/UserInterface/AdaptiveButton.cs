@@ -110,7 +110,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Alpha = 0.7f,
+                        Alpha = 1,
                     },
                     Hover = new Box
                     {

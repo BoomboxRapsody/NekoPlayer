@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Project">
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputType>WinExe</OutputType>
     <AssemblyName>NekoPlayer</AssemblyName>
     <ApplicationIcon>game.ico</ApplicationIcon>
@@ -15,6 +16,9 @@
     <ProjectReference Include="..\NekoPlayer.App\NekoPlayer.App.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="appIcon.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="bassloud.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -10,20 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ManagedBass.Fx;
-using osu.Framework.Allocation;
-using osu.Framework.Bindables;
-using osu.Framework.Configuration;
-using osu.Framework.Development;
-using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
-using osu.Framework.IO.Stores;
-using osu.Framework.Localisation;   
-using osu.Framework.Logging;
-using osu.Framework.Platform;
-using osuTK.Graphics;
-using YoutubeExplode;
 using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
@@ -37,6 +23,21 @@ using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Resources;
 using NekoPlayer.App.Utils;
+using osu.Framework.Allocation;
+using osu.Framework.Bindables;
+using osu.Framework.Configuration;
+using osu.Framework.Development;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
+using osu.Framework.Input.Handlers.Mouse;
+using osu.Framework.IO.Stores;
+using osu.Framework.Localisation;   
+using osu.Framework.Logging;
+using osu.Framework.Platform;
+using osuTK.Graphics;
+using YoutubeExplode;
 
 namespace NekoPlayer.App
 {
@@ -127,6 +128,14 @@ namespace NekoPlayer.App
             {
                 SetCursorVisibility(enabled.NewValue);
             }, true);
+
+            foreach (var handler in host.AvailableInputHandlers)
+            {
+                if (handler is MouseHandler)
+                {
+                    (handler as MouseHandler).UseRelativeMode.Value = false; //we don't use raw mouse movement
+                }
+            }
 
             host.ExceptionThrown += onExceptionThrown;
         }
@@ -376,6 +385,8 @@ namespace NekoPlayer.App
             }
         }
 
+        public Bindable<double> MuteBindable = new Bindable<double>(0);
+
         #region Audio Effects
         private Bindable<bool> enableReverb = null!;
         private Bindable<bool> rotateEnabled = null!;
@@ -558,13 +569,20 @@ namespace NekoPlayer.App
         }
         #endregion
 
-        public virtual void AttemptExit(ShutdownOptions shutdownOptions = ShutdownOptions.None)
+        public virtual void AttemptExit(bool forceQuit = false)
         {
             if (!OnExiting())
                 Exit();
             else
-                Scheduler.AddDelayed(() => AttemptExit(shutdownOptions), 2000);
+                Scheduler.AddDelayed(() => AttemptExit(forceQuit), 2000);
         }
+
+        public virtual void RegisterMessage(INekoPlayerAppMessageHandler appMessageHandler)
+        {
+            AppMessageHandler = appMessageHandler;
+        }
+
+        public INekoPlayerAppMessageHandler AppMessageHandler;
 
         protected virtual Container CreateScalingContainer() => new DrawSizePreservingFillContainer();
 

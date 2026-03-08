@@ -75,7 +75,7 @@ using OverlayContainer = NekoPlayer.App.Graphics.Containers.OverlayContainer;
 
 namespace NekoPlayer.App.Screens
 {
-    public partial class MainAppView : NekoPlayerScreen, IKeyBindingHandler<GlobalAction>
+    public partial class MainAppView : NekoPlayerScreen, IKeyBindingHandler<GlobalAction>, INekoPlayerAppMessageHandler
     {
         private BufferedContainer videoContainer;
         private AdaptiveButton loadBtn, commentSendButton, searchButton, loadPlaylistBtn, loadPlaylistOpenButton, prevVideoButton, nextVideoButton, declineButton, acceptButton, logoutButton, viewChannelButton;
@@ -239,6 +239,8 @@ namespace NekoPlayer.App.Screens
         private Bindable<SettingsNote.Data> videoQualityWarning = new Bindable<SettingsNote.Data>();
         private Bindable<SettingsNote.Data> hwAccelNote = new Bindable<SettingsNote.Data>();
 
+        private Bindable<CloseButtonAction> closeButtonAction;
+
         private Bindable<float> scalingBackgroundDim = null!;
 
         private Bindable<double> speedTextRolling;
@@ -270,8 +272,12 @@ namespace NekoPlayer.App.Screens
         private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled, karaokeEnabled;
         private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings;
 
+        private Bindable<bool> repeat = new Bindable<bool>();
+
         protected T GetShaderByType<T>() where T : InternalShader, new()
             => shaderManager.LocalInternalShader<T>();
+
+        private IconButton repeatButton;
 
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
@@ -280,6 +286,8 @@ namespace NekoPlayer.App.Screens
             volumeTextRolling = new Bindable<double>(1);
             appliedEffects.Value = new List<InternalShader>();
             window = host.Window;
+
+            app.RegisterMessage(this);
 
             videoVolume = config.GetBindable<double>(FrameworkSetting.VolumeMusic);
 
@@ -308,6 +316,7 @@ namespace NekoPlayer.App.Screens
             scalingBackgroundDim = appConfig.GetBindable<float>(NekoPlayerSetting.ScalingBackgroundDim);
             alwaysUseOriginalAudio = appConfig.GetBindable<bool>(NekoPlayerSetting.AlwaysUseOriginalAudio);
             discordRichPresence = appConfig.GetBindable<DiscordRichPresenceMode>(NekoPlayerSetting.DiscordRichPresence);
+            closeButtonAction = appConfig.GetBindable<CloseButtonAction>(NekoPlayerSetting.CloseButtonAction);
 
             captionEnabled = appConfig.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
 
@@ -596,6 +605,17 @@ namespace NekoPlayer.App.Screens
                                                                 }
                                                             }
                                                         },
+                                                        repeatButton = new IconButton
+                                                        {
+                                                            Enabled = { Value = true },
+                                                            Icon = FontAwesome.Solid.Sync,
+                                                            TooltipText = NekoPlayerStrings.Repeat,
+                                                            IconColour = overlayColourProvider.Content2,
+                                                            ClickAction = _ =>
+                                                            {
+                                                                updateRepeatState();
+                                                            }
+                                                        },
                                                         new Container
                                                         {
                                                             AutoSizeAxes = Axes.X,
@@ -874,6 +894,11 @@ namespace NekoPlayer.App.Screens
                                                             ShowRevertToDefaultButton = false,
                                                             CanBeShown = { BindTarget = displayDropdownCanBeShown }
                                                         },
+                                                        new SettingsItemV2(new FormEnumDropdown<CloseButtonAction>
+                                                        {
+                                                            Caption = NekoPlayerStrings.CloseButtonAction,
+                                                            Current = closeButtonAction,
+                                                        }),
                                                         new SettingsItemV2(new FormEnumDropdown<DiscordRichPresenceMode>
                                                         {
                                                             Caption = NekoPlayerStrings.DiscordRichPresence,
@@ -1013,11 +1038,6 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.ShowFPS,
                                                             Current = fpsDisplay,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleFPSDisplay),
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.UseSDL3,
-                                                            Current = use_sdl3,
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
@@ -3036,38 +3056,6 @@ namespace NekoPlayer.App.Screens
                                                                 game.AttemptExit();
                                                             },
                                                         },
-                                                        new MenuButtonItem
-                                                        {
-                                                            Enabled = { Value = true },
-                                                            Origin = Anchor.TopRight,
-                                                            Anchor = Anchor.TopRight,
-                                                            Size = new Vector2(1, 45),
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Icon = FontAwesome.Solid.SyncAlt,
-                                                            IconScale = new Vector2(1.2f),
-                                                            Text = NekoPlayerStrings.Restart,
-                                                            Action = () =>
-                                                            {
-                                                                hideOverlays();
-                                                                game.AttemptExit(ShutdownOptions.Restart);
-                                                            },
-                                                        },
-                                                        new MenuButtonItem
-                                                        {
-                                                            Enabled = { Value = true },
-                                                            Origin = Anchor.TopRight,
-                                                            Anchor = Anchor.TopRight,
-                                                            Size = new Vector2(1, 45),
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Icon = FontAwesome.Solid.PowerOff,
-                                                            IconScale = new Vector2(1.2f),
-                                                            Text = NekoPlayerStrings.PowerOff,
-                                                            Action = () =>
-                                                            {
-                                                                hideOverlays();
-                                                                game.AttemptExit(ShutdownOptions.Shutdown);
-                                                            },
-                                                        },
                                                     }
                                                 }
                                             }
@@ -3223,7 +3211,7 @@ namespace NekoPlayer.App.Screens
 
                     Task.Run(async () =>
                     {
-                        IList<Playlist> playlists = await api.GetMyPlaylistItems();
+                        IList<Playlist> playlists = await api.GetMyPlaylistItemsAsync();
 
                         Schedule(() =>
                         {
@@ -3238,7 +3226,7 @@ namespace NekoPlayer.App.Screens
 
                     Task.Run(async () =>
                     {
-                        IList<Google.Apis.YouTube.v3.Data.Playlist> playlists = await api.GetMyPlaylistItems();
+                        IList<Google.Apis.YouTube.v3.Data.Playlist> playlists = await api.GetMyPlaylistItemsAsync();
 
                         foreach (Playlist playlist in playlists)
                         {
@@ -3337,7 +3325,7 @@ namespace NekoPlayer.App.Screens
 
             commentsDisabled = true;
 
-            playPause.BackgroundColour = searchButton.BackgroundColour = commentSendButton.BackgroundColour = nextVideoButton.BackgroundColour = prevVideoButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
+            playPause.BackgroundColour = searchButton.BackgroundColour = commentSendButton.BackgroundColour = nextVideoButton.BackgroundColour = prevVideoButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = repeatButton.BackgroundColour = overlayColourProvider.Background3;
 
             hwAccelCheckbox.Current.Default = hardwareVideoDecoder.Default != HardwareVideoDecoder.None;
             hwAccelCheckbox.Current.Value = hardwareVideoDecoder.Value != HardwareVideoDecoder.None;
@@ -3955,6 +3943,13 @@ namespace NekoPlayer.App.Screens
         displayDropdownCanBeShown.Value = windowModeDropdown.Current.Value == WindowMode.Windowed && resolutionsWindowed.Count > 1;
         minimiseOnFocusLossCanBeShown.Value = RuntimeInfo.IsDesktop && windowModeDropdown.Current.Value == WindowMode.Fullscreen;
             */
+        }
+
+        private void updateRepeatState()
+        {
+            repeat.Value = !repeat.Value;
+            repeatButton.BackgroundColour = repeat.Value ? overlayColourProvider1.Content2 : overlayColourProvider1.Background3;
+            repeatButton.IconColour = repeat.Value ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2;
         }
 
         private readonly BindableList<Size> resolutionsFullscreen = new BindableList<Size>(new[] { new Size(9999, 9999) });
@@ -4739,24 +4734,27 @@ namespace NekoPlayer.App.Screens
                 Schedule(() => item.Expire());
             }
 
+            int i = 0;
+
             foreach (var item in playlists)
             {
                 try
                 {
                     Google.Apis.YouTube.v3.Data.Video videoData = api.GetVideo(item.Snippet.ResourceId.VideoId);
 
-                    PlaylistItemView playlistItemView = new PlaylistItemView(playlists.IndexOf(item))
+                    PlaylistItemView playlistItemView = new PlaylistItemView(i)
                     {
                         RelativeSizeAxes = Axes.X,
                         Enabled = { Value = true },
-                        ClickAction = async v =>
+                    };
+
+                    playlistItemView.ClickAction = async v =>
+                    {
+                        Schedule(async () =>
                         {
-                            Schedule(async () =>
-                            {
-                                playlistItemIndex = playlists.IndexOf(item);
-                                await SetVideoSource(item.Snippet.ResourceId.VideoId);
-                            });
-                        },
+                            playlistItemIndex = playlistItemView.Index;
+                            await SetVideoSource(item.Snippet.ResourceId.VideoId);
+                        });
                     };
 
                     playlistItemViews.Add(playlistItemView);
@@ -4767,6 +4765,8 @@ namespace NekoPlayer.App.Screens
                         playlistItemsView.Add(playlistItemView);
                         playlistItemView.UpdateData();
                     });
+
+                    i++;
                 }
                 catch (Exception e)
                 {
@@ -5329,6 +5329,16 @@ namespace NekoPlayer.App.Screens
                     await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
                 };
             }
+            else
+            {
+                currentVideoSource.OnVideoCompleted = async () =>
+                {
+                    if (!repeat.Value)
+                        return;
+
+                    currentVideoSource.Play();
+                };
+            }
         }
 
         private void seekTo(double pos)
@@ -5377,6 +5387,7 @@ namespace NekoPlayer.App.Screens
 
             if (playlists.Count > 0)
             {
+                Schedule(() => repeatButton.Enabled.Value = false);
                 if (playlistItemIndex == playlists.Count - 1)
                 {
                     Schedule(() => nextVideoButton.Enabled.Value = false);
@@ -5399,6 +5410,7 @@ namespace NekoPlayer.App.Screens
             {
                 Schedule(() => prevVideoButton.Enabled.Value = false);
                 Schedule(() => nextVideoButton.Enabled.Value = false);
+                Schedule(() => repeatButton.Enabled.Value = true);
             }
 
             if (playlistItemViews.Count > 0)
@@ -5894,6 +5906,34 @@ namespace NekoPlayer.App.Screens
 
         public void OnReleased(KeyBindingReleaseEvent<GlobalAction> e)
         {
+        }
+
+        public void OpenSettings()
+        {
+            Schedule(() =>
+            {
+                hideOverlays();
+                showOverlayContainer(settingsContainer);
+            });
+        }
+
+        public void TogglePreservePitch()
+        {
+            Schedule(() => adjustPitch.Value = !adjustPitch.Value);
+        }
+
+        public void SelectPlaylist(string id)
+        {
+            Task.Run(async () => SetPlaylist(id));
+        }
+
+        public void OpenMyPlaylists()
+        {
+            Schedule(() =>
+            {
+                hideOverlays();
+                showOverlayContainer(myPlaylistsOverlay);
+            });
         }
 
 #nullable enable

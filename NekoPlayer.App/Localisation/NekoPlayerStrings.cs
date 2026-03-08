@@ -1,8 +1,9 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-using osu.Framework.Localisation;
+using Humanizer;
 using NekoPlayer.App.Extensions;
+using osu.Framework.Localisation;
 
 namespace NekoPlayer.App.Localisation
 {
@@ -1014,6 +1015,26 @@ namespace NekoPlayer.App.Localisation
         /// "Low quality"
         /// </summary>
         public static LocalisableString LowQuality => new TranslatableString(getKey(@"low_quality"), @"Low quality");
+
+        /// <summary>
+        /// "Action when the close button is pressed"
+        /// </summary>
+        public static LocalisableString CloseButtonAction => new TranslatableString(getKey(@"close_button_action"), @"Action when the close button is pressed");
+
+        /// <summary>
+        /// "Hide to tray icon"
+        /// </summary>
+        public static LocalisableString HideToTrayIcon => new TranslatableString(getKey(@"hide_to_tray_icon"), @"Hide to tray icon");
+
+        /// <summary>
+        /// "Close the app"
+        /// </summary>
+        public static LocalisableString CloseApp => new TranslatableString(getKey(@"close_app"), @"Close the app");
+
+        /// <summary>
+        /// "Repeat On/Off"
+        /// </summary>
+        public static LocalisableString Repeat => new TranslatableString(getKey(@"repeat"), @"Repeat On/Off");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

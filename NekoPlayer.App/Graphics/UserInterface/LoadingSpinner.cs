@@ -61,7 +61,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     spinner = new SpriteIcon
                     {
                         Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
+                        Origin = Anchor.Custom,
                         Colour = inverted ? Color4.Black : Color4.White,
                         Scale = new Vector2(withBox ? 0.6f : 1),
                         RelativeSizeAxes = Axes.Both,
@@ -85,9 +85,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
             rotate();
         }
 
-        protected override void Update()
+        protected override void UpdateAfterChildren()
         {
-            base.Update();
+            base.UpdateAfterChildren();
+
+            // Font awesome icon isn't centered perfectly.
+            spinner.OriginPosition = spinner.DrawSize * 0.4963333333f;
 
             MainContents.CornerRadius = MainContents.DrawWidth / 4;
         }

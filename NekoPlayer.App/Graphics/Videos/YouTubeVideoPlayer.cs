@@ -235,6 +235,8 @@ namespace NekoPlayer.App.Graphics.Videos
         private void trackCompleted()
         {
             trackFinished = true;
+            SeekTo(0);
+            Pause();
             OnVideoCompleted?.Invoke();
             /*
             drawableTrack?.Stop();
