@@ -102,6 +102,8 @@ namespace NekoPlayer.App
         public UpdateManager UpdateManager;
         public MediaSession MediaSession;
 
+        private Bindable<CloseButtonAction> closeButtonAction;
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -128,6 +130,7 @@ namespace NekoPlayer.App
             }).Where(m => m != null);
 
             uiScale = LocalConfig.GetBindable<float>(Config.NekoPlayerSetting.UIScale);
+            closeButtonAction = LocalConfig.GetBindable<CloseButtonAction>(NekoPlayerSetting.CloseButtonAction);
 
             Localisation.AddLocaleMappings(mappings);
 
@@ -320,14 +323,30 @@ namespace NekoPlayer.App
             if (LoadFailed)
                 return base.OnExiting();
 
+            if (closeButtonAction.Value == CloseButtonAction.HideToTrayIcon && !QuitRequested)
+            {
+                RequestHideToTrayIcon();
+                return true;
+            }
+
             Logger.Log("Exiting...", LoggingTarget.Runtime, LogLevel.Debug);
 
             Schedule(() => AttemptExit());
             return !isExiting;
         }
 
-        public override void AttemptExit(ShutdownOptions shutdownOptions = ShutdownOptions.None)
+        public virtual void RequestHideToTrayIcon()
         {
+
+        }
+
+        public bool QuitRequested;
+
+        public override void AttemptExit(bool forceQuit = false)
+        {
+            if (forceQuit)
+                Exit();
+
             ISample exitSound = Audio.Samples.Get(@"overlay-pop-out");
             DrawableSample drawableSample = new DrawableSample(exitSound);
 
@@ -337,16 +356,11 @@ namespace NekoPlayer.App
 
             drawableSample.Play();
 
-            this.FadeOut(500, Easing.InQuart).OnComplete(_ => appQuit(shutdownOptions));
+            this.FadeOut(500, Easing.InQuart).OnComplete(_ => Exit());
             this.TransformBindableTo(fadeVolume, 0, 500, Easing.InQuart);
             Audio.Tracks.AddAdjustment(AdjustableProperty.Volume, fadeVolume);
 
             isExiting = true;
-        }
-
-        private void appQuit(ShutdownOptions shutdownOptions = ShutdownOptions.None)
-        {
-            Exit();
         }
 
         private bool isExiting = false;

@@ -1031,6 +1031,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString CloseApp => new TranslatableString(getKey(@"close_app"), @"Close the app");
 
+        /// <summary>
+        /// "Repeat On/Off"
+        /// </summary>
+        public static LocalisableString Repeat => new TranslatableString(getKey(@"repeat"), @"Repeat On/Off");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using NekoPlayer.App;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Updater;
+using NekoPlayer.App.Utils;
 using NekoPlayer.Desktop.Windows.Updater;
-using NekoPlayer.Desktop.Windows.MediaSessionHandler;
 
 namespace NekoPlayer.Desktop.Windows
 {
@@ -15,10 +15,24 @@ namespace NekoPlayer.Desktop.Windows
     {
         protected override UpdateManager CreateUpdateManager() => new VelopackUpdateManager();
 
+        private TrayIconManager trayIconManager;
+
         public override bool RestartAppWhenExited()
         {
             Task.Run(() => Velopack.UpdateExe.Start(waitPid: (uint)Environment.ProcessId)).FireAndForget();
             return true;
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            LoadComponentAsync(trayIconManager = new TrayIconManager(), Add);
+        }
+
+        public override void RequestHideToTrayIcon()
+        {
+            base.RequestHideToTrayIcon();
+            trayIconManager.HideToTrayIcon();
         }
 
         public override MediaSession CreateMediaSession() => new WindowsMediaSessionHandler();
