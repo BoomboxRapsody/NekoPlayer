@@ -71,7 +71,7 @@ namespace NekoPlayer.App.Tests
 
             AddRange(new Drawable[]
             {
-                new TestBrowser("YouTubePlayerEX"),
+                new TestBrowser("NekoPlayer"),
             });
         }
 

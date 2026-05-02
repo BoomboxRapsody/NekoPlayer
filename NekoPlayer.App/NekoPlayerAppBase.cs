@@ -4,6 +4,7 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -41,6 +42,7 @@ using osu.Framework.IO.Stores;
 using osu.Framework.Localisation;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
+using osu.Framework.Text;
 using osuTK.Graphics;
 using YoutubeExplode;
 
@@ -732,6 +734,17 @@ namespace NekoPlayer.App
             AddFont(Resources, @"Fonts/CaptionFonts/Hungeul/Hungeul-BoldItalic");
 
             Logger.Log($"Font family loaded: Hungeul");
+
+            var clockFont = AddVariableFont(Resources, @"Fonts/UIFonts/InflateVF");
+            clockFont.AddInstance(
+                new FontVariation
+                {
+                    Axes = new Dictionary<string, double>
+                    {
+                        { @"wght", 1000 },
+                    },
+                },
+            @"InflateVF-ClockFont");
 
             Fonts.AddStore(new EmojiStore(Host.Renderer, Resources));
 
