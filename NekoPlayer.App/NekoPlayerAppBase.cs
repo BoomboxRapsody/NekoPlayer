@@ -672,6 +672,52 @@ namespace NekoPlayer.App
             notoSansKR.AddInstance(@"NotoSansKR-SemiBold");
             notoSansKR.AddInstance(@"NotoSansKR-Light");
 
+            var googleSansFlex = AddVariableFont(Resources, @"Fonts/UIFonts/GoogleSansFlex");
+            googleSansFlex.AddInstance(
+                new FontVariation
+                {
+                    Axes = new Dictionary<string, double>
+                    {
+                        { @"wght", 400 },
+                        { @"wdth", 100 },
+                        { @"ROND", 100 },
+                    },
+                },
+                @"GoogleSansFlex-Regular");
+            googleSansFlex.AddInstance(
+                new FontVariation
+                {
+                    Axes = new Dictionary<string, double>
+                    {
+                        { @"wght", 700 },
+                        { @"wdth", 100 },
+                        { @"ROND", 100 },
+                    },
+                },
+                @"GoogleSansFlex-Bold");
+            googleSansFlex.AddInstance(
+                new FontVariation
+                {
+                    Axes = new Dictionary<string, double>
+                    {
+                        { @"wght", 600 },
+                        { @"wdth", 100 },
+                        { @"ROND", 100 },
+                    },
+                },
+                @"GoogleSansFlex-SemiBold");
+            googleSansFlex.AddInstance(
+                new FontVariation
+                {
+                    Axes = new Dictionary<string, double>
+                    {
+                        { @"wght", 300 },
+                        { @"wdth", 100 },
+                        { @"ROND", 100 },
+                    },
+                },
+                @"GoogleSansFlex-Light");
+
             Logger.Log($"Font family loaded: Noto Sans Korean");
 
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Basic");
