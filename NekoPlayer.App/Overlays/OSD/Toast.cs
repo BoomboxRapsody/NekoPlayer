@@ -68,14 +68,14 @@ namespace NekoPlayer.App.Overlays.OSD
                 {
                     Padding = new MarginPadding { Horizontal = 22, Vertical = 15 },
                     Name = "Description",
-                    Font = NekoPlayerApp.TorusAlternate.With(size: 20, weight: "Bold"),
+                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
                     Text = description
                 },
                 ValueSpriteText = new AdaptiveSpriteText
                 {
-                    Font = NekoPlayerApp.TorusAlternate.With(size: 24, weight: "Light"),
+                    Font = NekoPlayerApp.DefaultFont.With(size: 24, weight: "Light"),
                     Padding = new MarginPadding { Horizontal = 22, Vertical = 15 },
                     Name = "Value",
                     Anchor = Anchor.CentreRight,

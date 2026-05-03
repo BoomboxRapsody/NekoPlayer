@@ -145,7 +145,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                             {
                                                 titleText = new TruncatingSpriteText
                                                 {
-                                                    Font = NekoPlayerApp.TorusAlternate.With(size: 20, weight: "Bold"),
+                                                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
                                                     Text = text,
                                                     Colour = overlayColourProvider.Content2,
                                                 },

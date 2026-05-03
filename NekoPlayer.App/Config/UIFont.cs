@@ -7,11 +7,6 @@ namespace NekoPlayer.App.Config
 {
     public enum UIFont
     {
-        Torus,
-
-        [Description("헌글")]
-        Hungeul,
-
-        Rubik,
+        Roboto,
     }
 }
