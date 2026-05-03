@@ -54,7 +54,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     cp.Spacing = new Vector2(-1);
                 })
                 {
-                    Width = 190,
+                    Width = 270,
                     Margin = new MarginPadding { Left = 35, Right = 10, Vertical = 10 },
                     AutoSizeAxes = Axes.Y,
                     TextAnchor = Anchor.TopRight,
