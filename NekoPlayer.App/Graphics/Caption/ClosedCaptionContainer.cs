@@ -87,28 +87,6 @@ namespace NekoPlayer.App.Graphics.Caption
                 UpdateControlsVisibleState(v.NewValue);
             }, true);
 
-            captionFont.BindValueChanged(v =>
-            {
-                switch (v.NewValue)
-                {
-                    case UIFont.Torus:
-                    {
-                        spriteText.Font = NekoPlayerApp.DefaultFont.With(size: 24);
-                        break;
-                    }
-                    case UIFont.Hungeul:
-                    {
-                        spriteText.Font = NekoPlayerApp.Hungeul.With(size: 24);
-                        break;
-                    }
-                    case UIFont.Rubik:
-                    {
-                        spriteText.Font = NekoPlayerApp.Rubik.With(size: 24);
-                        break;
-                    }
-                }
-            }, true);
-
             bottomMargin.BindValueChanged(v =>
             {
                 captionContainer.Margin = new MarginPadding

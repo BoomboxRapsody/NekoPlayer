@@ -125,8 +125,7 @@ namespace NekoPlayer.App.Online
                 new[] { Google.Apis.YouTube.v3.YouTubeService.Scope.YoutubeForceSsl },
                 "user",
                 CancellationToken.None,
-                new FileDataStore(credPath, false),
-                new NekoPlayerCodeReceiver()
+                new FileDataStore(credPath, false)
             );
 
             return credential;

@@ -61,7 +61,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Text = "0:00",
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
-                        Font = NekoPlayerApp.TorusAlternate.With(size: 12, weight: "Bold"),
+                        Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Bold"),
                     }
                 };
             }

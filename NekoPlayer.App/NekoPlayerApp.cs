@@ -40,7 +40,6 @@ using osuTK;
 
 namespace NekoPlayer.App
 {
-    //앱이 얼마나 인기가 없으면 star count가 안올라가냐;;;
     [Cached(typeof(NekoPlayerApp))]
     public partial class NekoPlayerApp : NekoPlayerAppBase
     {
@@ -48,13 +47,7 @@ namespace NekoPlayer.App
 
         public static FontUsage DefaultFont = FontUsage.Default.With("Torus", 16, "Regular");
 
-        public static FontUsage Hungeul = FontUsage.Default.With("Hungeul", 16, "Regular");
-
-        public static FontUsage Futehodo_MaruGothic = FontUsage.Default.With("Futehodo_MaruGothic", 16, "Regular");
-
-        public static FontUsage TorusAlternate = FontUsage.Default.With("Torus-Alternate", 16, "Regular");
-
-        public static FontUsage Rubik = FontUsage.Default.With("Rubik", 16, "Regular");
+        public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 
         private BindableNumber<double> sampleVolume = null!;
         private FPSCounter fpsCounter;

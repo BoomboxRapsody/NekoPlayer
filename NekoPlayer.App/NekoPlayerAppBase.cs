@@ -306,6 +306,8 @@ namespace NekoPlayer.App
                 Resources.AddStore(new DllResourceStore(typeof(NekoPlayerResources).Assembly));
                 Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(typeof(NekoPlayerAppBase).Assembly), "BuiltInResources"));
 
+                InitialiseFonts();
+
                 // For some atlases, its recommended to use LargeTextureStore. e.g: mipmapping, incorrect positioning due to the atlas scale adjust, etc
                 IResourceStore<TextureUpload> texUpload = Host.CreateTextureLoaderStore(Resources);
                 LargeTextureStore largeTs = new(Host.Renderer, texUpload);
@@ -321,8 +323,6 @@ namespace NekoPlayer.App
                 CurrentLanguage.BindValueChanged(val => frameworkLocale.Value = val.NewValue.ToCultureCode());
 
                 RequestUpdateWindowTitle(string.Empty);
-
-                InitialiseFonts();
 
                 dependencies.Cache(LocalConfig);
 
@@ -666,56 +666,11 @@ namespace NekoPlayer.App
         protected virtual void InitialiseFonts()
         {
             Logger.Log($"Initialising fonts to render fonts.");
-            /*
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-Regular");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-RegularItalic");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-Medium");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-MediumItalic");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-Light");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-LightItalic");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-SemiBold");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-SemiBoldItalic");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-Bold");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-BoldItalic");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-Black");
-            AddFont(Resources, @"Fonts/UIFonts/Pretendard/Pretendard-BlackItalic");
-
-            Logger.Log($"Font family loaded: Pretendard");
-            */
-
-            AddFont(Resources, @"Fonts/UIFonts/Torus/Torus-Bold");
-            AddFont(Resources, @"Fonts/UIFonts/Torus/Torus-Light");
-            AddFont(Resources, @"Fonts/UIFonts/Torus/Torus-Regular");
-            AddFont(Resources, @"Fonts/UIFonts/Torus/Torus-SemiBold");
-
-            AddFont(Resources, @"Fonts/UIFonts/Torus-Alternate/Torus-Alternate-Bold");
-            AddFont(Resources, @"Fonts/UIFonts/Torus-Alternate/Torus-Alternate-Light");
-            AddFont(Resources, @"Fonts/UIFonts/Torus-Alternate/Torus-Alternate-Regular");
-            AddFont(Resources, @"Fonts/UIFonts/Torus-Alternate/Torus-Alternate-SemiBold");
-
-            Logger.Log($"Font family loaded: Torus");
-
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-Black");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-BlackItalic");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-Bold");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-BoldItalic");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-ExtraBold");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-ExtraBoldItalic");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-Light");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-LightItalic");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-Medium");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-MediumItalic");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-Regular");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-RegularItalic");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-SemiBold");
-            AddFont(Resources, @"Fonts/CaptionFonts/Rubik/Rubik-SemiBoldItalic");
-
-            Logger.Log($"Font family loaded: Rubik");
-
-            AddFont(Resources, @"Fonts/UIFonts/NotoSansKR/NotoSansKR-Regular");
-            AddFont(Resources, @"Fonts/UIFonts/NotoSansKR/NotoSansKR-Bold");
-            AddFont(Resources, @"Fonts/UIFonts/NotoSansKR/NotoSansKR-SemiBold");
-            AddFont(Resources, @"Fonts/UIFonts/NotoSansKR/NotoSansKR-Light");
+            var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR-Variable");
+            notoSansKR.AddInstance(@"NotoSansKR-Regular");
+            notoSansKR.AddInstance(@"NotoSansKR-Bold");
+            notoSansKR.AddInstance(@"NotoSansKR-SemiBold");
+            notoSansKR.AddInstance(@"NotoSansKR-Light");
 
             Logger.Log($"Font family loaded: Noto Sans Korean");
 
@@ -727,13 +682,6 @@ namespace NekoPlayer.App
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Thai");
 
             Logger.Log($"Font family loaded: Noto");
-
-            AddFont(Resources, @"Fonts/CaptionFonts/Hungeul/Hungeul-Regular");
-            AddFont(Resources, @"Fonts/CaptionFonts/Hungeul/Hungeul-Bold");
-            AddFont(Resources, @"Fonts/CaptionFonts/Hungeul/Hungeul-RegularItalic");
-            AddFont(Resources, @"Fonts/CaptionFonts/Hungeul/Hungeul-BoldItalic");
-
-            Logger.Log($"Font family loaded: Hungeul");
 
             var clockFont = AddVariableFont(Resources, @"Fonts/UIFonts/InflateVF");
             clockFont.AddInstance(

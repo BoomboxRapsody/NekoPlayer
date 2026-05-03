@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using System;
 using NekoPlayer.App.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
@@ -14,9 +15,18 @@ namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class ClockDisplay : Container
     {
+        private AdaptiveSpriteText timeText, dateText;
+
         public ClockDisplay()
         {
             RelativeSizeAxes = Axes.Both;
+        }
+
+        protected override void Update()
+        {
+            timeText.Text = DateTime.Now.ToString("hh:mm");
+            dateText.Text = DateTime.Now.ToString("MMMM dd, dddd");
+            base.Update();
         }
 
         [BackgroundDependencyLoader]
@@ -41,13 +51,23 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         new FillFlowContainer
                         {
                             AutoSizeAxes = Axes.Both,
+                            Padding = new MarginPadding
+                            {
+                                Horizontal = 32,
+                                Vertical = 16
+                            },
+                            Direction = FillDirection.Vertical,
                             Children = new Drawable[]
                             {
-                                new AdaptiveSpriteText
+                                timeText = new AdaptiveSpriteText
                                 {
-                                    Font = FontUsage.Default.With("InflateVF", 40, "ClockFont"),
-                                    Text = "12:45",
-                                }
+                                    Font = FontUsage.Default.With("InflateVF", 100, "ClockFont"),
+                                    Colour = overlayColourProvider.Content2,
+                                },
+                                dateText = new AdaptiveSpriteText
+                                {
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 20),
+                                },
                             }
                         }
                     }
