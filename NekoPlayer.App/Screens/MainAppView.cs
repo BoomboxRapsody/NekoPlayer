@@ -5649,6 +5649,11 @@ namespace NekoPlayer.App.Screens
                     osd.Display(new SpeedChangeToast(playbackSpeed.Value));
                     return true;
 
+                case GlobalAction.ResetPlaybackSpeed:
+                    playbackSpeed.Value = 1;
+                    osd.Display(new SpeedChangeToast(playbackSpeed.Value));
+                    return true;
+
                 case GlobalAction.IncreasePlaybackSpeed:
                     playbackSpeed.Value += 0.05;
                     osd.Display(new SpeedChangeToast(playbackSpeed.Value));

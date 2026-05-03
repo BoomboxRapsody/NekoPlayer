@@ -45,7 +45,7 @@ namespace NekoPlayer.App
     {
         private ScreenStack screenStack;
 
-        public static FontUsage DefaultFont = FontUsage.Default.With("Torus", 16, "Regular");
+        public static FontUsage DefaultFont = FontUsage.Default.With("GoogleSansFlex", 16, "Regular");
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 
