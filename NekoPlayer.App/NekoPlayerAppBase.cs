@@ -718,16 +718,12 @@ namespace NekoPlayer.App
                 },
                 @"GoogleSansFlex-Light");
 
-            Logger.Log($"Font family loaded: Noto Sans Korean");
-
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Basic");
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Bopomofo");
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-CJK-Basic");
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-CJK-Compatibility");
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Hangul");
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Thai");
-
-            Logger.Log($"Font family loaded: Noto");
 
             var clockFont = AddVariableFont(Resources, @"Fonts/UIFonts/InflateVF");
             clockFont.AddInstance(
