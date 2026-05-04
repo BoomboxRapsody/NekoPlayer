@@ -666,7 +666,7 @@ namespace NekoPlayer.App
         protected virtual void InitialiseFonts()
         {
             Logger.Log($"Initialising fonts to render fonts.");
-            var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR-Variable");
+            var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR");
             notoSansKR.AddInstance(@"NotoSansKR-Regular");
             notoSansKR.AddInstance(@"NotoSansKR-Bold");
             notoSansKR.AddInstance(@"NotoSansKR-SemiBold");
