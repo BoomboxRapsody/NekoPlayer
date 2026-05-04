@@ -678,7 +678,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
-                        { @"opsz", 90 },
+                        { @"opsz", 144 },
                         { @"wght", 400 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
@@ -690,7 +690,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
-                        { @"opsz", 90 },
+                        { @"opsz", 144 },
                         { @"wght", 700 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
@@ -702,7 +702,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
-                        { @"opsz", 90 },
+                        { @"opsz", 144 },
                         { @"wght", 600 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
@@ -714,7 +714,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
-                        { @"opsz", 90 },
+                        { @"opsz", 144 },
                         { @"wght", 300 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
