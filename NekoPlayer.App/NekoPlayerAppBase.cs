@@ -666,6 +666,19 @@ namespace NekoPlayer.App
         protected virtual void InitialiseFonts()
         {
             Logger.Log($"Initialising fonts to render texts.");
+
+            var notoSans = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSans");
+            notoSans.AddInstance(@"NotoSans-Regular");
+            notoSans.AddInstance(@"NotoSans-Bold");
+            notoSans.AddInstance(@"NotoSans-SemiBold");
+            notoSans.AddInstance(@"NotoSans-Light");
+
+            var chironGoRoundTC = AddVariableFont(Resources, @"Fonts/UIFonts/ChironGoRoundTC");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Regular");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Bold");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-SemiBold");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Light");
+
             var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR");
             notoSansKR.AddInstance(@"NotoSansKR-Regular");
             notoSansKR.AddInstance(@"NotoSansKR-Bold");

@@ -66,7 +66,7 @@ namespace NekoPlayer.App.Screens
             if (spinner.State.Value == Visibility.Visible)
             {
                 spinner.Hide();
-                Scheduler.AddDelayed(() => this.Push(loadableScreen), LoadingSpinner.TRANSITION_DURATION);
+                this.Push(loadableScreen);
             }
             else
                 this.Push(loadableScreen);

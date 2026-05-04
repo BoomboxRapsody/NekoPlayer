@@ -5354,7 +5354,7 @@ namespace NekoPlayer.App.Screens
                 }
                 case DiscordRichPresenceMode.Off:
                 {
-                    discordRPC.ClearPresence();
+                    discordRPC?.ClearPresence();
                     break;
                 }
             }
@@ -6634,7 +6634,20 @@ namespace NekoPlayer.App.Screens
                         Schedule(() =>
                         {
                             game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
-                            Schedule(() => GetLocalizedVideoDescriptionRemake(videoData));
+                            if (!string.IsNullOrEmpty(api.GetLocalizedVideoDescription(videoData)))
+                            {
+                                //Schedule(() => videoDescription.Text = api.GetLocalizedVideoDescription(videoData));
+                                Schedule(() => GetLocalizedVideoDescriptionRemake(videoData));
+                            }
+                            else
+                            {
+                                videoDescription.Text = string.Empty;
+                                Schedule(() => videoDescription.AddText(NekoPlayerStrings.NoDescription, text =>
+                                {
+                                    text.Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold"); 
+                                    text.Colour = overlayColourProvider1.Background1;
+                                }));
+                            }
                             videoInfoDetails.Text = NekoPlayerStrings.VideoMetadataDescWithoutChannelName(Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), uploadDate.ToString());
                         });
                     });
