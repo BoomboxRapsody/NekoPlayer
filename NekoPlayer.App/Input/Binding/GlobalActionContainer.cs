@@ -64,6 +64,8 @@ namespace NekoPlayer.App.Input.Binding
 
             new KeyBinding(new[] { InputKey.Shift, InputKey.P }, GlobalAction.PrevVideo),
             new KeyBinding(new[] { InputKey.Shift, InputKey.N }, GlobalAction.NextVideo),
+            new KeyBinding(new[] { InputKey.TrackPrevious }, GlobalAction.PrevVideo),
+            new KeyBinding(new[] { InputKey.TrackNext }, GlobalAction.NextVideo),
 
             new KeyBinding(new[] { InputKey.Shift, InputKey.C }, GlobalAction.CycleCaptionLanguage),
             new KeyBinding(new[] { InputKey.Control, InputKey.F6 }, GlobalAction.CycleAspectRatio),

@@ -665,8 +665,21 @@ namespace NekoPlayer.App
 
         protected virtual void InitialiseFonts()
         {
-            Logger.Log($"Initialising fonts to render fonts.");
-            var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR-Variable");
+            Logger.Log($"Initialising fonts to render texts.");
+
+            var notoSans = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSans");
+            notoSans.AddInstance(@"NotoSans-Regular");
+            notoSans.AddInstance(@"NotoSans-Bold");
+            notoSans.AddInstance(@"NotoSans-SemiBold");
+            notoSans.AddInstance(@"NotoSans-Light");
+
+            var chironGoRoundTC = AddVariableFont(Resources, @"Fonts/UIFonts/ChironGoRoundTC");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Regular");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Bold");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-SemiBold");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Light");
+
+            var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR");
             notoSansKR.AddInstance(@"NotoSansKR-Regular");
             notoSansKR.AddInstance(@"NotoSansKR-Bold");
             notoSansKR.AddInstance(@"NotoSansKR-SemiBold");
@@ -678,6 +691,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
+                        { @"opsz", 144 },
                         { @"wght", 400 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
@@ -689,6 +703,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
+                        { @"opsz", 144 },
                         { @"wght", 700 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
@@ -700,6 +715,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
+                        { @"opsz", 144 },
                         { @"wght", 600 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
@@ -711,6 +727,7 @@ namespace NekoPlayer.App
                 {
                     Axes = new Dictionary<string, double>
                     {
+                        { @"opsz", 144 },
                         { @"wght", 300 },
                         { @"wdth", 100 },
                         { @"ROND", 100 },
