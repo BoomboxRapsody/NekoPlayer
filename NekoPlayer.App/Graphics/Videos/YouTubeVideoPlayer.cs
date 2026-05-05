@@ -215,13 +215,11 @@ namespace NekoPlayer.App.Graphics.Videos
                 closedCaption = new ClosedCaptionContainer(this, captionTrack)
             });
 
-            rateAdjustClock.Rate = playbackSpeed.Value;
-
             playbackSpeed.BindValueChanged(v =>
             {
                 rateAdjustClock.Rate = v.NewValue;
                 mediaSession?.UpdatePlaybackSpeed(v.NewValue);
-            });
+            }, true);
 
             UpdatePreservePitch(config.Get<bool>(NekoPlayerSetting.AdjustPitchOnSpeedChange));
 
