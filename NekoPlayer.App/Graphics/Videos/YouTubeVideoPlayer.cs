@@ -215,12 +215,6 @@ namespace NekoPlayer.App.Graphics.Videos
                 closedCaption = new ClosedCaptionContainer(this, captionTrack)
             });
 
-            playbackSpeed.BindValueChanged(v =>
-            {
-                rateAdjustClock.Rate = v.NewValue;
-                mediaSession?.UpdatePlaybackSpeed(v.NewValue);
-            }, true);
-
             UpdatePreservePitch(config.Get<bool>(NekoPlayerSetting.AdjustPitchOnSpeedChange));
 
             SeekTo(resumeFromTime * 1000);
@@ -325,12 +319,17 @@ namespace NekoPlayer.App.Graphics.Videos
         protected override void LoadComplete()
         {
             base.LoadComplete();
-            mediaSession?.UpdateMediaSession(videoData);
 
             uiLanguage.BindValueChanged(lang =>
             {
                 mediaSession?.UpdateMediaSession(videoData);
-            });
+            }, true);
+
+            playbackSpeed.BindValueChanged(v =>
+            {
+                rateAdjustClock.Rate = v.NewValue;
+                mediaSession?.UpdatePlaybackSpeed(v.NewValue);
+            }, true);
 
             mediaSession?.UpdateTimestamp(videoData, 0);
         }
