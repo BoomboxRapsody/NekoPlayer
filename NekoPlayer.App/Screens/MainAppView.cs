@@ -1143,11 +1143,6 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.VideoMetadataTranslateSource,
                                                             Current = appConfig.GetBindable<VideoMetadataTranslateSource>(NekoPlayerSetting.VideoMetadataTranslateSource),
                                                         }),
-                                                        new SettingsItemV2(new FormEnumDropdown<UIFont>
-                                                        {
-                                                            Caption = NekoPlayerStrings.UIFont,
-                                                            Current = ui_font,
-                                                        }),
                                                         new SettingsItemV2(login = new FormButton
                                                         {
                                                             Caption = NekoPlayerStrings.GoogleAccount,
@@ -1209,6 +1204,11 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.ColourScheme,
                                                             Current = colourSchemeBindable,
+                                                        }),
+                                                        new SettingsItemV2(new FormEnumDropdown<UIFont>
+                                                        {
+                                                            Caption = NekoPlayerStrings.UIFont,
+                                                            Current = ui_font,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<ProfileImageShape>
                                                         {
