@@ -98,6 +98,7 @@ namespace NekoPlayer.App
         [BackgroundDependencyLoader]
         private void load()
         {
+            replaceDefaultFont();
             var languages = Enum.GetValues<Language>();
 
             var mappings = languages.Select(language =>
@@ -176,6 +177,27 @@ namespace NekoPlayer.App
 
             applySafeAreaConsiderations = LocalConfig.GetBindable<bool>(NekoPlayerSetting.SafeAreaConsiderations);
             applySafeAreaConsiderations.BindValueChanged(apply => SafeAreaContainer.SafeAreaOverrideEdges = apply.NewValue ? SafeAreaOverrideEdges : Edges.All, true);
+        }
+
+        private void replaceDefaultFont()
+        {
+            string fontName = string.Empty;
+
+            switch (LocalConfig.Get<UIFont>(NekoPlayerSetting.UIFont))
+            {
+                case UIFont.GoogleSansFlex:
+                {
+                    fontName = @"GoogleSansFlex";
+                    break;
+                }
+                case UIFont.Rubik:
+                {
+                    fontName = @"Rubik";
+                    break;
+                }
+            }
+
+            DefaultFont = FontUsage.Default.With(fontName, 16, "Regular");
         }
 
         private void fetchCaptionLanguages()

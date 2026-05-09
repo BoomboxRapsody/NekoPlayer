@@ -1196,6 +1196,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString DownloadCompleted => new TranslatableString(getKey(@"download_completed"), @"The download has been completed.");
 
+        /// <summary>
+        /// "UI Font"
+        /// </summary>
+        public static LocalisableString UIFont => new TranslatableString(getKey(@"ui_font"), @"UI Font");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

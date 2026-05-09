@@ -205,7 +205,7 @@ namespace NekoPlayer.App.Overlays.Volume
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            Font = NekoPlayerApp.DefaultFont.With(size: 0.16f * CircleSize, weight: "Bold")
+                            Font = NekoPlayerApp.DefaultFont.With(size: 0.16f * CircleSize, weight: "ExtraBold")
                         }).WithEffect(new GlowEffect
                         {
                             Colour = Color4.Transparent,

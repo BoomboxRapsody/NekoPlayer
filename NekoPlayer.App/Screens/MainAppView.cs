@@ -267,6 +267,8 @@ namespace NekoPlayer.App.Screens
         private Bindable<ProfileImageShape> profileImageShape;
         private Bindable<CloseButtonAction> closeButtonAction;
 
+        private Bindable<UIFont> ui_font;
+
         private Bindable<float> scalingBackgroundDim = null!;
 
         private Bindable<double> speedTextRolling;
@@ -396,6 +398,8 @@ namespace NekoPlayer.App.Screens
             updateInfomationText = game.UpdateManagerVersionText.GetBoundCopy();
             updateButtonEnabled = game.UpdateButtonEnabled.GetBoundCopy();
 
+            ui_font = appConfig.GetBindable<UIFont>(NekoPlayerSetting.UIFont);
+
             aspectRatioMethod = appConfig.GetBindable<AspectRatioMethod>(NekoPlayerSetting.AspectRatioMethod);
 
             windowedResolution.Value = sizeWindowed.Value;
@@ -419,6 +423,14 @@ namespace NekoPlayer.App.Screens
             });
 
             colourSchemeBindable.BindValueChanged(_ =>
+            {
+                if (game?.RestartAppWhenExited() == true)
+                {
+                    game.AttemptExit();
+                }
+            });
+
+            ui_font.BindValueChanged(_ =>
             {
                 if (game?.RestartAppWhenExited() == true)
                 {
@@ -1131,6 +1143,11 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.VideoMetadataTranslateSource,
                                                             Current = appConfig.GetBindable<VideoMetadataTranslateSource>(NekoPlayerSetting.VideoMetadataTranslateSource),
                                                         }),
+                                                        new SettingsItemV2(new FormEnumDropdown<UIFont>
+                                                        {
+                                                            Caption = NekoPlayerStrings.UIFont,
+                                                            Current = ui_font,
+                                                        }),
                                                         new SettingsItemV2(login = new FormButton
                                                         {
                                                             Caption = NekoPlayerStrings.GoogleAccount,
@@ -1146,11 +1163,6 @@ namespace NekoPlayer.App.Screens
                                                                     showOverlayContainer(myChannelDialog);
                                                                 }
                                                             },
-                                                        }),
-                                                        releaseStreamSelectorButtonCore = new SettingsItemV2(new FormEnumDropdown<ReleaseStream>
-                                                        {
-                                                            Caption = NekoPlayerStrings.ReleaseStream,
-                                                            Current = ReleaseStream,
                                                         }),
                                                         checkForUpdatesButtonCore = new SettingsItemV2(checkForUpdatesButton = new FormButton
                                                         {
@@ -5386,7 +5398,7 @@ namespace NekoPlayer.App.Screens
 
             if (!game.IsDeployedBuild)
             {
-                releaseStreamSelectorButtonCore.Hide();
+                //releaseStreamSelectorButtonCore.Hide();
                 checkForUpdatesButtonCore.Hide();
             }
 

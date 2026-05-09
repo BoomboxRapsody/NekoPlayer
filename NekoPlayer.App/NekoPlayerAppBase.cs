@@ -668,24 +668,53 @@ namespace NekoPlayer.App
             Logger.Log($"Initialising fonts to render texts.");
 
             var notoSans = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSans");
+            notoSans.AddInstance(@"NotoSans-ExtraBold");
             notoSans.AddInstance(@"NotoSans-Regular");
             notoSans.AddInstance(@"NotoSans-Bold");
             notoSans.AddInstance(@"NotoSans-SemiBold");
             notoSans.AddInstance(@"NotoSans-Light");
 
             var chironGoRoundTC = AddVariableFont(Resources, @"Fonts/UIFonts/ChironGoRoundTC");
+            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-ExtraBold");
             chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Regular");
             chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Bold");
             chironGoRoundTC.AddInstance(@"ChironGoRoundTC-SemiBold");
             chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Light");
 
+            var notoSansOriya = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansOriya");
+            notoSansOriya.AddInstance(@"NotoSansOriya-ExtraBold");
+            notoSansOriya.AddInstance(@"NotoSansOriya-Regular");
+            notoSansOriya.AddInstance(@"NotoSansOriya-Bold");
+            notoSansOriya.AddInstance(@"NotoSansOriya-SemiBold");
+            notoSansOriya.AddInstance(@"NotoSansOriya-Light");
+
             var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR");
+            notoSansKR.AddInstance(@"NotoSansKR-ExtraBold");
             notoSansKR.AddInstance(@"NotoSansKR-Regular");
             notoSansKR.AddInstance(@"NotoSansKR-Bold");
             notoSansKR.AddInstance(@"NotoSansKR-SemiBold");
             notoSansKR.AddInstance(@"NotoSansKR-Light");
 
+            var rubik = AddVariableFont(Resources, @"Fonts/UIFonts/Rubik");
+            rubik.AddInstance(@"Rubik-ExtraBold");
+            rubik.AddInstance(@"Rubik-Regular");
+            rubik.AddInstance(@"Rubik-Bold");
+            rubik.AddInstance(@"Rubik-SemiBold");
+            rubik.AddInstance(@"Rubik-Light");
+
             var googleSansFlex = AddVariableFont(Resources, @"Fonts/UIFonts/GoogleSansFlex");
+            googleSansFlex.AddInstance(
+                new FontVariation
+                {
+                    Axes = new Dictionary<string, double>
+                    {
+                        { @"opsz", 144 },
+                        { @"wght", 800 },
+                        { @"wdth", 100 },
+                        { @"ROND", 100 },
+                    },
+                },
+                @"GoogleSansFlex-ExtraBold");
             googleSansFlex.AddInstance(
                 new FontVariation
                 {
