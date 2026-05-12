@@ -88,7 +88,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         {
                             LeftBox = new Box
                             {
-                                Height = SliderNubRemake.HEIGHT  / 2,
+                                Height = SliderNubRemake.HEIGHT / 2,
                                 Colour = AccentColour,
                                 RelativeSizeAxes = Axes.None,
                                 Anchor = Anchor.CentreLeft,

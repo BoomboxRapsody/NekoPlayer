@@ -20,6 +20,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         public float IconSize { get; init; } = 10;
 
         private Box background = null!;
+        private Box hover = null!;
         private SpriteIcon spriteIcon = null!;
 
         [Resolved]
@@ -30,33 +31,36 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public SettingsRevertToDefaultButton()
         {
-            RelativeSizeAxes = Axes.Y;
-            Width = WIDTH;
+            Width = Height = WIDTH;
+            Position = new Vector2(WIDTH, 0);
         }
 
         [BackgroundDependencyLoader]
         private void load()
         {
             Masking = true;
-            CornerRadius = 5;
-            CornerExponent = 2.5f;
+            CornerRadius = DrawHeight / 2;
 
             Children = new Drawable[]
             {
                 background = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Colour = colourProvider.Background3,
+                    Colour = colourProvider.Content2,
                 },
                 spriteIcon = new SpriteIcon
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    Colour = colourProvider.Light1,
+                    Colour = colourProvider.Background4,
                     Icon = FontAwesome.Solid.Undo,
-                    Margin = new MarginPadding { Left = 12, Right = 5 },
                     Size = new Vector2(IconSize),
-                }
+                },
+                hover = new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Blending = BlendingParameters.Additive,
+                },
             };
         }
 
@@ -82,18 +86,17 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public override void Show()
         {
-            this.FadeIn().MoveToX(WIDTH - 10, 200, Easing.OutElasticQuarter);
+            this.FadeIn(200, Easing.OutQuint);
         }
 
         public override void Hide()
         {
-            this.MoveToX(0, 120, Easing.OutExpo).Then().FadeOut();
+            this.FadeOut(200, Easing.OutQuint);
         }
 
         private void updateDisplay()
         {
-            spriteIcon.FadeColour(IsHovered ? colourProvider.Content2 : colourProvider.Light1, 300, Easing.OutQuint);
-            background.FadeColour(IsHovered ? colourProvider.Background2 : colourProvider.Background3, 300, Easing.OutQuint);
+            hover.FadeTo(IsHovered ? 0.2f : 0f, 300, Easing.OutQuint);
         }
     }
 }
