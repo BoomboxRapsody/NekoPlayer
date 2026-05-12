@@ -19,9 +19,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class SliderNubRemake : Container, IHasCurrentValue<bool>
     {
-        public const float HEIGHT = 15;
+        public const float HEIGHT = 20;
 
-        public const float DEFAULT_EXPANDED_SIZE = 15;
+        public const float DEFAULT_EXPANDED_SIZE = 6;
 
         private const float border_width = 3;
 

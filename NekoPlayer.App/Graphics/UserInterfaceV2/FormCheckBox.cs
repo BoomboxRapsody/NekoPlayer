@@ -55,7 +55,10 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
             InternalChildren = new Drawable[]
             {
-                background = new FormControlBackground(),
+                background = new FormControlBackground()
+                {
+                    IsCheckbox = true
+                },
                 new Container
                 {
                     RelativeSizeAxes = Axes.X,
@@ -126,6 +129,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         private void updateState()
         {
             caption.TextColour = Current.Disabled ? colourProvider.Background1 : colourProvider.Content2;
+
+            background.Enabled = Current.Value;
 
             if (IsDisabled)
                 background.VisualStyle = VisualStyle.Disabled;

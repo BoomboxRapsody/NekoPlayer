@@ -55,8 +55,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                         {
                             revertButton = new SettingsRevertToDefaultButton
                             {
-                                Anchor = Anchor.TopRight,
-                                Origin = Anchor.TopRight,
+                                Anchor = Anchor.CentreRight,
+                                Origin = Anchor.CentreRight,
                                 Action = ApplyDefault,
                             },
                             new Container
@@ -90,7 +90,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             ScheduleAfterChildren(() =>
             {
                 revertButton.RelativeSizeAxes = Axes.None;
-                revertButton.Height = ((Drawable)Control).DrawHeight;
             });
         }
 

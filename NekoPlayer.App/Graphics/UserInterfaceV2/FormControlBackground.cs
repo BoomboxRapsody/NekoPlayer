@@ -10,6 +10,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osuTK.Graphics;
 using NekoPlayer.App.Graphics.UserInterface;
+using osu.Framework.Bindables;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
@@ -29,6 +30,20 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 updateStyle();
             }
         }
+
+        private bool enabled;
+
+        public bool Enabled
+        {
+            get => enabled;
+            set
+            {
+                enabled = value;
+                updateStyle();
+            }
+        }
+
+        public bool IsCheckbox;
 
         [Resolved]
         private OverlayColourProvider colourProvider { get; set; } = null!;
@@ -109,6 +124,9 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             }
 
             this.TransformTo(nameof(BorderColour), border ? borderColour : colour, 250, Easing.OutQuint);
+
+            if (IsCheckbox)
+                this.TransformTo(nameof(CornerRadius), enabled ? NekoPlayerApp.UI_CORNER_RADIUS / 1.5f : DrawHeight / 2, 250, Easing.OutQuint);
 
             box.FadeColour(colour, 250, Easing.OutQuint);
         }

@@ -596,7 +596,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Height = 75,
+                                    Height = 78,
                                     Masking = false,
                                     //CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
                                     /*
@@ -814,7 +814,7 @@ namespace NekoPlayer.App.Screens
                                                                                     Width = 200,
                                                                                     Margin = new MarginPadding
                                                                                     {
-                                                                                        Top = 8,
+                                                                                        Top = 6,
                                                                                     },
                                                                                     KeyboardStep = 0.05f,
                                                                                     PlaySamplesOnAdjust = true,
@@ -883,7 +883,7 @@ namespace NekoPlayer.App.Screens
                                                                                     Width = 200,
                                                                                     Margin = new MarginPadding
                                                                                     {
-                                                                                        Top = 8,
+                                                                                        Top = 6,
                                                                                     },
                                                                                     KeyboardStep = 0.05f,
                                                                                     PlaySamplesOnAdjust = false,
@@ -1709,7 +1709,7 @@ namespace NekoPlayer.App.Screens
                                                 {
                                                     AutoSizeAxes = Axes.X,
                                                     Height = 32,
-                                                    CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
+                                                    CornerRadius = 16,
                                                     Masking = true,
                                                     AlwaysPresent = true,
                                                     Children = new Drawable[]
@@ -1717,7 +1717,6 @@ namespace NekoPlayer.App.Screens
                                                         new Container
                                                         {
                                                             RelativeSizeAxes = Axes.Both,
-                                                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
                                                             Children = new Drawable[] {
                                                                 likeButtonBackground = new Box
                                                                 {
@@ -1761,7 +1760,7 @@ namespace NekoPlayer.App.Screens
                                                 {
                                                     AutoSizeAxes = Axes.X,
                                                     Height = 32,
-                                                    CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
+                                                    CornerRadius = 16,
                                                     Masking = true,
                                                     AlwaysPresent = true,
                                                     Children = new Drawable[]
@@ -1769,7 +1768,6 @@ namespace NekoPlayer.App.Screens
                                                         new Container
                                                         {
                                                             RelativeSizeAxes = Axes.Both,
-                                                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
                                                             Children = new Drawable[] {
                                                                 dislikeButtonBackground = new Box
                                                                 {
@@ -1813,7 +1811,7 @@ namespace NekoPlayer.App.Screens
                                                 {
                                                     AutoSizeAxes = Axes.X,
                                                     Height = 32,
-                                                    CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
+                                                    CornerRadius = 16,
                                                     Masking = true,
                                                     AlwaysPresent = true,
                                                     ClickAction = f =>
@@ -1864,7 +1862,7 @@ namespace NekoPlayer.App.Screens
                                                     Enabled = { Value = true },
                                                     AutoSizeAxes = Axes.X,
                                                     Height = 32,
-                                                    CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
+                                                    CornerRadius = 16,
                                                     Masking = true,
                                                     AlwaysPresent = true,
                                                     ClickAction = f =>
@@ -6241,9 +6239,12 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(() =>
                         {
-                            dislikeButtonBackgroundSelected.Hide();
-                            likeButtonBackgroundSelected.Hide();
-                            likeButtonForeground.Colour = dislikeButtonForeground.Colour = overlayColourProvider1.Content2;
+                            dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                            likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                            likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                            dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
 
                             if (ratingButtonsEnabled)
                             {
@@ -6253,10 +6254,12 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.Hide();
-                                        likeButtonBackgroundSelected.Show();
-                                        likeButtonForeground.Colour = overlayColourProvider1.Background4;
-                                        dislikeButtonForeground.Colour = overlayColourProvider1.Content2;
+                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                                        likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
+                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });
                                 };
 
@@ -6266,10 +6269,12 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.Show();
-                                        likeButtonBackgroundSelected.Hide();
-                                        likeButtonForeground.Colour = overlayColourProvider1.Content2;
-                                        dislikeButtonForeground.Colour = overlayColourProvider1.Background4;
+                                        dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
+                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                                     });
                                 };
                             }
@@ -6290,10 +6295,12 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(() =>
                         {
-                            dislikeButtonBackgroundSelected.Hide();
-                            likeButtonBackgroundSelected.Show();
-                            likeButtonForeground.Colour = overlayColourProvider1.Background4;
-                            dislikeButtonForeground.Colour = overlayColourProvider1.Content2;
+                            dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                            likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                            likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
+                            dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
 
                             if (ratingButtonsEnabled)
                             {
@@ -6303,9 +6310,12 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.Hide();
-                                        likeButtonBackgroundSelected.Hide();
-                                        likeButtonForeground.Colour = dislikeButtonForeground.Colour = overlayColourProvider1.Content2;
+                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });
                                 };
 
@@ -6315,10 +6325,12 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.Show();
-                                        likeButtonBackgroundSelected.Hide();
-                                        likeButtonForeground.Colour = overlayColourProvider1.Content2;
-                                        dislikeButtonForeground.Colour = overlayColourProvider1.Background4;
+                                        dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
+                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                                     });
                                 };
                             }
@@ -6339,10 +6351,12 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(() =>
                         {
-                            dislikeButtonBackgroundSelected.Show();
-                            likeButtonBackgroundSelected.Hide();
-                            likeButtonForeground.Colour = overlayColourProvider1.Content2;
-                            dislikeButtonForeground.Colour = overlayColourProvider1.Background4;
+                            dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
+                            likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                            likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                            dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
 
                             if (ratingButtonsEnabled)
                             {
@@ -6352,10 +6366,12 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.Hide();
-                                        likeButtonBackgroundSelected.Show();
-                                        likeButtonForeground.Colour = overlayColourProvider1.Background4;
-                                        dislikeButtonForeground.Colour = overlayColourProvider1.Content2;
+                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
+                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });
                                 };
 
@@ -6365,9 +6381,12 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.Hide();
-                                        likeButtonBackgroundSelected.Hide();
-                                        likeButtonForeground.Colour = dislikeButtonForeground.Colour = overlayColourProvider1.Content2;
+                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });
                                 };
                             }
