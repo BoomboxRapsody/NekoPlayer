@@ -3,17 +3,18 @@
 
 #nullable enable
 
+using System;
+using NekoPlayer.App.Graphics.Sprites;
+using osu.Framework.Allocation;
+using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osuTK.Graphics;
-using System;
 using osu.Framework.Localisation;
-using osu.Framework.Bindables;
-using NekoPlayer.App.Graphics.Sprites;
-using osu.Framework.Allocation;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -110,6 +111,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 RelativeSizeAxes = Axes.Both,
                 Masking = true,
                 CornerRadius = 15,
+                EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
+                {
+                    Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                    Colour = Color4.Black.Opacity(0.25f),
+                    Offset = new Vector2(0, 2),
+                    Radius = 16,
+                },
                 Children = new Drawable[]
                 {
                     Background = new Box
