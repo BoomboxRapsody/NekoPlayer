@@ -708,7 +708,6 @@ namespace NekoPlayer.App.Screens
                                                                                                 currentVideoSource.Pause();
                                                                                             else
                                                                                                 currentVideoSource.Play();
-                                                                                            
                                                                                         }
                                                                                     }
                                                                                 },
