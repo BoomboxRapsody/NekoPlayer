@@ -1937,7 +1937,7 @@ namespace NekoPlayer.App.Screens
                                                         Child = new Box
                                                         {
                                                             RelativeSizeAxes = Axes.Both,
-                                                            Colour = overlayColourProvider.Background3,
+                                                            Colour = overlayColourProvider.Background4,
                                                             Alpha = 1f,
                                                         },
                                                     },
