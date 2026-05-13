@@ -116,7 +116,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             RelativeSizeAxes = Axes.X,
                             AutoSizeAxes = Axes.Y,
                             Direction = FillDirection.Vertical,
-                            Padding = new MarginPadding { Right = SwitchButton.WIDTH + 5 },
+                            Padding = new MarginPadding { Right = 56 + 5 },
                             Spacing = new Vector2(0f, 4f),
                             Children = new Drawable[]
                             {

@@ -72,7 +72,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             Origin = Anchor.CentreLeft,
                             RelativeSizeAxes = Axes.X,
                             AutoSizeAxes = Axes.Y,
-                            Padding = new MarginPadding { Right = SwitchButton.WIDTH + 5 },
+                            Padding = new MarginPadding { Right = 56 + 5 },
                             Children = new Drawable[]
                             {
                                 caption = new FormFieldCaption
