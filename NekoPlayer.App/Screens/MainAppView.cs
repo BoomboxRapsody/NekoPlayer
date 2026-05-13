@@ -6067,7 +6067,7 @@ namespace NekoPlayer.App.Screens
                 playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2, 250, Easing.OutQuint);
                 playPause.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 50f : 40f, 250, Easing.OutQuint);
                 prevVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 250, Easing.OutQuint);
-                nextVideoButton.TransformTo(nameof(Width), repeat.Value ? (currentVideoSource.IsPlaying() ? 25f : 30f) : (currentVideoSource.IsPlaying() ? 35f : 40f), 250, Easing.OutQuint);
+                nextVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 250, Easing.OutQuint);
 
                 videoPlaying.Value = currentVideoSource.IsPlaying();
 
