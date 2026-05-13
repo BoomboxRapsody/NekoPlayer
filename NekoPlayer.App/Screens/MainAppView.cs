@@ -230,7 +230,7 @@ namespace NekoPlayer.App.Screens
         private FormButton checkForUpdatesButton, login;
         private FormSliderBar<double> systemVolumeControl;
         private ThumbnailContainerBackground thumbnailContainer;
-        private NekoPlayerSeekBar<double> seekbar;
+        private RoundedSliderBar<double> seekbar;
         private Bindable<LocalisableString> updateInfomationText;
         private Bindable<bool> updateButtonEnabled, fpsDisplay, captionEnabled, use_sdl3;
         private Bindable<AspectRatioMethod> aspectRatioMethod;
@@ -1722,7 +1722,7 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     RelativeSizeAxes = Axes.Both,
                                                                     Colour = overlayColourProvider.Background4,
-                                                                    Alpha = 0.7f,
+                                                                    Alpha = 1f,
                                                                 },
                                                                 likeButtonBackgroundSelected = new Box
                                                                 {
@@ -1773,7 +1773,7 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     RelativeSizeAxes = Axes.Both,
                                                                     Colour = overlayColourProvider.Background4,
-                                                                    Alpha = 0.7f,
+                                                                    Alpha = 1f,
                                                                 },
                                                                 dislikeButtonBackgroundSelected = new Box
                                                                 {
@@ -1829,7 +1829,7 @@ namespace NekoPlayer.App.Screens
                                                             {
                                                                 RelativeSizeAxes = Axes.Both,
                                                                 Colour = overlayColourProvider.Background4,
-                                                                Alpha = 0.7f,
+                                                                Alpha = 1f,
                                                             },
                                                         },
                                                         new FillFlowContainer
@@ -1938,7 +1938,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             RelativeSizeAxes = Axes.Both,
                                                             Colour = overlayColourProvider.Background4,
-                                                            Alpha = 0.7f,
+                                                            Alpha = 1f,
                                                         },
                                                     },
                                                     new FillFlowContainer
@@ -4981,7 +4981,7 @@ namespace NekoPlayer.App.Screens
 
         private SettingsItemV2 windowModeDropdownSettings;
 
-        private partial class RoundedSeekBar : NekoPlayerSeekBar<double>
+        private partial class RoundedSeekBar : RoundedSliderBar<double>
         {
             public override LocalisableString TooltipText => "";
         }

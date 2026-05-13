@@ -46,13 +46,13 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 background = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Colour = colourProvider.Content2,
+                    Colour = colourProvider.Background4,
                 },
                 spriteIcon = new SpriteIcon
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    Colour = colourProvider.Background4,
+                    Colour = colourProvider.Content2,
                     Icon = FontAwesome.Solid.Undo,
                     Size = new Vector2(IconSize),
                 },
