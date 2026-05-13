@@ -1721,7 +1721,7 @@ namespace NekoPlayer.App.Screens
                                                                 likeButtonBackground = new Box
                                                                 {
                                                                     RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Background4,
+                                                                    Colour = overlayColourProvider.Background3,
                                                                     Alpha = 1f,
                                                                 },
                                                                 likeButtonBackgroundSelected = new Box
@@ -1772,7 +1772,7 @@ namespace NekoPlayer.App.Screens
                                                                 dislikeButtonBackground = new Box
                                                                 {
                                                                     RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Background4,
+                                                                    Colour = overlayColourProvider.Background3,
                                                                     Alpha = 1f,
                                                                 },
                                                                 dislikeButtonBackgroundSelected = new Box
@@ -1828,7 +1828,7 @@ namespace NekoPlayer.App.Screens
                                                             Child = new Box
                                                             {
                                                                 RelativeSizeAxes = Axes.Both,
-                                                                Colour = overlayColourProvider.Background4,
+                                                                Colour = overlayColourProvider.Background3,
                                                                 Alpha = 1f,
                                                             },
                                                         },
@@ -1883,8 +1883,8 @@ namespace NekoPlayer.App.Screens
                                                             Child = new Box
                                                             {
                                                                 RelativeSizeAxes = Axes.Both,
-                                                                Colour = overlayColourProvider.Background4,
-                                                                Alpha = 0.7f,
+                                                                Colour = overlayColourProvider.Background3,
+                                                                Alpha = 1f,
                                                             },
                                                         },
                                                         new FillFlowContainer
@@ -1937,7 +1937,7 @@ namespace NekoPlayer.App.Screens
                                                         Child = new Box
                                                         {
                                                             RelativeSizeAxes = Axes.Both,
-                                                            Colour = overlayColourProvider.Background4,
+                                                            Colour = overlayColourProvider.Background3,
                                                             Alpha = 1f,
                                                         },
                                                     },
