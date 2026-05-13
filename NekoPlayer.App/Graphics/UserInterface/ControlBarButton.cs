@@ -14,6 +14,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
+using osuTK;
 using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
