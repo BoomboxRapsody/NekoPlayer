@@ -662,8 +662,6 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     AutoSizeAxes = Axes.X,
                                                                     Height = 30,
-                                                                    Masking = true,
-                                                                    CornerRadius = 15,
                                                                     Children = new Drawable[]
                                                                     {
                                                                         new FillFlowContainer
