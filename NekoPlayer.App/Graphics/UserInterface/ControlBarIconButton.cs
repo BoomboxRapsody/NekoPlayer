@@ -25,7 +25,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             set
             {
                 iconColour = value;
-                icon.FadeColour(value);
+                IconObject.FadeColour(value);
             }
         }
 
@@ -45,8 +45,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
         /// </summary>
         public IconUsage Icon
         {
-            get => icon.Icon;
-            set => icon.Icon = value;
+            get => IconObject.Icon;
+            set => IconObject.Icon = value;
         }
 
         /// <summary>
@@ -54,18 +54,18 @@ namespace NekoPlayer.App.Graphics.UserInterface
         /// </summary>
         public Vector2 IconScale
         {
-            get => icon.Scale;
-            set => icon.Scale = value;
+            get => IconObject.Scale;
+            set => IconObject.Scale = value;
         }
 
-        private readonly SpriteIcon icon;
+        public readonly SpriteIcon IconObject;
 
         public ControlBarIconButton(bool transparentBackground = false)
             : base(transparentBackground: transparentBackground)
         {
             Size = new Vector2(DEFAULT_BUTTON_SIZE);
 
-            ForegroundContent.Add(icon = new SpriteIcon
+            ForegroundContent.Add(IconObject = new SpriteIcon
             {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
@@ -78,18 +78,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private void load(OverlayColourProvider overlayColourProvider)
         {
             IconColour = overlayColourProvider.Content2;
-        }
-
-        protected override bool OnHover(HoverEvent e)
-        {
-            icon.FadeColour(IconHoverColour, 500, Easing.OutQuint);
-            return base.OnHover(e);
-        }
-
-        protected override void OnHoverLost(HoverLostEvent e)
-        {
-            icon.FadeColour(IconColour, 500, Easing.OutQuint);
-            base.OnHoverLost(e);
         }
     }
 }

@@ -24,6 +24,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected readonly SliderNubRemake Nub;
         protected readonly Box LeftBox;
         protected readonly Box RightBox;
+        protected readonly CircularContainer LeftBoxContainer;
+        protected readonly CircularContainer RightBoxContainer;
+        protected readonly Circle EndCircle;
         private readonly Container nubContainer;
 
         private readonly Container mainContent;
@@ -83,25 +86,40 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
                         Masking = true,
-                        CornerRadius = 5f,
                         Children = new Drawable[]
                         {
-                            LeftBox = new Box
+                            LeftBoxContainer = new CircularContainer
                             {
-                                Height = SliderNubRemake.HEIGHT / 2,
-                                Colour = AccentColour,
-                                RelativeSizeAxes = Axes.None,
+                                Height = SliderNubRemake.HEIGHT / 2.5f,
+                                AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
+                                Masking = true,
+                                Children = new Drawable[] {
+                                    LeftBox = new Box
+                                    {
+                                        Height = SliderNubRemake.HEIGHT / 2.5f,
+                                        Colour = AccentColour,
+                                        RelativeSizeAxes = Axes.None,
+                                    },
+                                },
                             },
-                            RightBox = new Box
+                            RightBoxContainer = new CircularContainer
                             {
-                                Height = SliderNubRemake.HEIGHT / 2,
-                                Colour = backgroundColour,
-                                RelativeSizeAxes = Axes.None,
+                                Height = SliderNubRemake.HEIGHT / 2.5f,
+                                AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
-                            },
+                                Masking = true,
+                                Children = new Drawable[] {
+                                    RightBox = new Box
+                                    {
+                                        Height = SliderNubRemake.HEIGHT / 2.5f,
+                                        Colour = backgroundColour,
+                                        RelativeSizeAxes = Axes.None,
+                                    },
+                                },
+                             },
                         },
                     },
                 },
@@ -178,19 +196,21 @@ namespace NekoPlayer.App.Graphics.UserInterface
             Nub.Glowing = !Current.Disabled && (IsHovered);
             if (!Current.Disabled && (IsHovered))
             {
-                mainContent.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
+                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
+                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
             }
             else
             {
-                mainContent.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
+                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
+                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
             }
         }
 
         protected override void UpdateAfterChildren()
         {
             base.UpdateAfterChildren();
-            LeftBox.Scale = new Vector2(Math.Clamp(RangePadding + Nub.DrawPosition.X, 0, Math.Max(0, DrawWidth)), 1);
-            RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - Nub.DrawPosition.X - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
+            LeftBox.Scale = new Vector2(Math.Clamp(RangePadding + (Nub.DrawPosition.X - 6), 0, Math.Max(0, DrawWidth)), 1);
+            RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - (Nub.DrawPosition.X + 6) - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
         }
 
         protected override void UpdateValue(float value)

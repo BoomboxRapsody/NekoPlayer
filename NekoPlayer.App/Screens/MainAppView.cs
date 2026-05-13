@@ -230,7 +230,7 @@ namespace NekoPlayer.App.Screens
         private FormButton checkForUpdatesButton, login;
         private FormSliderBar<double> systemVolumeControl;
         private ThumbnailContainerBackground thumbnailContainer;
-        private NekoPlayerSeekBar<double> seekbar;
+        private RoundedSliderBar<double> seekbar;
         private Bindable<LocalisableString> updateInfomationText;
         private Bindable<bool> updateButtonEnabled, fpsDisplay, captionEnabled, use_sdl3;
         private Bindable<AspectRatioMethod> aspectRatioMethod;
@@ -246,8 +246,6 @@ namespace NekoPlayer.App.Screens
         private BufferedContainer videoScalingContainer;
 
         private Box likeButtonBackground, dislikeButtonBackground, likeButtonBackgroundSelected, dislikeButtonBackgroundSelected;
-
-        public ClockDisplay clockDisplay;
 
         private FillFlowContainer likeButtonForeground, dislikeButtonForeground;
 
@@ -664,31 +662,16 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     AutoSizeAxes = Axes.X,
                                                                     Height = 30,
-                                                                    Masking = true,
-                                                                    CornerRadius = 15,
-                                                                    EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                                                                    {
-                                                                        Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                                                        Colour = Color4.Black.Opacity(0.25f),
-                                                                        Offset = new Vector2(0, 2),
-                                                                        Radius = 16,
-                                                                    },
                                                                     Children = new Drawable[]
                                                                     {
-                                                                        new Box
-                                                                        {
-                                                                            RelativeSizeAxes = Axes.Both,
-                                                                            Colour = overlayColourProvider.Background3,
-                                                                            Alpha = 1f,
-                                                                        },
                                                                         new FillFlowContainer
                                                                         {
                                                                             AutoSizeAxes = Axes.Both,
-                                                                            //Spacing = new Vector2(8, 0),
+                                                                            Spacing = new Vector2(3, 0),
                                                                             Direction = FillDirection.Horizontal,
                                                                             Children = new Drawable[]
                                                                             {
-                                                                                prevVideoButton = new ControlBarIconButton(true)
+                                                                                prevVideoButton = new ControlBarIconButton(false)
                                                                                 {
                                                                                     Width = 40,
                                                                                     Enabled = { Value = false },
@@ -708,7 +691,7 @@ namespace NekoPlayer.App.Screens
                                                                                         }
                                                                                     }
                                                                                 },
-                                                                                playPause = new ControlBarIconButton(true)
+                                                                                playPause = new ControlBarIconButton(false)
                                                                                 {
                                                                                     Width = 40,
                                                                                     Enabled = { Value = true },
@@ -728,7 +711,7 @@ namespace NekoPlayer.App.Screens
                                                                                         }
                                                                                     }
                                                                                 },
-                                                                                nextVideoButton = new ControlBarIconButton(true)
+                                                                                nextVideoButton = new ControlBarIconButton(false)
                                                                                 {
                                                                                     Width = 40,
                                                                                     Enabled = { Value = false },
@@ -748,14 +731,14 @@ namespace NekoPlayer.App.Screens
                                                                                         }
                                                                                     }
                                                                                 },
-                                                                                repeatButton = new ControlBarIconButton(true)
+                                                                                repeatButton = new ControlBarIconButton(false)
                                                                                 {
                                                                                     Width = 40,
                                                                                     Enabled = { Value = true },
                                                                                     Icon = FontAwesome.Solid.Sync,
                                                                                     TooltipText = NekoPlayerStrings.Repeat,
                                                                                     IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Content2,
+                                                                                    BackgroundColour = overlayColourProvider.Background3,
                                                                                     IconScale = new Vector2(0.85f),
                                                                                     ClickAction = _ =>
                                                                                     {
@@ -1721,8 +1704,8 @@ namespace NekoPlayer.App.Screens
                                                                 likeButtonBackground = new Box
                                                                 {
                                                                     RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Background4,
-                                                                    Alpha = 0.7f,
+                                                                    Colour = overlayColourProvider.Background3,
+                                                                    Alpha = 1f,
                                                                 },
                                                                 likeButtonBackgroundSelected = new Box
                                                                 {
@@ -1772,8 +1755,8 @@ namespace NekoPlayer.App.Screens
                                                                 dislikeButtonBackground = new Box
                                                                 {
                                                                     RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Background4,
-                                                                    Alpha = 0.7f,
+                                                                    Colour = overlayColourProvider.Background3,
+                                                                    Alpha = 1f,
                                                                 },
                                                                 dislikeButtonBackgroundSelected = new Box
                                                                 {
@@ -1828,8 +1811,8 @@ namespace NekoPlayer.App.Screens
                                                             Child = new Box
                                                             {
                                                                 RelativeSizeAxes = Axes.Both,
-                                                                Colour = overlayColourProvider.Background4,
-                                                                Alpha = 0.7f,
+                                                                Colour = overlayColourProvider.Background3,
+                                                                Alpha = 1f,
                                                             },
                                                         },
                                                         new FillFlowContainer
@@ -1883,8 +1866,8 @@ namespace NekoPlayer.App.Screens
                                                             Child = new Box
                                                             {
                                                                 RelativeSizeAxes = Axes.Both,
-                                                                Colour = overlayColourProvider.Background4,
-                                                                Alpha = 0.7f,
+                                                                Colour = overlayColourProvider.Background3,
+                                                                Alpha = 1f,
                                                             },
                                                         },
                                                         new FillFlowContainer
@@ -3865,8 +3848,6 @@ namespace NekoPlayer.App.Screens
 
             thumbnailContainer.BlurTo(Vector2.Divide(new Vector2(10, 10), 1));
 
-            repeatButton.BackgroundColour = overlayColourProvider.Content2;
-
             RegisterOverlayContainer(loadVideoContainer);
             overlayFadeContainer.Hide();
             RegisterOverlayContainer(settingsContainer);
@@ -4981,7 +4962,7 @@ namespace NekoPlayer.App.Screens
 
         private SettingsItemV2 windowModeDropdownSettings;
 
-        private partial class RoundedSeekBar : NekoPlayerSeekBar<double>
+        private partial class RoundedSeekBar : RoundedSliderBar<double>
         {
             public override LocalisableString TooltipText => "";
         }
@@ -5043,9 +5024,9 @@ namespace NekoPlayer.App.Screens
         private void updateRepeatState()
         {
             repeat.Value = !repeat.Value;
-            repeatButton.SetBackgroundVisibility(repeat.Value);
-            //repeatButton.BackgroundColour = repeat.Value ? overlayColourProvider1.Content2 : overlayColourProvider1.Background3;
-            repeatButton.IconColour = repeat.Value ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2;
+            repeatButton.SetEnabledValue(repeat.Value);
+            repeatButton.IconObject.FadeColour(repeat.Value ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2, 250, Easing.OutQuint);
+            repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 250, Easing.OutQuint);
         }
 
         private readonly BindableList<Size> resolutionsFullscreen = new BindableList<Size>(new[] { new Size(9999, 9999) });
@@ -6081,6 +6062,12 @@ namespace NekoPlayer.App.Screens
                 playPause.Icon = (currentVideoSource.IsPlaying() ? FontAwesome.Solid.Pause : FontAwesome.Solid.Play);
                 playPause.TooltipText = (currentVideoSource.IsPlaying() ? NekoPlayerStrings.Pause : NekoPlayerStrings.Play);
                 videoProgress.MaxValue = currentVideoSource.VideoProgress.MaxValue;
+
+                playPause.SetEnabledValue(currentVideoSource.IsPlaying());
+                playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                playPause.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 50f : 40f, 250, Easing.OutQuint);
+                prevVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 250, Easing.OutQuint);
+                nextVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 250, Easing.OutQuint);
 
                 videoPlaying.Value = currentVideoSource.IsPlaying();
 

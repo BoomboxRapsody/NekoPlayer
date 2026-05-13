@@ -3,17 +3,19 @@
 
 #nullable enable
 
+using System;
+using NekoPlayer.App.Graphics.Sprites;
+using osu.Framework.Allocation;
+using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osuTK.Graphics;
-using System;
 using osu.Framework.Localisation;
-using osu.Framework.Bindables;
-using NekoPlayer.App.Graphics.Sprites;
-using osu.Framework.Allocation;
+using osuTK;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -93,15 +95,30 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected Container ForegroundContent;
 
+        public void SetEnabledValue(bool enabled)
+        {
+            content.TransformTo(nameof(CornerRadius), enabled ? NekoPlayerApp.UI_CORNER_RADIUS / 1.5f : DrawHeight / 2, 250, Easing.OutQuint);
+            Background.FadeColour(enabled ? overlayColourProvider.Content2 : overlayColourProvider.Background3, 250, Easing.OutQuint);
+            SpriteText.FadeColour(enabled ? overlayColourProvider.Background3 : overlayColourProvider.Content2, 250, Easing.OutQuint);
+        }
+
         public ControlBarButton(HoverSampleSet hoverSampleSet = HoverSampleSet.Default, bool transparentBackground = false)
             : base(hoverSampleSet)
         {
-            base.Content.Add(content = new CircularContainer
+            base.Content.Add(content = new Container
             {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
                 Masking = true,
+                CornerRadius = 15,
+                EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
+                {
+                    Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                    Colour = Color4.Black.Opacity(0.25f),
+                    Offset = new Vector2(0, 2),
+                    Radius = 16,
+                },
                 Children = new Drawable[]
                 {
                     Background = new Box
@@ -111,6 +128,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         RelativeSizeAxes = Axes.Both,
                         Alpha = transparentBackground ? 0 : 1,
                     },
+                    ForegroundContent = new Container
+                    {
+                        Origin = Anchor.Centre,
+                        Anchor = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        Child = SpriteText = CreateText()
+                    },
                     Hover = new Box
                     {
                         RelativeSizeAxes = Axes.Both,
@@ -118,13 +142,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Blending = BlendingParameters.Additive,
                         Alpha = 0,
                     },
-                    ForegroundContent = new Container
-                    {
-                        Origin = Anchor.Centre,
-                        Anchor = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        Child = SpriteText = CreateText()
-                    }
                 }
             });
 
@@ -139,9 +156,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
-            Background.Colour = overlayColourProvider.Background5;
+            Background.Colour = overlayColourProvider.Background3;
             SpriteText.Colour = overlayColourProvider.Content2;
         }
+
+        [Resolved]
+        private OverlayColourProvider overlayColourProvider { get; set; }
 
         protected virtual SpriteText CreateText() => new AdaptiveSpriteText
         {
