@@ -211,7 +211,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.UpdateAfterChildren();
             LeftBox.Scale = new Vector2(Math.Clamp(RangePadding + (Nub.DrawPosition.X - 6), 0, Math.Max(0, DrawWidth)), 1);
             RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - (Nub.DrawPosition.X + 6) - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
-            
         }
 
         protected override void UpdateValue(float value)
