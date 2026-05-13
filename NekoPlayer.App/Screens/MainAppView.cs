@@ -1938,7 +1938,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             RelativeSizeAxes = Axes.Both,
                                                             Colour = overlayColourProvider.Background4,
-                                                            Alpha = 1f,
+                                                            Alpha = 0.7f,
                                                         },
                                                     },
                                                     new FillFlowContainer
