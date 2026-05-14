@@ -126,7 +126,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             this.TransformTo(nameof(BorderColour), border ? borderColour : colour, 250, Easing.OutQuint);
 
             if (IsCheckbox)
-                this.TransformTo(nameof(CornerRadius), enabled ? NekoPlayerApp.UI_CORNER_RADIUS / 1.5f : DrawHeight / 2, 250, Easing.OutQuint);
+                this.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(DrawHeight / 2), 250, Easing.OutQuint);
 
             box.FadeColour(colour, 250, Easing.OutQuint);
         }

@@ -15,16 +15,18 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using Vector2 = osuTK.Vector2;
-using osu.Framework.Localisation;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class NekoPlayerSeekBar<T> : AdaptiveSliderBar<T>
         where T : struct, INumber<T>, IMinMaxValue<T>
     {
-        protected readonly SliderNubRemake Nub;
+        protected readonly NekoPlayerSeekBar.SliderNub Nub;
         protected readonly Box LeftBox;
         protected readonly Box RightBox;
+        protected readonly Container LeftBoxContainer;
+        protected readonly Container RightBoxContainer;
+        protected readonly Circle EndCircle;
         private readonly Container nubContainer;
 
         private readonly Container mainContent;
@@ -61,8 +63,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public NekoPlayerSeekBar()
         {
-            Height = SliderNubRemake.HEIGHT;
-            RangePadding = SliderNubRemake.DEFAULT_EXPANDED_SIZE / 2;
+            Height = NekoPlayerSeekBar.SliderNub.HEIGHT;
+            RangePadding = NekoPlayerSeekBar.SliderNub.DEFAULT_EXPANDED_SIZE / 2;
             ResetToDefault = () =>
             {
                 if (!Current.Disabled)
@@ -84,25 +86,42 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
                         Masking = true,
-                        CornerRadius = 5f,
                         Children = new Drawable[]
                         {
-                            LeftBox = new Box
+                            LeftBoxContainer = new Container
                             {
-                                Height = SliderNubRemake.HEIGHT / 2,
-                                Colour = AccentColour,
-                                RelativeSizeAxes = Axes.None,
+                                Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
+                                AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
+                                Masking = true,
+                                CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3),
+                                Children = new Drawable[] {
+                                    LeftBox = new Box
+                                    {
+                                        Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
+                                        Colour = AccentColour,
+                                        RelativeSizeAxes = Axes.None,
+                                    },
+                                },
                             },
-                            RightBox = new Box
+                            RightBoxContainer = new Container
                             {
-                                Height = SliderNubRemake.HEIGHT / 2,
-                                Colour = backgroundColour,
-                                RelativeSizeAxes = Axes.None,
+                                Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
+                                AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
-                            },
+                                Masking = true,
+                                CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2),
+                                Children = new Drawable[] {
+                                    RightBox = new Box
+                                    {
+                                        Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
+                                        Colour = backgroundColour,
+                                        RelativeSizeAxes = Axes.None,
+                                    },
+                                },
+                             },
                         },
                     },
                 },
@@ -112,7 +131,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Child = Nub = new SliderNub
                     {
                         Origin = Anchor.TopCentre,
-                        AccentColour = AccentColour,
+                        Colour = AccentColour,
                         RelativePositionAxes = Axes.X,
                         Current = { Value = true },
                         OnDoubleClicked = () => ResetToDefault.Invoke(),
@@ -176,33 +195,24 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private void updateGlow()
         {
-            if (IsHovered)
-            {
-                LeftBox.ResizeHeightTo(SliderNubRemake.HEIGHT, 500, Easing.OutQuint);
-                RightBox.ResizeHeightTo(SliderNubRemake.HEIGHT, 500, Easing.OutQuint);
-            }
-            else
-            {
-                LeftBox.ResizeHeightTo(SliderNubRemake.HEIGHT / 2, 500, Easing.OutQuint);
-                RightBox.ResizeHeightTo(SliderNubRemake.HEIGHT / 2, 500, Easing.OutQuint);
-            }
-
-            //Nub.Glowing = !Current.Disabled && (IsHovered);
+            Nub.Glowing = !Current.Disabled && (IsHovered);
             if (!Current.Disabled && (IsHovered))
             {
-                mainContent.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
+                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
+                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
             }
             else
             {
-                mainContent.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
+                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
+                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
             }
         }
 
         protected override void UpdateAfterChildren()
         {
             base.UpdateAfterChildren();
-            LeftBox.Scale = new Vector2(Math.Clamp(RangePadding + Nub.DrawPosition.X, 0, Math.Max(0, DrawWidth)), 1);
-            RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - Nub.DrawPosition.X - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
+            LeftBox.Scale = new Vector2(Math.Clamp(RangePadding + (Nub.DrawPosition.X - 8), 0, Math.Max(0, DrawWidth)), 1);
+            RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - (Nub.DrawPosition.X + 8) - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
         }
 
         protected override void UpdateValue(float value)
@@ -210,7 +220,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             Nub.MoveToX(value, 250, Easing.OutQuint);
         }
 
-        public partial class SliderNub : SliderNubRemake
+        public partial class SliderNub : NekoPlayerSeekBar.SliderNub
         {
             public Action? OnDoubleClicked { get; init; }
 

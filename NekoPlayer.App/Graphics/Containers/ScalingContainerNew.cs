@@ -229,7 +229,7 @@ namespace NekoPlayer.App.Graphics.Containers
             // Of note, this will not work great in the case of nested ScalingContainers where multiple are applying corner radius.
             // Masking and corner radius should likely only be applied at one point in the full game stack to fix this.
             // An example of how this can occur is when the skin editor is visible and the game screen scaling is set to "Everything".
-            sizableContainer.TransformTo(nameof(CornerRadius), requiresMasking ? corner_radius : 0, TRANSITION_DURATION, requiresMasking ? Easing.OutQuart : Easing.None)
+            sizableContainer.TransformTo(nameof(CornerRadius), requiresMasking ? new CornersInfo(corner_radius) : new CornersInfo(0), TRANSITION_DURATION, requiresMasking ? Easing.OutQuart : Easing.None)
                             .OnComplete(_ => { sizableContainer.Masking = requiresMasking; });
 
             // when "everything" scaling mode is active, tablets are expected to constrain output area to the scaled size of the game

@@ -230,7 +230,7 @@ namespace NekoPlayer.App.Screens
         private FormButton checkForUpdatesButton, login;
         private FormSliderBar<double> systemVolumeControl;
         private ThumbnailContainerBackground thumbnailContainer;
-        private RoundedSliderBar<double> seekbar;
+        private NekoPlayerSeekBar<double> seekbar;
         private Bindable<LocalisableString> updateInfomationText;
         private Bindable<bool> updateButtonEnabled, fpsDisplay, captionEnabled, use_sdl3;
         private Bindable<AspectRatioMethod> aspectRatioMethod;
@@ -594,7 +594,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Height = 78,
+                                    Height = 88,
                                     Masking = false,
                                     //CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
                                     /*
@@ -4962,7 +4962,7 @@ namespace NekoPlayer.App.Screens
 
         private SettingsItemV2 windowModeDropdownSettings;
 
-        private partial class RoundedSeekBar : RoundedSliderBar<double>
+        private partial class RoundedSeekBar : NekoPlayerSeekBar<double>
         {
             public override LocalisableString TooltipText => "";
         }
@@ -6066,8 +6066,12 @@ namespace NekoPlayer.App.Screens
                 playPause.SetEnabledValue(currentVideoSource.IsPlaying());
                 playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2, 250, Easing.OutQuint);
                 playPause.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 50f : 40f, 250, Easing.OutQuint);
+
                 prevVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 250, Easing.OutQuint);
+                prevVideoButton.TransformTo(nameof(CornerRadius), currentVideoSource.IsPlaying() ? new CornersInfo(15f, 15f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(15), 250, Easing.OutQuint);
+
                 nextVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 250, Easing.OutQuint);
+                nextVideoButton.TransformTo(nameof(CornerRadius), currentVideoSource.IsPlaying() ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 15f, 15f) : new CornersInfo(15), 250, Easing.OutQuint);
 
                 videoPlaying.Value = currentVideoSource.IsPlaying();
 
@@ -6228,8 +6232,8 @@ namespace NekoPlayer.App.Screens
                         {
                             dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                             likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                            dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
-                            likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                             likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                             dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
 
@@ -6243,8 +6247,8 @@ namespace NekoPlayer.App.Screens
                                         refreshLikeDislikeCount(videoId);
                                         dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                                         likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
                                         likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                                         dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });
@@ -6258,8 +6262,8 @@ namespace NekoPlayer.App.Screens
                                         refreshLikeDislikeCount(videoId);
                                         dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
                                         likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                                         likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                         dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                                     });
@@ -6284,8 +6288,8 @@ namespace NekoPlayer.App.Screens
                         {
                             dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                             likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                            dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
-                            likeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
                             likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                             dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
 
@@ -6299,8 +6303,8 @@ namespace NekoPlayer.App.Screens
                                         refreshLikeDislikeCount(videoId);
                                         dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                                         likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                                         likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                         dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });
@@ -6314,8 +6318,8 @@ namespace NekoPlayer.App.Screens
                                         refreshLikeDislikeCount(videoId);
                                         dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
                                         likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                                         likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                         dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                                     });
@@ -6340,8 +6344,8 @@ namespace NekoPlayer.App.Screens
                         {
                             dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
                             likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                            dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
-                            likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                             likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                             dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
 
@@ -6355,8 +6359,8 @@ namespace NekoPlayer.App.Screens
                                         refreshLikeDislikeCount(videoId);
                                         dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                                         likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                                         likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                                         dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });
@@ -6370,8 +6374,8 @@ namespace NekoPlayer.App.Screens
                                         refreshLikeDislikeCount(videoId);
                                         dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                                         likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), 16f, 250, Easing.OutQuint);
+                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                                         likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                         dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                                     });

@@ -107,13 +107,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 switch (shape.NewValue)
                 {
                     case ProfileImageShape.Circle:
-                        this.TransformTo(nameof(CornerRadius), Height / 2, 500, Easing.OutQuint);
-                        profileImageBase.TransformTo(nameof(CornerRadius), Height / 2, 500, Easing.OutQuint);
+                        this.TransformTo(nameof(CornerRadius), new CornersInfo(Height / 2), 500, Easing.OutQuint);
+                        profileImageBase.TransformTo(nameof(CornerRadius), new CornersInfo(Height / 2), 500, Easing.OutQuint);
                         break;
 
                     case ProfileImageShape.Square:
-                        this.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 2, 500, Easing.OutQuint);
-                        profileImageBase.TransformTo(nameof(CornerRadius), NekoPlayerApp.UI_CORNER_RADIUS / 2, 500, Easing.OutQuint);
+                        this.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 2), 500, Easing.OutQuint);
+                        profileImageBase.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 2), 500, Easing.OutQuint);
                         break;
                 }
             }, true);
