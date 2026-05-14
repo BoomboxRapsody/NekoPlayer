@@ -26,7 +26,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     {
         private string url;
 
-        private AdaptiveSpriteText displayName;
+        private AdaptiveSpriteText displayName, urlText;
 
         protected Box Hover;
 
@@ -55,10 +55,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             AddRangeInternal(new Drawable[]
             {
-                new CircularContainer
+                new Container
                 {
                     AutoSizeAxes = Axes.Both,
                     Masking = true,
+                    CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f),
                     Children = new Drawable[]
                     {
                         new Box
@@ -77,11 +78,27 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     Size = new osuTK.Vector2(12),
                                     Margin = new MarginPadding(4),
                                 },
-                                displayName = new AdaptiveSpriteText
+                                new FillFlowContainer
                                 {
                                     Margin = new MarginPadding(2),
-                                    Text = url,
-                                }
+                                    AutoSizeAxes = Axes.Both,
+                                    Direction = FillDirection.Vertical,
+                                    Children = new Drawable[]
+                                    {
+                                        displayName = new AdaptiveSpriteText
+                                        {
+                                            Margin = new MarginPadding(2),
+                                            Text = url,
+                                        },
+                                        urlText = new AdaptiveSpriteText
+                                        {
+                                            Margin = new MarginPadding(2),
+                                            Text = url,
+                                            Colour = overlayColourProvider.Foreground1,
+                                            Font = NekoPlayerApp.DefaultFont.With(size: 12),
+                                        }
+                                    }
+                                },
                             }
                         },
                         Hover = new Box
