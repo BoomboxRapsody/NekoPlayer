@@ -36,25 +36,25 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                 InternalChildren = new[]
                 {
-                main = new CircularContainer
-                {
-                    BorderColour = Color4.White,
-                    BorderThickness = border_width,
-                    Masking = true,
-                    RelativeSizeAxes = Axes.Both,
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    Children = new Drawable[]
+                    main = new CircularContainer
                     {
-                        fill = new Box
+                        BorderColour = Color4.White,
+                        BorderThickness = border_width,
+                        Masking = true,
+                        RelativeSizeAxes = Axes.Both,
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Children = new Drawable[]
                         {
-                            RelativeSizeAxes = Axes.Both,
-                            Alpha = 0,
-                            AlwaysPresent = true,
-                        },
-                    }
-                },
-            };
+                            fill = new Box
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Alpha = 0,
+                                AlwaysPresent = true,
+                            },
+                        }
+                    },
+                };
             }
 
             public Vector2 InflationAmount => inflationAmountBacking.IsValid ? inflationAmountBacking.Value : (inflationAmountBacking.Value = computeInflationAmount());
