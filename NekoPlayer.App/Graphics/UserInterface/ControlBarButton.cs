@@ -97,7 +97,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public void SetEnabledValue(bool enabled)
         {
-            content.TransformTo(nameof(CornerRadius), enabled ? NekoPlayerApp.UI_CORNER_RADIUS / 1.5f : DrawHeight / 2, 250, Easing.OutQuint);
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
             Background.FadeColour(enabled ? overlayColourProvider.Content2 : overlayColourProvider.Background3, 250, Easing.OutQuint);
             SpriteText.FadeColour(enabled ? overlayColourProvider.Background3 : overlayColourProvider.Content2, 250, Easing.OutQuint);
         }

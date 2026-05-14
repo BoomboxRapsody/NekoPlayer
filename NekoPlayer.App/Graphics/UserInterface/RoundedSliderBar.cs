@@ -24,8 +24,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected readonly SliderNubRemake Nub;
         protected readonly Box LeftBox;
         protected readonly Box RightBox;
-        protected readonly CircularContainer LeftBoxContainer;
-        protected readonly CircularContainer RightBoxContainer;
+        protected readonly Container LeftBoxContainer;
+        protected readonly Container RightBoxContainer;
         protected readonly Circle EndCircle;
         private readonly Container nubContainer;
 
@@ -88,13 +88,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Masking = true,
                         Children = new Drawable[]
                         {
-                            LeftBoxContainer = new CircularContainer
+                            LeftBoxContainer = new Container
                             {
                                 Height = SliderNubRemake.HEIGHT / 2.5f,
                                 AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
                                 Masking = true,
+                                CornerRadius = new CornersInfo((SliderNubRemake.HEIGHT / 2.5f) / 2, (SliderNubRemake.HEIGHT / 2.5f) / 2, (SliderNubRemake.HEIGHT / 2.5f) / 3, (SliderNubRemake.HEIGHT / 2.5f) / 3),
                                 Children = new Drawable[] {
                                     LeftBox = new Box
                                     {
@@ -104,13 +105,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     },
                                 },
                             },
-                            RightBoxContainer = new CircularContainer
+                            RightBoxContainer = new Container
                             {
                                 Height = SliderNubRemake.HEIGHT / 2.5f,
                                 AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
                                 Masking = true,
+                                CornerRadius = new CornersInfo((SliderNubRemake.HEIGHT / 2.5f) / 3, (SliderNubRemake.HEIGHT / 2.5f) / 3, (SliderNubRemake.HEIGHT / 2.5f) / 2, (SliderNubRemake.HEIGHT / 2.5f) / 2),
                                 Children = new Drawable[] {
                                     RightBox = new Box
                                     {

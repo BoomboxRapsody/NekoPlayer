@@ -2,75 +2,121 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
-using NekoPlayer.App.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
+using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
-using osu.Framework.Localisation;
+using osu.Framework.Layout;
 using osuTK;
 using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class NekoPlayerSeekBar<T>
+    public partial class NekoPlayerSeekBar
     {
-        public partial class SliderNubWithText : Container, IHasCurrentValue<bool>
+        public partial class SliderNub : Container, IHasCurrentValue<bool>
         {
-            public const float HEIGHT = 15;
+            public const float HEIGHT = 30;
 
-            public const float DEFAULT_EXPANDED_SIZE = 50;
+            public const float DEFAULT_EXPANDED_SIZE = 5;
 
             private const float border_width = 3;
 
             private readonly Box fill;
             private readonly Container main;
-            private readonly AdaptiveSpriteText spriteText;
 
-            public SliderNubWithText(float expandedSize = DEFAULT_EXPANDED_SIZE)
+            public SliderNub(float expandedSize = DEFAULT_EXPANDED_SIZE)
             {
                 Size = new Vector2(expandedSize, HEIGHT);
 
-                InternalChildren = new Drawable[]
+                InternalChildren = new[]
                 {
-                    main = new CircularContainer
+                main = new CircularContainer
+                {
+                    BorderColour = Color4.White,
+                    BorderThickness = border_width,
+                    Masking = true,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
+                    Children = new Drawable[]
                     {
-                        BorderColour = Color4.White,
-                        BorderThickness = border_width,
-                        Masking = true,
-                        RelativeSizeAxes = Axes.Both,
-                        Anchor = Anchor.TopCentre,
-                        Origin = Anchor.TopCentre,
-                        Children = new Drawable[]
+                        fill = new Box
                         {
-                            fill = new Box
-                            {
-                                RelativeSizeAxes = Axes.Both,
-                                Alpha = 0,
-                                AlwaysPresent = true,
-                            },
-                        }
-                    },
-                    spriteText = new TruncatingSpriteText
-                    {
-                        AlwaysPresent = true,
-                        Text = "0:00",
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Bold"),
+                            RelativeSizeAxes = Axes.Both,
+                            Alpha = 0,
+                            AlwaysPresent = true,
+                        },
                     }
-                };
+                },
+            };
+            }
+
+            public Vector2 InflationAmount => inflationAmountBacking.IsValid ? inflationAmountBacking.Value : (inflationAmountBacking.Value = computeInflationAmount());
+
+            private readonly LayoutValue<Vector2> inflationAmountBacking = new LayoutValue<Vector2>(Invalidation.DrawInfo);
+
+            private Vector2 computeInflationAmount()
+            {
+                if (EdgeSmoothness == Vector2.Zero)
+                    return Vector2.Zero;
+
+                return DrawInfo.MatrixInverse.ExtractScale().Xy * EdgeSmoothness;
+            }
+
+            protected override Quad ComputeScreenSpaceDrawQuad()
+            {
+                if (EdgeSmoothness == Vector2.Zero)
+                    return base.ComputeScreenSpaceDrawQuad();
+
+                return ToScreenSpace(DrawRectangle.Inflate(InflationAmount));
+            }
+
+            /// <summary>
+            /// Maximum value that can be set for <see cref="EdgeSmoothness"/> on either axis.
+            /// </summary>
+            public const int MAX_EDGE_SMOOTHNESS = 3; // See https://github.com/ppy/osu-framework/pull/3511#discussion_r421665156 for relevant discussion.
+
+            private Vector2 edgeSmoothness;
+
+            /// <summary>
+            /// Determines over how many pixels of width the border of the sprite is smoothed
+            /// in X and Y direction respectively.
+            /// IMPORTANT: When masking an edge-smoothed sprite some of the smooth transition
+            /// may be masked away. This should be counteracted by setting the MaskingSmoothness
+            /// of the masking container to a slightly larger value than EdgeSmoothness.
+            /// </summary>
+            public Vector2 EdgeSmoothness
+            {
+                get => edgeSmoothness;
+                set
+                {
+                    if (edgeSmoothness == value)
+                        return;
+
+                    if (value.X > MAX_EDGE_SMOOTHNESS || value.Y > MAX_EDGE_SMOOTHNESS)
+                    {
+                        throw new InvalidOperationException(
+                            $"May not smooth more than {MAX_EDGE_SMOOTHNESS} or will leak neighboring textures in atlas. Tried to smooth by ({value.X}, {value.Y}).");
+                    }
+
+                    edgeSmoothness = value;
+
+                    Invalidate(Invalidation.DrawInfo);
+                }
             }
 
             [BackgroundDependencyLoader(true)]
             private void load()
             {
-                GlowingAccentColour = AccentColour;
-                GlowColour = AccentColour;
+                AccentColour = Color4.White;
+                GlowingAccentColour = Color4.White;
+                GlowColour = Color4.White;
 
                 main.EdgeEffect = new EdgeEffectParameters
                 {
@@ -139,30 +185,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     accentColour = value;
                     if (!Glowing)
                         main.Colour = value;
-                }
-            }
-
-            private Color4 textColour;
-
-            public Color4 TextColour
-            {
-                get => textColour;
-                set
-                {
-                    textColour = value;
-                    spriteText.Colour = value;
-                }
-            }
-
-            private LocalisableString text;
-
-            public LocalisableString Text
-            {
-                get => text;
-                set
-                {
-                    text = value;
-                    spriteText.Text = value;
                 }
             }
 
