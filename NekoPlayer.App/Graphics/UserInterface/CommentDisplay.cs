@@ -12,6 +12,7 @@ using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -32,7 +33,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private AdaptiveTextFlowContainer channelName = null!;
         private LinkFlowContainer commentText = null!;
         public Action<VideoMetadataDisplay> ClickEvent = null!;
-        private AdaptiveSpriteText likeCount = null!, replyCount = null!;
+        private AdaptiveSpriteText likeCount = null!, replyCount = null!, translateToText = null!;
 
         public Action<double> TimestampClicked;
 
@@ -195,6 +196,44 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                     Padding = new MarginPadding(8),
                                                     Children = new Drawable[]
                                                     {
+                                                        translateToText = new AdaptiveSpriteText
+                                                        {
+                                                            Colour = overlayColourProvider.Content2,
+                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Regular"),
+                                                        },
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        new Container
+                                        {
+                                            AutoSizeAxes = Axes.X,
+                                            Height = 27,
+                                            CornerRadius = 12,
+                                            Masking = true,
+                                            AlwaysPresent = true,
+                                            Children = new Drawable[]
+                                            {
+                                                new Container
+                                                {
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    CornerRadius = 12,
+                                                    Child = new Box
+                                                    {
+                                                        RelativeSizeAxes = Axes.Both,
+                                                        Colour = overlayColourProvider.Background3,
+                                                        Alpha = 0.7f,
+                                                    },
+                                                },
+                                                new FillFlowContainer
+                                                {
+                                                    AutoSizeAxes = Axes.X,
+                                                    RelativeSizeAxes = Axes.Y,
+                                                    Direction = FillDirection.Horizontal,
+                                                    Spacing = new Vector2(4, 0),
+                                                    Padding = new MarginPadding(8),
+                                                    Children = new Drawable[]
+                                                    {
                                                         new SpriteIcon
                                                         {
                                                             Width = 12,
@@ -226,6 +265,28 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private CommentThread commentData;
 
         private HoverSounds samples = new HoverClickSounds(HoverSampleSet.Default);
+
+        private void translateComment()
+        {
+            if (translated == false)
+            {
+                Task.Run(async () => {
+                    translateToText.Text = NekoPlayerStrings.Translating;
+                    commentText.Text = await translate.TranslateAsync(commentData.Snippet.TopLevelComment.Snippet.TextOriginal, GoogleTranslateLanguage.auto);
+                    translateToText.Text = NekoPlayerStrings.TranslateViewOriginal;
+                });
+                translated = true;
+            }
+            else
+            {
+                commentText.Text = commentData.Snippet.TopLevelComment.Snippet.TextOriginal;
+                translateToText.Text = NekoPlayerStrings.TranslateTo(app.CurrentLanguage.Value.GetLocalisableDescription());
+                translated = false;
+            }
+        }
+
+        [Resolved]
+        private GoogleTranslate translate { get; set; } = null!;
 
         protected override void LoadComplete()
         {
