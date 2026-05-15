@@ -126,7 +126,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                         {
                                             AutoSizeAxes = Axes.X,
                                             Height = 27,
-                                            CornerRadius = 12,
+                                            CornerRadius = 27 / 2,
                                             Masking = true,
                                             AlwaysPresent = true,
                                             Children = new Drawable[]
@@ -134,7 +134,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                 new Container
                                                 {
                                                     RelativeSizeAxes = Axes.Both,
-                                                    CornerRadius = 12,
+                                                    CornerRadius = 27 / 2,
                                                     Child = new Box
                                                     {
                                                         RelativeSizeAxes = Axes.Both,
@@ -171,7 +171,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                         {
                                             AutoSizeAxes = Axes.X,
                                             Height = 27,
-                                            CornerRadius = 12,
+                                            CornerRadius = 27 / 2,
                                             Masking = true,
                                             AlwaysPresent = true,
                                             Children = new Drawable[]
@@ -179,45 +179,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                 new Container
                                                 {
                                                     RelativeSizeAxes = Axes.Both,
-                                                    CornerRadius = 12,
-                                                    Child = new Box
-                                                    {
-                                                        RelativeSizeAxes = Axes.Both,
-                                                        Colour = overlayColourProvider.Background3,
-                                                        Alpha = 0.7f,
-                                                    },
-                                                },
-                                                new FillFlowContainer
-                                                {
-                                                    AutoSizeAxes = Axes.X,
-                                                    RelativeSizeAxes = Axes.Y,
-                                                    Direction = FillDirection.Horizontal,
-                                                    Spacing = new Vector2(4, 0),
-                                                    Padding = new MarginPadding(8),
-                                                    Children = new Drawable[]
-                                                    {
-                                                        translateToText = new AdaptiveSpriteText
-                                                        {
-                                                            Colour = overlayColourProvider.Content2,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Regular"),
-                                                        },
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        new Container
-                                        {
-                                            AutoSizeAxes = Axes.X,
-                                            Height = 27,
-                                            CornerRadius = 12,
-                                            Masking = true,
-                                            AlwaysPresent = true,
-                                            Children = new Drawable[]
-                                            {
-                                                new Container
-                                                {
-                                                    RelativeSizeAxes = Axes.Both,
-                                                    CornerRadius = 12,
+                                                    CornerRadius = 27 / 2,
                                                     Child = new Box
                                                     {
                                                         RelativeSizeAxes = Axes.Both,
