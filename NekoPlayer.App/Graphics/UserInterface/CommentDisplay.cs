@@ -12,6 +12,7 @@ using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -32,7 +33,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private AdaptiveTextFlowContainer channelName = null!;
         private LinkFlowContainer commentText = null!;
         public Action<VideoMetadataDisplay> ClickEvent = null!;
-        private AdaptiveSpriteText likeCount = null!, replyCount = null!;
+        private AdaptiveSpriteText likeCount = null!, replyCount = null!, translateToText = null!;
 
         public Action<double> TimestampClicked;
 
@@ -125,7 +126,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                         {
                                             AutoSizeAxes = Axes.X,
                                             Height = 27,
-                                            CornerRadius = 12,
+                                            CornerRadius = 27 / 2,
                                             Masking = true,
                                             AlwaysPresent = true,
                                             Children = new Drawable[]
@@ -133,7 +134,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                 new Container
                                                 {
                                                     RelativeSizeAxes = Axes.Both,
-                                                    CornerRadius = 12,
+                                                    CornerRadius = 27 / 2,
                                                     Child = new Box
                                                     {
                                                         RelativeSizeAxes = Axes.Both,
@@ -170,7 +171,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                         {
                                             AutoSizeAxes = Axes.X,
                                             Height = 27,
-                                            CornerRadius = 12,
+                                            CornerRadius = 27 / 2,
                                             Masking = true,
                                             AlwaysPresent = true,
                                             Children = new Drawable[]
@@ -178,7 +179,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                 new Container
                                                 {
                                                     RelativeSizeAxes = Axes.Both,
-                                                    CornerRadius = 12,
+                                                    CornerRadius = 27 / 2,
                                                     Child = new Box
                                                     {
                                                         RelativeSizeAxes = Axes.Both,
@@ -226,6 +227,28 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private CommentThread commentData;
 
         private HoverSounds samples = new HoverClickSounds(HoverSampleSet.Default);
+
+        private void translateComment()
+        {
+            if (translated == false)
+            {
+                Task.Run(async () => {
+                    translateToText.Text = NekoPlayerStrings.Translating;
+                    commentText.Text = await translate.TranslateAsync(commentData.Snippet.TopLevelComment.Snippet.TextOriginal, GoogleTranslateLanguage.auto);
+                    translateToText.Text = NekoPlayerStrings.TranslateViewOriginal;
+                });
+                translated = true;
+            }
+            else
+            {
+                commentText.Text = commentData.Snippet.TopLevelComment.Snippet.TextOriginal;
+                translateToText.Text = NekoPlayerStrings.TranslateTo(app.CurrentLanguage.Value.GetLocalisableDescription());
+                translated = false;
+            }
+        }
+
+        [Resolved]
+        private GoogleTranslate translate { get; set; } = null!;
 
         protected override void LoadComplete()
         {

@@ -1201,6 +1201,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString UIFont => new TranslatableString(getKey(@"ui_font"), @"UI Font");
 
+        /// <summary>
+        /// "Translating..."
+        /// </summary>
+        public static LocalisableString Translating => new TranslatableString(getKey(@"translating"), "Translating...");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

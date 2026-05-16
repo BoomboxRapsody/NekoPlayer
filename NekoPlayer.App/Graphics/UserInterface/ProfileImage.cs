@@ -259,7 +259,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             Schedule(() => loading.Show());
             Texture north = await textureStore.GetAsync(channel.Snippet.Thumbnails.High.Url, cancellationToken);
-            GetPalette();
+            //GetPalette();
             Schedule(() => { profileImage.Texture = north; });
             Schedule(() => loading.Hide());
         }
