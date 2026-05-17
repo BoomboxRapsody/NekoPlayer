@@ -176,8 +176,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 { FeedbackSampleType.SelectAll, new[] { audio.Samples.Get(@"Keyboard/select-all") } },
                 { FeedbackSampleType.Deselect, new[] { audio.Samples.Get(@"Keyboard/deselect") } }
             };
-
-            CornerRadius = Height / 2;
         }
 
         private Color4 selectionColour;
