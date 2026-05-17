@@ -277,11 +277,11 @@ namespace NekoPlayer.App.Graphics.Videos
                     }
                     else
                     {
-                        content.FadeInFromZero(250);
+                        content.FadeInFromZero(500, Easing.OutQuint);
                         content.ScaleTo(new osuTK.Vector2(.9f)).ScaleTo(new osuTK.Vector2(1.5f), 250, Easing.OutQuint);
                         using (BeginDelayedSequence(750))
                         {
-                            content.FadeOut(250);
+                            content.FadeOut(500, Easing.OutQuint);
                             content.ScaleTo(new osuTK.Vector2(.9f), 250, Easing.OutQuint);
                         }
                     }

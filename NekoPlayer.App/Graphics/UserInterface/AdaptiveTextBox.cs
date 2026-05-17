@@ -74,7 +74,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             Height = 40;
             TextContainer.Height = 0.5f;
-            CornerRadius = 20;
+            CornerRadius = DrawHeight / 2;
             LengthLimit = 1000;
 
             Current.DisabledChanged += disabled => { Alpha = disabled ? 0.3f : 1; };
