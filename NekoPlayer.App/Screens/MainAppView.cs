@@ -4197,7 +4197,10 @@ namespace NekoPlayer.App.Screens
             {
                 if (idle.NewValue == true)
                 {
-                    hideControls();
+                    if (videoPlaying.Value)
+                    {
+                        hideControls();
+                    }
                 }
                 else
                 {
@@ -5866,6 +5869,7 @@ namespace NekoPlayer.App.Screens
                         else
                             currentVideoSource.Play(true);
                     }
+                    showControls();
                     return true;
 
                 case GlobalAction.PrevVideo:
