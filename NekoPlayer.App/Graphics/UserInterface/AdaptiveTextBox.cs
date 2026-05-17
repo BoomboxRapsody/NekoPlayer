@@ -74,7 +74,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             Height = 40;
             TextContainer.Height = 0.5f;
-            CornerRadius = Height / 2;
+            CornerRadius = DrawHeight / 2;
             LengthLimit = 1000;
 
             Current.DisabledChanged += disabled => { Alpha = disabled ? 0.3f : 1; };
@@ -111,6 +111,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 { FeedbackSampleType.SelectAll, new[] { audio.Samples.Get(@"Keyboard/select-all") } },
                 { FeedbackSampleType.Deselect, new[] { audio.Samples.Get(@"Keyboard/deselect") } }
             };
+
+            CornerRadius = Height / 2;
         }
 
         private Color4 selectionColour;
