@@ -74,9 +74,6 @@
     <None Update="FFmpeg\windows-x64-fix\swscale-8.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="intro.mp4">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="material3expressive_loadingindicator.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
