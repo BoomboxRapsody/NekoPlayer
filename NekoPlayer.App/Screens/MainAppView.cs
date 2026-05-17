@@ -1123,11 +1123,6 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Note = { BindTarget = discordNotInstalledNote },
                                                         },
-                                                        new SettingsItemV2(new FormEnumDropdown<VideoMetadataTranslateSource>
-                                                        {
-                                                            Caption = NekoPlayerStrings.VideoMetadataTranslateSource,
-                                                            Current = appConfig.GetBindable<VideoMetadataTranslateSource>(NekoPlayerSetting.VideoMetadataTranslateSource),
-                                                        }),
                                                         new SettingsItemV2(login = new FormButton
                                                         {
                                                             Caption = NekoPlayerStrings.GoogleAccount,
@@ -1224,12 +1219,14 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.FrameLimiter,
                                                             Current = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync),
+                                                            Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.Control, InputKey.F7 }))
                                                         }),
                                                         windowModeDropdownSettings = new SettingsItemV2(windowModeDropdown = new WindowModeDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenMode,
                                                             Items = window?.SupportedWindowModes,
                                                             Current = windowMode,
+                                                            Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.F11 }))
                                                         })
                                                         {
                                                             CanBeShown = { Value = window?.SupportedWindowModes.Count() > 1 },
@@ -1555,7 +1552,8 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowLogOverlay,
-                                                            Current = config.GetBindable<bool>(FrameworkSetting.ShowLogOverlay)
+                                                            Current = config.GetBindable<bool>(FrameworkSetting.ShowLogOverlay),
+                                                            Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.Control, InputKey.F10 }))
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
