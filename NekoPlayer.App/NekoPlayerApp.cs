@@ -95,6 +95,10 @@ namespace NekoPlayer.App
 
         private Bindable<CloseButtonAction> closeButtonAction;
 
+        private void InitializeCef()
+        {
+        }
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -165,7 +169,7 @@ namespace NekoPlayer.App
 
             loadComponentSingleFile(screenshotManager, Add, true);
 
-            if (RuntimeInfo.IsDesktop && IsDeployedBuild)
+            if (RuntimeInfo.IsDesktop)
                 loadComponentSingleFile(discord_rpc = new Online.DiscordRPC(), Add, true);
 
             loadComponentSingleFile(fpsCounter = new FPSCounter

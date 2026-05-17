@@ -7,6 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
+using NekoPlayer.App.Extensions;
+using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Graphics.UserInterface;
+using NekoPlayer.App.Localisation;
+using Newtonsoft.Json.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
@@ -15,20 +20,17 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osuTK.Graphics;
-using NekoPlayer.App.Extensions;
-using NekoPlayer.App.Graphics.Sprites;
-using NekoPlayer.App.Graphics.UserInterface;
-using NekoPlayer.App.Localisation;
 using Vector2 = osuTK.Vector2;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class FormSliderBar<T> : CompositeDrawable, IHasCurrentValue<T>, IFormControl
+    public partial class FormVolumeSliderBar<T> : CompositeDrawable, IHasCurrentValue<T>, IFormControl
         where T : struct, INumber<T>, IMinMaxValue<T>
     {
         public Bindable<T> Current
@@ -139,7 +141,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public bool TakeFocus() => GetContainingFocusManager()?.ChangeFocus(textBox) == true;
 
-        public FormSliderBar()
+        public FormVolumeSliderBar()
         {
             LabelFormat ??= defaultLabelFormat;
             TooltipFormat ??= v => LabelFormat(v);
@@ -395,6 +397,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             textBox.Alpha = textBox.Focused.Value ? 1 : 0;
             valueLabel.Alpha = textBox.Focused.Value ? 0 : 1;
 
+            slider.UpdateIconState(Convert.ToSingle(currentNumberInstantaneous.Value));
+
             captionText.TextColour = currentNumberInstantaneous.Disabled ? colourProvider.Background1 : colourProvider.Content2;
             textBox.Colour = currentNumberInstantaneous.Disabled ? colourProvider.Background1 : colourProvider.Content1;
             valueLabel.Colour = currentNumberInstantaneous.Disabled ? colourProvider.Background1 : colourProvider.Content1;
@@ -462,6 +466,40 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             private InnerSliderNub nub = null!;
             public const float NUB_WIDTH = 5;
 
+            private SpriteIcon iconDark = null!, iconLight = null!;
+
+            public void UpdateIconState(float value)
+            {
+                IconUsage icon = FontAwesome.Solid.VolumeUp;
+
+                if (value > 0.5)
+                {
+                    icon = FontAwesome.Solid.VolumeUp;
+                }
+                else if (value >= 0.01)
+                {
+                    icon = FontAwesome.Solid.VolumeDown;
+                }
+                else
+                {
+                    icon = FontAwesome.Solid.VolumeMute;
+                }
+
+                iconDark.Icon = icon;
+                iconLight.Icon = icon;
+
+                if (value >= 0.94)
+                {
+                    iconDark.FadeIn(250, Easing.OutQuint);
+                    iconLight.FadeOut(250, Easing.OutQuint);
+                }
+                else
+                {
+                    iconDark.FadeOut(250, Easing.OutQuint);
+                    iconLight.FadeIn(250, Easing.OutQuint);
+                }
+            }
+
             [Resolved]
             private OverlayColourProvider colourProvider { get; set; } = null!;
 
@@ -491,12 +529,26 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                 Origin = Anchor.CentreLeft,
                                 Masking = true,
                                 CornerRadius = new CornersInfo(10, 10, 10 / 2, 10 / 2),
-                                Child = leftBox = new Box
-                                {
-                                    Height = 30,
-                                    RelativeSizeAxes = Axes.None,
-                                    Anchor = Anchor.CentreLeft,
-                                    Origin = Anchor.CentreLeft,
+                                Children = new Drawable[] {
+                                    leftBox = new Box
+                                    {
+                                        Height = 30,
+                                        RelativeSizeAxes = Axes.None,
+                                        Anchor = Anchor.CentreLeft,
+                                        Origin = Anchor.CentreLeft,
+                                    },
+                                    iconDark = new SpriteIcon
+                                    {
+                                        Icon = FontAwesome.Solid.VolumeUp,
+                                        Size = new Vector2(16),
+                                        Margin = new MarginPadding
+                                        {
+                                            Right = 12,
+                                        },
+                                        Colour = colourProvider.Background4,
+                                        Anchor = Anchor.CentreRight,
+                                        Origin = Anchor.CentreRight,
+                                    },
                                 },
                             },
                             new Container
@@ -507,12 +559,26 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                 Origin = Anchor.CentreRight,
                                 Masking = true,
                                 CornerRadius = new CornersInfo(10 / 2, 10 / 2, 10, 10),
-                                Child = rightBox = new Box
-                                {
-                                    Height = 30,
-                                    RelativeSizeAxes = Axes.None,
-                                    Anchor = Anchor.CentreRight,
-                                    Origin = Anchor.CentreRight,
+                                Children = new Drawable[] {
+                                    rightBox = new Box
+                                    {
+                                        Height = 30,
+                                        RelativeSizeAxes = Axes.None,
+                                        Anchor = Anchor.CentreRight,
+                                        Origin = Anchor.CentreRight,
+                                    },
+                                    iconLight = new SpriteIcon
+                                    {
+                                        Icon = FontAwesome.Solid.VolumeUp,
+                                        Size = new Vector2(16),
+                                        Margin = new MarginPadding
+                                        {
+                                            Right = 12,
+                                        },
+                                        Colour = colourProvider.Content2,
+                                        Anchor = Anchor.CentreRight,
+                                        Origin = Anchor.CentreRight,
+                                    },
                                 },
                             },
                         },

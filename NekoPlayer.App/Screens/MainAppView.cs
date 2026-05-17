@@ -228,7 +228,7 @@ namespace NekoPlayer.App.Screens
         private Bindable<bool> adjustPitch;
         private Bindable<string> localeBindable = new Bindable<string>();
         private FormButton checkForUpdatesButton, login;
-        private FormSliderBar<double> systemVolumeControl;
+        private FormVolumeSliderBar<double> systemVolumeControl;
         private ThumbnailContainerBackground thumbnailContainer;
         private NekoPlayerSeekBar<double> seekbar;
         private Bindable<LocalisableString> updateInfomationText;
@@ -504,6 +504,8 @@ namespace NekoPlayer.App.Screens
                 videoContainer = new BufferedContainer
                 {
                     RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
                 },
                 new GlobalScrollAdjustsVolume(),
                 userInterfaceContainer = new Container
@@ -1509,7 +1511,7 @@ namespace NekoPlayer.App.Screens
                                                             Spacing = new Vector2(0, 4),
                                                             Children = new Drawable[]
                                                             {
-                                                                systemVolumeControlBase = new SettingsItemV2(systemVolumeControl = new FormSliderBar<double>
+                                                                systemVolumeControlBase = new SettingsItemV2(systemVolumeControl = new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.SystemVolume,
                                                                     Current = systemVolume,
@@ -1518,19 +1520,19 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     ShowRevertToDefaultButton = false,
                                                                 },
-                                                                new SettingsItemV2(new FormSliderBar<double>
+                                                                new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.MasterVolume,
                                                                     Current = config.GetBindable<double>(FrameworkSetting.VolumeUniversal),
                                                                     DisplayAsPercentage = true,
                                                                 }),
-                                                                new SettingsItemV2(new FormSliderBar<double>
+                                                                new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.VideoVolume,
                                                                     Current = videoVolume,
                                                                     DisplayAsPercentage = true,
                                                                 }),
-                                                                new SettingsItemV2(new FormSliderBar<double>
+                                                                new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.SFXVolume,
                                                                     Current = config.GetBindable<double>(FrameworkSetting.VolumeEffect),
@@ -5026,7 +5028,7 @@ namespace NekoPlayer.App.Screens
             repeat.Value = !repeat.Value;
             repeatButton.SetEnabledValue(repeat.Value);
             repeatButton.IconObject.FadeColour(repeat.Value ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2, 250, Easing.OutQuint);
-            repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 250, Easing.OutQuint);
+            repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
 
         private readonly BindableList<Size> resolutionsFullscreen = new BindableList<Size>(new[] { new Size(9999, 9999) });
@@ -5105,6 +5107,7 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = true;
                 videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
                 videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.MoveToX(500);
@@ -5118,6 +5121,7 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = true;
                 videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
                 videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.ScaleTo(0.8f);
@@ -5137,6 +5141,7 @@ namespace NekoPlayer.App.Screens
                 overlayHideSample.Play();
                 videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.MoveToX(500, 500, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
@@ -5148,6 +5153,7 @@ namespace NekoPlayer.App.Screens
                 overlayHideSample.Play();
                 videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.ScaleTo(0.8f, 250, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);

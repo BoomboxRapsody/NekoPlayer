@@ -157,7 +157,7 @@ namespace NekoPlayer.App.Overlays
                     b => b.FadeOutFromOne(250, Easing.OutQuint),
                     b => b.ScaleTo(.9f, 250, Easing.OutQuint)
                 );
-            }, videoPlaying.Value ? 1000 : 1500);
+            }, videoPlaying.Value ? 1250 : 1500);
         }
     }
 }

@@ -59,7 +59,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             Masking = true;
             CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f;
 
-            CornerExponent = CORNER_EXPONENT;
             BorderThickness = BORDER_THICKNESS;
 
             InternalChildren = new Drawable[]
