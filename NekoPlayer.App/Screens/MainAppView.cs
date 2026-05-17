@@ -6762,6 +6762,12 @@ namespace NekoPlayer.App.Screens
             {
                 currentVideoSource.OnVideoCompleted = async () =>
                 {
+                    if (repeat.Value)
+                    {
+                        currentVideoSource.Play();
+                        return;
+                    }
+
                     if (playlistItemIndex != playlists.Count - 1)
                         playlistItemIndex++;
 
@@ -6849,7 +6855,6 @@ namespace NekoPlayer.App.Screens
 
             if (playlists.Count > 0)
             {
-                Schedule(() => repeatButton.Enabled.Value = false);
                 if (playlistItemIndex == playlists.Count - 1)
                 {
                     Schedule(() => nextVideoButton.Enabled.Value = false);
@@ -6872,7 +6877,6 @@ namespace NekoPlayer.App.Screens
             {
                 Schedule(() => prevVideoButton.Enabled.Value = false);
                 Schedule(() => nextVideoButton.Enabled.Value = false);
-                Schedule(() => repeatButton.Enabled.Value = true);
             }
 
             if (playlistItemViews.Count > 0)
