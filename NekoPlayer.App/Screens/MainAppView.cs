@@ -4337,7 +4337,7 @@ namespace NekoPlayer.App.Screens
                 MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
                 MMDevice defaultPlaybackDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
 
-                if (defaultPlaybackDevice != null)
+                if (defaultPlaybackDevice == null)
                 {
                     systemSoundMute.Value = true;
                     systemSoundMute.Disabled = true;
