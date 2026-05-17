@@ -4341,24 +4341,25 @@ namespace NekoPlayer.App.Screens
                 {
                     systemSoundMute.Value = true;
                     systemSoundMute.Disabled = true;
-                    return;
                 }
-
-                systemVolume.Value = defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
-
-                systemVolume.BindValueChanged(value =>
+                else
                 {
-                    defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar = Convert.ToSingle(value.NewValue);
-                });
+                    systemVolume.Value = defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
 
-                systemVolumeControl.Caption = NekoPlayerStrings.SystemVolumeWithDevice(defaultPlaybackDevice.FriendlyName);
+                    systemVolume.BindValueChanged(value =>
+                    {
+                        defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar = Convert.ToSingle(value.NewValue);
+                    });
 
-                systemSoundMute.Value = defaultPlaybackDevice.AudioEndpointVolume.Mute;
+                    systemVolumeControl.Caption = NekoPlayerStrings.SystemVolumeWithDevice(defaultPlaybackDevice.FriendlyName);
 
-                systemSoundMute.BindValueChanged(value =>
-                {
-                    defaultPlaybackDevice.AudioEndpointVolume.Mute = value.NewValue;
-                });
+                    systemSoundMute.Value = defaultPlaybackDevice.AudioEndpointVolume.Mute;
+
+                    systemSoundMute.BindValueChanged(value =>
+                    {
+                        defaultPlaybackDevice.AudioEndpointVolume.Mute = value.NewValue;
+                    });
+                }
             }
             else
             {
