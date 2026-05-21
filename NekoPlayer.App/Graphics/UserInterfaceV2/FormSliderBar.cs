@@ -608,7 +608,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 }
 
                 leftBox.FadeColour(leftColour, 250, Easing.OutQuint);
-                nub.FadeColour(nubColour, 250, Easing.OutQuint);
+                nub.FadeColour(leftColour, 250, Easing.OutQuint);
             }
 
             protected override void UpdateValue(float value)
