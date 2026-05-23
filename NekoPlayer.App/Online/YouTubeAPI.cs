@@ -483,22 +483,22 @@ namespace NekoPlayer.App.Online
             {
                 try
                 {
-                    return channel.Localizations.Where(locale => locale.Key.Contains(language)).First().Value.Title + $" ({channel.Snippet.CustomUrl})";
+                    return channel.Localizations.Where(locale => locale.Key.Contains(language)).First().Value.Title.Normalize() + $" ({channel.Snippet.CustomUrl})";
                 }
                 catch
                 {
-                    return channel.Snippet.Title + $" ({channel.Snippet.CustomUrl})";
+                    return channel.Snippet.Title.Normalize() + $" ({channel.Snippet.CustomUrl})";
                 }
             }
             else
             {
                 try
                 {
-                    return channel.Localizations.Where(locale => locale.Key.Contains(language)).First().Value.Title;
+                    return channel.Localizations.Where(locale => locale.Key.Contains(language)).First().Value.Title.Normalize();
                 }
                 catch
                 {
-                    return channel.Snippet.Title;
+                    return channel.Snippet.Title.Normalize();
                 }
             }
         }
@@ -508,11 +508,11 @@ namespace NekoPlayer.App.Online
             string language = frameworkConfig.Get<string>(FrameworkSetting.Locale);
             try
             {
-                return channel.Localizations.Where(locale => locale.Key.Contains(language)).First().Value.Title;
+                return channel.Localizations.Where(locale => locale.Key.Contains(language)).First().Value.Title.Normalize();
             }
             catch
             {
-                return channel.Snippet.Title;
+                return channel.Snippet.Title.Normalize();
             }
         }
 
@@ -531,7 +531,7 @@ namespace NekoPlayer.App.Online
                 {
                     try
                     {
-                        string originalTitle = channel.Snippet.Title;
+                        string originalTitle = channel.Snippet.Title.Normalize();
                         string translatedTitle = translateApi.Translate(originalTitle, GoogleTranslateLanguage.auto);
 
                         if (!string.IsNullOrEmpty(channel.Snippet.CustomUrl))
@@ -559,7 +559,7 @@ namespace NekoPlayer.App.Online
                 {
                     try
                     {
-                        string originalTitle = channel.Snippet.Title;
+                        string originalTitle = channel.Snippet.Title.Normalize();
                         string translatedTitle = translateApi.Translate(originalTitle, GoogleTranslateLanguage.auto);
                         return translatedTitle;
                     }
@@ -611,13 +611,13 @@ namespace NekoPlayer.App.Online
             {
                 try
                 {
-                    string originalTitle = video.Snippet.Title;
+                    string originalTitle = video.Snippet.Title.Normalize();
                     string translatedTitle = translateApi.Translate(originalTitle, GoogleTranslateLanguage.auto);
                     return translatedTitle;
                 }
                 catch
                 {
-                    return video.Snippet.Title;
+                    return video.Snippet.Title.Normalize();
                 }
             }
 
@@ -625,11 +625,11 @@ namespace NekoPlayer.App.Online
 
             try
             {
-                return video.Localizations[language].Title;
+                return video.Localizations[language].Title.Normalize();
             }
             catch
             {
-                return video.Snippet.Title;
+                return video.Snippet.Title.Normalize();
             }
         }
 
@@ -642,13 +642,13 @@ namespace NekoPlayer.App.Online
             {
                 try
                 {
-                    string originalDescription = video.Snippet.Description;
+                    string originalDescription = video.Snippet.Description.Normalize();
                     string translatedDescription = translateApi.Translate(originalDescription, GoogleTranslateLanguage.auto);
                     return translatedDescription;
                 }
                 catch
                 {
-                    return video.Snippet.Description;
+                    return video.Snippet.Description.Normalize();
                 }
             }
 
@@ -656,11 +656,11 @@ namespace NekoPlayer.App.Online
 
             try
             {
-                return video.Localizations[language].Description;
+                return video.Localizations[language].Description.Normalize();
             }
             catch
             {
-                return video.Snippet.Description;
+                return video.Snippet.Description.Normalize();
             }
         }
 

@@ -40,5 +40,10 @@ namespace NekoPlayer.App.Online
             base.Dispose(isDisposing);
             client.Dispose();
         }
+
+        public User GetCurrentUser()
+        {
+            return client.CurrentUser;
+        }
     }
 }

@@ -316,6 +316,8 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<bool> trayIconVisible;
 
+        private FormEnumDropdown<DiscordRichPresenceMode> discordRichPresenceDropdown;
+
         private BindableDouble systemVolume = new BindableDouble
         {
             MaxValue = 1,
@@ -447,6 +449,8 @@ namespace NekoPlayer.App.Screens
 
             overlayShowSample = sampleStore.Get(@"New_Fix/overlay-pop-in");
             overlayHideSample = sampleStore.Get(@"New_Fix/overlay-pop-out");
+
+            #region The UI Components
             InternalChildren = new Drawable[]
             {
                 idleTracker = new AppIdleTracker(3000),
@@ -1115,7 +1119,7 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.CloseButtonAction,
                                                             Current = closeButtonAction,
                                                         }),
-                                                        new SettingsItemV2(new FormEnumDropdown<DiscordRichPresenceMode>
+                                                        new SettingsItemV2(discordRichPresenceDropdown = new FormEnumDropdown<DiscordRichPresenceMode>
                                                         {
                                                             Caption = NekoPlayerStrings.DiscordRichPresence,
                                                             Current = discordRichPresence,
@@ -3845,6 +3849,12 @@ namespace NekoPlayer.App.Screens
                     }
                 }
             };
+            #endregion
+
+            if (discordRPC != null)
+            {
+                discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().ID})";
+            }
 
             thumbnailContainer.BlurTo(Vector2.Divide(new Vector2(10, 10), 1));
 

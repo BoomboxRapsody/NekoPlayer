@@ -297,7 +297,7 @@ namespace NekoPlayer.App
         {
             try
             {
-                Logger.Log($"------------------------------------------------\nNekoPlayer by MayoDev Studios\n------------------------------------------------\nApp version is: {Version}\nApp version hash is: {VersionHash}\nCultureInfo.CurrentCulture name is {CultureInfo.CurrentCulture.Name}\n------------------------------------------------\ngood luck ^^\n------------------------------------------------");
+                Logger.Log($"------------------------------------------------\nNekoPlayer by Mocha Studio\n------------------------------------------------\nApp version is: {Version}\nApp version hash is: {VersionHash}\nCultureInfo.CurrentCulture name is {CultureInfo.CurrentCulture.Name}\n------------------------------------------------\ngood luck ^^\n------------------------------------------------");
                 RestartRequired.Value = false;
                 UpdateManagerVersionText.Value = Version;
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
