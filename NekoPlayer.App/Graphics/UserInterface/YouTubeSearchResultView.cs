@@ -123,7 +123,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoNameText = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"))
+                                videoNameText = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Bold"))
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Colour = overlayColourProvider.Content2,
