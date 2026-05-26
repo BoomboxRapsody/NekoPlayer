@@ -10,7 +10,7 @@
 [![dev chat](https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield)](https://discord.gg/UZWDqQ29ch)
 [![CodeFactor](https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge)](https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer)
 
-The enhanced YouTube video player written in [custom osu-framework](https://github.com/MayoDevStudios/osu-framework).
+The enhanced YouTube video player written in [custom osu-framework](https://github.com/BoomboxRapsody/osu-framework).
 
 ### Latest release:
 
@@ -95,7 +95,7 @@ Please also note that app resources are covered by a separate licence. Please se
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=MayoDevStudios%2FNekoPlayer&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=BoomboxRapsody%2FNekoPlayer&type=date&legend=top-left">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left" />
    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
