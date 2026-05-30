@@ -156,7 +156,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 videoNameText = new TruncatingSpriteText
                                 {
                                     RelativeSizeAxes = Axes.X,
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Bold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 channelNameText = new TruncatingSpriteText
