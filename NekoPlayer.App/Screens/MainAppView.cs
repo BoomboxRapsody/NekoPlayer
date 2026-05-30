@@ -3846,11 +3846,6 @@ namespace NekoPlayer.App.Screens
             };
             #endregion
 
-            if (discordRPC != null)
-            {
-                discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().ID})";
-            }
-
             thumbnailContainer.BlurTo(Vector2.Divide(new Vector2(10, 10), 1));
 
             RegisterOverlayContainer(loadVideoContainer);
@@ -5404,6 +5399,18 @@ namespace NekoPlayer.App.Screens
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            if (discordRPC != null)
+            {
+                try
+                {
+                    discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().ID})";
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, e.GetDescription());
+                }
+            }
 
             ghostIcon.Loop(t =>
                 t.MoveToY(-10, 2000, Easing.InOutSine)
