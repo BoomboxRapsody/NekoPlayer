@@ -2047,6 +2047,7 @@ namespace NekoPlayer.App.Screens
                                             Padding = new MarginPadding
                                             {
                                                 Top = (56 * 2),
+                                                Bottom = 6,
                                             },
                                             Children = new Drawable[]
                                             {
@@ -2304,7 +2305,7 @@ namespace NekoPlayer.App.Screens
                                             Padding = new MarginPadding
                                             {
                                                 Top = (56 * 2),
-                                                Bottom = 16,
+                                                Bottom = 6,
                                             },
                                             Children = new Drawable[]
                                             {
