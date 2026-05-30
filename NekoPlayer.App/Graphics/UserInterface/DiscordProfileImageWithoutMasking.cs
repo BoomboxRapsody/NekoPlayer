@@ -21,8 +21,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
     {
         private Sprite profileImage;
 
-        private LoadingSpinner loading;
-
         [Resolved]
         private TextureStore textureStore { get; set; }
 
@@ -41,7 +39,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                 },
-                loading = new LoadingLayer(true, false, false)
             };
         }
 
@@ -68,11 +65,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public async Task GetProfileImage(CancellationToken cancellationToken = default)
         {
-            Schedule(() => loading.Show());
             Texture north = await textureStore.GetAsync(api.GetCurrentUser().GetAvatarURL(DiscordRPC.User.AvatarFormat.PNG, DiscordRPC.User.AvatarSize.x2048), cancellationToken);
             //GetPalette();
             Schedule(() => { profileImage.Texture = north; });
-            Schedule(() => loading.Hide());
         }
     }
 }

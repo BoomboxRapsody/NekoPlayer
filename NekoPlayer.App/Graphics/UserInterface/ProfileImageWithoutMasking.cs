@@ -24,8 +24,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private Google.Apis.YouTube.v3.Data.Channel channel;
 
-        private LoadingSpinner loading;
-
         [Resolved]
         private TextureStore textureStore { get; set; }
 
@@ -44,7 +42,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                 },
-                loading = new LoadingLayer(true, false, false)
             };
         }
 
@@ -74,11 +71,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public async Task GetProfileImage(string url, CancellationToken cancellationToken = default)
         {
-            Schedule(() => loading.Show());
             Texture north = await textureStore.GetAsync(channel.Snippet.Thumbnails.High.Url, cancellationToken);
             //GetPalette();
             Schedule(() => { profileImage.Texture = north; });
-            Schedule(() => loading.Hide());
         }
     }
 }
