@@ -121,7 +121,7 @@ namespace NekoPlayer.App.Screens
 
         private Sample overlayShowSample;
         private Sample overlayHideSample;
-        private AdaptiveButtonV2 reportButton;
+        private AdaptiveMaterialButton reportButton;
         private FormTextBox reportComment, playlistTitleBox, editPlaylistTitleBox;
 
         private FormDropdown<Playlist> myPlaylistsDropdown;
@@ -227,7 +227,8 @@ namespace NekoPlayer.App.Screens
         private Bindable<Localisation.Language> audioLanguage;
         private Bindable<bool> adjustPitch;
         private Bindable<string> localeBindable = new Bindable<string>();
-        private FormButton checkForUpdatesButton, login;
+        private FormButton checkForUpdatesButton;
+        private FormGoogleOAuthButton login;
         private FormVolumeSliderBar<double> systemVolumeControl;
         private ThumbnailContainerBackground thumbnailContainer;
         private NekoPlayerSeekBar<double> seekbar;
@@ -316,7 +317,7 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<bool> trayIconVisible;
 
-        private FormEnumDropdown<DiscordRichPresenceMode> discordRichPresenceDropdown;
+        private FormEnumDropdownWithDiscordProfileImage<DiscordRichPresenceMode> discordRichPresenceDropdown;
 
         private BindableDouble systemVolume = new BindableDouble
         {
@@ -1095,16 +1096,16 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                         new SettingsButtonV2
                                                         {
-                                                            Text = NekoPlayerStrings.ExportLogs,
                                                             Padding = new MarginPadding { Horizontal = 30 },
+                                                            Text = NekoPlayerStrings.ExportLogs,
                                                             BackgroundColour = colours.YellowDarker.Darken(0.5f),
                                                             Action = () => Task.Run(exportLogs),
                                                         },
                                                         new SettingsButtonV2
                                                         {
+                                                            Padding = new MarginPadding { Horizontal = 30 },
                                                             Text = NekoPlayerStrings.ReportBugs,
                                                             TooltipText = NekoPlayerStrings.ReportBugsDesc,
-                                                            Padding = new MarginPadding { Horizontal = 30 },
                                                             Action = () => host.OpenUrlExternally("https://github.com/BoomboxRapsody/NekoPlayer/issues"),
                                                         },
                                                         new AdaptiveSpriteText
@@ -1118,19 +1119,22 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.CloseButtonAction,
                                                             Current = closeButtonAction,
+                                                            Icon = FontAwesome.Regular.WindowClose,
                                                         }),
-                                                        new SettingsItemV2(discordRichPresenceDropdown = new FormEnumDropdown<DiscordRichPresenceMode>
+                                                        new SettingsItemV2(discordRichPresenceDropdown = new FormEnumDropdownWithDiscordProfileImage<DiscordRichPresenceMode>
                                                         {
                                                             Caption = NekoPlayerStrings.DiscordRichPresence,
                                                             Current = discordRichPresence,
+                                                            Icon = FontAwesome.Brands.Discord,
                                                         })
                                                         {
                                                             Note = { BindTarget = discordNotInstalledNote },
                                                         },
-                                                        new SettingsItemV2(login = new FormButton
+                                                        new SettingsItemV2(login = new FormGoogleOAuthButton
                                                         {
                                                             Caption = NekoPlayerStrings.GoogleAccount,
                                                             Text = NekoPlayerStrings.SignedOut,
+                                                            Icon = FontAwesome.Brands.Google,
                                                             Action = () => {
                                                                 if (!googleOAuth2.SignedIn.Value)
                                                                 {
@@ -1148,6 +1152,7 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.CheckUpdate,
                                                             Text = app.Version,
                                                             ButtonIcon = FontAwesome.Solid.Sync,
+                                                            Icon = FontAwesome.Solid.Sync,
                                                             Action = () => {
                                                                 if (game.UpdateManager is NoActionUpdateManager)
                                                                 {
@@ -1173,6 +1178,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.Language,
                                                             Current = game.CurrentLanguage,
+                                                            Icon = FontAwesome.Solid.Language,
                                                             AlwaysShowSearchBar = true,
                                                         })
                                                         {
@@ -1183,25 +1189,30 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.UsernameDisplayMode,
                                                             Current = usernameDisplayMode,
+                                                            Icon = FontAwesome.Solid.User,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<OverlayColourScheme>
                                                         {
                                                             Caption = NekoPlayerStrings.ColourScheme,
                                                             Current = colourSchemeBindable,
+                                                            Icon = FontAwesome.Solid.Palette,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<UIFont>
                                                         {
                                                             Caption = NekoPlayerStrings.UIFont,
                                                             Current = ui_font,
+                                                            Icon = FontAwesome.Solid.Font,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<ProfileImageShape>
                                                         {
                                                             Caption = NekoPlayerStrings.ProfileImageShape,
                                                             Current = profileImageShape,
+                                                            Icon = FontAwesome.Solid.Shapes,
                                                         }),
                                                         new SettingsItemV2(new FormSliderBar<float>
                                                         {
                                                             Caption = NekoPlayerStrings.UIScaling,
+                                                            Icon = FontAwesome.Solid.SlidersH,
                                                             TransferValueOnCommit = true,
                                                             Current = appConfig.GetBindable<float>(NekoPlayerSetting.UIScale),
                                                             KeyboardStep = 0.01f,
@@ -1210,6 +1221,7 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.UseSystemCursor,
+                                                            Icon = FontAwesome.Solid.MousePointer,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.UseSystemCursor),
                                                         }),
                                                         new AdaptiveSpriteText
@@ -1222,12 +1234,14 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FrameSyncDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.FrameLimiter,
+                                                            Icon = FontAwesome.Solid.SlidersH,
                                                             Current = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync),
                                                             Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.Control, InputKey.F7 }))
                                                         }),
                                                         windowModeDropdownSettings = new SettingsItemV2(windowModeDropdown = new WindowModeDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenMode,
+                                                            Icon = FontAwesome.Regular.WindowMaximize,
                                                             Items = window?.SupportedWindowModes,
                                                             Current = windowMode,
                                                             Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.F11 }))
@@ -1238,6 +1252,7 @@ namespace NekoPlayer.App.Screens
                                                         displayDropdownCore = new SettingsItemV2(displayDropdown = new DisplaySettingsDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.Display,
+                                                            Icon = FontAwesome.Regular.WindowMaximize,
                                                             Items = window?.Displays,
                                                             Current = currentDisplay,
                                                         })
@@ -1247,6 +1262,7 @@ namespace NekoPlayer.App.Screens
                                                         resolutionFullscreenDropdownCore = new SettingsItemV2(resolutionFullscreenDropdown = new ResolutionSettingsDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenResolution,
+                                                            Icon = FontAwesome.Regular.WindowMaximize,
                                                             ItemSource = resolutionsFullscreen,
                                                             Current = sizeFullscreen
                                                         })
@@ -1257,6 +1273,7 @@ namespace NekoPlayer.App.Screens
                                                         resolutionWindowedDropdownCore = new SettingsItemV2(resolutionWindowedDropdown = new ResolutionSettingsDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenResolution,
+                                                            Icon = FontAwesome.Regular.WindowMaximize,
                                                             ItemSource = resolutionsWindowed,
                                                             Current = windowedResolution
                                                         })
@@ -1267,11 +1284,13 @@ namespace NekoPlayer.App.Screens
                                                         minimiseOnFocusLossCheckboxCore = new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.MinimiseOnFocusLoss,
+                                                            Icon = FontAwesome.Regular.WindowMinimize,
                                                             Current = config.GetBindable<bool>(FrameworkSetting.MinimiseOnFocusLossInFullscreen),
                                                         }),
                                                         new SettingsItemV2(new RendererSettingsDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.Renderer,
+                                                            Icon = FontAwesome.Solid.Bolt,
                                                             Current = renderer,
                                                             Items = host.GetPreferredRenderersForCurrentPlatform().Order()
                                                             #pragma warning disable CS0612 // Type or member is obsolete
@@ -1281,17 +1300,20 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowFPS,
+                                                            Icon = FontAwesome.Solid.Bolt,
                                                             Current = fpsDisplay,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleFPSDisplay),
                                                         }),
                                                         safeAreaConsiderationsCanBeShown = new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShrinkGameToSafeArea,
+                                                            Icon = FontAwesome.Solid.WindowMaximize,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.SafeAreaConsiderations),
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<ScalingMode>
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenScaling,
+                                                            Icon = FontAwesome.Solid.WindowMaximize,
                                                             Current = appConfig.GetBindable<ScalingMode>(NekoPlayerSetting.Scaling),
                                                             Hotkey = new Hotkey(GlobalAction.CycleScalingMode),
                                                         })
@@ -1311,6 +1333,7 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     Caption = NekoPlayerStrings.HorizontalPosition,
                                                                     Current = scalingPositionX,
+                                                                    Icon = FontAwesome.Solid.RulerHorizontal,
                                                                     KeyboardStep = 0.01f,
                                                                     DisplayAsPercentage = true,
                                                                 })
@@ -1321,6 +1344,7 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     Caption = NekoPlayerStrings.VerticalPosition,
                                                                     Current = scalingPositionY,
+                                                                    Icon = FontAwesome.Solid.RulerVertical,
                                                                     KeyboardStep = 0.01f,
                                                                     DisplayAsPercentage = true,
                                                                 })
@@ -1330,6 +1354,7 @@ namespace NekoPlayer.App.Screens
                                                                 new SettingsItemV2(new FormSliderBar<float>
                                                                 {
                                                                     Caption = NekoPlayerStrings.HorizontalScale,
+                                                                    Icon = FontAwesome.Solid.RulerHorizontal,
                                                                     Current = scalingSizeX,
                                                                     KeyboardStep = 0.01f,
                                                                     DisplayAsPercentage = true,
@@ -1340,6 +1365,7 @@ namespace NekoPlayer.App.Screens
                                                                 new SettingsItemV2(new FormSliderBar<float>
                                                                 {
                                                                     Caption = NekoPlayerStrings.VerticalScale,
+                                                                    Icon = FontAwesome.Solid.RulerVertical,
                                                                     Current = scalingSizeY,
                                                                     KeyboardStep = 0.01f,
                                                                     DisplayAsPercentage = true,
@@ -1350,6 +1376,7 @@ namespace NekoPlayer.App.Screens
                                                                 new SettingsItemV2(dimSlider = new FormSliderBar<float>
                                                                 {
                                                                     Caption = NekoPlayerStrings.ThumbnailDim,
+                                                                    Icon = FontAwesome.Regular.Sun,
                                                                     Current = scalingBackgroundDim,
                                                                     KeyboardStep = 0.01f,
                                                                     DisplayAsPercentage = true,
@@ -1366,11 +1393,13 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormEnumDropdown<Config.ScreenshotFormat>
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenshotFormat,
+                                                            Icon = FontAwesome.Solid.WindowMaximize,
                                                             Current = appConfig.GetBindable<ScreenshotFormat>(NekoPlayerSetting.ScreenshotFormat)
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowCursorInScreenshots,
+                                                            Icon = FontAwesome.Solid.MousePointer,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.ScreenshotCaptureMenuCursor)
                                                         }),
                                                         new AdaptiveSpriteText
@@ -1383,18 +1412,21 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormEnumDropdown<AspectRatioMethod>
                                                         {
                                                             Caption = NekoPlayerStrings.AspectRatioMethod,
+                                                            Icon = FontAwesome.Solid.WindowMaximize,
                                                             Current = aspectRatioMethod,
                                                             Hotkey = new Hotkey(GlobalAction.CycleAspectRatio),
                                                         }),
                                                         new SettingsItemV2(new FormSliderBar<double>
                                                         {
                                                             Caption = NekoPlayerStrings.VideoDimLevel,
+                                                            Icon = FontAwesome.Regular.Sun,
                                                             Current = appConfig.GetBindable<double>(NekoPlayerSetting.VideoDimLevel),
                                                             DisplayAsPercentage = true,
                                                         }),
                                                         new SettingsItemV2(hwAccelCheckbox = new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.UseHardwareAcceleration,
+                                                            Icon = FontAwesome.Solid.Bolt,
                                                         })
                                                         {
                                                             Note = { BindTarget = hwAccelNote },
@@ -1402,21 +1434,25 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(videoQualitySettings = new FormEnumDropdown<Config.VideoQuality>
                                                         {
                                                             Caption = NekoPlayerStrings.VideoQuality,
+                                                            Icon = FontAwesome.Solid.Video,
                                                             Current = videoQuality,
                                                         }),
                                                         new SettingsItemV2(audioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
                                                         {
                                                             Caption = NekoPlayerStrings.AudioQuality,
+                                                            Icon = FontAwesome.Solid.FileAudio,
                                                             Current = audioQuality,
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.AlwaysUseOriginalAudio,
+                                                            Icon = FontAwesome.Solid.FileAudio,
                                                             Current = alwaysUseOriginalAudio,
                                                         }),
                                                         audioLanguageItem = new SettingsItemV2(new FormEnumDropdown<Localisation.Language>
                                                         {
                                                             Caption = NekoPlayerStrings.AudioLanguage,
+                                                            Icon = FontAwesome.Solid.Language,
                                                             Current = audioLanguage,
                                                         })
                                                         {
@@ -1425,12 +1461,14 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ClosedCaptions,
+                                                            Icon = FontAwesome.Solid.ClosedCaptioning,
                                                             Current = captionEnabled,
                                                             Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
                                                         }),
                                                         captionLangOptions = new SettingsItemV2(captionLangDropdown = new YouTubeI18nLangDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.CaptionLanguage,
+                                                            Icon = FontAwesome.Solid.Language,
                                                         })
                                                         {
                                                             ShowRevertToDefaultButton = false,
@@ -1445,24 +1483,28 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormSliderBar<float>
                                                         {
                                                             Caption = NekoPlayerStrings.VideoBloomLevel,
+                                                            Icon = FontAwesome.Solid.Sun,
                                                             Current = appConfig.GetBindable<float>(NekoPlayerSetting.VideoBloomLevel),
                                                             DisplayAsPercentage = true,
                                                         }),
                                                         new SettingsItemV2(new FormSliderBar<float>
                                                         {
                                                             Caption = NekoPlayerStrings.ChromaticAberration,
+                                                            Icon = FontAwesome.Solid.Sun,
                                                             Current = appConfig.GetBindable<float>(NekoPlayerSetting.ChromaticAberrationStrength),
                                                             DisplayAsPercentage = true,
                                                         }),
                                                         new SettingsItemV2(new FormSliderBar<float>
                                                         {
                                                             Caption = NekoPlayerStrings.VideoGrayscaleLevel,
+                                                            Icon = FontAwesome.Solid.Sun,
                                                             Current = appConfig.GetBindable<float>(NekoPlayerSetting.VideoGrayscaleLevel),
                                                             DisplayAsPercentage = true,
                                                         }),
                                                         new SettingsItemV2(new FormSliderBar<float>
                                                         {
                                                             Caption = NekoPlayerStrings.VideoHueShift,
+                                                            Icon = FontAwesome.Solid.Sun,
                                                             Current = appConfig.GetBindable<float>(NekoPlayerSetting.VideoHueShift),
                                                             KeyboardStep = 1,
                                                             LabelFormat = value => $"{value:N0}°"
@@ -1477,16 +1519,19 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(audioDeviceDropdown = new AudioDeviceDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.OutputDevice,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
                                                         }),
                                                         wasapiExperimentalItem = new SettingsItemV2(wasapiExperimental = new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.WasapiLabel,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
                                                             HintText = NekoPlayerStrings.WasapiTooltip,
                                                             Current = audio.UseExperimentalWasapi,
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.AdjustPitchOnSpeedChange,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = adjustPitch,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleAdjustPitchOnSpeedChange),
                                                         }),
@@ -1500,6 +1545,7 @@ namespace NekoPlayer.App.Screens
                                                         systemMuteSwitchBase = new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.SystemMute,
+                                                            Icon = FontAwesome.Solid.VolumeMute,
                                                             HintText = NekoPlayerStrings.SystemMuteDesc,
                                                             Current = systemSoundMute,
                                                         }),
@@ -1515,6 +1561,7 @@ namespace NekoPlayer.App.Screens
                                                                 systemVolumeControlBase = new SettingsItemV2(systemVolumeControl = new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.SystemVolume,
+                                                                    Icon = FontAwesome.Solid.VolumeUp,
                                                                     Current = systemVolume,
                                                                     DisplayAsPercentage = true,
                                                                 })
@@ -1524,18 +1571,21 @@ namespace NekoPlayer.App.Screens
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.MasterVolume,
+                                                                    Icon = FontAwesome.Solid.VolumeUp,
                                                                     Current = config.GetBindable<double>(FrameworkSetting.VolumeUniversal),
                                                                     DisplayAsPercentage = true,
                                                                 }),
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.VideoVolume,
+                                                                    Icon = FontAwesome.Solid.VolumeUp,
                                                                     Current = videoVolume,
                                                                     DisplayAsPercentage = true,
                                                                 }),
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.SFXVolume,
+                                                                    Icon = FontAwesome.Solid.VolumeUp,
                                                                     Current = config.GetBindable<double>(FrameworkSetting.VolumeEffect),
                                                                     DisplayAsPercentage = true,
                                                                 }),
@@ -1544,6 +1594,7 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.AudioNormalization,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.AudioNormalization)
                                                         }),
                                                         new AdaptiveSpriteText
@@ -1556,17 +1607,20 @@ namespace NekoPlayer.App.Screens
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowLogOverlay,
+                                                            Icon = FontAwesome.Solid.Bug,
                                                             Current = config.GetBindable<bool>(FrameworkSetting.ShowLogOverlay),
                                                             Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.Control, InputKey.F10 }))
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.BypassFTBRenderPass,
+                                                            Icon = FontAwesome.Solid.Bug,
                                                             Current = debugConfig.GetBindable<bool>(DebugSetting.BypassFrontToBackPass)
                                                         }),
                                                         new SettingsItemV2(latencyModeDropdown = new FormEnumDropdown<GCLatencyMode>
                                                         {
                                                             Caption = NekoPlayerStrings.GC_Mode,
+                                                            Icon = FontAwesome.Solid.Bug,
                                                         }),
                                                         new SettingsButtonV2
                                                         {
@@ -1961,21 +2015,14 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        commentsContainer = new OverlayContainer
+                        commentsContainer = new BottomOverlayContainer
                         {
                             Size = new Vector2(0.7f),
                             RelativeSizeAxes = Axes.Both,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -2071,7 +2118,6 @@ namespace NekoPlayer.App.Screens
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
                                         Top = (56 * 2),
                                     },
                                     Children = new Drawable[] {
@@ -2426,24 +2472,13 @@ namespace NekoPlayer.App.Screens
                         },
                         playlistOverlay = new SideOverlayContainer
                         {
-                            Size = new Vector2(1f, .95f),
+                            Size = new Vector2(1f, 1f),
                             Width = 400,
                             RelativeSizeAxes = Axes.Y,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0),
                             Masking = true,
                             Origin = Anchor.CentreRight,
                             Anchor = Anchor.CentreRight,
-                            Margin = new MarginPadding
-                            {
-                                Right = 16,
-                            },
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
                             Children = new Drawable[]
                             {
                                 new Box
@@ -2534,24 +2569,13 @@ namespace NekoPlayer.App.Screens
                         },
                         myPlaylistsOverlay = new SideOverlayContainer
                         {
-                            Size = new Vector2(1f, .95f),
+                            Size = new Vector2(1f, 1f),
                             Width = 400,
                             RelativeSizeAxes = Axes.Y,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0),
                             Masking = true,
                             Origin = Anchor.CentreRight,
                             Anchor = Anchor.CentreRight,
-                            Margin = new MarginPadding
-                            {
-                                Right = 16,
-                            },
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
                             Children = new Drawable[]
                             {
                                 new Box
@@ -2668,24 +2692,13 @@ namespace NekoPlayer.App.Screens
                         },
                         audioEffectsOverlay = new SideOverlayContainer
                         {
-                            Size = new Vector2(1f, .95f),
+                            Size = new Vector2(1f, 1f),
                             Width = 400,
                             RelativeSizeAxes = Axes.Y,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0),
                             Masking = true,
                             Origin = Anchor.CentreRight,
                             Anchor = Anchor.CentreRight,
-                            Margin = new MarginPadding
-                            {
-                                Right = 16,
-                            },
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
                             Children = new Drawable[]
                             {
                                 new Box
@@ -3257,24 +3270,13 @@ namespace NekoPlayer.App.Screens
                         },
                         menuOverlay = new SideOverlayContainer
                         {
-                            Size = new Vector2(1f, .95f),
+                            Size = new Vector2(1f, 1f),
                             Width = 400,
                             RelativeSizeAxes = Axes.Y,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0),
                             Masking = true,
                             Origin = Anchor.CentreRight,
                             Anchor = Anchor.CentreRight,
-                            Margin = new MarginPadding
-                            {
-                                Right = 16,
-                            },
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
                             Children = new Drawable[]
                             {
                                 new Box
@@ -3484,24 +3486,13 @@ namespace NekoPlayer.App.Screens
                         },
                         exitOptions = new SideOverlayContainer
                         {
-                            Size = new Vector2(1f, .95f),
+                            Size = new Vector2(1f, 1f),
                             Width = 400,
                             RelativeSizeAxes = Axes.Y,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0),
                             Masking = true,
                             Origin = Anchor.CentreRight,
                             Anchor = Anchor.CentreRight,
-                            Margin = new MarginPadding
-                            {
-                                Right = 16,
-                            },
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
                             Children = new Drawable[]
                             {
                                 new Box
@@ -3937,6 +3928,7 @@ namespace NekoPlayer.App.Screens
                     Schedule(() => commentSendButton.Enabled.Value = true);
                     Schedule(() => newPlaylistOpenButton.Enabled.Value = true);
                     Channel wth = api.GetMineChannel();
+
                     login.Text = NekoPlayerStrings.SignedIn(api.GetLocalizedChannelTitle(wth, true));
 
                     youtubeChannelMetadataDisplay2.UpdateUser(wth);
@@ -3957,6 +3949,8 @@ namespace NekoPlayer.App.Screens
                         commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith(api.GetLocalizedChannelTitle(api.GetMineChannel()));
                         commentTextBox.RefreshChannelProfile(api.GetMineChannel());
                     }
+
+                    Schedule(() => login.UpdateLoginState());
                 }
                 else
                 {
@@ -3976,6 +3970,7 @@ namespace NekoPlayer.App.Screens
                     }
 
                     commentTextBox.PlaceholderText = string.Empty;
+                    Schedule(() => login.UpdateLoginState());
                 }
             }, true);
             /*
@@ -5120,13 +5115,27 @@ namespace NekoPlayer.App.Screens
                 sample.Play();
             }
 
-            if (overlayContent is SideOverlayContainer)
+            if (overlayContent is BottomOverlayContainer)
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
+                //videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                //videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
+                overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
+                overlayContent.Show();
+                overlayContent.MoveToY(500);
+                overlayContent.MoveToY(0, 500, Easing.OutQuint);
+                overlayContent.FadeInFromZero(250, Easing.OutQuart);
+                overlayShowSample.Play();
+            }
+            else if (overlayContent is SideOverlayContainer)
+            {
+                isAnyOverlayOpen.Value = true;
+                overlayContent.IsVisible = true;
+                //videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                //videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.MoveToX(500);
@@ -5138,9 +5147,9 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
+                //videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                //videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.ScaleTo(0.8f);
@@ -5153,14 +5162,26 @@ namespace NekoPlayer.App.Screens
         private void hideOverlayContainer(OverlayContainer overlayContent)
         {
             //duckOperation?.Dispose();
-            if (overlayContent is SideOverlayContainer)
+            if (overlayContent is BottomOverlayContainer)
             {
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
+                //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
+                overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
+                overlayContent.MoveToY(500, 500, Easing.OutQuart);
+                overlayContent.FadeOutFromOne(250, Easing.OutQuart);
+            }
+            else if (overlayContent is SideOverlayContainer)
+            {
+                overlayContent.IsVisible = false;
+                isAnyOverlayOpen.Value = false;
+                overlayHideSample.Play();
+                //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.MoveToX(500, 500, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
@@ -5170,9 +5191,9 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
+                //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.ScaleTo(0.8f, 250, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
@@ -6695,7 +6716,7 @@ namespace NekoPlayer.App.Screens
                                 videoDescription.Text = string.Empty;
                                 Schedule(() => videoDescription.AddText(NekoPlayerStrings.NoDescription, text =>
                                 {
-                                    text.Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold"); 
+                                    text.Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold");
                                     text.Colour = overlayColourProvider1.Background1;
                                 }));
                             }

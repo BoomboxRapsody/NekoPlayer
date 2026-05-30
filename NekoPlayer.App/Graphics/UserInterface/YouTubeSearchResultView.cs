@@ -108,7 +108,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     RelativeSizeAxes = Axes.Both,
                                     FillMode = FillMode.Stretch,
                                 },
-                                loading = new LoadingLayer(true, false, false)
                             },
                         },
                         new Container
@@ -145,7 +144,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             }
                         },
                     }
-                }
+                },
+                loading = new LoadingLayer(true, false, false)
             });
         }
 
@@ -154,11 +154,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected override void LoadComplete()
         {
             base.LoadComplete();
+            Schedule(() => loading.Show());
         }
 
         public async Task GetThumbnail(string url, CancellationToken cancellationToken = default)
         {
-            Schedule(() => loading.Show());
             Texture north = await textureStore.GetAsync(Data.Snippet.Thumbnails.High.Url, cancellationToken);
             Schedule(() => { thumbnail.Texture = north; });
             Schedule(() => loading.Hide());

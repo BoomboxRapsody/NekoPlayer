@@ -18,7 +18,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class RoundedButton : AdaptiveMaterialButton, IFilterable, IHasTooltip
+    public partial class RoundedOutlineButton : AdaptiveMaterialOutlineButton, IFilterable, IHasTooltip
     {
         protected override float HoverLayerFinalAlpha => 0;
 
@@ -50,7 +50,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
-            Background.FadeColour(BackgroundColour, 300, Easing.OutQuint);
             base.OnHoverLost(e);
         }
 

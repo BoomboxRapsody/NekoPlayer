@@ -75,6 +75,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public Hotkey Hotkey { get; init; }
 
+        public IconUsage Icon { get; init; }
+
         /// <summary>
         /// Text displayed in the text box when its contents are empty.
         /// </summary>
@@ -118,6 +120,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             Caption = Caption,
                             TooltipText = HintText,
                             Hotkey = Hotkey,
+                            Icon = Icon,
                         },
                         textBox = CreateTextBox().With(t =>
                         {

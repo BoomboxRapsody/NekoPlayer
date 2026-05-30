@@ -1206,6 +1206,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString Translating => new TranslatableString(getKey(@"translating"), "Translating...");
 
+        /// <summary>
+        /// "NekoPlayer Official Discord"
+        /// </summary>
+        public static LocalisableString JoinDiscord => new TranslatableString(getKey(@"join_discord"), "NekoPlayer Official Discord");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

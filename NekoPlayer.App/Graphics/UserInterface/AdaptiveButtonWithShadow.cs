@@ -148,6 +148,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
             SpriteText.Colour = overlayColourProvider.Content2;
         }
 
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            content.CornerRadius = new CornersInfo(DrawHeight / 2);
+        }
+
         protected virtual SpriteText CreateText() => new AdaptiveSpriteText
         {
             Depth = -1,

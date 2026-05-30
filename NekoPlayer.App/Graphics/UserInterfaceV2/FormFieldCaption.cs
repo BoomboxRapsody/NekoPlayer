@@ -59,6 +59,20 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             }
         }
 
+        private IconUsage icon;
+
+        public IconUsage Icon
+        {
+            get => icon;
+            set
+            {
+                icon = value;
+
+                if (IsLoaded)
+                    updateDisplay();
+            }
+        }
+
         private Hotkey hotkey;
 
         public Hotkey Hotkey
@@ -94,7 +108,21 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         private void updateDisplay()
         {
-            textFlow.Text = caption;
+            textFlow.Text = ""; //fix text duplicating
+            if (icon.Icon != 0)
+            {
+                textFlow.AddArbitraryDrawable(new SpriteIcon
+                {
+                    Anchor = Anchor.BottomLeft,
+                    Origin = Anchor.BottomLeft,
+                    Size = new Vector2(10),
+                    Icon = icon,
+                    Margin = new MarginPadding { Right = 5 },
+                    Y = 1f,
+                });
+            }
+
+            textFlow.AddText(caption);
             textFlow.Colour = textColour;
 
             if (TooltipText != default)
