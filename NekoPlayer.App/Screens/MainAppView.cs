@@ -1031,7 +1031,7 @@ namespace NekoPlayer.App.Screens
                         },
                         settingsContainer = new BottomOverlayContainer
                         {
-                            Size = new Vector2(0.7f),
+                            Size = new Vector2(0.7f, 1f),
                             RelativeSizeAxes = Axes.Both,
                             CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
@@ -1044,22 +1044,12 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = overlayColourProvider.Background5,
                                 },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopCentre,
-                                    Anchor = Anchor.TopCentre,
-                                    Text = NekoPlayerStrings.Settings,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
                                 new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Top = 56,
                                     },
                                     Children = new Drawable[] {
                                         new AdaptiveScrollContainer
@@ -1073,6 +1063,10 @@ namespace NekoPlayer.App.Screens
                                                     AutoSizeAxes = Axes.Y,
                                                     Spacing = new Vector2(0, 4),
                                                     Direction = FillDirection.Vertical,
+                                                    Padding = new MarginPadding
+                                                    {
+                                                        Top = 56,
+                                                    },
                                                     Children = new Drawable[] {
                                                         new AdaptiveSpriteText
                                                         {
@@ -1684,7 +1678,23 @@ namespace NekoPlayer.App.Screens
                                             }
                                         }
                                     }
-                                }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = 76,
+                                },
+                                new AdaptiveSpriteText
+                                {
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
+                                    Text = NekoPlayerStrings.Settings,
+                                    Margin = new MarginPadding(16),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Colour = overlayColourProvider.Content2,
+                                },
                             }
                         },
                         videoDescriptionContainer = new BottomOverlayContainer
@@ -1701,6 +1711,74 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = overlayColourProvider.Background5,
+                                },
+                                new Container
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Padding = new MarginPadding()
+                                    {
+                                        Horizontal = 6,
+                                    },
+                                    Child = new AdaptiveScrollContainer
+                                    {
+                                        Padding = new MarginPadding()
+                                        {
+                                            Top = 108,
+                                            Bottom = 6,
+                                        },
+                                        RelativeSizeAxes = Axes.Both,
+                                        CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                                        Masking = true,
+                                        ScrollbarVisible = false,
+                                        Children = new Drawable[]
+                                        {
+                                            new Container
+                                            {
+                                                RelativeSizeAxes = Axes.Both,
+                                                CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                                                Masking = true,
+                                                Child = new Box
+                                                {
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    Colour = overlayColourProvider.Background4,
+                                                    Alpha = 0.7f,
+                                                },
+                                            },
+                                            new FillFlowContainer
+                                            {
+                                                RelativeSizeAxes = Axes.X,
+                                                AutoSizeAxes = Axes.Y,
+                                                CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                                                Spacing = new Vector2(0, 8),
+                                                Padding = new MarginPadding(12),
+                                                Masking = true,
+                                                Children = new Drawable[]
+                                                {
+                                                    videoInfoDetails = new AdaptiveSpriteText
+                                                    {
+                                                        RelativeSizeAxes = Axes.X,
+                                                        Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
+                                                        Colour = overlayColourProvider.Content2,
+                                                        AlwaysPresent = true,
+                                                    },
+                                                    videoDescription = new LinkFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont)
+                                                    {
+                                                        RelativeSizeAxes = Axes.X,
+                                                        AutoSizeAxes = Axes.Y,
+                                                        AlwaysPresent = true,
+                                                        Colour = overlayColourProvider.Content2,
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = 128,
                                 },
                                 new FillFlowContainer
                                 {
@@ -1935,62 +2013,6 @@ namespace NekoPlayer.App.Screens
                                                 },
                                             }
                                         },
-                                        new Container
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            Child = new AdaptiveScrollContainer
-                                            {
-                                                Padding = new MarginPadding()
-                                                {
-                                                    Bottom = 102,
-                                                },
-                                                RelativeSizeAxes = Axes.Both,
-                                                CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
-                                                Masking = true,
-                                                ScrollbarVisible = false,
-                                                Children = new Drawable[]
-                                                {
-                                                    new Container
-                                                    {
-                                                        RelativeSizeAxes = Axes.Both,
-                                                        CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
-                                                        Masking = true,
-                                                        Child = new Box
-                                                        {
-                                                            RelativeSizeAxes = Axes.Both,
-                                                            Colour = overlayColourProvider.Background4,
-                                                            Alpha = 0.7f,
-                                                        },
-                                                    },
-                                                    new FillFlowContainer
-                                                    {
-                                                        RelativeSizeAxes = Axes.X,
-                                                        AutoSizeAxes = Axes.Y,
-                                                        CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
-                                                        Spacing = new Vector2(0, 8),
-                                                        Padding = new MarginPadding(12),
-                                                        Masking = true,
-                                                        Children = new Drawable[]
-                                                        {
-                                                            videoInfoDetails = new AdaptiveSpriteText
-                                                            {
-                                                                RelativeSizeAxes = Axes.X,
-                                                                Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
-                                                                Colour = overlayColourProvider.Content2,
-                                                                AlwaysPresent = true,
-                                                            },
-                                                            videoDescription = new LinkFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont)
-                                                            {
-                                                                RelativeSizeAxes = Axes.X,
-                                                                AutoSizeAxes = Axes.Y,
-                                                                AlwaysPresent = true,
-                                                                Colour = overlayColourProvider.Content2,
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
                                     }
                                 },
                             }
@@ -2010,10 +2032,108 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = overlayColourProvider.Background5,
                                 },
+                                new Container
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Padding = new MarginPadding
+                                    {
+                                        Horizontal = 16,
+                                    },
+                                    Children = new Drawable[] {
+                                        new AdaptiveScrollContainer
+                                        {
+                                            RelativeSizeAxes = Axes.Both,
+                                            ScrollbarVisible = false,
+                                            Padding = new MarginPadding
+                                            {
+                                                Top = (56 * 2),
+                                            },
+                                            Children = new Drawable[]
+                                            {
+                                                commentContainer = new FillFlowContainer
+                                                {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    AutoSizeAxes = Axes.Y,
+                                                    Spacing = new Vector2(0, 4),
+                                                    AlwaysPresent = true,
+                                                }
+                                            }
+                                        },
+                                        commentsEmpty = new Container
+                                        {
+                                            RelativeSizeAxes = Axes.Both,
+                                            Padding = new MarginPadding
+                                            {
+                                                Top = (56 * 2),
+                                            },
+                                            Children = new Drawable[]
+                                            {
+                                                new FillFlowContainer
+                                                {
+                                                    Direction = FillDirection.Vertical,
+                                                    Anchor = Anchor.Centre,
+                                                    Origin = Anchor.Centre,
+                                                    Width = 300,
+                                                    AutoSizeAxes = Axes.Y,
+                                                    Children = new Drawable[]
+                                                    {
+                                                        new Container
+                                                        {
+                                                            Anchor = Anchor.TopCentre,
+                                                            Origin = Anchor.TopCentre,
+                                                            Margin = new MarginPadding(10),
+                                                            Size = new Vector2(50),
+                                                            Child = ghostIcon = new GhostIcon
+                                                            {
+                                                                RelativeSizeAxes = Axes.Both,
+                                                            },
+                                                            Colour = overlayColourProvider.Content2,
+                                                        },
+                                                        new AdaptiveSpriteText
+                                                        {
+                                                            Anchor = Anchor.TopCentre,
+                                                            Origin = Anchor.TopCentre,
+                                                            Font = NekoPlayerApp.DefaultFont.With(size: 32, weight: "Bold"),
+                                                            Text = NekoPlayerStrings.NoComments,
+                                                            Colour = overlayColourProvider.Content2,
+                                                        },
+                                                        new LinkFlowContainer
+                                                        {
+                                                            Alpha = 1,
+                                                            AlwaysPresent = true,
+                                                            Anchor = Anchor.TopCentre,
+                                                            Origin = Anchor.TopCentre,
+                                                            Padding = new MarginPadding { Top = 8 },
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            TextAnchor = Anchor.Centre,
+                                                            Text = NekoPlayerStrings.NoCommentsDesc,
+                                                            Colour = overlayColourProvider.Foreground2,
+                                                        }
+                                                    }
+                                                },
+                                                new Sprite
+                                                {
+                                                    Size = new Vector2(120),
+                                                    Texture = textures.Get(@"speaki"),
+                                                    Anchor = Anchor.BottomLeft,
+                                                    Origin = Anchor.BottomLeft,
+                                                },
+                                            }
+                                        }
+                                    }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 * 2) + 20,
+                                },
                                 commentsContainerTitle = new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Comments("0"),
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -2092,90 +2212,6 @@ namespace NekoPlayer.App.Screens
                                         },
                                     },
                                 },
-                                new Container
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 16,
-                                        Top = (56 * 2),
-                                    },
-                                    Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            ScrollbarVisible = false,
-                                            Children = new Drawable[]
-                                            {
-                                                commentContainer = new FillFlowContainer
-                                                {
-                                                    RelativeSizeAxes = Axes.X,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Spacing = new Vector2(0, 4),
-                                                    AlwaysPresent = true,
-                                                }
-                                            }
-                                        },
-                                        commentsEmpty = new Container
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            Children = new Drawable[]
-                                            {
-                                                new FillFlowContainer
-                                                {
-                                                    Direction = FillDirection.Vertical,
-                                                    Anchor = Anchor.Centre,
-                                                    Origin = Anchor.Centre,
-                                                    Width = 300,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Children = new Drawable[]
-                                                    {
-                                                        new Container
-                                                        {
-                                                            Anchor = Anchor.TopCentre,
-                                                            Origin = Anchor.TopCentre,
-                                                            Margin = new MarginPadding(10),
-                                                            Size = new Vector2(50),
-                                                            Child = ghostIcon = new GhostIcon
-                                                            {
-                                                                RelativeSizeAxes = Axes.Both,
-                                                            },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Anchor = Anchor.TopCentre,
-                                                            Origin = Anchor.TopCentre,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 32, weight: "Bold"),
-                                                            Text = NekoPlayerStrings.NoComments,
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new LinkFlowContainer
-                                                        {
-                                                            Alpha = 1,
-                                                            AlwaysPresent = true,
-                                                            Anchor = Anchor.TopCentre,
-                                                            Origin = Anchor.TopCentre,
-                                                            Padding = new MarginPadding { Top = 8 },
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            TextAnchor = Anchor.Centre,
-                                                            Text = NekoPlayerStrings.NoCommentsDesc,
-                                                            Colour = overlayColourProvider.Foreground2,
-                                                        }
-                                                    }
-                                                },
-                                                new Sprite
-                                                {
-                                                    Size = new Vector2(120),
-                                                    Texture = textures.Get(@"speaki"),
-                                                    Anchor = Anchor.BottomLeft,
-                                                    Origin = Anchor.BottomLeft,
-                                                },
-                                            }
-                                        }
-                                    }
-                                }
                             }
                         },
                         videoInfoExpertOverlay = new OverlayContainer
@@ -2253,6 +2289,43 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = overlayColourProvider.Background5,
                                 },
+                                new Container
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Padding = new MarginPadding
+                                    {
+                                        Horizontal = 16,
+                                    },
+                                    Children = new Drawable[] {
+                                        new AdaptiveScrollContainer
+                                        {
+                                            RelativeSizeAxes = Axes.Both,
+                                            ScrollbarVisible = false,
+                                            Padding = new MarginPadding
+                                            {
+                                                Top = (56 * 2),
+                                                Bottom = 16,
+                                            },
+                                            Children = new Drawable[]
+                                            {
+                                                searchResultContainer = new FillFlowContainer
+                                                {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    AutoSizeAxes = Axes.Y,
+                                                    Spacing = new Vector2(0, 4),
+                                                    AlwaysPresent = true,
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 * 2) + 20,
+                                },
                                 new AdaptiveSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
@@ -2315,32 +2388,6 @@ namespace NekoPlayer.App.Screens
                                         },
                                     },
                                 },
-                                new Container
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 16,
-                                        Top = (56 * 2),
-                                    },
-                                    Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            ScrollbarVisible = false,
-                                            Children = new Drawable[]
-                                            {
-                                                searchResultContainer = new FillFlowContainer
-                                                {
-                                                    RelativeSizeAxes = Axes.X,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Spacing = new Vector2(0, 4),
-                                                    AlwaysPresent = true,
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
                             }
                         },
                         reportAbuseOverlay = new BottomOverlayContainer
