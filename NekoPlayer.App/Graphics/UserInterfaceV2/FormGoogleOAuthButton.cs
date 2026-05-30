@@ -204,7 +204,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public void SetDefault()
         {
-
         }
 
         void IFormControl.SetDefault()
