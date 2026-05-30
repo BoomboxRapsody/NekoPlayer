@@ -45,7 +45,7 @@ namespace NekoPlayer.App.Graphics.Cursor
                 if (IsPresent)
                 {
                     AutoSizeDuration = 250;
-                    //background.FlashColour(new Color4(0.4f, 0.4f, 0.4f, 1f), 1000, Easing.OutQuint);
+                    background.FlashColour(new Color4(0.4f, 0.4f, 0.4f, 1f), 1000, Easing.OutQuint);
                 }
                 else
                     AutoSizeDuration = 0;
