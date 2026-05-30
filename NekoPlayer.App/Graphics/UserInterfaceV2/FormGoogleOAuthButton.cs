@@ -24,7 +24,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class FormButton : CompositeDrawable, IFormControl
+    public partial class FormGoogleOAuthButton : CompositeDrawable, IFormControl
     {
         /// <summary>
         /// Caption describing this button, displayed on the left of it.
@@ -71,7 +71,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         /// </summary>
         public IconUsage ButtonIcon { get; init; } = FontAwesome.Solid.ChevronRight;
 
-        private FormControlBackground background = null!;
+        private FormControlBackgroundWithProfileImage background = null!;
         private FormFieldCaption caption = null!;
         private AdaptiveSpriteText text = null!;
 
@@ -93,6 +93,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             remove => throw new NotImplementedException();
         }
 
+        public void UpdateLoginState()
+        {
+            background.UpdateLoginState();
+        }
+
         [BackgroundDependencyLoader]
         private void load(AudioManager audio)
         {
@@ -105,7 +110,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
             InternalChildren = new Drawable[]
             {
-                background = new FormControlBackground(),
+                background = new FormControlBackgroundWithProfileImage(),
                 new Container
                 {
                     RelativeSizeAxes = Axes.X,
@@ -199,7 +204,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public void SetDefault()
         {
-
         }
 
         void IFormControl.SetDefault()

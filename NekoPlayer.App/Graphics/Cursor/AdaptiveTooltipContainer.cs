@@ -57,20 +57,13 @@ namespace NekoPlayer.App.Graphics.Cursor
             {
                 AutoSizeEasing = Easing.OutQuint;
 
-                CornerRadius = 5;
                 Masking = true;
-                EdgeEffect = new EdgeEffectParameters
-                {
-                    Type = EdgeEffectType.Shadow,
-                    Colour = Color4.Black.Opacity(40),
-                    Radius = 5,
-                };
+                CornerRadius = 13;
                 Children = new Drawable[]
                 {
                     background = new Box
                     {
                         RelativeSizeAxes = Axes.Both,
-                        Alpha = 0.9f,
                     },
                     text = new TextFlowContainer(f =>
                     {
@@ -78,6 +71,10 @@ namespace NekoPlayer.App.Graphics.Cursor
                     })
                     {
                         Margin = new MarginPadding(5),
+                        Padding = new MarginPadding()
+                        {
+                            Horizontal = 5,
+                        },
                         AutoSizeAxes = Axes.Both,
                         MaximumSize = new Vector2(max_width, float.PositiveInfinity),
                     }
@@ -85,9 +82,10 @@ namespace NekoPlayer.App.Graphics.Cursor
             }
 
             [BackgroundDependencyLoader]
-            private void load()
+            private void load(OverlayColourProvider overlayColourProvider)
             {
-                background.Colour = Color4Extensions.FromHex(@"333");
+                background.Colour = overlayColourProvider.Background3;
+                text.Colour = overlayColourProvider.Content2;
             }
 
             protected override void PopIn()

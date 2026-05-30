@@ -90,6 +90,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             }
         }
 
+        public IconUsage Icon { get; init; }
+
         /// <summary>
         /// Hint text containing an extended description of this slider bar, displayed in a tooltip when hovering the caption.
         /// </summary>
@@ -245,6 +247,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                 {
                                     TooltipText = HintText,
                                     Hotkey = Hotkey,
+                                    Icon = Icon,
                                 },
                                 new Container
                                 {

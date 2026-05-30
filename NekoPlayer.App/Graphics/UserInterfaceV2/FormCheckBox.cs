@@ -5,15 +5,16 @@
 
 using System;
 using System.Collections.Generic;
+using NekoPlayer.App.Graphics.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
-using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
@@ -36,6 +37,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         /// Hint text containing an extended description of this slider bar, displayed in a tooltip when hovering the caption.
         /// </summary>
         public LocalisableString HintText { get; init; }
+
+        public IconUsage Icon { get; set; }
 
         public Hotkey Hotkey { get; init; }
 
@@ -80,6 +83,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                     Caption = Caption,
                                     TooltipText = HintText,
                                     Hotkey = Hotkey,
+                                    Icon = Icon,
                                 },
                             },
                         },

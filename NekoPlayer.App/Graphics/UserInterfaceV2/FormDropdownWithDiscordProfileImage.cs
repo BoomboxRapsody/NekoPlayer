@@ -20,7 +20,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class FormDropdown<T> : AdaptiveDropdown<T>, IFormControl
+    public partial class FormDropdownWithDiscordProfileImage<T> : AdaptiveDropdown<T>, IFormControl
     {
         /// <summary>
         /// Caption describing this slider bar, displayed on top of the controls.
@@ -105,7 +105,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         private partial class FormDropdownHeader : DropdownHeader
         {
-            public FormDropdown<T> Dropdown { get; set; } = null!;
+            public FormDropdownWithDiscordProfileImage<T> Dropdown { get; set; } = null!;
 
             protected override DropdownSearchBar CreateSearchBar() => SearchBar = new FormDropdownSearchBar();
 
@@ -183,7 +183,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             private FormFieldCaption caption = null!;
             private AdaptiveSpriteText label = null!;
             private SpriteIcon chevron = null!;
-            private FormControlBackground background = null!;
+            private FormControlBackgroundWithDiscordProfileImage background = null!;
 
             [Resolved]
             private OverlayColourProvider colourProvider { get; set; } = null!;
@@ -199,7 +199,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
                 Foreground.Children = new Drawable[]
                 {
-                    background = new FormControlBackground(),
+                    background = new FormControlBackgroundWithDiscordProfileImage(),
                     new Container
                     {
                         RelativeSizeAxes = Axes.X,
@@ -355,10 +355,10 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         }
     }
 
-    public partial class FormEnumDropdown<T> : FormDropdown<T>
+    public partial class FormEnumDropdownWithDiscordProfileImage<T> : FormDropdownWithDiscordProfileImage<T>
         where T : struct, Enum
     {
-        public FormEnumDropdown()
+        public FormEnumDropdownWithDiscordProfileImage()
         {
             Items = Enum.GetValues<T>();
         }
