@@ -85,6 +85,7 @@ namespace NekoPlayer.App.Graphics.Cursor
             private void load(OverlayColourProvider overlayColourProvider)
             {
                 background.Colour = overlayColourProvider.Background3;
+                text.Colour = overlayColourProvider.Content2;
             }
 
             protected override void PopIn()
