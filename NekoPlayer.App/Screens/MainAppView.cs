@@ -962,21 +962,15 @@ namespace NekoPlayer.App.Screens
                                 Colour = Color4.Black,
                             }
                         },
-                        loadVideoContainer = new OverlayContainer
+                        loadVideoContainer = new BottomOverlayContainer
                         {
-                            Width = 400,
+                            Size = new Vector2(0.7f, 1f),
                             Height = 200,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            RelativeSizeAxes = Axes.X,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -986,8 +980,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.LoadFromVideoId,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -1004,12 +998,13 @@ namespace NekoPlayer.App.Screens
                                 },
                                 videoIdBox = new EnhancedFocusedTextBox
                                 {
-                                    Origin = Anchor.CentreRight,
-                                    Anchor = Anchor.CentreRight,
+                                    Origin = Anchor.Centre,
+                                    Anchor = Anchor.Centre,
                                     Text = "",
                                     FontSize = 30,
-                                    Size = new Vector2(385, 60),
                                     Margin = new MarginPadding(8),
+                                    Size = new Vector2(.9f, 60),
+                                    RelativeSizeAxes = Axes.X,
                                     OnEnterKeyPressed = () =>
                                     {
                                         if (string.IsNullOrEmpty(videoIdBox.Text))
@@ -1034,21 +1029,14 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        settingsContainer = new OverlayContainer
+                        settingsContainer = new BottomOverlayContainer
                         {
                             Size = new Vector2(0.7f),
                             RelativeSizeAxes = Axes.Both,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -1058,8 +1046,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Settings,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -1071,7 +1059,6 @@ namespace NekoPlayer.App.Screens
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
                                         Top = 56,
                                     },
                                     Children = new Drawable[] {
@@ -1700,21 +1687,14 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        videoDescriptionContainer = new OverlayContainer
+                        videoDescriptionContainer = new BottomOverlayContainer
                         {
                             Size = new Vector2(0.7f),
                             RelativeSizeAxes = Axes.Both,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -2258,21 +2238,14 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        searchContainer = new OverlayContainer
+                        searchContainer = new BottomOverlayContainer
                         {
                             Size = new Vector2(0.7f),
                             RelativeSizeAxes = Axes.Both,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -2282,8 +2255,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Search,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -2348,7 +2321,6 @@ namespace NekoPlayer.App.Screens
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
                                         Top = (56 * 2),
                                     },
                                     Children = new Drawable[] {
@@ -2371,22 +2343,15 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        reportAbuseOverlay = new OverlayContainer
+                        reportAbuseOverlay = new BottomOverlayContainer
                         {
                             Size = new Vector2(0.7f, 1f),
-                            Height = 276,
+                            Height = 300,
                             RelativeSizeAxes = Axes.X,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -2396,8 +2361,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Report,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -2409,14 +2374,18 @@ namespace NekoPlayer.App.Screens
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
                                         Top = 56,
                                     },
-                                    Children = new Drawable[] {
+                                    Children = new Drawable[]
+                                    {
                                         new AdaptiveScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
+                                            Padding = new MarginPadding
+                                            {
+                                                Bottom = 72,
+                                            },
                                             Children = new Drawable[]
                                             {
                                                 new FillFlowContainer
@@ -2456,16 +2425,26 @@ namespace NekoPlayer.App.Screens
                                                             Height = 50,
                                                             Caption = NekoPlayerStrings.Description,
                                                         },
-                                                        reportButton = new SettingsButtonV2
-                                                        {
-                                                            Height = 40,
-                                                            Text = NekoPlayerStrings.Submit,
-                                                            BackgroundColour = colours.Yellow,
-                                                        },
                                                     }
                                                 }
                                             }
-                                        }
+                                        },
+                                        reportButton = new SettingsButtonV2
+                                        {
+                                            Height = 40,
+                                            Padding = new MarginPadding
+                                            {
+                                                Horizontal = 16,
+                                            },
+                                            Margin = new MarginPadding
+                                            {
+                                                Bottom = 16,
+                                            },
+                                            Text = NekoPlayerStrings.Submit,
+                                            BackgroundColour = colours.Yellow,
+                                            Origin = Anchor.BottomCentre,
+                                            Anchor = Anchor.BottomCentre,
+                                        },
                                     }
                                 }
                             }
@@ -2932,22 +2911,15 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        videoSaveLocationOverlay = new OverlayContainer
+                        videoSaveLocationOverlay = new BottomOverlayContainer
                         {
                             Size = new Vector2(1f, 1f),
                             Width = 450,
                             Height = 250,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -2957,8 +2929,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.SaveLocation,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -2970,7 +2942,6 @@ namespace NekoPlayer.App.Screens
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
                                         Top = 56,
                                     },
                                     Children = new Drawable[] {
@@ -3159,22 +3130,15 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        addPlaylistOverlay = new OverlayContainer
+                        addPlaylistOverlay = new BottomOverlayContainer
                         {
                             Size = new Vector2(1f, 1f),
                             Width = 450,
                             Height = 250,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -3184,8 +3148,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.AddNewPlaylist,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -3197,7 +3161,6 @@ namespace NekoPlayer.App.Screens
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
                                         Top = 56,
                                     },
                                     Children = new Drawable[] {
@@ -3627,21 +3590,14 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        downloadReadyContainer = new OverlayContainer
+                        downloadReadyContainer = new BottomOverlayContainer
                         {
                             Size = new Vector2(0.7f),
                             RelativeSizeAxes = Axes.Both,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -3651,8 +3607,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.DownloadVideo,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -5124,7 +5080,7 @@ namespace NekoPlayer.App.Screens
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
-                overlayContent.MoveToY(500);
+                overlayContent.MoveToY(200);
                 overlayContent.MoveToY(0, 500, Easing.OutQuint);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 overlayShowSample.Play();
@@ -5138,7 +5094,7 @@ namespace NekoPlayer.App.Screens
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
-                overlayContent.MoveToX(500);
+                overlayContent.MoveToX(200);
                 overlayContent.MoveToX(0, 500, Easing.OutQuint);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 overlayShowSample.Play();
@@ -5171,7 +5127,7 @@ namespace NekoPlayer.App.Screens
                 //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
-                overlayContent.MoveToY(500, 500, Easing.OutQuart);
+                overlayContent.MoveToY(200, 500, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
             }
             else if (overlayContent is SideOverlayContainer)
@@ -5183,7 +5139,7 @@ namespace NekoPlayer.App.Screens
                 //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
-                overlayContent.MoveToX(500, 500, Easing.OutQuart);
+                overlayContent.MoveToX(200, 500, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
             }
             else
