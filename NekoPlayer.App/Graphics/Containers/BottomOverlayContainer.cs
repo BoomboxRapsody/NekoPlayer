@@ -14,6 +14,5 @@ namespace NekoPlayer.App.Graphics.Containers
     /// </summary>
     public partial class BottomOverlayContainer : OverlayContainer
     {
-        
     }
 }
