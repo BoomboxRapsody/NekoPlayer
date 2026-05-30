@@ -58,7 +58,7 @@ namespace NekoPlayer.App.Graphics.Cursor
                 AutoSizeEasing = Easing.OutQuint;
 
                 Masking = true;
-                CornerRadius = 8;
+                CornerRadius = 13;
                 Children = new Drawable[]
                 {
                     background = new Box
