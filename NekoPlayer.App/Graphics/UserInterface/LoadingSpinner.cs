@@ -47,7 +47,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 RelativeSizeAxes = Axes.Both,
                 Masking = true,
-                CornerRadius = 20,
+                CornerRadius = 30,
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 Children = new Drawable[]
