@@ -273,8 +273,6 @@ namespace NekoPlayer.App.Screens
         private Bindable<double> speedTextRolling;
         private Bindable<double> volumeTextRolling;
 
-        private BufferedContainer idleBackground;
-
         private SpriteIcon volumeIcon;
 
         private LinkFlowContainer dislikeCounterCredits, playlistAuthor;
@@ -482,27 +480,6 @@ namespace NekoPlayer.App.Screens
                                     },
                                 },
                             },
-                        },
-                    },
-                },
-                idleBackground = new BufferedContainer
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Children = new Drawable[]
-                    {
-                        new Box
-                        {
-                            RelativeSizeAxes = Axes.Both,
-                            Colour = overlayColourProvider.Background6,
-                        },
-                        new Triangles
-                        {
-                            RelativeSizeAxes = Axes.Both,
-                            TriangleScale = 5f,
-                            Velocity = 2f,
-                            HideAlphaDiscrepancies = false,
-                            ColourDark = overlayColourProvider.Background5,
-                            ColourLight = overlayColourProvider.Background3,
                         },
                     },
                 },
@@ -7045,7 +7022,6 @@ namespace NekoPlayer.App.Screens
                 videoUrl = $"https://youtube.com/watch?v={this.videoId}";
 
                 Schedule(() => updateVideoMetadata(this.videoId));
-                Schedule(() => idleBackground.Hide());
                 Schedule(() => thumbnailContainer.Show());
 
                 if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
