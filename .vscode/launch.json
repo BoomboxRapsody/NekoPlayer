@@ -38,35 +38,35 @@
             "console": "internalConsole"
         },
         {
-            "name": "YouTubePlayerEX (Debug)",
+            "name": "NekoPlayer (Debug)",
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet",
             "args": [
-                "${workspaceRoot}/YouTubePlayerEX.Desktop/bin/Debug/net8.0/YouTubePlayerEX.dll",
+                "${workspaceRoot}/NekoPlayer.Desktop/bin/Debug/net8.0/NekoPlayer.dll",
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "Build (Desktop, Debug)",
             "linux": {
                 "env": {
-                    "LD_LIBRARY_PATH": "${workspaceRoot}/YouTubePlayerEX.Desktop/bin/Debug/net8.0:${env:LD_LIBRARY_PATH}"
+                    "LD_LIBRARY_PATH": "${workspaceRoot}/NekoPlayer.Desktop/bin/Debug/net8.0:${env:LD_LIBRARY_PATH}"
                 }
             },
             "console": "internalConsole"
         },
         {
-            "name": "YouTubePlayerEX (Release)",
+            "name": "NekoPlayer (Release)",
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet",
             "args": [
-                "${workspaceRoot}/YouTubePlayerEX.Desktop/bin/Debug/net8.0/YouTubePlayerEX.dll",
+                "${workspaceRoot}/NekoPlayer.Desktop/bin/Debug/net8.0/NekoPlayer.dll",
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "Build (Desktop, Release)",
             "linux": {
                 "env": {
-                    "LD_LIBRARY_PATH": "${workspaceRoot}/YouTubePlayerEX.Desktop/bin/Debug/net8.0:${env:LD_LIBRARY_PATH}"
+                    "LD_LIBRARY_PATH": "${workspaceRoot}/NekoPlayer.Desktop/bin/Debug/net8.0:${env:LD_LIBRARY_PATH}"
                 }
             },
             "console": "internalConsole"
