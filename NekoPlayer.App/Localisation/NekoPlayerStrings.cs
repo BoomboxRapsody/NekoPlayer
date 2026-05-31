@@ -1097,9 +1097,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString NoComments => new TranslatableString(getKey(@"no_comments"), @"No comments here...");
 
         /// <summary>
-        /// "whatever else?"
+        /// "well played👍"
         /// </summary>
-        public static LocalisableString NoCommentsDesc => new TranslatableString(getKey(@"no_comments_desc"), @"whatever else?");
+        public static LocalisableString NoCommentsDesc => new TranslatableString(getKey(@"no_comments_desc"), @"well played👍");
 
         /// <summary>
         /// "Mute system sounds"
