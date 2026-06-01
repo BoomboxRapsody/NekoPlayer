@@ -10,7 +10,7 @@
 [![dev chat](https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield)](https://discord.gg/UZWDqQ29ch)
 [![CodeFactor](https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge)](https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer)
 
-The enhanced YouTube video player written in [custom osu-framework](https://github.com/BoomboxRapsody/osu-framework).
+The new era YouTube Video Player written in [custom osu-framework](https://github.com/BoomboxRapsody/osu-framework).
 
 ### Latest release:
 
