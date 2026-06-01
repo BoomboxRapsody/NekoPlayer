@@ -40,7 +40,7 @@ namespace NekoPlayer.App.Screens
 
             LoadComponentAsync(loadableScreen = CreateLoadableScreen());
 
-            LoadComponentAsync(spinner = new LoadingSpinner
+            LoadComponentAsync(spinner = new LoadingSpinner(true, true)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

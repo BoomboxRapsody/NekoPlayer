@@ -495,7 +495,7 @@ namespace NekoPlayer.App.Screens
                     RelativeSizeAxes = Axes.Both,
                     Children = new Drawable[]
                     {
-                        spinner = new LoadingSpinner
+                        spinner = new LoadingSpinner(true, true)
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -1606,7 +1606,7 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     Width = 100,
                                                                     Height = 100,
-                                                                    Texture = textures.Get(@"NewNekoPlayerLogo"),
+                                                                    Texture = textures.Get(@"NekoPlayer_LiquidGlass_Final"),
                                                                     FillMode = FillMode.Fit,
                                                                 }
                                                             },
@@ -1616,6 +1616,14 @@ namespace NekoPlayer.App.Screens
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
                                                             Text = "NekoPlayer",
+                                                            TextAnchor = Anchor.Centre,
+                                                            Colour = overlayColourProvider.Content2,
+                                                        },
+                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 15, weight: "Bold"))
+                                                        {
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Text = "as known as YouTube Player EX",
                                                             TextAnchor = Anchor.Centre,
                                                             Colour = overlayColourProvider.Content2,
                                                         },
