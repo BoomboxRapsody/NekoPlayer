@@ -92,7 +92,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             // Font awesome icon isn't centered perfectly.
             spinner.OriginPosition = spinner.DrawSize * 0.4963333333f;
 
-            MainContents.CornerRadius = MainContents.DrawWidth / 4;
+            MainContents.CornerRadius = MainContents.DrawWidth / 2;
         }
 
         protected override void PopIn()
