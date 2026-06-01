@@ -2,7 +2,7 @@
   <img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Final.png">
 </p>
 
-<h1 style="text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 30px #00ffcc; color: #ffffff; font-weight: bold;" align="center">NekoPlayer</h1>
+<h1 align="center">NekoPlayer</h1>
 
 [![Build status](https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push)](https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml)
 [![GitHub release](https://img.shields.io/github/release/BoomboxRapsody/NekoPlayer.svg)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest)

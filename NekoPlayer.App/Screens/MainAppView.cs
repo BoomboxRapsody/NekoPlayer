@@ -1619,6 +1619,14 @@ namespace NekoPlayer.App.Screens
                                                             TextAnchor = Anchor.Centre,
                                                             Colour = overlayColourProvider.Content2,
                                                         },
+                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 15, weight: "Bold"))
+                                                        {
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Text = "as known as YouTube Player EX",
+                                                            TextAnchor = Anchor.Centre,
+                                                            Colour = overlayColourProvider.Content2,
+                                                        },
                                                         gameVersion = new LinkFlowContainer(f =>
                                                         {
                                                             f.Font = NekoPlayerApp.DefaultFont.With(size: 15);
