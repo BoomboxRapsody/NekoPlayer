@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="app_name" xml:space="preserve">
+    <value>NekoPlayer</value>
+  </data>
+  <data name="app_name_development" xml:space="preserve">
+    <value>NekoPlayer (development)</value>
+  </data>
   <data name="gpt_summarize_prompt" xml:space="preserve">
     <value>{0} Summarize this video</value>
   </data>

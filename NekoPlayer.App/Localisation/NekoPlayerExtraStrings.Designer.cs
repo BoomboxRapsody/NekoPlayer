@@ -61,6 +61,24 @@ namespace NekoPlayer.App.Localisation {
         }
         
         /// <summary>
+        ///   NekoPlayer과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string app_name {
+            get {
+                return ResourceManager.GetString("app_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   NekoPlayer (development)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string app_name_development {
+            get {
+                return ResourceManager.GetString("app_name_development", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   {0} Summarize this video과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string gpt_summarize_prompt {
