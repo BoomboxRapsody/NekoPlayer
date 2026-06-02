@@ -3504,6 +3504,7 @@ namespace NekoPlayer.App.Screens
                                                             Icon = FontAwesome.Solid.SignOutAlt,
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Exit,
+                                                            Hotkey = new Hotkey(GlobalAction.QuitApp),
                                                             Action = () =>
                                                             {
                                                                 overlayHideSample.Volume.Value = 0;
