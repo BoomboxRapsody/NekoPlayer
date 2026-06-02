@@ -103,6 +103,7 @@ namespace NekoPlayer.App.Input.Binding
             new KeyBinding(new[] { InputKey.Tab }, GlobalAction.OpenMenu),
             new KeyBinding(new[] { InputKey.Alt, InputKey.D }, GlobalAction.DownloadVideo),
             new KeyBinding(InputKey.S, GlobalAction.ResetPlaybackSpeed),
+            new KeyBinding(new[] { InputKey.Alt, InputKey.Shift, InputKey.F4 }, GlobalAction.QuitApp),
         };
     }
 
@@ -164,5 +165,6 @@ namespace NekoPlayer.App.Input.Binding
         OpenMenu,
         DownloadVideo,
         ResetPlaybackSpeed,
+        QuitApp,
     }
 }

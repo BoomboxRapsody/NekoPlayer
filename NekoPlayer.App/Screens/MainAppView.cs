@@ -5783,6 +5783,10 @@ namespace NekoPlayer.App.Screens
                     }
                     return true;
 
+                case GlobalAction.QuitApp:
+                    game.AttemptExit();
+                    return true;
+
                 case GlobalAction.Back:
                     hideOverlays();
                     return true;
