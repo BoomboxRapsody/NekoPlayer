@@ -650,13 +650,11 @@ namespace NekoPlayer.App
             if (Host.Window == null)
                 return;
 
-            //string baseAppName = IsDeployedBuild ? "NekoPlayer" : "NekoPlayer (development)";
-            string baseAppName = IsDeployedBuild ? NekoPlayerExtraStrings.app_name : NekoPlayerExtraStrings.app_name_development;
-            string newTitle = baseAppName;
+            string newTitle = IsDeployedBuild ? "NekoPlayer" : "NekoPlayer (development)";
 
             if (!string.IsNullOrEmpty(customTitle))
             {
-                newTitle = $"{baseAppName} | {customTitle}";
+                newTitle = IsDeployedBuild ? $"NekoPlayer | {customTitle}" : $"NekoPlayer (development) | {customTitle}";
             }
 
             if (newTitle != Host.Window.Title)
