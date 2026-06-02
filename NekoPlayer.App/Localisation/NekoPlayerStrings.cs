@@ -502,9 +502,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString ViewLatestVersions => new TranslatableString(getKey(@"view_latest_versions"), "View latest versions");
 
         /// <summary>
-        /// "Report"
+        /// "Report video"
         /// </summary>
-        public static LocalisableString Report => new TranslatableString(getKey(@"report"), "Report");
+        public static LocalisableString Report => new TranslatableString(getKey(@"report"), "Report video");
 
         /// <summary>
         /// "What's going on?"
@@ -1205,6 +1205,11 @@ namespace NekoPlayer.App.Localisation
         /// "Translating..."
         /// </summary>
         public static LocalisableString Translating => new TranslatableString(getKey(@"translating"), "Translating...");
+
+        /// <summary>
+        /// "{0} • {1} likes • {2} views • {3}"
+        /// </summary>
+        public static LocalisableString VideoMetadataDescWithLikeCount(string username, string likeCount, string views, string daysAgo) => new TranslatableString(getKey(@"video_metadata_desc_with_likecount"), "{0} • {1} likes • {2} views • {3}", username, likeCount, views, daysAgo);
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

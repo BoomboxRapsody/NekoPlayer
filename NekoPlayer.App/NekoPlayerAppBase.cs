@@ -114,11 +114,11 @@ namespace NekoPlayer.App
                 {
                     switch (RuntimeInformation.ProcessArchitecture)
                     {
-                        case Architecture.X64:
+                        case Architecture.X64: //Intel Processor
                         {
                             return Directory.GetCurrentDirectory() + "/FFmpeg/bin/osx-x64/ffmpeg";
                         }
-                        case Architecture.Arm64:
+                        case Architecture.Arm64: //Apple Silicon Processor
                         {
                             return Directory.GetCurrentDirectory() + "/FFmpeg/bin/osx-arm64/ffmpeg";
                         }
@@ -384,13 +384,13 @@ namespace NekoPlayer.App
                     {
                         Children = new Drawable[]
                         {
-                        (GlobalCursorDisplay = new GlobalCursorDisplay
-                        {
-                            RelativeSizeAxes = Axes.Both
-                        }).WithChild(content = new AdaptiveTooltipContainer(GlobalCursorDisplay.MenuCursor)
-                        {
-                            RelativeSizeAxes = Axes.Both
-                        }),
+                            (GlobalCursorDisplay = new GlobalCursorDisplay
+                            {
+                                RelativeSizeAxes = Axes.Both
+                            }).WithChild(content = new AdaptiveTooltipContainer(GlobalCursorDisplay.MenuCursor)
+                            {
+                                RelativeSizeAxes = Axes.Both
+                            }),
                         }
                     })
                 });
@@ -665,109 +665,7 @@ namespace NekoPlayer.App
 
         protected virtual void InitialiseFonts()
         {
-            Logger.Log($"Initialising fonts to render texts.");
-
-            var notoSans = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSans");
-            notoSans.AddInstance(@"NotoSans-Regular");
-            notoSans.AddInstance(@"NotoSans-Bold");
-            notoSans.AddInstance(@"NotoSans-SemiBold");
-            notoSans.AddInstance(@"NotoSans-Light");
-
-            var chironGoRoundTC = AddVariableFont(Resources, @"Fonts/UIFonts/ChironGoRoundTC");
-            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Regular");
-            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Bold");
-            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-SemiBold");
-            chironGoRoundTC.AddInstance(@"ChironGoRoundTC-Light");
-
-            var notoSansOriya = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansOriya");
-            notoSansOriya.AddInstance(@"NotoSansOriya-Regular");
-            notoSansOriya.AddInstance(@"NotoSansOriya-Bold");
-            notoSansOriya.AddInstance(@"NotoSansOriya-SemiBold");
-            notoSansOriya.AddInstance(@"NotoSansOriya-Light");
-
-            var notoSansKR = AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR");
-            notoSansKR.AddInstance(@"NotoSansKR-Regular");
-            notoSansKR.AddInstance(@"NotoSansKR-Bold");
-            notoSansKR.AddInstance(@"NotoSansKR-SemiBold");
-            notoSansKR.AddInstance(@"NotoSansKR-Light");
-
-            var rubik = AddVariableFont(Resources, @"Fonts/UIFonts/Rubik");
-            rubik.AddInstance(@"Rubik-Regular");
-            rubik.AddInstance(@"Rubik-Bold");
-            rubik.AddInstance(@"Rubik-SemiBold");
-            rubik.AddInstance(@"Rubik-Light");
-
-            var googleSansFlex = AddVariableFont(Resources, @"Fonts/UIFonts/GoogleSansFlex");
-            googleSansFlex.AddInstance(
-                new FontVariation
-                {
-                    Axes = new Dictionary<string, double>
-                    {
-                        { @"opsz", 144 },
-                        { @"wght", 400 },
-                        { @"wdth", 100 },
-                        { @"ROND", 100 },
-                    },
-                },
-                @"GoogleSansFlex-Regular");
-            googleSansFlex.AddInstance(
-                new FontVariation
-                {
-                    Axes = new Dictionary<string, double>
-                    {
-                        { @"opsz", 144 },
-                        { @"wght", 700 },
-                        { @"wdth", 100 },
-                        { @"ROND", 100 },
-                    },
-                },
-                @"GoogleSansFlex-Bold");
-            googleSansFlex.AddInstance(
-                new FontVariation
-                {
-                    Axes = new Dictionary<string, double>
-                    {
-                        { @"opsz", 144 },
-                        { @"wght", 600 },
-                        { @"wdth", 100 },
-                        { @"ROND", 100 },
-                    },
-                },
-                @"GoogleSansFlex-SemiBold");
-            googleSansFlex.AddInstance(
-                new FontVariation
-                {
-                    Axes = new Dictionary<string, double>
-                    {
-                        { @"opsz", 144 },
-                        { @"wght", 300 },
-                        { @"wdth", 100 },
-                        { @"ROND", 100 },
-                    },
-                },
-                @"GoogleSansFlex-Light");
-
-            AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Basic");
-            AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Bopomofo");
-            AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-CJK-Basic");
-            AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-CJK-Compatibility");
-            AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Hangul");
-            AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Thai");
-
-            var clockFont = AddVariableFont(Resources, @"Fonts/UIFonts/InflateVF");
-            clockFont.AddInstance(
-                new FontVariation
-                {
-                    Axes = new Dictionary<string, double>
-                    {
-                        { @"wght", 1000 },
-                    },
-                },
-            @"InflateVF-ClockFont");
-
-            Fonts.AddStore(new EmojiStore(Host.Renderer, Resources));
-
-            Logger.Log($"❤️👏 Colored emoji loaded");
+            NekoPlayerFontLoader.LoadFonts(this, Resources);
         }
 
         public void EnableTrackNormlization()
