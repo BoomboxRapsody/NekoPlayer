@@ -215,8 +215,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public partial class Button : AdaptiveButtonV2
         {
-            private TrianglesV2? triangles { get; set; }
-
             protected override float HoverLayerFinalAlpha => 0;
 
             private Color4? triangleGradientSecondColour;
@@ -228,7 +226,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 {
                     base.BackgroundColour = value;
                     triangleGradientSecondColour = BackgroundColour.Lighten(0.2f);
-                    updateColours();
                 }
             }
 
@@ -257,27 +254,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             {
                 base.LoadComplete();
 
-                Content.CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f;
-
-                Add(triangles = new TrianglesV2
-                {
-                    Thickness = 0.02f,
-                    SpawnRatio = 0.6f,
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = float.MaxValue,
-                });
-
-                updateColours();
-            }
-
-            private void updateColours()
-            {
-                if (triangles == null)
-                    return;
-
-                Debug.Assert(triangleGradientSecondColour != null);
-
-                triangles.Colour = ColourInfo.GradientVertical(triangleGradientSecondColour.Value, BackgroundColour);
+                Content.CornerRadius = DrawHeight / 2;
             }
 
             protected override bool OnHover(HoverEvent e)

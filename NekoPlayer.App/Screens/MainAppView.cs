@@ -3609,21 +3609,14 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        myChannelDialog = new OverlayContainer
+                        myChannelDialog = new BottomOverlayContainer
                         {
                             Width = 450,
                             Height = 185,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -3633,8 +3626,8 @@ namespace NekoPlayer.App.Screens
                                 },
                                 new AdaptiveSpriteText
                                 {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.GoogleAccount,
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
