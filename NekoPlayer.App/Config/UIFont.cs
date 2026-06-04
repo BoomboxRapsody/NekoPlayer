@@ -11,7 +11,7 @@ namespace NekoPlayer.App.Config
     {
         [Description("Google Sans Flex")]
         GoogleSansFlex,
-
         Rubik,
+        Pretendard,
     }
 }
