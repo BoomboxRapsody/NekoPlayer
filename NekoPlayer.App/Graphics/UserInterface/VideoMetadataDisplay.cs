@@ -228,8 +228,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Schedule(() =>
                     {
                         bgLayer.Alpha = 1;
-                        bgLayer.Colour = bgColor;
-                        BorderColour = bgColor;
+                        bgLayer.Colour = ColourInfo.GradientHorizontal(bgColor, bgColor.Darken(1f));
+                        videoName.Colour = (textColor);
+                        desc.Colour = (textColor);
                     });
                 }
             });
