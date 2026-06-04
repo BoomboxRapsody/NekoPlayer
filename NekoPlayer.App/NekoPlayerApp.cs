@@ -199,6 +199,11 @@ namespace NekoPlayer.App
                     fontName = @"Rubik";
                     break;
                 }
+                case UIFont.Pretendard:
+                {
+                    fontName = @"PretendardVariable";
+                    break;
+                }
             }
 
             DefaultFont = FontUsage.Default.With(fontName, 16, "Regular");

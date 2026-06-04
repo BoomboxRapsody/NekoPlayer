@@ -87,6 +87,12 @@ namespace NekoPlayer.App.Config
             AddFont(Resources, @"Fonts/UIFonts/Noto/Noto-Thai");
             */
 
+            var Pretendard = game.AddVariableFont(Resources, @"Fonts/UIFonts/PretendardVariable");
+            Pretendard.AddInstance(@"PretendardVariable-Regular");
+            Pretendard.AddInstance(@"PretendardVariable-Bold");
+            Pretendard.AddInstance(@"PretendardVariable-SemiBold");
+            Pretendard.AddInstance(@"PretendardVariable-Light");
+
             #region Noto Fonts
             var notoSans = game.AddVariableFont(Resources, @"Fonts/UIFonts/NotoSans");
             notoSans.AddInstance(@"NotoSans-Regular");
@@ -157,6 +163,8 @@ namespace NekoPlayer.App.Config
             game.Fonts.AddStore(new EmojiStore(game.Host.Renderer, Resources));
 
             Logger.Log($"❤️👏 Colored emoji loaded");
+
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/Hungeul");
         }
     }
 }
