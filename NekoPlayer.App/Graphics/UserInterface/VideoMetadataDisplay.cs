@@ -213,7 +213,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
                 }
 
-                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channel.Id}.png"));
+                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{videoData.Snippet.ChannelId}.png"));
 
                 IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
                 PaletteBuilder paletteBuilder = new PaletteBuilder();

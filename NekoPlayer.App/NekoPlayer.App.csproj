@@ -18,7 +18,7 @@
     <PackageReference Include="NAudio" Version="2.3.0" />
     <PackageReference Include="NReco.VideoInfo" Version="1.2.1" />
     <PackageReference Include="Selenium.WebDriver" Version="4.44.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="148.0.7778.17800" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="149.0.7827.5400" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.8" />
     <PackageReference Include="SharpCompress" Version="0.49.1" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.74.0.4162" />
@@ -27,7 +27,7 @@
     <PackageReference Include="McEndu.FreeTypeSharp" Version="4.1.5" />
     <PackageReference Include="YoutubeExplode" Version="6.6.0" />
     <PackageReference Include="YoutubeExplode.Converter" Version="6.6.0" />
-    <PackageReference Include="YouTubePlayerEX.App.Resources" Version="2026.602.0" />
+    <PackageReference Include="YouTubePlayerEX.App.Resources" Version="2026.604.0" />
     <PackageReference Include="OSVersionExt" Version="4.1.0" />
     <PackageReference Include="Sentry" Version="6.6.0" />
     <PackageReference Include="Lazy.Fody" PrivateAssets="all" Version="1.11.0" />
