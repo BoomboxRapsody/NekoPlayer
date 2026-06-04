@@ -343,6 +343,8 @@ namespace NekoPlayer.App.Screens
 
             videoVolume = config.GetBindable<double>(FrameworkSetting.VolumeMusic);
 
+            showVideoMetadataOnWindowTitle = appConfig.GetBindable<bool>(NekoPlayerSetting.ShowVideoMetadataOnWindowTitle);
+
             uiVisible = screenshotManager.CursorVisibility.GetBoundCopy();
             signedIn = googleOAuth2.SignedIn.GetBoundCopy();
 
@@ -1431,6 +1433,12 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,
+                                                            Icon = FontAwesome.Solid.Font,
+                                                            Current = showVideoMetadataOnWindowTitle,
+                                                        }),
                                                         new AdaptiveSpriteText
                                                         {
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -6045,6 +6053,7 @@ namespace NekoPlayer.App.Screens
         }
 
         private Google.Apis.YouTube.v3.Data.Video videoData;
+        private Google.Apis.YouTube.v3.Data.Channel channelData;
 
         public async Task SetPlaylistItems(IList<PlaylistItem> playlists)
         {
@@ -6527,6 +6536,7 @@ namespace NekoPlayer.App.Screens
             {
                 // metadata area
                 videoData = api.GetVideo(videoId);
+                channelData = api.GetChannel(videoData.Snippet.ChannelId);
                 updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
 
                 Schedule(() => commentOpenButton.Enabled.Value = videoData.Statistics.CommentCount != null);
@@ -6546,7 +6556,8 @@ namespace NekoPlayer.App.Screens
                 else
                     Schedule(() => commentOpenButtonDetails.Hide());
 
-                game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
+                updateWindowTitle();
+                //game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
 
                 DateTimeOffset? dateTime = videoData.Snippet.PublishedAtDateTimeOffset;
                 DateTime now = DateTime.Now;
@@ -6742,9 +6753,18 @@ namespace NekoPlayer.App.Screens
                 {
                     Schedule(() =>
                     {
-                        game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
+                        updateWindowTitle();
+                        //game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
                         if (api.TryToGetMineChannel() != null)
                             commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith(api.GetLocalizedChannelTitle(api.GetMineChannel()));
+                    });
+                }, true);
+
+                showVideoMetadataOnWindowTitle.BindValueChanged(_ =>
+                {
+                    Schedule(() =>
+                    {
+                        updateWindowTitle();
                     });
                 }, true);
 
@@ -6754,7 +6774,8 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(() =>
                         {
-                            game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
+                            updateWindowTitle();
+                            //game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
                             if (!string.IsNullOrEmpty(api.GetLocalizedVideoDescription(videoData)))
                             {
                                 //Schedule(() => videoDescription.Text = api.GetLocalizedVideoDescription(videoData));
@@ -6807,6 +6828,20 @@ namespace NekoPlayer.App.Screens
         private TimeSpan videoDuration;
 
         private Bindable<UsernameDisplayMode> usernameDisplayMode;
+
+        private Bindable<bool> showVideoMetadataOnWindowTitle;
+
+        private void updateWindowTitle()
+        {
+            if ((showVideoMetadataOnWindowTitle.Value) && (videoData != null))
+            {
+                game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
+            }
+            else
+            {
+                game.RequestUpdateWindowTitle(string.Empty);
+            }
+        }
 
         private void addVideoToScreen()
         {

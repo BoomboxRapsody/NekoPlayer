@@ -1211,6 +1211,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString VideoMetadataDescWithLikeCount(string username, string likeCount, string views, string daysAgo) => new TranslatableString(getKey(@"video_metadata_desc_with_likecount"), "{0} • {1} likes • {2} views • {3}", username, likeCount, views, daysAgo);
 
+        /// <summary>
+        /// "Show video metadata on window title"
+        /// </summary>
+        public static LocalisableString ShowVideoMetadataOnWindowTitle => new TranslatableString(getKey(@"show_video_metadata_on_window_title"), "Show video metadata on window title");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

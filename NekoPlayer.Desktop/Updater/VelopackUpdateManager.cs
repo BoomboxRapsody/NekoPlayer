@@ -108,9 +108,9 @@ namespace NekoPlayer.Desktop.Updater
             return true;
         }, cancellationToken);
 
-        private void restartToApplyUpdate(Velopack.UpdateManager updateManager, UpdateInfo update) => Task.Run(async () =>
+        private void restartToApplyUpdate(Velopack.UpdateManager updateManager, UpdateInfo update) => Task.Run(() =>
         {
-            await updateManager.WaitExitThenApplyUpdatesAsync(update.TargetFullRelease).ConfigureAwait(false);
+            updateManager.WaitExitThenApplyUpdates(update.TargetFullRelease);
             Schedule(() => game.AttemptExit());
         });
 

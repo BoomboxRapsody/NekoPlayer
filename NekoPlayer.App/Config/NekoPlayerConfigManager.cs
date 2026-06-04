@@ -80,6 +80,8 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.CommentsSortCriteria, CommentsSortCriteria.Top);
 
             SetDefault(NekoPlayerSetting.ReleaseStream, ReleaseStream.Stable);
+
+            SetDefault(NekoPlayerSetting.ShowVideoMetadataOnWindowTitle, true);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -152,5 +154,7 @@ namespace NekoPlayer.App.Config
         ProfileImageShape,
         CommentsSortCriteria,
         ReleaseStream,
+
+        ShowVideoMetadataOnWindowTitle,
     }
 }
