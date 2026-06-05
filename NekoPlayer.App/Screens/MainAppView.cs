@@ -4219,7 +4219,7 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Name == captionLangDropdown.Current.Value.Name).First();
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
 
                             ClosedCaptionTrack captionTrack = null;
 
@@ -7368,7 +7368,7 @@ namespace NekoPlayer.App.Screens
 
                             captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Name == captionLangDropdown.Current.Value.Name).First();
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
 
                             if (trackInfo != null)
                             {
@@ -7398,7 +7398,6 @@ namespace NekoPlayer.App.Screens
                     }
                     catch (Exception e)
                     {
-                        captionEnabled.Disabled = true;
                         Logger.Error(e, e.GetDescription());
                     }
 
@@ -7710,7 +7709,7 @@ namespace NekoPlayer.App.Screens
 
                             captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Name == captionLangDropdown.Current.Value.Name).First();
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
 
                             if (trackInfo != null)
                             {
@@ -7734,7 +7733,6 @@ namespace NekoPlayer.App.Screens
                     }
                     catch (Exception e)
                     {
-                        captionEnabled.Disabled = true;
                         Logger.Error(e, e.GetDescription());
                     }
 
@@ -8060,7 +8058,10 @@ namespace NekoPlayer.App.Screens
                     Items = items;
 
                     if (!Current.Disabled)
-                        Current.Value = Current.Default = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                    {
+                        Current.Value = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                        Current.Default = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                    }
                 }
                 catch (Exception e)
                 {
