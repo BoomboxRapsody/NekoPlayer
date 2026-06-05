@@ -116,6 +116,16 @@ namespace NekoPlayer.App.Graphics.Caption
                         spriteText.Font = NekoPlayerApp.Dovemayo_Gothic.With(size: 24);
                         break;
                     }
+                    case CaptionFonts.Griun_Mongtori:
+                    {
+                        spriteText.Font = NekoPlayerApp.Griun_Mongtori.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.ONE_Mobile_POP:
+                    {
+                        spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
+                        break;
+                    }
                 }
             }, true);
 

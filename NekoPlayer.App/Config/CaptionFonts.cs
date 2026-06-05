@@ -20,5 +20,9 @@ namespace NekoPlayer.App.Config
         Ownglyph_PDH,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Dovemayo_Gothic))]
         Dovemayo_Gothic,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Griun_Mongtori))]
+        Griun_Mongtori,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.ONE_Mobile_POP))]
+        ONE_Mobile_POP,
     }
 }

@@ -70,4 +70,10 @@
   <data name="pretendard" xml:space="preserve">
     <value>프리텐다드</value>
   </data>
+  <data name="griun_mongtori" xml:space="preserve">
+    <value>그리운 몽토리체</value>
+  </data>
+  <data name="one_mobile_pop" xml:space="preserve">
+    <value>원스토어 모바일POP체</value>
+  </data>
 </root>

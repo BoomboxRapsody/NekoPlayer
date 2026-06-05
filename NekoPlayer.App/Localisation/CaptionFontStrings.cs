@@ -31,6 +31,16 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString Pretendard => new TranslatableString(getKey(@"pretendard"), "Pretendard");
 
+        /// <summary>
+        /// "Griun Mongtori"
+        /// </summary>
+        public static LocalisableString Griun_Mongtori => new TranslatableString(getKey(@"griun_mongtori"), "Griun Mongtori");
+
+        /// <summary>
+        /// "ONE Mobile POP"
+        /// </summary>
+        public static LocalisableString ONE_Mobile_POP => new TranslatableString(getKey(@"one_mobile_pop"), "ONE Mobile POP");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
