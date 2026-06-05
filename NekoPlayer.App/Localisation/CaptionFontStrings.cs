@@ -26,6 +26,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString Dovemayo_Gothic => new TranslatableString(getKey(@"dovemayo_gothic"), "Dovemayo Gothic");
 
+        /// <summary>
+        /// "Pretendard"
+        /// </summary>
+        public static LocalisableString Pretendard => new TranslatableString(getKey(@"pretendard"), "Pretendard");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

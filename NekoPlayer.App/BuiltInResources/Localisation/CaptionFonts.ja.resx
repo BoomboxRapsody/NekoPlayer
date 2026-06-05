@@ -67,4 +67,7 @@
   <data name="dovemayo_gothic" xml:space="preserve">
     <value>ドーブマヨ・ゴシック</value>
   </data>
+  <data name="pretendard" xml:space="preserve">
+    <value>Pretendard</value>
+  </data>
 </root>

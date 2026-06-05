@@ -12,6 +12,7 @@ namespace NekoPlayer.App.Config
         [Description("Google Sans Flex")]
         GoogleSansFlex,
         Rubik,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Pretendard))]
         Pretendard,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Hungeul))]
         Hungeul,
