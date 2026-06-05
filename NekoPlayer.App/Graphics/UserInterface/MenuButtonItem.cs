@@ -80,6 +80,20 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private HotkeyDisplay hotkeyDisplay;
 
+        public CornersInfo RoundCorner
+        {
+            get => roundCorner;
+            set
+            {
+                roundCorner = value;
+
+                if (buttonContent != null)
+                    buttonContent.CornerRadius = value;
+            }
+        }
+
+        private CornersInfo roundCorner;
+
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
@@ -94,7 +108,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     {
                         buttonContent = new Container
                         {
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = roundCorner,
                             Masking = true,
                             RelativeSizeAxes = Axes.Both,
                             Children = new Drawable[]
