@@ -126,11 +126,6 @@ namespace NekoPlayer.App.Graphics.Caption
                         spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
                         break;
                     }
-                    case CaptionFonts.HayuFont:
-                    {
-                        spriteText.Font = NekoPlayerApp.HayuFont.With(size: 24);
-                        break;
-                    }
                 }
             }, true);
 

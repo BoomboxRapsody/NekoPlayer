@@ -24,7 +24,5 @@ namespace NekoPlayer.App.Config
         Griun_Mongtori,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.ONE_Mobile_POP))]
         ONE_Mobile_POP,
-        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.HayuFont))]
-        HayuFont,
     }
 }
