@@ -46,6 +46,14 @@ namespace NekoPlayer.App
         private ScreenStack screenStack;
 
         public static FontUsage DefaultFont = FontUsage.Default.With("GoogleSansFlex", 16, "Regular");
+        public static FontUsage Rubik = FontUsage.Default.With("Rubik", 16, "Regular");
+        public static FontUsage Pretendard = FontUsage.Default.With("PretendardVariable", 16, "Regular");
+        public static FontUsage Hungeul = FontUsage.Default.With("Hungeul", 16);
+        public static FontUsage Ownglyph_PDH = FontUsage.Default.With("Ownglyph_PDH", 16);
+        public static FontUsage Dovemayo_Gothic = FontUsage.Default.With("Dovemayo_Gothic", 16);
+        public static FontUsage Griun_Mongtori = FontUsage.Default.With("Griun_Mongtori", 16);
+        public static FontUsage ONE_Mobile_POP = FontUsage.Default.With("ONE_Mobile_POP", 16);
+        public static FontUsage HayuFont = FontUsage.Default.With("HayuFont", 16);
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 

@@ -8,7 +8,12 @@ using System.Drawing;
 using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
 using Humanizer;
-using NUnit.Framework.Constraints;
+using NekoPlayer.App.Config;
+using NekoPlayer.App.Extensions;
+using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Localisation;
+using NekoPlayer.App.Online;
+using NekoPlayer.App.Utils;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
@@ -22,12 +27,6 @@ using osuTK;
 using osuTK.Graphics;
 using PaletteNet;
 using SixLabors.ImageSharp.PixelFormats;
-using NekoPlayer.App.Config;
-using NekoPlayer.App.Extensions;
-using NekoPlayer.App.Graphics.Sprites;
-using NekoPlayer.App.Localisation;
-using NekoPlayer.App.Online;
-using NekoPlayer.App.Utils;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -208,7 +207,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 DateTimeOffset? dateTime = videoData.Snippet.PublishedAtDateTimeOffset;
                 DateTimeOffset now = DateTime.Now;
                 Channel channelData = api.GetChannel(videoData.Snippet.ChannelId);
-                desc.Text = NekoPlayerStrings.VideoMetadataDescWithLikeCount(api.GetLocalizedChannelTitle(channelData), Convert.ToInt32(videoData.Statistics.LikeCount).ToStandardFormattedString(0), Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), dateTime.Value.Humanize(dateToCompareAgainst: now));
+                desc.Text = NekoPlayerStrings.VideoMetadataDescWithLikeCount(api.GetLocalizedChannelTitle(channelData), ReturnYouTubeDislike.GetDislikes(videoData.Id).Dislikes > 0 ? Convert.ToInt32(ReturnYouTubeDislike.GetDislikes(videoData.Id).Dislikes).ToStandardFormattedString(0) : Convert.ToInt32(ReturnYouTubeDislike.GetDislikes(videoData.Id).RawDislikes).ToStandardFormattedString(0), Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), dateTime.Value.Humanize(dateToCompareAgainst: now));
             });
         }
 

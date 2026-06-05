@@ -267,6 +267,7 @@ namespace NekoPlayer.App.Screens
         private Bindable<CloseButtonAction> closeButtonAction;
 
         private Bindable<UIFont> ui_font;
+        private Bindable<CaptionFonts> caption_font;
 
         private Bindable<float> scalingBackgroundDim = null!;
 
@@ -400,6 +401,7 @@ namespace NekoPlayer.App.Screens
             updateButtonEnabled = game.UpdateButtonEnabled.GetBoundCopy();
 
             ui_font = appConfig.GetBindable<UIFont>(NekoPlayerSetting.UIFont);
+            caption_font = appConfig.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
 
             aspectRatioMethod = appConfig.GetBindable<AspectRatioMethod>(NekoPlayerSetting.AspectRatioMethod);
 
@@ -1433,6 +1435,12 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
+                                                        new SettingsItemV2(new FormEnumDropdown<CaptionFonts>
+                                                        {
+                                                            Caption = NekoPlayerStrings.CaptionFont,
+                                                            Current = caption_font,
+                                                            Icon = FontAwesome.Solid.Font,
+                                                        }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,
@@ -4211,7 +4219,7 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Name == captionLangDropdown.Current.Value.Name).First();
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
 
                             ClosedCaptionTrack captionTrack = null;
 
@@ -7360,7 +7368,7 @@ namespace NekoPlayer.App.Screens
 
                             captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Name == captionLangDropdown.Current.Value.Name).First();
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
 
                             if (trackInfo != null)
                             {
@@ -7390,7 +7398,6 @@ namespace NekoPlayer.App.Screens
                     }
                     catch (Exception e)
                     {
-                        captionEnabled.Disabled = true;
                         Logger.Error(e, e.GetDescription());
                     }
 
@@ -7702,7 +7709,7 @@ namespace NekoPlayer.App.Screens
 
                             captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Name == captionLangDropdown.Current.Value.Name).First();
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
 
                             if (trackInfo != null)
                             {
@@ -7726,7 +7733,6 @@ namespace NekoPlayer.App.Screens
                     }
                     catch (Exception e)
                     {
-                        captionEnabled.Disabled = true;
                         Logger.Error(e, e.GetDescription());
                     }
 
@@ -8052,7 +8058,10 @@ namespace NekoPlayer.App.Screens
                     Items = items;
 
                     if (!Current.Disabled)
-                        Current.Value = Current.Default = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                    {
+                        Current.Value = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                        Current.Default = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                    }
                 }
                 catch (Exception e)
                 {

@@ -172,7 +172,7 @@ namespace NekoPlayer.App.Overlays.OSD
             private void load(OverlayColourProvider overlayColourProvider)
             {
                 fill.Colour = idleColour = overlayColourProvider.Background1;
-                glowingColour = overlayColourProvider.Light2;
+                glowingColour = overlayColourProvider.Content2;
 
                 Size = new Vector2(25, 5);
 

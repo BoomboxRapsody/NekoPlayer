@@ -82,6 +82,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.ReleaseStream, ReleaseStream.Stable);
 
             SetDefault(NekoPlayerSetting.ShowVideoMetadataOnWindowTitle, true);
+            SetDefault(NekoPlayerSetting.CaptionFont, CaptionFonts.GoogleSansFlex);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -156,5 +157,6 @@ namespace NekoPlayer.App.Config
         ReleaseStream,
 
         ShowVideoMetadataOnWindowTitle,
+        CaptionFont,
     }
 }

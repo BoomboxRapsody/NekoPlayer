@@ -25,7 +25,7 @@ namespace NekoPlayer.App.Graphics.Caption
         private YouTubeVideoPlayer videoPlayer;
         private ClosedCaptionTrack captionTrack;
         private Bindable<bool> captionEnabled;
-        private Bindable<UIFont> captionFont;
+        private Bindable<CaptionFonts> captionFont;
         private Container captionContainer;
 
         private Bindable<float> bottomMargin = new Bindable<float>();
@@ -56,7 +56,7 @@ namespace NekoPlayer.App.Graphics.Caption
         {
             controlsVisibleState = sessionStatics.GetBindable<bool>(Static.IsControlVisible);
             captionEnabled = config.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
-            captionFont = config.GetBindable<UIFont>(NekoPlayerSetting.UIFont);
+            captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
 
             Add(captionContainer = new Container
             {
@@ -82,6 +82,53 @@ namespace NekoPlayer.App.Graphics.Caption
                 }
             });
 
+            captionFont.BindValueChanged(v =>
+            {
+                switch (v.NewValue)
+                {
+                    case CaptionFonts.GoogleSansFlex:
+                    {
+                        spriteText.Font = NekoPlayerApp.DefaultFont.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Rubik:
+                    {
+                        spriteText.Font = NekoPlayerApp.Rubik.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Pretendard:
+                    {
+                        spriteText.Font = NekoPlayerApp.Pretendard.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Hungeul:
+                    {
+                        spriteText.Font = NekoPlayerApp.Hungeul.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Ownglyph_PDH:
+                    {
+                        spriteText.Font = NekoPlayerApp.Ownglyph_PDH.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Dovemayo_Gothic:
+                    {
+                        spriteText.Font = NekoPlayerApp.Dovemayo_Gothic.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Griun_Mongtori:
+                    {
+                        spriteText.Font = NekoPlayerApp.Griun_Mongtori.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.ONE_Mobile_POP:
+                    {
+                        spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
+                        break;
+                    }
+                }
+            }, true);
+
             controlsVisibleState.BindValueChanged(v =>
             {
                 UpdateControlsVisibleState(v.NewValue);
@@ -105,7 +152,7 @@ namespace NekoPlayer.App.Graphics.Caption
             };
             */
 
-            this.TransformBindableTo(bottomMargin, state ? 45 : 0, 500, Easing.OutQuint);
+            this.TransformBindableTo(bottomMargin, state ? 55 : 0, 500, Easing.OutQuint);
         }
 
         protected override void Update()
