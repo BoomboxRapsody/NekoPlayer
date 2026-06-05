@@ -41,6 +41,7 @@
     <EmbeddedResource Include="BuiltInResources\Fonts\**\*" />
     <EmbeddedResource Include="BuiltInResources\Samples\**\*" />
     <EmbeddedResource Include="BuiltInResources\Textures\**\*" />
+    <EmbeddedResource Include="BuiltInResources\Localisation\**\*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Localisation\NekoPlayerExtraStrings.Designer.cs">

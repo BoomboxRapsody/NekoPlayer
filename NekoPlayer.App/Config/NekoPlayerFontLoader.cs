@@ -164,7 +164,10 @@ namespace NekoPlayer.App.Config
 
             Logger.Log($"❤️👏 Colored emoji loaded");
 
+            //caption fonts
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Hungeul");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/Ownglyph_PDH");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/Dovemayo_Gothic");
         }
     }
 }

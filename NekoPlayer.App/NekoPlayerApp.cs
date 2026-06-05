@@ -49,6 +49,8 @@ namespace NekoPlayer.App
         public static FontUsage Rubik = FontUsage.Default.With("Rubik", 16, "Regular");
         public static FontUsage Pretendard = FontUsage.Default.With("PretendardVariable", 16, "Regular");
         public static FontUsage Hungeul = FontUsage.Default.With("Hungeul", 16);
+        public static FontUsage Ownglyph_PDH = FontUsage.Default.With("Ownglyph_PDH", 16);
+        public static FontUsage Dovemayo_Gothic = FontUsage.Default.With("Dovemayo_Gothic", 16);
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 
