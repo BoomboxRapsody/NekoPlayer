@@ -170,6 +170,7 @@ namespace NekoPlayer.App.Config
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Dovemayo_Gothic");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Griun_Mongtori");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/ONE_Mobile_POP");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/HayuFont");
         }
     }
 }

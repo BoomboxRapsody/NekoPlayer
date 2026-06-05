@@ -76,4 +76,7 @@
   <data name="one_mobile_pop" xml:space="preserve">
     <value>ONE Mobile POP</value>
   </data>
+  <data name="hayu_font" xml:space="preserve">
+    <value>はゆフォント</value>
+  </data>
 </root>

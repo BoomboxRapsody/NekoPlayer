@@ -41,6 +41,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ONE_Mobile_POP => new TranslatableString(getKey(@"one_mobile_pop"), "ONE Mobile POP");
 
+        /// <summary>
+        /// "Hayu Font"
+        /// </summary>
+        public static LocalisableString HayuFont => new TranslatableString(getKey(@"hayu_font"), "Hayu Font");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
