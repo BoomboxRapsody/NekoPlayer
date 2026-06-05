@@ -267,6 +267,7 @@ namespace NekoPlayer.App.Screens
         private Bindable<CloseButtonAction> closeButtonAction;
 
         private Bindable<UIFont> ui_font;
+        private Bindable<CaptionFonts> caption_font;
 
         private Bindable<float> scalingBackgroundDim = null!;
 
@@ -400,6 +401,7 @@ namespace NekoPlayer.App.Screens
             updateButtonEnabled = game.UpdateButtonEnabled.GetBoundCopy();
 
             ui_font = appConfig.GetBindable<UIFont>(NekoPlayerSetting.UIFont);
+            caption_font = appConfig.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
 
             aspectRatioMethod = appConfig.GetBindable<AspectRatioMethod>(NekoPlayerSetting.AspectRatioMethod);
 
@@ -1433,6 +1435,12 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
+                                                        new SettingsItemV2(new FormEnumDropdown<CaptionFonts>
+                                                        {
+                                                            Caption = NekoPlayerStrings.CaptionFont,
+                                                            Current = caption_font,
+                                                            Icon = FontAwesome.Solid.Font,
+                                                        }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,

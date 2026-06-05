@@ -25,7 +25,7 @@ namespace NekoPlayer.App.Graphics.Caption
         private YouTubeVideoPlayer videoPlayer;
         private ClosedCaptionTrack captionTrack;
         private Bindable<bool> captionEnabled;
-        private Bindable<UIFont> captionFont;
+        private Bindable<CaptionFonts> captionFont;
         private Container captionContainer;
 
         private Bindable<float> bottomMargin = new Bindable<float>();
@@ -56,7 +56,7 @@ namespace NekoPlayer.App.Graphics.Caption
         {
             controlsVisibleState = sessionStatics.GetBindable<bool>(Static.IsControlVisible);
             captionEnabled = config.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
-            captionFont = config.GetBindable<UIFont>(NekoPlayerSetting.UIFont);
+            captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
 
             Add(captionContainer = new Container
             {
@@ -81,6 +81,33 @@ namespace NekoPlayer.App.Graphics.Caption
                     }
                 }
             });
+
+            captionFont.BindValueChanged(v =>
+            {
+                switch (v.NewValue)
+                {
+                    case CaptionFonts.GoogleSansFlex:
+                    {
+                        spriteText.Font = NekoPlayerApp.DefaultFont.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Rubik:
+                    {
+                        spriteText.Font = NekoPlayerApp.Rubik.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Pretendard:
+                    {
+                        spriteText.Font = NekoPlayerApp.Pretendard.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.Hungeul:
+                    {
+                        spriteText.Font = NekoPlayerApp.Hungeul.With(size: 24);
+                        break;
+                    }
+                }
+            }, true);
 
             controlsVisibleState.BindValueChanged(v =>
             {
