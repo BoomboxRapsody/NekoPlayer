@@ -26,7 +26,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             [BackgroundDependencyLoader]
             private void load()
             {
-                Width = 240;
+                Width = 320;
                 AutoSizeAxes = Axes.Y;
 
                 InternalChild = youtubeChannelMetadataDisplay = new YouTubeChannelMetadataDisplayWithShadow()
