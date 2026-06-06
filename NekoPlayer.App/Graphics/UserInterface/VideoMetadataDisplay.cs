@@ -205,15 +205,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             Task.Run(async () =>
             {
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{videoData.Snippet.ChannelId}.png");
+                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{videoData.Id}.png");
 
                 using (var httpClient = new System.Net.Http.HttpClient())
                 {
-                    var imageBytes = await httpClient.GetByteArrayAsync(api.GetChannel(videoData.Snippet.ChannelId).Snippet.Thumbnails.High.Url);
+                    var imageBytes = await httpClient.GetByteArrayAsync(videoData.Snippet.Thumbnails.High.Url);
                     await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
                 }
 
-                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{videoData.Snippet.ChannelId}.png"));
+                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{videoData.Id}.png"));
 
                 IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
                 PaletteBuilder paletteBuilder = new PaletteBuilder();
