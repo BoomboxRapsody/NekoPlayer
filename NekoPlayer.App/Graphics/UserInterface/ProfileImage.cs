@@ -6,6 +6,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Apis.YouTube.v3.Data;
 using Humanizer;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Localisation;
@@ -28,7 +29,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class ProfileImage : CompositeDrawable, IHasTooltip
+    public partial class ProfileImage : CompositeDrawable, IHasCustomTooltip<Channel>
     {
         private Sprite profileImage;
 
@@ -228,7 +229,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 });
                 Schedule(() =>
                 {
-                    TooltipText = NekoPlayerStrings.ProfileImageTooltip(api.GetLocalizedChannelTitle(channel, true), Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
+                    //TooltipText = NekoPlayerStrings.ProfileImageTooltip(api.GetLocalizedChannelTitle(channel, true), Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
                 });
 
                 translationSource.BindValueChanged(locale =>
@@ -237,7 +238,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     {
                         Schedule(() =>
                         {
-                            TooltipText = NekoPlayerStrings.ProfileImageTooltip(api.GetLocalizedChannelTitle(channel, true), Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
+                            //TooltipText = NekoPlayerStrings.ProfileImageTooltip(api.GetLocalizedChannelTitle(channel, true), Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
                         });
                     });
                 }, true);
@@ -248,12 +249,16 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     {
                         Schedule(() =>
                         {
-                            TooltipText = NekoPlayerStrings.ProfileImageTooltip(api.GetLocalizedChannelTitle(channel, true), Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
+                            //TooltipText = NekoPlayerStrings.ProfileImageTooltip(api.GetLocalizedChannelTitle(channel, true), Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
                         });
                     });
                 }, true);
             });
         }
+
+        ITooltip<Channel> IHasCustomTooltip<Channel>.GetCustomTooltip() => new ProfileImageTooltip();
+
+        Channel IHasCustomTooltip<Channel>.TooltipContent => channel;
 
         public async Task GetProfileImage(string url, CancellationToken cancellationToken = default)
         {

@@ -262,14 +262,14 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString RunningLatestRelease(string version) => new TranslatableString(getKey(@"running_latest_release"), @"You are running the latest release ({0})", version);
 
         /// <summary>
-        /// "Downloading update... {0}%"
+        /// "Updating NekoPlayer ({0}%)"
         /// </summary>
-        public static LocalisableString DownloadingUpdate(string percentage) => new TranslatableString(getKey(@"updating"), @"Downloading update... {0}%", percentage);
+        public static LocalisableString DownloadingUpdate(string percentage) => new TranslatableString(getKey(@"updating"), @"Updating NekoPlayer ({0}%)", percentage);
 
         /// <summary>
-        /// "To apply updates, please restart the app."
+        /// "The update is almost complete. Re-run NekoPlayer to finish the update."
         /// </summary>
-        public static LocalisableString RestartRequired => new TranslatableString(getKey(@"restart_required"), "To apply updates, please restart the app.");
+        public static LocalisableString RestartRequired => new TranslatableString(getKey(@"restart_required"), "The update is almost complete. Re-run NekoPlayer to finish the update.");
 
         /// <summary>
         /// "Update failed!"

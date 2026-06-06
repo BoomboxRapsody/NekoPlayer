@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
 using Humanizer;
 using NekoPlayer.App.Config;
-using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
@@ -27,30 +26,15 @@ using osuTK.Graphics;
 using PaletteNet;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using YoutubeExplode.Videos.ClosedCaptions;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class VideoMetadataDisplay : CompositeDrawable
+    public partial class YouTubeChannelMetadataDisplayWithShadow : CompositeDrawable
     {
         private ProfileImage profileImage;
         private TruncatingSpriteText videoName;
         private TruncatingSpriteText desc;
-        public Action<VideoMetadataDisplay> ClickEvent;
-
-        private Action subscribeClickAction;
-
-        public Action SubscribeClickAction
-        {
-            get => subscribeClickAction;
-            set
-            {
-                subscribeClickAction = value;
-                subscribeButton.Action = value;
-            }
-        }
-
-        private RoundedAdaptiveButtonV2 subscribeButton;
+        public Action<YouTubeChannelMetadataDisplayWithShadow> ClickEvent;
 
         private Box bgLayer, hover;
 
@@ -67,15 +51,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private NekoPlayerAppBase app { get; set; }
 
         private Bindable<Localisation.Language> uiLanguage;
-        private Bindable<UsernameDisplayMode> usernameDisplayMode;
-        private Bindable<VideoMetadataTranslateSource> translationSource = new Bindable<VideoMetadataTranslateSource>();
 
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
             uiLanguage = app.CurrentLanguage.GetBoundCopy();
-            usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
-            translationSource = appConfig.GetBindable<VideoMetadataTranslateSource>(NekoPlayerSetting.VideoMetadataTranslateSource);
 
             CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS;
             Masking = true;
@@ -95,10 +75,16 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 {
                     RelativeSizeAxes = Axes.Both,
                     Colour = overlayColourProvider.Background4,
-                    Alpha = 1,
+                    Alpha = 1f,
                 },
-                new Container
+                hover = new Box
                 {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = Color4.White,
+                    Blending = BlendingParameters.Additive,
+                    Alpha = 0,
+                },
+                new Container {
                     RelativeSizeAxes = Axes.Both,
                     Padding = new MarginPadding(7),
                     Children = new Drawable[]
@@ -111,7 +97,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             {
                                 Vertical = 5,
                                 Left = 50,
-                                Right = 95,
+                                Right = 5,
                             },
                             Children = new Drawable[]
                             {
@@ -119,7 +105,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
                                     RelativeSizeAxes = Axes.X,
-                                    Text = NekoPlayerStrings.VideoNotLoaded,
+                                    Text = "",
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 desc = new TruncatingSpriteText
@@ -127,35 +113,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
                                     RelativeSizeAxes = Axes.X,
                                     Colour = overlayColourProvider.Foreground2,
-                                    Text = NekoPlayerStrings.VideoNotLoadedDesc,
+                                    Text = "",
                                     Position = new osuTK.Vector2(0, 20),
                                 }
                             }
-                        },
-                        subscribeButton = new RoundedAdaptiveButtonV2
-                        {
-                            Enabled = { Value = true },
-                            Width = 90,
-                            Height = 30,
-                            Text = NekoPlayerStrings.Subscribe,
-                            Origin = Anchor.CentreRight,
-                            Anchor = Anchor.CentreRight,
                         }
                     }
-                },
-                hover = new Box
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = Color4.White,
-                    Blending = BlendingParameters.Additive,
-                    Alpha = 0,
-                },
+                }
             };
-
-            subscribeButton.Action = SubscribeClickAction;
         }
 
-        private Video videoData;
+        private Channel channelData;
 
         protected override bool OnClick(ClickEvent e)
         {
@@ -188,32 +156,19 @@ namespace NekoPlayer.App.Graphics.UserInterface
             (samples as HoverClickSounds).Enabled.Value = (ClickEvent != null);
         }
 
-        public void UpdateChannelSubscribeState(string channelId)
-        {
-            Task.Run(async () =>
-            {
-                bool response = await api.IsChannelSubscribed(channelId);
-
-                if (response == true)
-                    subscribeButton.Text = NekoPlayerStrings.Unsubscribe;
-                else
-                    subscribeButton.Text = NekoPlayerStrings.Subscribe;
-            });
-        }
-
         public void GetPalette()
         {
             Task.Run(async () =>
             {
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{videoData.Id}.png");
+                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channelData.Id}.png");
 
                 using (var httpClient = new System.Net.Http.HttpClient())
                 {
-                    var imageBytes = await httpClient.GetByteArrayAsync(videoData.Snippet.Thumbnails.High.Url);
+                    var imageBytes = await httpClient.GetByteArrayAsync(channelData.Snippet.Thumbnails.High.Url);
                     await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
                 }
 
-                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{videoData.Id}.png"));
+                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channelData.Id}.png"));
 
                 IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
                 PaletteBuilder paletteBuilder = new PaletteBuilder();
@@ -236,70 +191,30 @@ namespace NekoPlayer.App.Graphics.UserInterface
             });
         }
 
-        private void updateDescText()
-        {
-            Schedule(() =>
-            {
-                DateTimeOffset? dateTime = videoData.Snippet.PublishedAtDateTimeOffset;
-                DateTimeOffset now = DateTime.Now;
-                Channel channelData = api.GetChannel(videoData.Snippet.ChannelId);
-                desc.Text = NekoPlayerStrings.VideoMetadataDesc(api.GetLocalizedChannelTitle(channelData), Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), dateTime.Value.Humanize(dateToCompareAgainst: now));
-            });
-        }
-
-        public void UpdateVideo(string videoId)
+        public void UpdateUser(Channel channel)
         {
             uiLanguage.UnbindEvents();
+            channelData = channel;
             Task.Run(async () =>
             {
-                videoData = api.GetVideo(videoId);
-                UpdateChannelSubscribeState(videoData.Snippet.ChannelId);
-                DateTimeOffset? dateTime = videoData.Snippet.PublishedAtDateTimeOffset;
-                DateTimeOffset now = DateTime.Now;
-                Channel channelData = api.GetChannel(videoData.Snippet.ChannelId);
                 Schedule(() =>
                 {
-                    videoName.Text = api.GetLocalizedVideoTitle(videoData);
-                    updateDescText();
-                    profileImage.UpdateProfileImage(videoData.Snippet.ChannelId);
+                    videoName.Text = api.GetLocalizedChannelTitle(channel);
+                    desc.Text = NekoPlayerStrings.ProfileImageTooltip(channel.Snippet.CustomUrl, Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
+                    profileImage.UpdateProfileImage(channel.Id);
+                    GetPalette();
                 });
+            });
 
-                GetPalette();
-
-                uiLanguage.BindValueChanged(locale =>
+            uiLanguage.BindValueChanged(locale =>
+            {
+                Task.Run(async () =>
                 {
-                    Task.Run(async () =>
+                    Schedule(() =>
                     {
-                        Schedule(() =>
-                        {
-                            videoName.Text = api.GetLocalizedVideoTitle(videoData);
-                            updateDescText();
-                        });
+                        videoName.Text = api.GetLocalizedChannelTitle(channel);
                     });
                 });
-
-                usernameDisplayMode.BindValueChanged(locale =>
-                {
-                    Task.Run(async () =>
-                    {
-                        Schedule(() =>
-                        {
-                            updateDescText();
-                        });
-                    });
-                }, true);
-
-                translationSource.BindValueChanged(locale =>
-                {
-                    Task.Run(async () =>
-                    {
-                        Schedule(() =>
-                        {
-                            videoName.Text = api.GetLocalizedVideoTitle(videoData);
-                            updateDescText();
-                        });
-                    });
-                }, true);
             });
         }
     }

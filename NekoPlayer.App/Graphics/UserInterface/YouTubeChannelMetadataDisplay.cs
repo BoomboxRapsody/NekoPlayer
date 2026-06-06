@@ -6,8 +6,10 @@
 using System;
 using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
+using Humanizer;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Utils;
 using osu.Framework.Allocation;
@@ -189,7 +191,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 Schedule(() =>
                 {
                     videoName.Text = api.GetLocalizedChannelTitle(channel);
-                    desc.Text = channel.Snippet.CustomUrl;
+                    desc.Text = NekoPlayerStrings.ProfileImageTooltip(channel.Snippet.CustomUrl, Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
                     profileImage.UpdateProfileImage(channel.Id);
                     GetPalette();
                 });

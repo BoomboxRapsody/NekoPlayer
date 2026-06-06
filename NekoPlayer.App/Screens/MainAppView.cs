@@ -117,7 +117,7 @@ namespace NekoPlayer.App.Screens
 
         private YouTubeChannelMetadataDisplay youtubeChannelMetadataDisplay, youtubeChannelMetadataDisplay2;
 
-        private SettingsItemV2 audioLanguageItem, audioLanguageItem2, wasapiExperimentalItem, captionLangOptions, systemVolumeControlBase;
+        private SettingsItemV2 audioLanguageItem, audioLanguageItem2, wasapiExperimentalItem, captionLangOptions;
 
         private Sample overlayShowSample;
         private Sample overlayHideSample;
@@ -229,7 +229,6 @@ namespace NekoPlayer.App.Screens
         private Bindable<string> localeBindable = new Bindable<string>();
         private FormButton checkForUpdatesButton;
         private FormGoogleOAuthButton login;
-        private FormVolumeSliderBar<double> systemVolumeControl;
         private ThumbnailContainerBackground thumbnailContainer;
         private NekoPlayerSeekBar<double> seekbar;
         private Bindable<LocalisableString> updateInfomationText;
@@ -1042,7 +1041,7 @@ namespace NekoPlayer.App.Screens
                                                 new FillFlowContainer {
                                                     RelativeSizeAxes = Axes.X,
                                                     AutoSizeAxes = Axes.Y,
-                                                    Spacing = new Vector2(0, 4),
+                                                    Spacing = new Vector2(0, 2),
                                                     Direction = FillDirection.Vertical,
                                                     Padding = new MarginPadding
                                                     {
@@ -1288,7 +1287,7 @@ namespace NekoPlayer.App.Screens
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
                                                             Masking = true,
-                                                            Spacing = new Vector2(0, 4),
+                                                            Spacing = new Vector2(0, 2),
                                                             Children = new[]
                                                             {
                                                                 new SettingsItemV2(new FormSliderBar<float>
@@ -1529,19 +1528,9 @@ namespace NekoPlayer.App.Screens
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
                                                             Masking = true,
-                                                            Spacing = new Vector2(0, 4),
+                                                            Spacing = new Vector2(0, 2),
                                                             Children = new Drawable[]
                                                             {
-                                                                systemVolumeControlBase = new SettingsItemV2(systemVolumeControl = new FormVolumeSliderBar<double>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.SystemVolume,
-                                                                    Icon = FontAwesome.Solid.VolumeUp,
-                                                                    Current = systemVolume,
-                                                                    DisplayAsPercentage = true,
-                                                                })
-                                                                {
-                                                                    ShowRevertToDefaultButton = false,
-                                                                },
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.MasterVolume,
@@ -1649,6 +1638,7 @@ namespace NekoPlayer.App.Screens
                                                             f.Colour = overlayColourProvider.Content2;
                                                         })
                                                         {
+                                                            Margin = new MarginPadding { Top = 4 },
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
                                                             TextAnchor = Anchor.Centre,
@@ -3365,7 +3355,7 @@ namespace NekoPlayer.App.Screens
                                                     RelativeSizeAxes = Axes.X,
                                                     AutoSizeAxes = Axes.Y,
                                                     Direction = FillDirection.Vertical,
-                                                    Spacing = new Vector2(4),
+                                                    Spacing = new Vector2(2),
                                                     Children = new Drawable[]
                                                     {
                                                         loadBtnOverlayShow = new MenuButtonItem
@@ -3379,6 +3369,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.LoadVideo,
                                                             Hotkey = new Hotkey(GlobalAction.OpenLoadVideo),
+                                                            RoundCorner = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 8, NekoPlayerApp.UI_CORNER_RADIUS, 8),
                                                         },
                                                         settingsOverlayShowBtn = new MenuButtonItem
                                                         {
@@ -3391,6 +3382,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Settings,
                                                             Hotkey = new Hotkey(GlobalAction.OpenSettings),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         commentOpenButton = new MenuButtonItem
                                                         {
@@ -3403,6 +3395,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.CommentsWithoutCount,
                                                             Hotkey = new Hotkey(GlobalAction.OpenComments),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         searchOpenButton = new MenuButtonItem
                                                         {
@@ -3415,6 +3408,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Search,
                                                             Hotkey = new Hotkey(GlobalAction.OpenSearch),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         reportOpenButton = new MenuButtonItem
                                                         {
@@ -3427,6 +3421,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Report,
                                                             Hotkey = new Hotkey(GlobalAction.ReportAbuse),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         downloadOpenButton = new MenuButtonItem
                                                         {
@@ -3439,6 +3434,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.DownloadVideo,
                                                             Hotkey = new Hotkey(GlobalAction.DownloadVideo),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         playlistOpenButton = new MenuButtonItem
                                                         {
@@ -3451,6 +3447,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Playlists,
                                                             Hotkey = new Hotkey(GlobalAction.OpenPlaylist),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         myPlaylistsOpenButton = new MenuButtonItem
                                                         {
@@ -3463,6 +3460,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.MyPlaylists,
                                                             Hotkey = new Hotkey(GlobalAction.OpenMyPlaylists),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                             Action = () =>
                                                             {
                                                                 hideOverlays();
@@ -3480,6 +3478,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.AudioEffects,
                                                             Hotkey = new Hotkey(GlobalAction.OpenAudioEffects),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         saveVideoOpenButton = new MenuButtonItem
                                                         {
@@ -3492,6 +3491,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Save,
                                                             Hotkey = new Hotkey(GlobalAction.SaveVideoToPlaylist),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         newPlaylistOpenButton = new MenuButtonItem
                                                         {
@@ -3504,6 +3504,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.AddNewPlaylist,
                                                             Hotkey = new Hotkey(GlobalAction.AddPlaylistKey),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                             Action = () =>
                                                             {
                                                                 hideOverlays();
@@ -3521,6 +3522,7 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Exit,
                                                             Hotkey = new Hotkey(GlobalAction.QuitApp),
+                                                            RoundCorner = new CornersInfo(8, NekoPlayerApp.UI_CORNER_RADIUS, 8, NekoPlayerApp.UI_CORNER_RADIUS),
                                                             Action = () =>
                                                             {
                                                                 overlayHideSample.Volume.Value = 0;
@@ -4405,8 +4407,6 @@ namespace NekoPlayer.App.Screens
                         defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar = Convert.ToSingle(value.NewValue);
                     });
 
-                    systemVolumeControl.Caption = NekoPlayerStrings.SystemVolumeWithDevice(defaultPlaybackDevice.FriendlyName);
-
                     systemSoundMute.Value = defaultPlaybackDevice.AudioEndpointVolume.Mute;
 
                     systemSoundMute.BindValueChanged(value =>
@@ -4417,7 +4417,6 @@ namespace NekoPlayer.App.Screens
             }
             else
             {
-                systemVolumeControlBase.Hide();
                 systemMuteSwitchBase.Hide();
             }
             #endregion
@@ -5454,7 +5453,7 @@ namespace NekoPlayer.App.Screens
             {
                 try
                 {
-                    discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().Username}, {discordRPC.GetCurrentUser().ID})";
+                    discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().Username})";
                 }
                 catch (Exception e)
                 {
