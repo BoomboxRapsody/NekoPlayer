@@ -20,6 +20,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     public partial class DiscordProfileImageWithoutMasking : CompositeDrawable
     {
         private Sprite profileImage;
+        private BufferedContainer blur;
 
         [Resolved]
         private TextureStore textureStore { get; set; }
@@ -33,19 +34,24 @@ namespace NekoPlayer.App.Graphics.UserInterface
             //CornerRadius = size / 2;
             InternalChildren = new Drawable[]
             {
-                profileImage = new Sprite
+                blur = new BufferedContainer
                 {
+                    BlurSigma = new osuTK.Vector2(2),
                     RelativeSizeAxes = Axes.Both,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                },
+                    Child = profileImage = new Sprite
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                    },
+                }
             };
         }
 
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
-            profileImage.Colour = ColourInfo.GradientHorizontal(Color4.White.Opacity(0.5f), Color4.White.Opacity(0));
+            blur.Colour = ColourInfo.GradientHorizontal(Color4.White.Opacity(0.5f), Color4.White.Opacity(0));
         }
 
         protected override void Dispose(bool isDisposing)

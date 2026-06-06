@@ -5453,7 +5453,7 @@ namespace NekoPlayer.App.Screens
             {
                 try
                 {
-                    discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().Username}, {discordRPC.GetCurrentUser().ID})";
+                    discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().Username})";
                 }
                 catch (Exception e)
                 {

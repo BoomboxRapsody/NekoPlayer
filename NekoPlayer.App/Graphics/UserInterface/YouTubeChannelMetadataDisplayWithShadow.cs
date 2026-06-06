@@ -21,6 +21,7 @@ using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
+using osuTK;
 using osuTK.Graphics;
 using PaletteNet;
 using SixLabors.ImageSharp;
@@ -28,12 +29,12 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class YouTubeChannelMetadataDisplay : CompositeDrawable
+    public partial class YouTubeChannelMetadataDisplayWithShadow : CompositeDrawable
     {
         private ProfileImage profileImage;
         private TruncatingSpriteText videoName;
         private TruncatingSpriteText desc;
-        public Action<YouTubeChannelMetadataDisplay> ClickEvent;
+        public Action<YouTubeChannelMetadataDisplayWithShadow> ClickEvent;
 
         private Box bgLayer, hover;
 
@@ -58,6 +59,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS;
             Masking = true;
+
+            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
+            {
+                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                Colour = Color4.Black.Opacity(0.25f),
+                Offset = new Vector2(0, 2),
+                Radius = 16,
+            };
 
             InternalChildren = new Drawable[]
             {
