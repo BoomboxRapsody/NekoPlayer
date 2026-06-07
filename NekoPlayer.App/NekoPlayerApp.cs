@@ -147,8 +147,6 @@ namespace NekoPlayer.App
                 UpdateManagerVersionText.Value = NekoPlayerStrings.ViewLatestVersions;
             }
 
-            fetchCaptionLanguages();
-
             // Add your top-level game components here.
             // A screen stack and sample screen has been provided for convenience, but you can replace it if you don't want to use screens.
             AddRange(new Drawable[]
@@ -215,25 +213,6 @@ namespace NekoPlayer.App
             }
 
             DefaultFont = FontUsage.Default.With(fontName, 16, "Regular");
-        }
-
-        private void fetchCaptionLanguages()
-        {
-            IList<I18nLanguage> i18NLanguages = YouTubeService.GetAvailableLanguages();
-            List<YouTubeI18nLangItem> items = new List<YouTubeI18nLangItem>();
-
-            foreach (var item in i18NLanguages)
-            {
-                YouTubeI18nLangItem i18NLangItem = new YouTubeI18nLangItem
-                {
-                    Hl = item.Snippet.Hl,
-                    Name = item.Snippet.Name,
-                };
-
-                items.Add(i18NLangItem);
-            }
-
-            AvailableCaptionLanguages = items;
         }
 
         public List<YouTubeI18nLangItem> AvailableCaptionLanguages;
