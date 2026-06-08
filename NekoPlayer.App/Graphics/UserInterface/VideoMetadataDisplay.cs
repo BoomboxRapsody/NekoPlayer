@@ -201,6 +201,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             });
         }
 
+        [Resolved]
+        private OverlayColourProvider overlayColourProvider { get; set; }
+
         public void GetPalette()
         {
             Task.Run(async () =>
@@ -232,6 +235,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         videoName.Colour = (textColor);
                         desc.Colour = (textColor);
                     });
+                }
+                else
+                {
+                    bgLayer.Colour = overlayColourProvider.Background4;
+                    videoName.Colour = overlayColourProvider.Content2;
+                    desc.Colour = overlayColourProvider.Foreground2;
                 }
             });
         }

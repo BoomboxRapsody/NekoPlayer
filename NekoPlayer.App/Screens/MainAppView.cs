@@ -6555,6 +6555,7 @@ namespace NekoPlayer.App.Screens
                 }
 
                 Schedule(() => downloadOpenButton.Enabled.Value = true);
+                Schedule(() => seekbar.GetPalette(videoData));
 
                 commentsDisabled = videoData.Statistics.CommentCount == null;
 

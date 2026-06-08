@@ -5,7 +5,9 @@
 
 using System;
 using System.Numerics;
-using osuTK.Graphics;
+using System.Threading.Tasks;
+using Google.Apis.YouTube.v3.Data;
+using NekoPlayer.App.Utils;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -14,6 +16,10 @@ using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
+using osuTK.Graphics;
+using PaletteNet;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using Vector2 = osuTK.Vector2;
 
 namespace NekoPlayer.App.Graphics.UserInterface
@@ -40,6 +46,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 accentColour = value;
                 LeftBox.Colour = value;
+                Nub.Colour = value;
             }
         }
 
@@ -153,6 +160,50 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 Hollow = true,
                 Radius = 5,
             };
+        }
+
+        [Resolved]
+        private NekoPlayerAppBase app { get; set; }
+
+        [Resolved]
+        private OverlayColourProvider overlayColourProvider { get; set; }
+
+        public void GetPalette(Video video)
+        {
+            Task.Run(async () =>
+            {
+                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{video.Id}.png");
+
+                using (var httpClient = new System.Net.Http.HttpClient())
+                {
+                    var imageBytes = await httpClient.GetByteArrayAsync(video.Snippet.Thumbnails.High.Url);
+                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                }
+
+                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{video.Id}.png"));
+
+                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
+                PaletteBuilder paletteBuilder = new PaletteBuilder();
+                Palette palette = paletteBuilder.Generate(bitmapHelper);
+                int? rgbColor = palette.LightMutedSwatch.Rgb;
+                int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
+
+                if (rgbColor != null && rgbColor2 != null)
+                {
+                    Color4 accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
+                    Color4 bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
+                    Schedule(() =>
+                    {
+                        AccentColour = accentColor;
+                        BackgroundColour = bgColor;
+                    });
+                }
+                else
+                {
+                    AccentColour = Nub.Colour = overlayColourProvider.Content2;
+                    BackgroundColour = overlayColourProvider.Content2.Darken(1);
+                }
+            });
         }
 
         protected override void Update()
