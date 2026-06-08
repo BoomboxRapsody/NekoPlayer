@@ -44,7 +44,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 return;
 
             sampleHover.Frequency.Value = 0.98 + RNG.NextDouble(0.04);
-            sampleHover.Play();
+            //sampleHover.Play();
         }
     }
 }

@@ -312,7 +312,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 pitch += ((double)SelectedText.Length / Math.Max(1, Text.Length)) * 0.15f;
 
             channel.Frequency.Value = pitch;
-            channel.Play();
+            //channel.Play();
 
             sampleLastPlaybackTime = Time.Current;
         });

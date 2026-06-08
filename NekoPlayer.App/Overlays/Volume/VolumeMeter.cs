@@ -300,7 +300,7 @@ namespace NekoPlayer.App.Overlays.Volume
             if (displayVolumeInt == 0 || displayVolumeInt == 100)
                 channel.Frequency.Value -= 0.5f;
 
-            channel.Play();
+            //channel.Play();
             sampleLastPlaybackTime = Time.Current;
         }
 
@@ -420,7 +420,7 @@ namespace NekoPlayer.App.Overlays.Volume
                 case SelectionState.Selected:
                     this.ScaleTo(1.04f, transition_length, Easing.OutExpo);
                     selectedGlowContainer.FadeIn(transition_length, Easing.OutExpo);
-                    hoverSample?.Play();
+                    //hoverSample?.Play();
                     break;
 
                 case SelectionState.NotSelected:

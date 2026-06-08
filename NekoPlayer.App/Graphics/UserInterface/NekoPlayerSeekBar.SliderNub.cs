@@ -23,7 +23,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             public const float HEIGHT = 30;
 
-            public const float DEFAULT_EXPANDED_SIZE = 5;
+            public const float DEFAULT_EXPANDED_SIZE = 4.5f;
 
             private const float border_width = 3;
 

@@ -91,8 +91,10 @@ namespace NekoPlayer.App.Overlays.OSD
         {
             base.LoadComplete();
 
+            /*
             if (canPlaySound)
                 playSound();
+            */
         }
 
         private void playSound()

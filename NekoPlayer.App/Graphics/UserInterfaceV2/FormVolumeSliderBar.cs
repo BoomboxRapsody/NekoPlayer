@@ -116,7 +116,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         /// <summary>
         /// Whether sound effects should play when adjusting this slider.
         /// </summary>
-        public bool PlaySamplesOnAdjust { get; init; } = true;
+        public bool PlaySamplesOnAdjust { get; init; } = false;
 
         /// <summary>
         /// The string formatting function to use for the value label.
@@ -467,7 +467,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             private Box leftBox = null!;
             private Box rightBox = null!;
             private InnerSliderNub nub = null!;
-            public const float NUB_WIDTH = 5;
+            public const float NUB_WIDTH = 4.5f;
 
             private SpriteIcon iconDark = null!, iconLight = null!;
 

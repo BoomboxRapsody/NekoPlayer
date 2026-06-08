@@ -20,6 +20,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Overlays.Volume;
+using NekoPlayer.App.Graphics.UserInterfaceV2;
 
 namespace NekoPlayer.App.Overlays
 {
@@ -34,21 +35,35 @@ namespace NekoPlayer.App.Overlays
         private VolumeMeter volumeMeterEffect = null!;
         private VolumeMeter volumeMeterMusic = null!;
 
+        private FormVolumeSliderBarSmall<double> newVolumeSliderBar;
+
         private SelectionCycleFillFlowContainer<VolumeMeter> volumeMeters = null!;
 
         [BackgroundDependencyLoader]
         private void load(AudioManager audio, AdaptiveColour colours)
         {
-            AutoSizeAxes = Axes.X;
-            RelativeSizeAxes = Axes.Y;
+            Height = 150;
+            RelativeSizeAxes = Axes.X;
 
             AddRange(new Drawable[]
             {
                 new Box
                 {
-                    RelativeSizeAxes = Axes.Y,
-                    Width = 300,
-                    Colour = ColourInfo.GradientHorizontal(Color4.Black.Opacity(0.75f), Color4.Black.Opacity(0))
+                    RelativeSizeAxes = Axes.X,
+                    Height = 100,
+                    Colour = ColourInfo.GradientVertical(Color4.Black.Opacity(0.25f), Color4.Black.Opacity(0))
+                },
+                newVolumeSliderBar = new FormVolumeSliderBarSmall<double>
+                {
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
+                    Margin = new MarginPadding()
+                    {
+                        Top = 8
+                    },
+                    Width = 500,
+                    Caption = NekoPlayerStrings.VideoVolume,
+                    DisplayAsPercentage = true,
                 },
                 new FillFlowContainer
                 {
@@ -56,6 +71,8 @@ namespace NekoPlayer.App.Overlays
                     AutoSizeAxes = Axes.Both,
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreLeft,
+                    AlwaysPresent = true,
+                    Alpha = 0,
                     Spacing = new Vector2(0, offset),
                     Margin = new MarginPadding { Left = offset },
                     Children = new Drawable[]
@@ -82,6 +99,8 @@ namespace NekoPlayer.App.Overlays
             volumeMeterMaster.Bindable.BindTo(audio.Volume);
             volumeMeterEffect.Bindable.BindTo(audio.VolumeSample);
             volumeMeterMusic.Bindable.BindTo(audio.VolumeTrack);
+
+            newVolumeSliderBar.Current.BindTo(audio.VolumeTrack);
         }
 
         protected override void LoadComplete()
@@ -146,7 +165,10 @@ namespace NekoPlayer.App.Overlays
         {
             // Focus on the master meter as a default if previously hidden
             if (State.Value == Visibility.Hidden)
-                FocusMasterVolume();
+            {
+                //FocusMasterVolume();
+                volumeMeters.Select(volumeMeterMusic);
+            }
 
             if (State.Value == Visibility.Visible)
                 schedulePopOut();
@@ -159,6 +181,10 @@ namespace NekoPlayer.App.Overlays
             ClearTransforms();
             volumeMeters.ScaleTo(1, 500, Easing.OutQuint);
             volumeMeters.TransformTo("Spacing", new Vector2(0, offset), 500, Easing.OutQuint);
+
+            newVolumeSliderBar.MoveToY(0, 500, Easing.OutQuint);
+            newVolumeSliderBar.FadeIn(500, Easing.OutQuint);
+
             this.FadeIn(500, Easing.OutQuint);
 
             schedulePopOut();
@@ -169,6 +195,9 @@ namespace NekoPlayer.App.Overlays
             this.FadeOut(250, Easing.InQuint);
             volumeMeters.ScaleTo(0.8f, 250, Easing.InQuint);
             volumeMeters.TransformTo("Spacing", new Vector2(0, -offset), 250, Easing.InQuint);
+
+            newVolumeSliderBar.MoveToY(-80, 250, Easing.InQuint);
+            newVolumeSliderBar.FadeOut(250, Easing.InQuint);
         }
 
         protected override bool OnMouseMove(MouseMoveEvent e)
