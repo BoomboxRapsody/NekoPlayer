@@ -1531,6 +1531,7 @@ namespace NekoPlayer.App.Screens
                                                             Spacing = new Vector2(0, 2),
                                                             Children = new Drawable[]
                                                             {
+                                                                /*
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.MasterVolume,
@@ -1538,6 +1539,7 @@ namespace NekoPlayer.App.Screens
                                                                     Current = config.GetBindable<double>(FrameworkSetting.VolumeUniversal),
                                                                     DisplayAsPercentage = true,
                                                                 }),
+                                                                */
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.VideoVolume,
@@ -1545,6 +1547,7 @@ namespace NekoPlayer.App.Screens
                                                                     Current = videoVolume,
                                                                     DisplayAsPercentage = true,
                                                                 }),
+                                                                /*
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.SFXVolume,
@@ -1552,6 +1555,7 @@ namespace NekoPlayer.App.Screens
                                                                     Current = config.GetBindable<double>(FrameworkSetting.VolumeEffect),
                                                                     DisplayAsPercentage = true,
                                                                 }),
+                                                                */
                                                             }
                                                         },
                                                         new SettingsItemV2(new FormCheckBox
@@ -5175,7 +5179,7 @@ namespace NekoPlayer.App.Screens
                 overlayContent.MoveToY(200);
                 overlayContent.MoveToY(0, 500, Easing.OutQuint);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
-                overlayShowSample.Play();
+                //overlayShowSample.Play();
             }
             else if (overlayContent is SideOverlayContainer)
             {
@@ -5189,7 +5193,7 @@ namespace NekoPlayer.App.Screens
                 overlayContent.MoveToX(200);
                 overlayContent.MoveToX(0, 500, Easing.OutQuint);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
-                overlayShowSample.Play();
+                //overlayShowSample.Play();
             }
             else
             {
@@ -5203,7 +5207,7 @@ namespace NekoPlayer.App.Screens
                 overlayContent.ScaleTo(0.8f);
                 overlayContent.ScaleTo(1f, 750, Easing.OutElastic);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
-                overlayShowSample.Play();
+                //overlayShowSample.Play();
             }
         }
 
@@ -5214,7 +5218,7 @@ namespace NekoPlayer.App.Screens
             {
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
-                overlayHideSample.Play();
+                //overlayHideSample.Play();
                 //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
@@ -5226,7 +5230,7 @@ namespace NekoPlayer.App.Screens
             {
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
-                overlayHideSample.Play();
+                //overlayHideSample.Play();
                 //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
@@ -5238,7 +5242,7 @@ namespace NekoPlayer.App.Screens
             {
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
-                overlayHideSample.Play();
+                //overlayHideSample.Play();
                 //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
@@ -6555,6 +6559,7 @@ namespace NekoPlayer.App.Screens
                 }
 
                 Schedule(() => downloadOpenButton.Enabled.Value = true);
+                Schedule(() => seekbar.GetPalette(videoData));
 
                 commentsDisabled = videoData.Statistics.CommentCount == null;
 

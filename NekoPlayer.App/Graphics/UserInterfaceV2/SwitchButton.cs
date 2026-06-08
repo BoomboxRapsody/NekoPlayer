@@ -110,10 +110,12 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         {
             base.OnUserChange(value);
 
+            /*
             if (value)
                 sampleChecked?.Play();
             else
                 sampleUnchecked?.Play();
+            */
         }
 
         private void updateColours()

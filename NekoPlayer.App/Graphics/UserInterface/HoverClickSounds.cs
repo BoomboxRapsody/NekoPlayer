@@ -75,7 +75,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             if (channel != null)
             {
                 channel.Frequency.Value = 0.99 + RNG.NextDouble(0.02);
-                channel.Play();
+                //channel.Play();
             }
         }
     }

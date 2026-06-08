@@ -53,7 +53,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             base.OnUserChange(value);
 
-            playSample(value);
+            //playSample(value);
 
             TooltipText = GetTooltipText(value);
         }
