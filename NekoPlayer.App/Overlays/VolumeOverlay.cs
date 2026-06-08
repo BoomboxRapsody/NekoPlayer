@@ -31,8 +31,6 @@ namespace NekoPlayer.App.Overlays
 
         private const float offset = 10;
 
-        private VolumeMeter volumeMeterMaster = null!;
-        private VolumeMeter volumeMeterEffect = null!;
         private VolumeMeter volumeMeterMusic = null!;
 
         private FormVolumeSliderBarSmall<double> newVolumeSliderBar;
@@ -87,8 +85,6 @@ namespace NekoPlayer.App.Overlays
                             Spacing = new Vector2(0, -offset),
                             Children = new[]
                             {
-                                volumeMeterEffect = new VolumeMeter(NekoPlayerStrings.SFXVolume, 125, colours.BlueDarker),
-                                volumeMeterMaster = new MasterVolumeMeter(NekoPlayerStrings.MasterVolume, 150, colours.PinkDarker) { IsMuted = { BindTarget = IsMuted }, },
                                 volumeMeterMusic = new VolumeMeter(NekoPlayerStrings.VideoVolume, 125, colours.BlueDarker),
                             }
                         },
@@ -96,8 +92,6 @@ namespace NekoPlayer.App.Overlays
                 },
             });
 
-            volumeMeterMaster.Bindable.BindTo(audio.Volume);
-            volumeMeterEffect.Bindable.BindTo(audio.VolumeSample);
             volumeMeterMusic.Bindable.BindTo(audio.VolumeTrack);
 
             newVolumeSliderBar.Current.BindTo(audio.VolumeTrack);
@@ -154,11 +148,6 @@ namespace NekoPlayer.App.Overlays
             }
 
             return false;
-        }
-
-        public void FocusMasterVolume()
-        {
-            volumeMeters.Select(volumeMeterMaster);
         }
 
         public override void Show()
