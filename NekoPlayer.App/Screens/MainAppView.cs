@@ -6593,6 +6593,8 @@ namespace NekoPlayer.App.Screens
 
                     if (currentVideoSource != null)
                         playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? bgColor : accentColor);
+                    else
+                        playPause.IconObject.FadeColour(accentColor);
 
                     speedBarBG.Colour = bgColor;
                     speedBarIcon.Colour = accentColor;
