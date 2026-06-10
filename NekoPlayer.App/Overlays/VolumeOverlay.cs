@@ -3,6 +3,13 @@
 
 using System;
 using System.Linq;
+using AngleSharp.Common;
+using NekoPlayer.App.Graphics;
+using NekoPlayer.App.Graphics.UserInterface;
+using NekoPlayer.App.Graphics.UserInterfaceV2;
+using NekoPlayer.App.Input.Binding;
+using NekoPlayer.App.Localisation;
+using NekoPlayer.App.Overlays.Volume;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Bindables;
@@ -15,12 +22,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Threading;
 using osuTK;
 using osuTK.Graphics;
-using NekoPlayer.App.Graphics;
-using NekoPlayer.App.Graphics.UserInterface;
-using NekoPlayer.App.Input.Binding;
-using NekoPlayer.App.Localisation;
-using NekoPlayer.App.Overlays.Volume;
-using NekoPlayer.App.Graphics.UserInterfaceV2;
 
 namespace NekoPlayer.App.Overlays
 {
@@ -34,6 +35,11 @@ namespace NekoPlayer.App.Overlays
         private VolumeMeter volumeMeterMusic = null!;
 
         private FormVolumeSliderBarSmall<double> newVolumeSliderBar;
+        private BindableDouble ActualVolume = new BindableDouble()
+        {
+            MinValue = 0,
+            MaxValue = 1,
+        };
 
         private SelectionCycleFillFlowContainer<VolumeMeter> volumeMeters = null!;
 
@@ -94,7 +100,8 @@ namespace NekoPlayer.App.Overlays
 
             volumeMeterMusic.Bindable.BindTo(audio.VolumeTrack);
 
-            newVolumeSliderBar.Current.BindTo(audio.VolumeTrack);
+            ActualVolume.BindTo(audio.VolumeTrack);
+            newVolumeSliderBar.Current.BindTo(ActualVolume);
         }
 
         protected override void LoadComplete()

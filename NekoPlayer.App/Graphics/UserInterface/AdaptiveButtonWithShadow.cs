@@ -144,7 +144,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
-            Background.Colour = overlayColourProvider.Background5;
+            Background.Colour = overlayColourProvider.Background3;
             SpriteText.Colour = overlayColourProvider.Content2;
         }
 

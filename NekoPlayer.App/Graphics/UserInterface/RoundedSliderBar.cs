@@ -40,6 +40,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 accentColour = value;
                 LeftBox.Colour = value;
+                Nub.Colour = value;
             }
         }
 

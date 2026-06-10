@@ -300,7 +300,7 @@ namespace NekoPlayer.App.Overlays.Volume
             if (displayVolumeInt == 0 || displayVolumeInt == 100)
                 channel.Frequency.Value -= 0.5f;
 
-            channel.Play();
+            //channel.Play();
             sampleLastPlaybackTime = Time.Current;
         }
 

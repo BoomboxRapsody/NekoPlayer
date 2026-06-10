@@ -92,7 +92,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 wasOpened = true;
                 this.FadeIn(300, Easing.OutQuint);
-                sampleOpen?.Play();
+                //sampleOpen?.Play();
             }
 
             protected override void AnimateClose()
@@ -100,7 +100,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 if (wasOpened)
                 {
                     this.FadeOut(300, Easing.OutQuint);
-                    sampleClose?.Play();
+                    //sampleClose?.Play();
                 }
             }
 
