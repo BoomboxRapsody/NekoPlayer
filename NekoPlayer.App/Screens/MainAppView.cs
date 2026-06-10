@@ -66,6 +66,7 @@ using osu.Framework.Threading;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
+using PaletteNet;
 using SharpCompress.Archives.Zip;
 using SharpCompress.Common;
 using SharpCompress.Writers.Zip;
@@ -83,7 +84,7 @@ namespace NekoPlayer.App.Screens
     {
         private BufferedContainer videoContainer;
         private AdaptiveButton loadBtn, commentSendButton, searchButton, loadPlaylistBtn, loadPlaylistOpenButton, declineButton, acceptButton, logoutButton, viewChannelButton, updatePlaylistButton, downloadBtn;
-        private ControlBarButton prevVideoButton, nextVideoButton;
+        private ControlBarIconButton prevVideoButton, nextVideoButton;
         private EnhancedFocusedTextBox videoIdBox, playlistIdBox, searchTextBox;
         private EnhancedFocusedTextBoxWithProfileImage commentTextBox;
         private LoadingSpinner spinner;
@@ -94,7 +95,7 @@ namespace NekoPlayer.App.Screens
         private Container uiGradientContainer;
         private OverlayContainer loadVideoContainer, settingsContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
-        private AdaptiveButtonWithShadow menuOverlayShow;
+        private IconButtonWithShadow menuOverlayShow;
         private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, downloadOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
         private VideoMetadataDisplayWithoutProfile videoMetadataDisplay;
         private VideoMetadataDisplay videoMetadataDisplayDetails, videoMetadataDisplayDetails2;
@@ -245,7 +246,7 @@ namespace NekoPlayer.App.Screens
 
         private BufferedContainer videoScalingContainer;
 
-        private Box likeButtonBackground, dislikeButtonBackground, likeButtonBackgroundSelected, dislikeButtonBackgroundSelected;
+        private Box likeButtonBackground, dislikeButtonBackground, likeButtonBackgroundSelected, dislikeButtonBackgroundSelected, speedBarBG, volumeBarBG, timeBG;
 
         private FillFlowContainer likeButtonForeground, dislikeButtonForeground;
 
@@ -273,7 +274,10 @@ namespace NekoPlayer.App.Screens
         private Bindable<double> speedTextRolling;
         private Bindable<double> volumeTextRolling;
 
-        private SpriteIcon volumeIcon;
+        private SpriteIcon volumeIcon, speedBarIcon;
+
+        private PlaybackSpeedSliderBar speedBarSlider;
+        private RoundedSliderBar<double> volumeBarSlider;
 
         private LinkFlowContainer dislikeCounterCredits, playlistAuthor;
 
@@ -403,6 +407,9 @@ namespace NekoPlayer.App.Screens
             caption_font = appConfig.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
 
             aspectRatioMethod = appConfig.GetBindable<AspectRatioMethod>(NekoPlayerSetting.AspectRatioMethod);
+
+            accentColor = overlayColourProvider1.Content2;
+            bgColor = overlayColourProvider1.Background3;
 
             windowedResolution.Value = sizeWindowed.Value;
 
@@ -751,7 +758,7 @@ namespace NekoPlayer.App.Screens
                                                                     },
                                                                     Children = new Drawable[]
                                                                     {
-                                                                        new Box
+                                                                        speedBarBG = new Box
                                                                         {
                                                                             RelativeSizeAxes = Axes.Both,
                                                                             Colour = overlayColourProvider.Background3,
@@ -768,7 +775,7 @@ namespace NekoPlayer.App.Screens
                                                                             },
                                                                             Children = new Drawable[]
                                                                             {
-                                                                                new SpriteIcon
+                                                                                speedBarIcon = new SpriteIcon
                                                                                 {
                                                                                     Icon = FontAwesome.Solid.TachometerAlt,
                                                                                     Width = 16,
@@ -779,7 +786,7 @@ namespace NekoPlayer.App.Screens
                                                                                     },
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                 },
-                                                                                new PlaybackSpeedSliderBar
+                                                                                speedBarSlider = new PlaybackSpeedSliderBar
                                                                                 {
                                                                                     Width = 200,
                                                                                     Margin = new MarginPadding
@@ -820,7 +827,7 @@ namespace NekoPlayer.App.Screens
                                                                     },
                                                                     Children = new Drawable[]
                                                                     {
-                                                                        new Box
+                                                                        volumeBarBG = new Box
                                                                         {
                                                                             RelativeSizeAxes = Axes.Both,
                                                                             Colour = overlayColourProvider.Background3,
@@ -848,7 +855,7 @@ namespace NekoPlayer.App.Screens
                                                                                     },
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                 },
-                                                                                new RoundedSliderBar<double>
+                                                                                volumeBarSlider = new RoundedSliderBar<double>
                                                                                 {
                                                                                     Width = 200,
                                                                                     Margin = new MarginPadding
@@ -890,7 +897,7 @@ namespace NekoPlayer.App.Screens
                                                                     },
                                                                     Children = new Drawable[]
                                                                     {
-                                                                        new Box
+                                                                        timeBG = new Box
                                                                         {
                                                                             RelativeSizeAxes = Axes.Both,
                                                                             Colour = overlayColourProvider.Background3,
@@ -5093,7 +5100,7 @@ namespace NekoPlayer.App.Screens
         {
             repeat.Value = !repeat.Value;
             repeatButton.SetEnabledValue(repeat.Value);
-            repeatButton.IconObject.FadeColour(repeat.Value ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2, 250, Easing.OutQuint);
+            repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor, 250, Easing.OutQuint);
             repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
 
@@ -6182,7 +6189,7 @@ namespace NekoPlayer.App.Screens
                 if (videoPlaying.Value != currentVideoSource.IsPlaying())
                 {
                     playPause.SetEnabledValue(currentVideoSource.IsPlaying());
-                    playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? overlayColourProvider1.Background3 : overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                    playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? bgColor : accentColor, 250, Easing.OutQuint);
                     playPause.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 50f : 40f, 1000, Easing.OutElastic);
 
                     prevVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 1000, Easing.OutElastic);
@@ -6538,6 +6545,91 @@ namespace NekoPlayer.App.Screens
             });
         }
 
+        public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)
+        {
+            Task.Run(async () =>
+            {
+                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png");
+
+                using (var httpClient = new System.Net.Http.HttpClient())
+                {
+                    var imageBytes = await httpClient.GetByteArrayAsync(video.Snippet.Thumbnails.High.Url);
+                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                }
+
+                using SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png"));
+
+                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
+                PaletteBuilder paletteBuilder = new PaletteBuilder();
+                Palette palette = paletteBuilder.Generate(bitmapHelper);
+                int? rgbColor = palette.LightMutedSwatch.Rgb;
+                int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
+
+                if (rgbColor != null && rgbColor2 != null)
+                {
+                    accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
+                    bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
+                }
+                else
+                {
+                    accentColor = overlayColourProvider1.Content2;
+                    bgColor = overlayColourProvider1.Background3;
+                }
+
+                #region video controls color area
+
+                Schedule(() =>
+                {
+                    prevVideoButton.AccentColor = accentColor;
+                    prevVideoButton.BackgroundColour = bgColor;
+                    prevVideoButton.IconObject.FadeColour(accentColor);
+
+                    nextVideoButton.AccentColor = accentColor;
+                    nextVideoButton.BackgroundColour = bgColor;
+                    nextVideoButton.IconObject.FadeColour(accentColor);
+
+                    playPause.AccentColor = accentColor;
+                    playPause.BackgroundColour = bgColor;
+
+                    if (currentVideoSource != null)
+                        playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? bgColor : accentColor);
+
+                    speedBarBG.Colour = bgColor;
+                    speedBarIcon.Colour = accentColor;
+
+                    repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor);
+                    repeatButton.AccentColor = accentColor;
+                    repeatButton.BackgroundColour = bgColor;
+
+                    speedBarSlider.AccentColour = accentColor;
+                    speedBarSlider.BackgroundColour = bgColor.Lighten(0.5f);
+
+                    speedText.Colour = accentColor;
+
+                    volumeBarBG.Colour = bgColor;
+                    volumeIcon.Colour = accentColor;
+
+                    volumeBarSlider.AccentColour = accentColor;
+                    volumeBarSlider.BackgroundColour = bgColor.Lighten(0.5f);
+
+                    volumeText.Colour = accentColor;
+
+                    timeBG.Colour = bgColor;
+                    timeText.Colour = accentColor;
+
+
+
+                    menuOverlayShow.BackgroundColour = bgColor;
+                    menuOverlayShow.IconColour = accentColor;
+                });
+
+                #endregion
+            });
+        }
+
+        private Color4 accentColor;
+        private Color4 bgColor;
+
         private void updateVideoMetadata(string videoId)
         {
             videoMetadataDisplay.UpdateVideo(videoId);
@@ -6550,6 +6642,7 @@ namespace NekoPlayer.App.Screens
                 channelData = api.GetChannel(videoData.Snippet.ChannelId);
                 updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
 
+                Schedule(() => GetPalette(videoData));
                 Schedule(() => commentOpenButton.Enabled.Value = videoData.Statistics.CommentCount != null);
 
                 if (googleOAuth2.SignedIn.Value)

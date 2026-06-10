@@ -29,10 +29,35 @@ namespace NekoPlayer.App.Graphics.UserInterface
             set => SpriteText.Text = value;
         }
 
+        private Color4 bgColor;
+
         public Color4 BackgroundColour
         {
-            get => Background.Colour;
-            set => Background.FadeColour(value);
+            get => bgColor;
+            set
+            {
+                bgColor = value;
+
+                if (!enabledValue)
+                {
+                    Background.FadeColour(value);
+                }
+            }
+        }
+
+        private Color4 accentColor;
+
+        public Color4 AccentColor
+        {
+            get => accentColor;
+            set
+            {
+                accentColor = value;
+
+                if (enabledValue) {
+                    Background.FadeColour(value);
+                }
+            }
         }
 
         private Color4? flashColour;
@@ -95,11 +120,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected Container ForegroundContent;
 
+        private bool enabledValue;
+
         public void SetEnabledValue(bool enabled)
         {
+            enabledValue = enabled;
             content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
-            Background.FadeColour(enabled ? overlayColourProvider.Content2 : overlayColourProvider.Background3, 250, Easing.OutQuint);
-            SpriteText.FadeColour(enabled ? overlayColourProvider.Background3 : overlayColourProvider.Content2, 250, Easing.OutQuint);
+            Background.FadeColour(enabled ? accentColor : bgColor, 250, Easing.OutQuint);
+            SpriteText.FadeColour(enabled ? bgColor : accentColor, 250, Easing.OutQuint);
         }
 
         public ControlBarButton(HoverSampleSet hoverSampleSet = HoverSampleSet.Default, bool transparentBackground = false)
@@ -156,8 +184,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
-            Background.Colour = overlayColourProvider.Background3;
-            SpriteText.Colour = overlayColourProvider.Content2;
+            Background.Colour = bgColor = overlayColourProvider.Background3;
+            accentColor = SpriteText.Colour = overlayColourProvider.Content2;
         }
 
         [Resolved]
