@@ -6617,8 +6617,6 @@ namespace NekoPlayer.App.Screens
                     timeBG.Colour = bgColor;
                     timeText.Colour = accentColor;
 
-
-
                     menuOverlayShow.BackgroundColour = bgColor;
                     menuOverlayShow.IconColour = accentColor;
                 });
