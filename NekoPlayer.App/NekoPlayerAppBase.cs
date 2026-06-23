@@ -398,6 +398,11 @@ namespace NekoPlayer.App
                 Logger.Log($"Scaling container loaded");
 
                 trackAudioEffects();
+
+                Audio.UseExperimentalWasapi.BindValueChanged(_ =>
+                {
+                    trackAudioEffects();
+                });
             }
             catch (Exception ex)
             {
@@ -606,7 +611,7 @@ namespace NekoPlayer.App
             }, true);
             #endregion
 
-            #region Karaoke Mode (BQF)
+            #region Karaoke Mode (WIP)
             karaokeModeParameters.fCenter = 100;
             karaokeModeParameters.lFilter = BQFType.HighPass;
             karaokeModeParameters.fBandwidth = 0;

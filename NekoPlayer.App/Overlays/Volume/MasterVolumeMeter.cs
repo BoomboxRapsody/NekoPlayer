@@ -32,9 +32,9 @@ namespace NekoPlayer.App.Overlays.Volume
             IsMuted.BindValueChanged(muted =>
             {
                 if (muted.NewValue)
-                    audio.AddAdjustment(AdjustableProperty.Volume, muteAdjustment);
+                    Bindable.Value = 0;
                 else
-                    audio.RemoveAdjustment(AdjustableProperty.Volume, muteAdjustment);
+                    Bindable.Value = 1;
             });
 
             Add(muteButton = new MuteButton

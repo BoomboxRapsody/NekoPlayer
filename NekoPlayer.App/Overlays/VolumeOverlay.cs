@@ -91,7 +91,7 @@ namespace NekoPlayer.App.Overlays
                             Spacing = new Vector2(0, -offset),
                             Children = new[]
                             {
-                                volumeMeterMusic = new VolumeMeter(NekoPlayerStrings.VideoVolume, 125, colours.BlueDarker),
+                                volumeMeterMusic = new MasterVolumeMeter(NekoPlayerStrings.VideoVolume, 125, colours.BlueDarker),
                             }
                         },
                     },
