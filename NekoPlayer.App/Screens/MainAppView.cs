@@ -2352,7 +2352,16 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
-                                    Height = (56 * 2) + 20,
+                                    Height = 56 + 20,
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
+                                    Height = 56 + 20,
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -2363,56 +2372,58 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                new GridContainer
+                                new Container
                                 {
                                     Margin = new MarginPadding
                                     {
-                                        Top = 56,
+                                        Bottom = 12,
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 16,
+                                        Horizontal = 12,
                                     },
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
+                                    Size = new Vector2(0.5f, 1f),
                                     Height = 45,
-                                    ColumnDimensions = new[]
+                                    Children = new Drawable[]
                                     {
-                                        new Dimension(),
-                                        new Dimension(GridSizeMode.AutoSize),
-                                    },
-                                    Content = new []
-                                    {
-                                        new Drawable[]
+                                        searchTextBox = new EnhancedFocusedTextBox
                                         {
-                                            searchTextBox = new EnhancedFocusedTextBox
+                                            RelativeSizeAxes = Axes.X,
+                                            Text = "",
+                                            PlaceholderText = NekoPlayerStrings.SearchPlaceholder,
+                                            FontSize = 20,
+                                            Height = 45,
+                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                             {
-                                                RelativeSizeAxes = Axes.X,
-                                                Text = "",
-                                                PlaceholderText = NekoPlayerStrings.SearchPlaceholder,
-                                                FontSize = 20,
-                                                Height = 45,
-                                                OnEnterKeyPressed = () =>
-                                                {
-                                                    if (string.IsNullOrEmpty(searchTextBox.Text))
-                                                        return;
+                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                Colour = Color4.Black.Opacity(0.25f),
+                                                Offset = new Vector2(0, 8),
+                                                Radius = 64,
+                                            },
+                                            OnEnterKeyPressed = () =>
+                                            {
+                                                if (string.IsNullOrEmpty(searchTextBox.Text))
+                                                    return;
 
-                                                    Schedule(() => Search());
-                                                }
-                                            },
-                                            searchButton = new IconButton
+                                                Schedule(() => Search());
+                                            }
+                                        },
+                                        searchButton = new IconButton
+                                        {
+                                            Origin = Anchor.CentreRight,
+                                            Anchor = Anchor.CentreRight,
+                                            Margin = new MarginPadding
                                             {
-                                                Origin = Anchor.Centre,
-                                                Anchor = Anchor.Centre,
-                                                Icon = FontAwesome.Solid.Search,
-                                                Width = 50,
-                                                Height = 45,
-                                                Margin = new MarginPadding
-                                                {
-                                                    Left = 8,
-                                                },
-                                                AlwaysPresent = true,
-                                                Enabled = { Value = true },
+                                                Right = 6,
                                             },
+                                            Icon = FontAwesome.Solid.Search,
+                                            Width = 35,
+                                            Height = 35,
+                                            AlwaysPresent = true,
+                                            Enabled = { Value = true },
                                         },
                                     },
                                 },
