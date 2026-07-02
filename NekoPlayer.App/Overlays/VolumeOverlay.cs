@@ -150,7 +150,7 @@ namespace NekoPlayer.App.Overlays
 
                 case GlobalAction.ToggleMute:
                     Show();
-                    volumeMeters.OfType<MasterVolumeMeter>().First().ToggleMute();
+                    //volumeMeters.OfType<MasterVolumeMeter>().First().ToggleMute();
                     return true;
             }
 
