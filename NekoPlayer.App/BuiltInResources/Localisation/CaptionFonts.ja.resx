@@ -79,4 +79,7 @@
   <data name="hayu_font" xml:space="preserve">
     <value>はゆフォント</value>
   </data>
+  <data name="puzzle_sans_super" xml:space="preserve">
+    <value>パズルサンズ スーパー</value>
+  </data>
 </root>
