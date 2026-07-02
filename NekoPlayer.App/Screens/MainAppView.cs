@@ -2048,8 +2048,8 @@ namespace NekoPlayer.App.Screens
                                             ScrollbarVisible = false,
                                             Padding = new MarginPadding
                                             {
-                                                Top = (56 * 2),
-                                                Bottom = 6,
+                                                Top = 56,
+                                                Bottom = 56 + 8,
                                             },
                                             Children = new Drawable[]
                                             {
@@ -2067,7 +2067,8 @@ namespace NekoPlayer.App.Screens
                                             RelativeSizeAxes = Axes.Both,
                                             Padding = new MarginPadding
                                             {
-                                                Top = (56 * 2),
+                                                Top = 56,
+                                                Bottom = 56 + 8,
                                             },
                                             Children = new Drawable[]
                                             {
@@ -2131,7 +2132,16 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
-                                    Height = (56 * 2) + 20,
+                                    Height = 56 + 20,
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
+                                    Height = 56 + 20,
                                 },
                                 commentsContainerTitle = new AdaptiveSpriteText
                                 {
@@ -2149,69 +2159,71 @@ namespace NekoPlayer.App.Screens
                                     Current = CommentsSort,
                                     Margin = new MarginPadding(20),
                                 },
-                                new GridContainer
+                                new Container
                                 {
                                     Margin = new MarginPadding
                                     {
-                                        Top = 56,
+                                        Bottom = 12,
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 16,
+                                        Horizontal = 12,
                                     },
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
+                                    Size = new Vector2(0.5f, 1f),
                                     Height = 45,
-                                    ColumnDimensions = new[]
+                                    Children = new Drawable[]
                                     {
-                                        new Dimension(),
-                                        new Dimension(GridSizeMode.AutoSize),
-                                    },
-                                    Content = new []
-                                    {
-                                        new Drawable[]
+                                        commentTextBox = new EnhancedFocusedTextBoxWithProfileImage
                                         {
-                                            commentTextBox = new EnhancedFocusedTextBoxWithProfileImage
+                                            RelativeSizeAxes = Axes.X,
+                                            Text = "",
+                                            FontSize = 20,
+                                            Height = 45,
+                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                             {
-                                                RelativeSizeAxes = Axes.X,
-                                                Text = "",
-                                                FontSize = 20,
-                                                Height = 45,
-                                                OnEnterKeyPressed = () =>
-                                                {
-                                                    if (videoData == null)
-                                                        return;
-
-                                                    if (!googleOAuth2.SignedIn.Value)
-                                                        return;
-
-                                                    if (string.IsNullOrEmpty(commentTextBox.Text))
-                                                        return;
-
-                                                    Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded);
-                                                    api.SendComment(videoId, commentTextBox.Text);
-
-                                                    Scheduler.AddDelayed(() => updateComments(videoId), 2000);
-
-                                                    Schedule(() => onScreenDisplay.Display(toast));
-
-                                                    commentTextBox.Text = string.Empty;
-                                                }
+                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                Colour = Color4.Black.Opacity(0.25f),
+                                                Offset = new Vector2(0, 8),
+                                                Radius = 16,
                                             },
-                                            commentSendButton = new IconButton
+                                            OnEnterKeyPressed = () =>
                                             {
-                                                Origin = Anchor.Centre,
-                                                Anchor = Anchor.Centre,
-                                                Margin = new MarginPadding
-                                                {
-                                                    Left = 8,
-                                                },
-                                                Icon = FontAwesome.Solid.PaperPlane,
-                                                Width = 50,
-                                                Height = 45,
-                                                AlwaysPresent = true,
-                                                Enabled = { Value = true },
-                                                BackgroundColour = overlayColourProvider.Background3,
+                                                if (videoData == null)
+                                                    return;
+
+                                                if (!googleOAuth2.SignedIn.Value)
+                                                    return;
+
+                                                if (string.IsNullOrEmpty(commentTextBox.Text))
+                                                    return;
+
+                                                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded);
+                                                api.SendComment(videoId, commentTextBox.Text);
+
+                                                Scheduler.AddDelayed(() => updateComments(videoId), 2000);
+
+                                                Schedule(() => onScreenDisplay.Display(toast));
+
+                                                commentTextBox.Text = string.Empty;
+                                            }
+                                        },
+                                        commentSendButton = new IconButton
+                                        {
+                                            Origin = Anchor.CentreRight,
+                                            Anchor = Anchor.CentreRight,
+                                            Margin = new MarginPadding
+                                            {
+                                                Right = 6,
                                             },
+                                            Icon = FontAwesome.Solid.PaperPlane,
+                                            Width = 35,
+                                            Height = 35,
+                                            AlwaysPresent = true,
+                                            Enabled = { Value = true },
+                                            BackgroundColour = overlayColourProvider.Background3,
                                         },
                                     },
                                 },
