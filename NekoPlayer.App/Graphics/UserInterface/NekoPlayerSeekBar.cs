@@ -4,6 +4,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
@@ -13,6 +14,7 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
+using osu.Framework.Graphics.Lines;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
@@ -28,7 +30,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         where T : struct, INumber<T>, IMinMaxValue<T>
     {
         protected readonly NekoPlayerSeekBar.SliderNub Nub;
-        protected readonly Box LeftBox;
+        protected readonly Path LeftBox;
         protected readonly Box RightBox;
         protected readonly Container LeftBoxContainer;
         protected readonly Container RightBoxContainer;
@@ -92,23 +94,22 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         AutoSizeAxes = Axes.Y,
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
-                        Masking = true,
                         Children = new Drawable[]
                         {
                             LeftBoxContainer = new Container
                             {
                                 Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
-                                AutoSizeAxes = Axes.X,
+                                //AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
-                                Masking = true,
-                                CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3),
+                                Masking = false,
+                                //CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3),
                                 Children = new Drawable[] {
-                                    LeftBox = new Box
+                                    LeftBox = new SmoothPath
                                     {
-                                        Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
-                                        Colour = AccentColour,
-                                        RelativeSizeAxes = Axes.None,
+                                        PathRadius = 4f, // 물결 선의 두께 (원하는 대로 조절 가능)
+                                        Anchor = Anchor.CentreLeft,
+                                        Origin = Anchor.CentreLeft,
                                     },
                                 },
                             },
@@ -152,14 +153,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             AccentColour = Nub.Colour = overlayColourProvider.Content2;
             BackgroundColour = overlayColourProvider.Content2.Darken(1);
-
-            mainContent.EdgeEffect = new EdgeEffectParameters
-            {
-                Type = EdgeEffectType.Glow,
-                Colour = Color4.White.Opacity(0),
-                Hollow = true,
-                Radius = 5,
-            };
         }
 
         [Resolved]
@@ -211,6 +204,28 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.Update();
 
             nubContainer.Padding = new MarginPadding { Horizontal = RangePadding };
+
+            // 매 프레임 혹은 너비가 바뀔 때 물결 정점을 다시 그립니다.
+            updateWavePath();
+        }
+
+        private void updateWavePath()
+        {
+            var points = new List<Vector2>();
+
+            // 물결 모양 커스텀 변수 (원하는 느낌으로 숫자를 조절해 보세요)
+            float frequency = 0.1f; // 물결의 촘촘함 (숫자가 클수록 촘촘해짐)
+            float amplitude = 4f;    // 물결의 높이 (위아래 진폭)
+            float step = 1f;         // 선을 구성하는 정점 간격 (정밀도)
+
+            for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
+            {
+                // Sine Wave 공식: y = sin(x * 주파수) * 진폭
+                float y = MathF.Sin((x - (float)Time.Current * 0.05f) * frequency) * amplitude;
+                points.Add(new Vector2(x, y));
+            }
+
+            LeftBox.Vertices = points;
         }
 
         protected override void LoadComplete()
@@ -246,23 +261,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private void updateGlow()
         {
-            Nub.Glowing = !Current.Disabled && (IsHovered);
-            if (!Current.Disabled && (IsHovered))
-            {
-                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
-                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
-            }
-            else
-            {
-                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
-                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
-            }
         }
 
         protected override void UpdateAfterChildren()
         {
             base.UpdateAfterChildren();
-            LeftBox.Scale = new Vector2(Math.Clamp(RangePadding + (Nub.DrawPosition.X - 8), 0, Math.Max(0, DrawWidth)), 1);
+
+            // [중요] 기존 LeftBox.Scale 방식을 버리고 마스킹 컨테이너의 Width를 직접 조절합니다.
+            LeftBoxContainer.Width = Math.Clamp(RangePadding + (Nub.DrawPosition.X - 8), 0, Math.Max(0, DrawWidth));
+
             RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - (Nub.DrawPosition.X + 8) - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
         }
 
