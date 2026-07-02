@@ -162,6 +162,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 this.TransformBindableTo(speedRolling, speed.NewValue, 400, Easing.OutQuint);
             }, true);
+
+            IsPlaying.BindValueChanged(what =>
+            {
+                this.TransformBindableTo(amplitudeAnimated, what.NewValue ? 3.5f : 0f, 400, Easing.OutQuint);
+            }, true);
         }
 
         [Resolved]
@@ -218,13 +223,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         private Bindable<double> speedRolling = new Bindable<double>(1);
+        private Bindable<float> amplitudeAnimated = new Bindable<float>(0);
+        public Bindable<bool> IsPlaying = new Bindable<bool>(false);
 
         private void updateWavePath()
         {
             var points = new List<Vector2>();
 
             float frequency = 0.1f;
-            float amplitude = 3.5f;
+            float amplitude = amplitudeAnimated.Value;
             float step = 1f;
 
             for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)

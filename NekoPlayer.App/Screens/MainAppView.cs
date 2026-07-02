@@ -6235,6 +6235,7 @@ namespace NekoPlayer.App.Screens
 
                 if (videoPlaying.Value != currentVideoSource.IsPlaying())
                 {
+                    seekbar.IsPlaying.Value = currentVideoSource.IsPlaying();
                     playPause.SetEnabledValue2(!currentVideoSource.IsPlaying());
                     playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? bgColor : accentColor, 250, Easing.OutQuint);
                     //playPause.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 50f : 40f, 1000, Easing.OutElastic);
