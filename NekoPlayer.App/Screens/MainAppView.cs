@@ -266,6 +266,8 @@ namespace NekoPlayer.App.Screens
         private Bindable<ProfileImageShape> profileImageShape;
         private Bindable<CloseButtonAction> closeButtonAction;
 
+        private Bindable<VideoMetadataDisplayAlignment> videoMetadataDisplayAlignment;
+
         private Bindable<UIFont> ui_font;
         private Bindable<CaptionFonts> caption_font;
 
@@ -368,6 +370,8 @@ namespace NekoPlayer.App.Screens
             echoEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.EchoEnabled);
             distortionEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.DistortionEnabled);
             karaokeEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
+
+            videoMetadataDisplayAlignment = appConfig.GetBindable<VideoMetadataDisplayAlignment>(NekoPlayerSetting.VideoMetadataDisplayAlignment);
 
             scalingMode = appConfig.GetBindable<ScalingMode>(NekoPlayerSetting.Scaling);
             scalingSizeX = appConfig.GetBindable<float>(NekoPlayerSetting.ScalingSizeX);
@@ -549,18 +553,26 @@ namespace NekoPlayer.App.Screens
                             Padding = new MarginPadding(8),
                             Children = new Drawable[]
                             {
-                                videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
+                                new Container
                                 {
-                                    Width = 520,
-                                    Height = 70,
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    Position = new Vector2(-18, -18),
-                                    Margin = new MarginPadding
+                                    RelativeSizeAxes = Axes.Both,
+                                    Padding = new MarginPadding
                                     {
-                                        Left = 8,
+                                        Right = 40,
                                     },
-                                    ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
+                                    Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
+                                    {
+                                        Width = 520,
+                                        Height = 70,
+                                        Origin = Anchor.TopLeft,
+                                        Anchor = Anchor.TopLeft,
+                                        Position = new Vector2(-18, -18),
+                                        Margin = new MarginPadding
+                                        {
+                                            Left = 8,
+                                        },
+                                        ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
+                                    },
                                 },
                                 new Container
                                 {
@@ -1158,6 +1170,12 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.UsernameDisplayMode,
                                                             Current = usernameDisplayMode,
                                                             Icon = FontAwesome.Solid.User,
+                                                        }),
+                                                        new SettingsItemV2(new FormEnumDropdown<VideoMetadataDisplayAlignment>
+                                                        {
+                                                            Caption = VideoMetadataDisplayAlignmentStrings.VideoMetadataDisplayAlignmentSetting,
+                                                            Current = videoMetadataDisplayAlignment,
+                                                            Icon = FontAwesome.Solid.List,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<OverlayColourScheme>
                                                         {
@@ -3953,6 +3971,11 @@ namespace NekoPlayer.App.Screens
             madeByText.AddText("made by ");
             madeByText.AddLink("Mocha Studio", "https://github.com/BoomboxRapsody/");
 
+            videoMetadataDisplayAlignment.BindValueChanged(v =>
+            {
+                SetVideoMetadataDisplayAlignment(v.NewValue);
+            }, true);
+
             latencyModeDropdown.Current.BindValueChanged(mode =>
             {
                 Logger.Log($"Changing latency mode: {mode.NewValue}");
@@ -6524,6 +6547,32 @@ namespace NekoPlayer.App.Screens
 
                 likeCount.Text = videoData.Statistics.LikeCount != null ? Convert.ToDouble(videoData.Statistics.LikeCount).ToMetric(decimals: 2) : Convert.ToDouble(ReturnYouTubeDislike.GetDislikes(videoId).RawLikes).ToMetric(decimals: 2);
             });
+        }
+
+        public void SetVideoMetadataDisplayAlignment(VideoMetadataDisplayAlignment alignment)
+        {
+            videoMetadataDisplay.SetVideoMetadataDisplayAlignment(alignment);
+            switch (alignment)
+            {
+                case VideoMetadataDisplayAlignment.Left:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopLeft;
+                    videoMetadataDisplay.Origin = Anchor.TopLeft;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Center:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopCentre;
+                    videoMetadataDisplay.Origin = Anchor.TopCentre;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Right:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopRight;
+                    videoMetadataDisplay.Origin = Anchor.TopRight;
+                    break;
+                }
+            }
         }
 
         public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)

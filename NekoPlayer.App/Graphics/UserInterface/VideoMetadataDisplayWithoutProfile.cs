@@ -30,10 +30,10 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class VideoMetadataDisplayWithoutProfile : CompositeDrawable
+    public partial class VideoMetadataDisplayWithoutProfile : Container
     {
-        private TruncatingSpriteText videoName;
-        private TruncatingSpriteText desc;
+        private AdaptiveSpriteText videoName;
+        private AdaptiveSpriteText desc;
         public Action<VideoMetadataDisplayWithoutProfile> ClickEvent;
 
         private Box bgLayer, hover;
@@ -60,7 +60,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             Masking = false;
 
-            Shear = new Vector2(0.2f, 0);
+            Shear = new Vector2(0f, 0);
+            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f);
 
             InternalChildren = new Drawable[]
             {
@@ -79,7 +80,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Right = 7,
                         Left = 14,
                     },
-                    Shear = new Vector2(-0.2f, 0),
                     Children = new Drawable[]
                     {
                         new Container
@@ -92,17 +92,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoName = new TruncatingSpriteText
+                                videoName = new AdaptiveSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
-                                    RelativeSizeAxes = Axes.X,
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                     Colour = Color4.White,
                                 },
-                                desc = new TruncatingSpriteText
+                                desc = new AdaptiveSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
-                                    RelativeSizeAxes = Axes.X,
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
                                     Colour = Color4.Gray,
                                     Position = new osuTK.Vector2(0, 20),
@@ -111,12 +109,32 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         }
                     }
                 },
-                hover = new Box
+                new Container
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Colour = Color4.White,
-                    Blending = BlendingParameters.Additive,
-                    Alpha = 0,
+                    Padding = new MarginPadding
+                    {
+                        Bottom = 8,
+                        Top = 8 + 12,
+                        Horizontal = 12,
+                    },
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Child = new Container
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Masking = true,
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f),
+                        Child = hover = new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.White,
+                            Blending = BlendingParameters.Additive,
+                            Alpha = 0,
+                        },
+                    },
                 },
             };
         }
@@ -130,13 +148,46 @@ namespace NekoPlayer.App.Graphics.UserInterface
             return base.OnClick(e);
         }
 
+        public void SetVideoMetadataDisplayAlignment(VideoMetadataDisplayAlignment alignment)
+        {
+            switch (alignment)
+            {
+                case VideoMetadataDisplayAlignment.Left:
+                {
+                    videoName.Anchor = Anchor.TopLeft;
+                    videoName.Origin = Anchor.TopLeft;
+
+                    desc.Anchor = Anchor.TopLeft;
+                    desc.Origin = Anchor.TopLeft;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Center:
+                {
+                    videoName.Anchor = Anchor.TopCentre;
+                    videoName.Origin = Anchor.TopCentre;
+
+                    desc.Anchor = Anchor.TopCentre;
+                    desc.Origin = Anchor.TopCentre;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Right:
+                {
+                    videoName.Anchor = Anchor.TopRight;
+                    videoName.Origin = Anchor.TopRight;
+
+                    desc.Anchor = Anchor.TopRight;
+                    desc.Origin = Anchor.TopRight;
+                    break;
+                }
+            }
+        }
+
         private HoverSounds samples = new HoverClickSounds(HoverSampleSet.Default);
 
-        /*
         protected override bool OnHover(HoverEvent e)
         {
             if (ClickEvent != null)
-                bgLayer.FadeTo(1f, 500, Easing.OutQuint);
+                hover.FadeTo(0.1f, 500, Easing.OutQuint);
 
             return base.OnHover(e);
         }
@@ -146,9 +197,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.OnHoverLost(e);
 
             if (ClickEvent != null)
-                bgLayer.FadeTo(0.7f, 500, Easing.OutQuint);
+                hover.FadeTo(0f, 500, Easing.OutQuint);
         }
-        */
 
         protected override void LoadComplete()
         {
