@@ -87,7 +87,7 @@ namespace NekoPlayer.App.Screens
         private ControlBarIconButton prevVideoButton, nextVideoButton;
         private EnhancedFocusedTextBox videoIdBox, playlistIdBox, searchTextBox;
         private EnhancedFocusedTextBoxWithProfileImage commentTextBox;
-        private LoadingSpinner spinner;
+        private NekoPlayerLoadingSpinner spinner;
         private ScheduledDelegate spinnerShow;
         private AdaptiveAlertContainer alert;
         private IdleTracker idleTracker;
@@ -266,6 +266,8 @@ namespace NekoPlayer.App.Screens
         private Bindable<ProfileImageShape> profileImageShape;
         private Bindable<CloseButtonAction> closeButtonAction;
 
+        private Bindable<VideoMetadataDisplayAlignment> videoMetadataDisplayAlignment;
+
         private Bindable<UIFont> ui_font;
         private Bindable<CaptionFonts> caption_font;
 
@@ -368,6 +370,8 @@ namespace NekoPlayer.App.Screens
             echoEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.EchoEnabled);
             distortionEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.DistortionEnabled);
             karaokeEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
+
+            videoMetadataDisplayAlignment = appConfig.GetBindable<VideoMetadataDisplayAlignment>(NekoPlayerSetting.VideoMetadataDisplayAlignment);
 
             scalingMode = appConfig.GetBindable<ScalingMode>(NekoPlayerSetting.Scaling);
             scalingSizeX = appConfig.GetBindable<float>(NekoPlayerSetting.ScalingSizeX);
@@ -505,7 +509,7 @@ namespace NekoPlayer.App.Screens
                     RelativeSizeAxes = Axes.Both,
                     Children = new Drawable[]
                     {
-                        spinner = new LoadingSpinner(true, true)
+                        spinner = new NekoPlayerLoadingSpinner(true, true)
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -549,18 +553,26 @@ namespace NekoPlayer.App.Screens
                             Padding = new MarginPadding(8),
                             Children = new Drawable[]
                             {
-                                videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
+                                new Container
                                 {
-                                    Width = 520,
-                                    Height = 70,
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    Position = new Vector2(-18, -18),
-                                    Margin = new MarginPadding
+                                    RelativeSizeAxes = Axes.Both,
+                                    Padding = new MarginPadding
                                     {
-                                        Left = 8,
+                                        Right = 40,
                                     },
-                                    ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
+                                    Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
+                                    {
+                                        Width = 520,
+                                        Height = 70,
+                                        Origin = Anchor.TopLeft,
+                                        Anchor = Anchor.TopLeft,
+                                        Position = new Vector2(-18, -18),
+                                        Margin = new MarginPadding
+                                        {
+                                            Left = 8,
+                                        },
+                                        ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
+                                    },
                                 },
                                 new Container
                                 {
@@ -667,7 +679,7 @@ namespace NekoPlayer.App.Screens
                                                                             {
                                                                                 prevVideoButton = new ControlBarIconButton(false)
                                                                                 {
-                                                                                    Width = 40,
+                                                                                    Width = 50,
                                                                                     Enabled = { Value = false },
                                                                                     Icon = FontAwesome.Solid.FastBackward,
                                                                                     TooltipText = NekoPlayerStrings.PreviousVideo,
@@ -687,7 +699,7 @@ namespace NekoPlayer.App.Screens
                                                                                 },
                                                                                 playPause = new ControlBarIconButton(false)
                                                                                 {
-                                                                                    Width = 40,
+                                                                                    Width = 50,
                                                                                     Enabled = { Value = true },
                                                                                     Icon = FontAwesome.Solid.Play,
                                                                                     TooltipText = NekoPlayerStrings.Play,
@@ -707,7 +719,7 @@ namespace NekoPlayer.App.Screens
                                                                                 },
                                                                                 nextVideoButton = new ControlBarIconButton(false)
                                                                                 {
-                                                                                    Width = 40,
+                                                                                    Width = 50,
                                                                                     Enabled = { Value = false },
                                                                                     Icon = FontAwesome.Solid.FastForward,
                                                                                     TooltipText = NekoPlayerStrings.NextVideo,
@@ -1158,6 +1170,12 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.UsernameDisplayMode,
                                                             Current = usernameDisplayMode,
                                                             Icon = FontAwesome.Solid.User,
+                                                        }),
+                                                        new SettingsItemV2(new FormEnumDropdown<VideoMetadataDisplayAlignment>
+                                                        {
+                                                            Caption = VideoMetadataDisplayAlignmentStrings.VideoMetadataDisplayAlignmentSetting,
+                                                            Current = videoMetadataDisplayAlignment,
+                                                            Icon = FontAwesome.Solid.List,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<OverlayColourScheme>
                                                         {
@@ -1803,7 +1821,7 @@ namespace NekoPlayer.App.Screens
                                             RelativeSizeAxes = Axes.X,
                                             AutoSizeAxes = Axes.Y,
                                             Direction = FillDirection.Horizontal,
-                                            Spacing = new Vector2(4, 0),
+                                            Spacing = new Vector2(2, 0),
                                             Children = new Drawable[]
                                             {
                                                 likeButton = new RoundedButtonContainer
@@ -2048,8 +2066,8 @@ namespace NekoPlayer.App.Screens
                                             ScrollbarVisible = false,
                                             Padding = new MarginPadding
                                             {
-                                                Top = (56 * 2),
-                                                Bottom = 6,
+                                                Top = 56,
+                                                Bottom = 56 + 8,
                                             },
                                             Children = new Drawable[]
                                             {
@@ -2065,10 +2083,6 @@ namespace NekoPlayer.App.Screens
                                         commentsEmpty = new Container
                                         {
                                             RelativeSizeAxes = Axes.Both,
-                                            Padding = new MarginPadding
-                                            {
-                                                Top = (56 * 2),
-                                            },
                                             Children = new Drawable[]
                                             {
                                                 new FillFlowContainer
@@ -2131,7 +2145,16 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
-                                    Height = (56 * 2) + 20,
+                                    Height = 56 + 20,
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
+                                    Height = 56 + 20,
                                 },
                                 commentsContainerTitle = new AdaptiveSpriteText
                                 {
@@ -2149,69 +2172,71 @@ namespace NekoPlayer.App.Screens
                                     Current = CommentsSort,
                                     Margin = new MarginPadding(20),
                                 },
-                                new GridContainer
+                                new Container
                                 {
                                     Margin = new MarginPadding
                                     {
-                                        Top = 56,
+                                        Bottom = 12,
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 16,
+                                        Horizontal = 12,
                                     },
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
+                                    Size = new Vector2(0.5f, 1f),
                                     Height = 45,
-                                    ColumnDimensions = new[]
+                                    Children = new Drawable[]
                                     {
-                                        new Dimension(),
-                                        new Dimension(GridSizeMode.AutoSize),
-                                    },
-                                    Content = new []
-                                    {
-                                        new Drawable[]
+                                        commentTextBox = new EnhancedFocusedTextBoxWithProfileImage
                                         {
-                                            commentTextBox = new EnhancedFocusedTextBoxWithProfileImage
+                                            RelativeSizeAxes = Axes.X,
+                                            Text = "",
+                                            FontSize = 20,
+                                            Height = 45,
+                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                             {
-                                                RelativeSizeAxes = Axes.X,
-                                                Text = "",
-                                                FontSize = 20,
-                                                Height = 45,
-                                                OnEnterKeyPressed = () =>
-                                                {
-                                                    if (videoData == null)
-                                                        return;
-
-                                                    if (!googleOAuth2.SignedIn.Value)
-                                                        return;
-
-                                                    if (string.IsNullOrEmpty(commentTextBox.Text))
-                                                        return;
-
-                                                    Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded);
-                                                    api.SendComment(videoId, commentTextBox.Text);
-
-                                                    Scheduler.AddDelayed(() => updateComments(videoId), 2000);
-
-                                                    Schedule(() => onScreenDisplay.Display(toast));
-
-                                                    commentTextBox.Text = string.Empty;
-                                                }
+                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                Colour = Color4.Black.Opacity(0.25f),
+                                                Offset = new Vector2(0, 8),
+                                                Radius = 64,
                                             },
-                                            commentSendButton = new IconButton
+                                            OnEnterKeyPressed = () =>
                                             {
-                                                Origin = Anchor.Centre,
-                                                Anchor = Anchor.Centre,
-                                                Margin = new MarginPadding
-                                                {
-                                                    Left = 8,
-                                                },
-                                                Icon = FontAwesome.Solid.PaperPlane,
-                                                Width = 50,
-                                                Height = 45,
-                                                AlwaysPresent = true,
-                                                Enabled = { Value = true },
-                                                BackgroundColour = overlayColourProvider.Background3,
+                                                if (videoData == null)
+                                                    return;
+
+                                                if (!googleOAuth2.SignedIn.Value)
+                                                    return;
+
+                                                if (string.IsNullOrEmpty(commentTextBox.Text))
+                                                    return;
+
+                                                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded);
+                                                api.SendComment(videoId, commentTextBox.Text);
+
+                                                Scheduler.AddDelayed(() => updateComments(videoId), 2000);
+
+                                                Schedule(() => onScreenDisplay.Display(toast));
+
+                                                commentTextBox.Text = string.Empty;
+                                            }
+                                        },
+                                        commentSendButton = new IconButton
+                                        {
+                                            Origin = Anchor.CentreRight,
+                                            Anchor = Anchor.CentreRight,
+                                            Margin = new MarginPadding
+                                            {
+                                                Right = 6,
                                             },
+                                            Icon = FontAwesome.Solid.PaperPlane,
+                                            Width = 35,
+                                            Height = 35,
+                                            AlwaysPresent = true,
+                                            Enabled = { Value = true },
+                                            BackgroundColour = overlayColourProvider.Background3,
                                         },
                                     },
                                 },
@@ -2327,7 +2352,16 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
-                                    Height = (56 * 2) + 20,
+                                    Height = 56 + 20,
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
+                                    Height = 56 + 20,
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -2338,56 +2372,58 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                new GridContainer
+                                new Container
                                 {
                                     Margin = new MarginPadding
                                     {
-                                        Top = 56,
+                                        Bottom = 12,
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 16,
+                                        Horizontal = 12,
                                     },
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
+                                    Size = new Vector2(0.5f, 1f),
                                     Height = 45,
-                                    ColumnDimensions = new[]
+                                    Children = new Drawable[]
                                     {
-                                        new Dimension(),
-                                        new Dimension(GridSizeMode.AutoSize),
-                                    },
-                                    Content = new []
-                                    {
-                                        new Drawable[]
+                                        searchTextBox = new EnhancedFocusedTextBox
                                         {
-                                            searchTextBox = new EnhancedFocusedTextBox
+                                            RelativeSizeAxes = Axes.X,
+                                            Text = "",
+                                            PlaceholderText = NekoPlayerStrings.SearchPlaceholder,
+                                            FontSize = 20,
+                                            Height = 45,
+                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                             {
-                                                RelativeSizeAxes = Axes.X,
-                                                Text = "",
-                                                PlaceholderText = NekoPlayerStrings.SearchPlaceholder,
-                                                FontSize = 20,
-                                                Height = 45,
-                                                OnEnterKeyPressed = () =>
-                                                {
-                                                    if (string.IsNullOrEmpty(searchTextBox.Text))
-                                                        return;
+                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                Colour = Color4.Black.Opacity(0.25f),
+                                                Offset = new Vector2(0, 8),
+                                                Radius = 64,
+                                            },
+                                            OnEnterKeyPressed = () =>
+                                            {
+                                                if (string.IsNullOrEmpty(searchTextBox.Text))
+                                                    return;
 
-                                                    Schedule(() => Search());
-                                                }
-                                            },
-                                            searchButton = new IconButton
+                                                Schedule(() => Search());
+                                            }
+                                        },
+                                        searchButton = new IconButton
+                                        {
+                                            Origin = Anchor.CentreRight,
+                                            Anchor = Anchor.CentreRight,
+                                            Margin = new MarginPadding
                                             {
-                                                Origin = Anchor.Centre,
-                                                Anchor = Anchor.Centre,
-                                                Icon = FontAwesome.Solid.Search,
-                                                Width = 50,
-                                                Height = 45,
-                                                Margin = new MarginPadding
-                                                {
-                                                    Left = 8,
-                                                },
-                                                AlwaysPresent = true,
-                                                Enabled = { Value = true },
+                                                Right = 6,
                                             },
+                                            Icon = FontAwesome.Solid.Search,
+                                            Width = 35,
+                                            Height = 35,
+                                            AlwaysPresent = true,
+                                            Enabled = { Value = true },
                                         },
                                     },
                                 },
@@ -3946,6 +3982,11 @@ namespace NekoPlayer.App.Screens
             madeByText.AddText("made by ");
             madeByText.AddLink("Mocha Studio", "https://github.com/BoomboxRapsody/");
 
+            videoMetadataDisplayAlignment.BindValueChanged(v =>
+            {
+                SetVideoMetadataDisplayAlignment(v.NewValue);
+            }, true);
+
             latencyModeDropdown.Current.BindValueChanged(mode =>
             {
                 Logger.Log($"Changing latency mode: {mode.NewValue}");
@@ -4068,6 +4109,10 @@ namespace NekoPlayer.App.Screens
             });
 
             commentsDisabled = true;
+
+            prevVideoButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
+            nextVideoButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
+            playPause.SetEnabledValue2(true);
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
 
@@ -5099,7 +5144,7 @@ namespace NekoPlayer.App.Screens
         private void updateRepeatState()
         {
             repeat.Value = !repeat.Value;
-            repeatButton.SetEnabledValue(repeat.Value);
+            repeatButton.SetEnabledValue3(repeat.Value);
             repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor, 250, Easing.OutQuint);
             repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
@@ -6175,6 +6220,8 @@ namespace NekoPlayer.App.Screens
         {
             base.Update();
 
+            seekbar.PlaybackSpeed.Value = playbackSpeed.Value;
+
             if (game.UseSystemCursor.Value == true)
             {
                 game.SetCursorVisibility(CursorVisible);
@@ -6188,15 +6235,16 @@ namespace NekoPlayer.App.Screens
 
                 if (videoPlaying.Value != currentVideoSource.IsPlaying())
                 {
-                    playPause.SetEnabledValue(currentVideoSource.IsPlaying());
+                    seekbar.IsPlaying.Value = currentVideoSource.IsPlaying();
+                    playPause.SetEnabledValue2(!currentVideoSource.IsPlaying());
                     playPause.IconObject.FadeColour(currentVideoSource.IsPlaying() ? bgColor : accentColor, 250, Easing.OutQuint);
-                    playPause.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 50f : 40f, 1000, Easing.OutElastic);
+                    //playPause.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 50f : 40f, 1000, Easing.OutElastic);
 
-                    prevVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 1000, Easing.OutElastic);
-                    prevVideoButton.TransformTo(nameof(CornerRadius), currentVideoSource.IsPlaying() ? new CornersInfo(15f, 15f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(15), 250, Easing.OutQuint);
+                    //prevVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 1000, Easing.OutElastic);
+                    //prevVideoButton.TransformTo(nameof(CornerRadius), currentVideoSource.IsPlaying() ? new CornersInfo(15f, 15f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(15), 250, Easing.OutQuint);
 
-                    nextVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 1000, Easing.OutElastic);
-                    nextVideoButton.TransformTo(nameof(CornerRadius), currentVideoSource.IsPlaying() ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 15f, 15f) : new CornersInfo(15), 250, Easing.OutQuint);
+                    //nextVideoButton.TransformTo(nameof(Width), currentVideoSource.IsPlaying() ? 35f : 40f, 1000, Easing.OutElastic);
+                    //nextVideoButton.TransformTo(nameof(CornerRadius), currentVideoSource.IsPlaying() ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, NekoPlayerApp.UI_CORNER_RADIUS / 1.5f, 15f, 15f) : new CornersInfo(15), 250, Easing.OutQuint);
                 }
 
                 videoPlaying.Value = currentVideoSource.IsPlaying();
@@ -6358,8 +6406,8 @@ namespace NekoPlayer.App.Screens
                         {
                             dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                             likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 16, 16), 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16, 16, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f), 250, Easing.OutQuint);
                             likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                             dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
 
@@ -6371,12 +6419,7 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
-                                        likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
-                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
                                     });
                                 };
 
@@ -6386,12 +6429,7 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
-                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
+                                        updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
                                     });
                                 };
                             }
@@ -6414,8 +6452,8 @@ namespace NekoPlayer.App.Screens
                         {
                             dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
                             likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 16, 16), 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
                             likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
                             dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
 
@@ -6427,12 +6465,7 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
-                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
                                     });
                                 };
 
@@ -6442,12 +6475,7 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
-                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
+                                        updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
                                     });
                                 };
                             }
@@ -6470,8 +6498,8 @@ namespace NekoPlayer.App.Screens
                         {
                             dislikeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
                             likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
-                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                            dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
+                            likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16, 16, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f), 250, Easing.OutQuint);
                             likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
                             dislikeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
 
@@ -6483,12 +6511,7 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        likeButtonBackgroundSelected.FadeIn(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f), 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButtonForeground.FadeColour(overlayColourProvider1.Background4, 250, Easing.OutQuint);
-                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
                                     });
                                 };
 
@@ -6498,12 +6521,7 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() =>
                                     {
                                         refreshLikeDislikeCount(videoId);
-                                        dislikeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        likeButtonBackgroundSelected.FadeOut(250, Easing.OutQuint);
-                                        dislikeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButton.TransformTo(nameof(CornerRadius), new CornersInfo(16f), 250, Easing.OutQuint);
-                                        likeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
-                                        dislikeButtonForeground.FadeColour(overlayColourProvider1.Content2, 250, Easing.OutQuint);
+                                        updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
                                     });
                                 };
                             }
@@ -6543,6 +6561,32 @@ namespace NekoPlayer.App.Screens
 
                 likeCount.Text = videoData.Statistics.LikeCount != null ? Convert.ToDouble(videoData.Statistics.LikeCount).ToMetric(decimals: 2) : Convert.ToDouble(ReturnYouTubeDislike.GetDislikes(videoId).RawLikes).ToMetric(decimals: 2);
             });
+        }
+
+        public void SetVideoMetadataDisplayAlignment(VideoMetadataDisplayAlignment alignment)
+        {
+            videoMetadataDisplay.SetVideoMetadataDisplayAlignment(alignment);
+            switch (alignment)
+            {
+                case VideoMetadataDisplayAlignment.Left:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopLeft;
+                    videoMetadataDisplay.Origin = Anchor.TopLeft;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Center:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopCentre;
+                    videoMetadataDisplay.Origin = Anchor.TopCentre;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Right:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopRight;
+                    videoMetadataDisplay.Origin = Anchor.TopRight;
+                    break;
+                }
+            }
         }
 
         public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)

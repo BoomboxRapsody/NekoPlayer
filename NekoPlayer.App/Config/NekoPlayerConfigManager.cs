@@ -83,6 +83,8 @@ namespace NekoPlayer.App.Config
 
             SetDefault(NekoPlayerSetting.ShowVideoMetadataOnWindowTitle, true);
             SetDefault(NekoPlayerSetting.CaptionFont, CaptionFonts.GoogleSansFlex);
+
+            SetDefault(NekoPlayerSetting.VideoMetadataDisplayAlignment, VideoMetadataDisplayAlignment.Left);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -158,5 +160,6 @@ namespace NekoPlayer.App.Config
 
         ShowVideoMetadataOnWindowTitle,
         CaptionFont,
+        VideoMetadataDisplayAlignment,
     }
 }

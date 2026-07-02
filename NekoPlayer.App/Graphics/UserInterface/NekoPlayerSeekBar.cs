@@ -4,15 +4,18 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
 using NekoPlayer.App.Utils;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
+using osu.Framework.Graphics.Lines;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
@@ -28,7 +31,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         where T : struct, INumber<T>, IMinMaxValue<T>
     {
         protected readonly NekoPlayerSeekBar.SliderNub Nub;
-        protected readonly Box LeftBox;
+        protected readonly Path LeftBox;
         protected readonly Box RightBox;
         protected readonly Container LeftBoxContainer;
         protected readonly Container RightBoxContainer;
@@ -62,6 +65,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }
         }
 
+        public Bindable<double> PlaybackSpeed = new Bindable<double>(1);
+
         /// <summary>
         /// The action to use to reset the value of <see cref="SliderBar{T}.Current"/> to the default.
         /// Triggered on double click.
@@ -92,23 +97,23 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         AutoSizeAxes = Axes.Y,
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
-                        Masking = true,
                         Children = new Drawable[]
                         {
                             LeftBoxContainer = new Container
                             {
                                 Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
-                                AutoSizeAxes = Axes.X,
+                                //AutoSizeAxes = Axes.X,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
-                                Masking = true,
-                                CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3),
+                                Masking = false,
+                                //CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3),
                                 Children = new Drawable[] {
-                                    LeftBox = new Box
+                                    LeftBox = new SmoothPath
                                     {
-                                        Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
-                                        Colour = AccentColour,
-                                        RelativeSizeAxes = Axes.None,
+                                        AlwaysPresent = true,
+                                        PathRadius = 4.5f,
+                                        Anchor = Anchor.CentreLeft,
+                                        Origin = Anchor.CentreLeft,
                                     },
                                 },
                             },
@@ -153,13 +158,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
             AccentColour = Nub.Colour = overlayColourProvider.Content2;
             BackgroundColour = overlayColourProvider.Content2.Darken(1);
 
-            mainContent.EdgeEffect = new EdgeEffectParameters
+            PlaybackSpeed.BindValueChanged(speed =>
             {
-                Type = EdgeEffectType.Glow,
-                Colour = Color4.White.Opacity(0),
-                Hollow = true,
-                Radius = 5,
-            };
+                this.TransformBindableTo(speedRolling, speed.NewValue, 400, Easing.OutQuint);
+            }, true);
+
+            IsPlaying.BindValueChanged(what =>
+            {
+                this.TransformBindableTo(amplitudeAnimated, what.NewValue ? 3.5f : 0f, 400, Easing.OutQuint);
+            }, true);
         }
 
         [Resolved]
@@ -211,6 +218,29 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.Update();
 
             nubContainer.Padding = new MarginPadding { Horizontal = RangePadding };
+
+            updateWavePath();
+        }
+
+        private Bindable<double> speedRolling = new Bindable<double>(1);
+        private Bindable<float> amplitudeAnimated = new Bindable<float>(0);
+        public Bindable<bool> IsPlaying = new Bindable<bool>(false);
+
+        private void updateWavePath()
+        {
+            var points = new List<Vector2>();
+
+            float frequency = 0.1f;
+            float amplitude = amplitudeAnimated.Value;
+            float step = 1f;
+
+            for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
+            {
+                float y = MathF.Sin((x - ((float)((Time.Current * 0.05f) * speedRolling.Value))) * frequency) * amplitude;
+                points.Add(new Vector2(x, y));
+            }
+
+            LeftBox.Vertices = points;
         }
 
         protected override void LoadComplete()
@@ -246,23 +276,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private void updateGlow()
         {
-            Nub.Glowing = !Current.Disabled && (IsHovered);
-            if (!Current.Disabled && (IsHovered))
-            {
-                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
-                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0.5f), 40, Easing.OutQuint);
-            }
-            else
-            {
-                LeftBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
-                RightBoxContainer.FadeEdgeEffectTo(AccentColour.Darken(1).Opacity(0f), 800, Easing.OutQuint);
-            }
         }
 
         protected override void UpdateAfterChildren()
         {
             base.UpdateAfterChildren();
-            LeftBox.Scale = new Vector2(Math.Clamp(RangePadding + (Nub.DrawPosition.X - 8), 0, Math.Max(0, DrawWidth)), 1);
+
+            // [중요] 기존 LeftBox.Scale 방식을 버리고 마스킹 컨테이너의 Width를 직접 조절합니다.
+            LeftBoxContainer.Width = Math.Clamp(RangePadding + (Nub.DrawPosition.X - 8), 0, Math.Max(0, DrawWidth));
+
             RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - (Nub.DrawPosition.X + 8) - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
         }
 

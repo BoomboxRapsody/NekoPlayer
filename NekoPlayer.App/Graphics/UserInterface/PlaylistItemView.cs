@@ -138,7 +138,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"),
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                loading = new LoadingLayer(true, false, false)
+                                loading = new NekoPlayerLoadingLayer(true, false, false)
                             },
                         },
                         new Container
@@ -196,7 +196,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             Schedule(() => loading.Hide());
         }
 
-        private LoadingSpinner loading = null!;
+        private NekoPlayerLoadingLayer loading = null!;
 
         protected override bool OnHover(HoverEvent e)
         {

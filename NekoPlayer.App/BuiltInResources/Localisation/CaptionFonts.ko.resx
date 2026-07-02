@@ -76,7 +76,7 @@
   <data name="one_mobile_pop" xml:space="preserve">
     <value>원스토어 모바일POP체</value>
   </data>
-  <data name="hayu_font" xml:space="preserve">
-    <value>Hayu Font</value>
+  <data name="puzzle_sans_super" xml:space="preserve">
+    <value>퍼즐체SUPER</value>
   </data>
 </root>
