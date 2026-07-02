@@ -116,7 +116,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     {
                         Bottom = 8,
                         Top = 8 + 12,
-                        Horizontal = 12,
+                        Horizontal = 8,
                     },
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
