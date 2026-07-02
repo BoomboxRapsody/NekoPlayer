@@ -161,15 +161,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     desc.Origin = Anchor.TopLeft;
                     break;
                 }
-                case VideoMetadataDisplayAlignment.Center:
-                {
-                    videoName.Anchor = Anchor.TopCentre;
-                    videoName.Origin = Anchor.TopCentre;
-
-                    desc.Anchor = Anchor.TopCentre;
-                    desc.Origin = Anchor.TopCentre;
-                    break;
-                }
                 case VideoMetadataDisplayAlignment.Right:
                 {
                     videoName.Anchor = Anchor.TopRight;

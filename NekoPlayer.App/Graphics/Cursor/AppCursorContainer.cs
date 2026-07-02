@@ -246,7 +246,7 @@ namespace NekoPlayer.App.Graphics.Cursor
             channel.Frequency.Value = baseFrequency - (random_range / 2f) + RNG.NextDouble(random_range);
             channel.Volume.Value = baseFrequency;
 
-            channel.Play();
+            //channel.Play();
         }
 
         public partial class Cursor : Container
