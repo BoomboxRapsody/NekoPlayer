@@ -4430,7 +4430,7 @@ namespace NekoPlayer.App.Screens
             }
             else
             {
-                gameVersion.AddText(game.Version + $" ({NekoPlayerApp.KnownCodename})");
+                gameVersion.AddText(game.Version);
             }
 
             updateInfomationText.BindValueChanged(text =>
