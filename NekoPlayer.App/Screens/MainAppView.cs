@@ -6574,12 +6574,6 @@ namespace NekoPlayer.App.Screens
                     videoMetadataDisplay.Origin = Anchor.TopLeft;
                     break;
                 }
-                case VideoMetadataDisplayAlignment.Center:
-                {
-                    videoMetadataDisplay.Anchor = Anchor.TopCentre;
-                    videoMetadataDisplay.Origin = Anchor.TopCentre;
-                    break;
-                }
                 case VideoMetadataDisplayAlignment.Right:
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopRight;
