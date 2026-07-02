@@ -221,7 +221,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
             {
                 // Sine Wave 공식: y = sin(x * 주파수) * 진폭
-                float y = MathF.Sin((x - (float)Time.Current * 0.05f) * frequency) * amplitude;
+                float y = MathF.Sin((x - ((float)Time.Current * 0.05f)) * frequency) * amplitude;
                 points.Add(new Vector2(x, y));
             }
 
