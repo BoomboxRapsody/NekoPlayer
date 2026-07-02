@@ -87,7 +87,7 @@ namespace NekoPlayer.App.Screens
         private ControlBarIconButton prevVideoButton, nextVideoButton;
         private EnhancedFocusedTextBox videoIdBox, playlistIdBox, searchTextBox;
         private EnhancedFocusedTextBoxWithProfileImage commentTextBox;
-        private LoadingSpinner spinner;
+        private NekoPlayerLoadingSpinner spinner;
         private ScheduledDelegate spinnerShow;
         private AdaptiveAlertContainer alert;
         private IdleTracker idleTracker;
@@ -509,7 +509,7 @@ namespace NekoPlayer.App.Screens
                     RelativeSizeAxes = Axes.Both,
                     Children = new Drawable[]
                     {
-                        spinner = new LoadingSpinner(true, true)
+                        spinner = new NekoPlayerLoadingSpinner(true, true)
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,

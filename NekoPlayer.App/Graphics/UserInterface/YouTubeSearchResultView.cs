@@ -145,7 +145,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         },
                     }
                 },
-                loading = new LoadingLayer(true, false, false)
+                loading = new NekoPlayerLoadingLayer(true, false, false)
             });
         }
 
@@ -164,7 +164,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             Schedule(() => loading.Hide());
         }
 
-        private LoadingSpinner loading = null!;
+        private NekoPlayerLoadingSpinner loading = null!;
 
         protected override bool OnHover(HoverEvent e)
         {

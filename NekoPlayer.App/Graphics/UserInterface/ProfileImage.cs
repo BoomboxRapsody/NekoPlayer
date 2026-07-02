@@ -37,7 +37,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private Container profileImageBase;
 
-        private LoadingSpinner loading;
+        private NekoPlayerLoadingLayer loading;
         private Box hover, bgLayer;
 
         [Resolved]
@@ -87,7 +87,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Blending = BlendingParameters.Additive,
                     Alpha = 0,
                 },
-                loading = new LoadingLayer(true, false, false)
+                loading = new NekoPlayerLoadingLayer(true, false, false)
             };
         }
 

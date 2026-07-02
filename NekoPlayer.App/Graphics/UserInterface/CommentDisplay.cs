@@ -37,7 +37,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public Action<double> TimestampClicked;
 
-        private LoadingLayer loading;
+        private NekoPlayerLoadingLayer loading;
 
         [Resolved]
         private YouTubeAPI api { get; set; } = null!;
@@ -218,7 +218,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         }
                     }
                 },
-                loading = new LoadingLayer(true, false, true),
+                loading = new NekoPlayerLoadingLayer(true, false, true),
             };
         }
 
