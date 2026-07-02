@@ -128,7 +128,7 @@ namespace NekoPlayer.App.Graphics.Caption
                     }
                     case CaptionFonts.PuzzleSansSuper:
                     {
-                        spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
+                        spriteText.Font = NekoPlayerApp.PuzzleSansSuper.With(size: 24);
                         break;
                     }
                 }
