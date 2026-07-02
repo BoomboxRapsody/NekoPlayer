@@ -6209,6 +6209,8 @@ namespace NekoPlayer.App.Screens
         {
             base.Update();
 
+            seekbar.PlaybackSpeed.Value = playbackSpeed.Value;
+
             if (game.UseSystemCursor.Value == true)
             {
                 game.SetCursorVisibility(CursorVisible);

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
 using NekoPlayer.App.Utils;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -63,6 +64,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 RightBox.Colour = value;
             }
         }
+
+        public Bindable<double> PlaybackSpeed = new Bindable<double>(1);
 
         /// <summary>
         /// The action to use to reset the value of <see cref="SliderBar{T}.Current"/> to the default.
@@ -154,6 +157,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             AccentColour = Nub.Colour = overlayColourProvider.Content2;
             BackgroundColour = overlayColourProvider.Content2.Darken(1);
+
+            PlaybackSpeed.BindValueChanged(speed =>
+            {
+                this.TransformBindableTo(speedRolling, speed.NewValue, 400, Easing.OutQuint);
+            }, true);
         }
 
         [Resolved]
@@ -209,6 +217,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             updateWavePath();
         }
 
+        private Bindable<double> speedRolling = new Bindable<double>(1);
+
         private void updateWavePath()
         {
             var points = new List<Vector2>();
@@ -219,7 +229,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
             {
-                float y = MathF.Sin((x - ((float)Time.Current * 0.05f)) * frequency) * amplitude;
+                float y = MathF.Sin((x - ((float)((Time.Current * 0.05f) * speedRolling.Value))) * frequency) * amplitude;
                 points.Add(new Vector2(x, y));
             }
 
