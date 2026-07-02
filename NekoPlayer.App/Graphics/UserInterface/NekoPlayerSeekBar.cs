@@ -107,7 +107,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 Children = new Drawable[] {
                                     LeftBox = new SmoothPath
                                     {
-                                        PathRadius = 4f,
+                                        PathRadius = 4.5f,
                                         Anchor = Anchor.CentreLeft,
                                         Origin = Anchor.CentreLeft,
                                     },
