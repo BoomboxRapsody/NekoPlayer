@@ -125,6 +125,22 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public void SetEnabledValue(bool enabled)
         {
             enabledValue = enabled;
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
+            Background.FadeColour(enabled ? accentColor : bgColor, 250, Easing.OutQuint);
+            SpriteText.FadeColour(enabled ? bgColor : accentColor, 250, Easing.OutQuint);
+        }
+
+        public void SetEnabledValue2(bool enabled)
+        {
+            enabledValue = !enabled;
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
+            Background.FadeColour(!enabled ? accentColor : bgColor, 250, Easing.OutQuint);
+            SpriteText.FadeColour(!enabled ? bgColor : accentColor, 250, Easing.OutQuint);
+        }
+
+        public void SetEnabledValue3(bool enabled)
+        {
+            enabledValue = enabled;
             content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
             Background.FadeColour(enabled ? accentColor : bgColor, 250, Easing.OutQuint);
             SpriteText.FadeColour(enabled ? bgColor : accentColor, 250, Easing.OutQuint);
@@ -179,6 +195,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public void SetBackgroundVisibility(bool active)
         {
             Background.Alpha = active ? 1 : 0;
+        }
+
+        public void SetCornerRadius(CornersInfo cornersInfo)
+        {
+            content.CornerRadius = cornersInfo;
         }
 
         [BackgroundDependencyLoader]
