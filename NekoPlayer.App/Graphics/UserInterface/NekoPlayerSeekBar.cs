@@ -107,7 +107,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 Children = new Drawable[] {
                                     LeftBox = new SmoothPath
                                     {
-                                        PathRadius = 4f, // 물결 선의 두께 (원하는 대로 조절 가능)
+                                        PathRadius = 4f,
                                         Anchor = Anchor.CentreLeft,
                                         Origin = Anchor.CentreLeft,
                                     },
@@ -205,7 +205,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             nubContainer.Padding = new MarginPadding { Horizontal = RangePadding };
 
-            // 매 프레임 혹은 너비가 바뀔 때 물결 정점을 다시 그립니다.
             updateWavePath();
         }
 
@@ -213,14 +212,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             var points = new List<Vector2>();
 
-            // 물결 모양 커스텀 변수 (원하는 느낌으로 숫자를 조절해 보세요)
-            float frequency = 0.1f; // 물결의 촘촘함 (숫자가 클수록 촘촘해짐)
-            float amplitude = 4f;    // 물결의 높이 (위아래 진폭)
-            float step = 1f;         // 선을 구성하는 정점 간격 (정밀도)
+            float frequency = 0.1f;
+            float amplitude = 3.5f;
+            float step = 1f;
 
             for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
             {
-                // Sine Wave 공식: y = sin(x * 주파수) * 진폭
                 float y = MathF.Sin((x - ((float)Time.Current * 0.05f)) * frequency) * amplitude;
                 points.Add(new Vector2(x, y));
             }
