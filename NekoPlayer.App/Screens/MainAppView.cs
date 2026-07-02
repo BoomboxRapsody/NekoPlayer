@@ -4426,11 +4426,11 @@ namespace NekoPlayer.App.Screens
 
             if (game.IsDeployedBuild)
             {
-                gameVersion.AddLink(game.Version + $"({NekoPlayerApp.KnownCodename})", $"https://github.com/BoomboxRapsody/NekoPlayer/releases/{game.Version}", tooltipText: NekoPlayerStrings.ViewChangelog(game.Version));
+                gameVersion.AddLink(game.Version + $" ({NekoPlayerApp.KnownCodename})", $"https://github.com/BoomboxRapsody/NekoPlayer/releases/{game.Version}", tooltipText: NekoPlayerStrings.ViewChangelog(game.Version));
             }
             else
             {
-                gameVersion.AddText(game.Version + $"({NekoPlayerApp.KnownCodename})");
+                gameVersion.AddText(game.Version + $" ({NekoPlayerApp.KnownCodename})");
             }
 
             updateInfomationText.BindValueChanged(text =>
