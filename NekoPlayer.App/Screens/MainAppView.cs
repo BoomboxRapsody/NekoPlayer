@@ -6583,6 +6583,8 @@ namespace NekoPlayer.App.Screens
             }
         }
 
+        private Color4 bgColor2;
+
         public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)
         {
             Task.Run(async () =>
@@ -6607,17 +6609,22 @@ namespace NekoPlayer.App.Screens
                 {
                     accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
                     bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
+                    bgColor2 = System.Drawing.Color.FromArgb((int)rgbColor2);
                 }
                 else
                 {
                     accentColor = overlayColourProvider1.Content2;
                     bgColor = overlayColourProvider1.Background3;
+                    bgColor2 = overlayColourProvider1.Content2.Darken(1);
                 }
 
                 #region video controls color area
 
                 Schedule(() =>
                 {
+                    seekbar.AccentColour = accentColor;
+                    seekbar.BackgroundColour = bgColor2;
+
                     prevVideoButton.AccentColor = accentColor;
                     prevVideoButton.BackgroundColour = bgColor;
                     prevVideoButton.IconObject.FadeColour(accentColor);
@@ -6690,7 +6697,7 @@ namespace NekoPlayer.App.Screens
                 }
 
                 Schedule(() => downloadOpenButton.Enabled.Value = true);
-                Schedule(() => seekbar.GetPalette(videoData));
+                //Schedule(() => seekbar.GetPalette(videoData));
 
                 commentsDisabled = videoData.Statistics.CommentCount == null;
 
