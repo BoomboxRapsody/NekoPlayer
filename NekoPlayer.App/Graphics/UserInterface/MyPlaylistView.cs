@@ -118,7 +118,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     RelativeSizeAxes = Axes.Both,
                                     FillMode = FillMode.Stretch,
                                 },
-                                loading = new LoadingLayer(true, false, false)
+                                loading = new NekoPlayerLoadingLayer(true, false, false)
                             },
                         },
                         new Container
@@ -204,7 +204,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             Schedule(() => loading.Hide());
         }
 
-        private LoadingSpinner loading = null!;
+        private NekoPlayerLoadingLayer loading = null!;
 
         protected override bool OnHover(HoverEvent e)
         {

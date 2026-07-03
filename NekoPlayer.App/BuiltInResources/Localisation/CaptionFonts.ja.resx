@@ -82,4 +82,7 @@
   <data name="puzzle_sans_super" xml:space="preserve">
     <value>パズルサンズ スーパー</value>
   </data>
+  <data name="x12y12pxMaruMinyaHangul" xml:space="preserve">
+    <value>x12y12pxMaruMinyaHangul</value>
+  </data>
 </root>

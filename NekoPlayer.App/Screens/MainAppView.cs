@@ -96,7 +96,7 @@ namespace NekoPlayer.App.Screens
         private OverlayContainer loadVideoContainer, settingsContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
         private IconButtonWithShadow menuOverlayShow;
-        private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, downloadOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
+        private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
         private VideoMetadataDisplayWithoutProfile videoMetadataDisplay;
         private VideoMetadataDisplay videoMetadataDisplayDetails, videoMetadataDisplayDetails2;
         private RoundedButtonContainer commentOpenButtonDetails, likeButton;
@@ -2955,21 +2955,14 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        unsubscribeDialog = new OverlayContainer
+                        unsubscribeDialog = new BottomOverlayContainer
                         {
                             Width = 450,
                             Height = 200,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -3468,19 +3461,6 @@ namespace NekoPlayer.App.Screens
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Report,
                                                             Hotkey = new Hotkey(GlobalAction.ReportAbuse),
-                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
-                                                        },
-                                                        downloadOpenButton = new MenuButtonItem
-                                                        {
-                                                            Enabled = { Value = false },
-                                                            Origin = Anchor.TopRight,
-                                                            Anchor = Anchor.TopRight,
-                                                            Size = new Vector2(1, 45),
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Icon = FontAwesome.Solid.Download,
-                                                            IconScale = new Vector2(1.2f),
-                                                            Text = NekoPlayerStrings.DownloadVideo,
-                                                            Hotkey = new Hotkey(GlobalAction.DownloadVideo),
                                                             RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
                                                         playlistOpenButton = new MenuButtonItem
@@ -5586,13 +5566,6 @@ namespace NekoPlayer.App.Screens
                 showOverlayContainer(reportAbuseOverlay);
             };
 
-            downloadOpenButton.Action = () =>
-            {
-                currentVideoSource?.Pause();
-                hideOverlays();
-                showOverlayContainer(downloadReadyContainer);
-            };
-
             playlistOpenButton.Action = () =>
             {
                 hideOverlays();
@@ -6583,41 +6556,57 @@ namespace NekoPlayer.App.Screens
             }
         }
 
+        private Color4 bgColor2;
+
         public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)
         {
             Task.Run(async () =>
             {
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png");
-
-                using (var httpClient = new System.Net.Http.HttpClient())
+                try
                 {
-                    var imageBytes = await httpClient.GetByteArrayAsync(video.Snippet.Thumbnails.High.Url);
-                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                    var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png");
+
+                    using (var httpClient = new System.Net.Http.HttpClient())
+                    {
+                        var imageBytes = await httpClient.GetByteArrayAsync(video.Snippet.Thumbnails.High.Url);
+                        await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                    }
+
+                    using SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png"));
+
+                    IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
+                    PaletteBuilder paletteBuilder = new PaletteBuilder();
+                    Palette palette = paletteBuilder.Generate(bitmapHelper);
+                    int? rgbColor = palette.LightMutedSwatch.Rgb;
+                    int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
+
+                    if (rgbColor != null && rgbColor2 != null)
+                    {
+                        accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
+                        bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
+                        bgColor2 = System.Drawing.Color.FromArgb((int)rgbColor2);
+                    }
+                    else
+                    {
+                        accentColor = overlayColourProvider1.Content2;
+                        bgColor = overlayColourProvider1.Background3;
+                        bgColor2 = overlayColourProvider1.Content2.Darken(1);
+                    }
                 }
-
-                using SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png"));
-
-                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
-                PaletteBuilder paletteBuilder = new PaletteBuilder();
-                Palette palette = paletteBuilder.Generate(bitmapHelper);
-                int? rgbColor = palette.LightMutedSwatch.Rgb;
-                int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
-
-                if (rgbColor != null && rgbColor2 != null)
-                {
-                    accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
-                    bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
-                }
-                else
+                catch
                 {
                     accentColor = overlayColourProvider1.Content2;
                     bgColor = overlayColourProvider1.Background3;
+                    bgColor2 = overlayColourProvider1.Content2.Darken(1);
                 }
 
                 #region video controls color area
 
                 Schedule(() =>
                 {
+                    seekbar.AccentColour = accentColor;
+                    seekbar.BackgroundColour = bgColor2;
+
                     prevVideoButton.AccentColor = accentColor;
                     prevVideoButton.BackgroundColour = bgColor;
                     prevVideoButton.IconObject.FadeColour(accentColor);
@@ -6688,9 +6677,7 @@ namespace NekoPlayer.App.Screens
                     Schedule(() => reportOpenButton.Enabled.Value = true);
                     Schedule(() => saveVideoOpenButton.Enabled.Value = true);
                 }
-
-                Schedule(() => downloadOpenButton.Enabled.Value = true);
-                Schedule(() => seekbar.GetPalette(videoData));
+                //Schedule(() => seekbar.GetPalette(videoData));
 
                 commentsDisabled = videoData.Statistics.CommentCount == null;
 

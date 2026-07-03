@@ -51,6 +51,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString PuzzleSansSuper => new TranslatableString(getKey(@"puzzle_sans_super"), "Puzzle Sans SUPER");
 
+        /// <summary>
+        /// "x12y12pxMaruMinyaHangul"
+        /// </summary>
+        public static LocalisableString x12y12pxMaruMinyaHangul => new TranslatableString(getKey(@"x12y12pxMaruMinyaHangul"), "x12y12pxMaruMinyaHangul");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

@@ -55,10 +55,11 @@ namespace NekoPlayer.App
         public static FontUsage ONE_Mobile_POP = FontUsage.Default.With("ONE_Mobile_POP", 16);
         public static FontUsage PuzzleSansSuper = FontUsage.Default.With("PuzzleSansSuper", 16);
         public static FontUsage HayuFont = FontUsage.Default.With("HayuFont", 16);
+        public static FontUsage MaruMinyaHangul = FontUsage.Default.With("x12y12pxMaruMinyaHangul", 16);
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 
-        public static string KnownCodename = "Archnemesis";
+        public static string KnownCodename = "Baklava";
 
         private BindableNumber<double> sampleVolume = null!;
         private FPSCounter fpsCounter;
@@ -105,10 +106,6 @@ namespace NekoPlayer.App
         public MediaSession MediaSession;
 
         private Bindable<CloseButtonAction> closeButtonAction;
-
-        private void InitializeCef()
-        {
-        }
 
         [BackgroundDependencyLoader]
         private void load()

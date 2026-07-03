@@ -17,21 +17,21 @@
     <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
     <PackageReference Include="NAudio" Version="2.3.0" />
     <PackageReference Include="NReco.VideoInfo" Version="1.2.1" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.44.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="149.0.7827.5400" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.8" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.45.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="150.0.7871.4600" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.9" />
     <PackageReference Include="SharpCompress" Version="0.49.1" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.74.0.4162" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.75.0.4176" />
     <PackageReference Include="Humanizer" Version="3.0.10" />
     <PackageReference Include="PaletteNet" Version="3.0.1" />
     <PackageReference Include="McEndu.FreeTypeSharp" Version="4.1.5" />
     <PackageReference Include="YoutubeExplode" Version="6.6.0" />
     <PackageReference Include="YoutubeExplode.Converter" Version="6.6.0" />
-    <PackageReference Include="YouTubePlayerEX.App.Resources" Version="2026.606.0" />
+    <PackageReference Include="YouTubePlayerEX.App.Resources" Version="2026.703.0" />
     <PackageReference Include="OSVersionExt" Version="4.1.0" />
     <PackageReference Include="Sentry" Version="6.6.0" />
     <PackageReference Include="Lazy.Fody" PrivateAssets="all" Version="1.11.0" />
-    <PackageReference Include="ppy.LocalisationAnalyser" Version="2025.1208.0">
+    <PackageReference Include="ppy.LocalisationAnalyser" Version="2026.611.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -80,5 +80,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>NekoPlayer_DiscordRPCStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
   </ItemGroup>
 </Project>
