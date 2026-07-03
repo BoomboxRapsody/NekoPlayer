@@ -2955,21 +2955,14 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        unsubscribeDialog = new OverlayContainer
+                        unsubscribeDialog = new BottomOverlayContainer
                         {
                             Width = 450,
                             Height = 200,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
+                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
                                 new Box
