@@ -107,10 +107,6 @@ namespace NekoPlayer.App
 
         private Bindable<CloseButtonAction> closeButtonAction;
 
-        private void InitializeCef()
-        {
-        }
-
         [BackgroundDependencyLoader]
         private void load()
         {
