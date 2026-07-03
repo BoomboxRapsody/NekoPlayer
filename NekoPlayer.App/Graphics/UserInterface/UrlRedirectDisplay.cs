@@ -239,63 +239,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
             return titleNode?.InnerText?.Trim() ?? url;
         }
 
-        public async Task<string> GetTitleFromLink_v2(string url)
-        {
-            // Get illegal characters for the current OS
-            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
-            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
-
-            string wth = string.Empty;
-            // 1. Chrome 옵션 객체 생성
-            ChromeOptions options = new ChromeOptions();
-
-            // 2. 창을 띄우지 않는 Headless 모드 설정
-            options.AddArgument("--headless=new"); // 최신 Selenium/Chrome 방식
-            options.AddArgument("--no-sandbox");
-            options.AddArgument("--disable-gpu");
-            options.AddArgument("--mute-audio");
-            options.AddArgument("--disable-extensions");
-
-            // (선택) 리소스 절약 및 에러 방지를 위한 추가 옵션
-            options.AddArgument("--disable-dev-shm-usage");   // 공유 메모리 파일 사용 안 함 (리눅스 환경 등에서 필수)
-            options.AddArgument("--window-size=1920,1080");   // 가상 화면 크기 설정 (요소 인식을 위해 필요할 수 있음)
-
-            // 3. 설정된 옵션을 적용하여 드라이버 실행
-            using (IWebDriver driver = new ChromeDriver(options))
-            {
-                // 4. 웹사이트 접속 및 작업 수행
-                await driver.Navigate().GoToUrlAsync(url);
-
-                wth = driver.Title;
-
-                ITakesScreenshot takesScreenshot = driver as ITakesScreenshot;
-
-                if (takesScreenshot != null)
-                {
-                    // 3. 스크린샷 캡처
-                    Screenshot screenshot = takesScreenshot.GetScreenshot();
-
-                    // 4. 원하는 경로에 파일 저장
-                    string savePath = app.Host.CacheStorage.GetStorageForDirectory("webScreenshotCache").GetFullPath($"{Regex.Replace(url, invalidRegStr, "_")}.png");
-                    screenshot.SaveAsFile(savePath);
-
-                    using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("webScreenshotCache").GetFullPath($"{Regex.Replace(url, invalidRegStr, "_")}.png"));
-
-                    var bitmap2 = bitmap.Clone();
-
-                    var tex = renderer.CreateTexture(bitmap2.Width, bitmap2.Height);
-                    tex.SetData(new TextureUpload(bitmap2));
-
-                    Schedule(() => { background.Texture = tex; });
-                }
-
-                // 드라이버 종료
-                driver.Quit();
-            }
-
-            return wth;
-        }
-
         [Resolved]
         private IRenderer renderer { get; set; }
 
