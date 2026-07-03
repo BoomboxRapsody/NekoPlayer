@@ -131,6 +131,11 @@ namespace NekoPlayer.App.Graphics.Caption
                         spriteText.Font = NekoPlayerApp.PuzzleSansSuper.With(size: 24);
                         break;
                     }
+                    case CaptionFonts.x12y12pxMaruMinyaHangul:
+                    {
+                        spriteText.Font = NekoPlayerApp.MaruMinyaHangul.With(size: 24);
+                        break;
+                    }
                 }
             }, true);
 

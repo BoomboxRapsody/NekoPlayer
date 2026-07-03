@@ -79,4 +79,7 @@
   <data name="puzzle_sans_super" xml:space="preserve">
     <value>퍼즐체SUPER</value>
   </data>
+  <data name="x12y12pxMaruMinyaHangul" xml:space="preserve">
+    <value>마루미냐 한글</value>
+  </data>
 </root>

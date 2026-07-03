@@ -26,5 +26,7 @@ namespace NekoPlayer.App.Config
         ONE_Mobile_POP,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.PuzzleSansSuper))]
         PuzzleSansSuper,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.x12y12pxMaruMinyaHangul))]
+        x12y12pxMaruMinyaHangul,
     }
 }
