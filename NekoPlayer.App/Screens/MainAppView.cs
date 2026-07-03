@@ -96,7 +96,7 @@ namespace NekoPlayer.App.Screens
         private OverlayContainer loadVideoContainer, settingsContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
         private IconButtonWithShadow menuOverlayShow;
-        private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, downloadOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
+        private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
         private VideoMetadataDisplayWithoutProfile videoMetadataDisplay;
         private VideoMetadataDisplay videoMetadataDisplayDetails, videoMetadataDisplayDetails2;
         private RoundedButtonContainer commentOpenButtonDetails, likeButton;
@@ -3463,19 +3463,6 @@ namespace NekoPlayer.App.Screens
                                                             Hotkey = new Hotkey(GlobalAction.ReportAbuse),
                                                             RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                         },
-                                                        downloadOpenButton = new MenuButtonItem
-                                                        {
-                                                            Enabled = { Value = false },
-                                                            Origin = Anchor.TopRight,
-                                                            Anchor = Anchor.TopRight,
-                                                            Size = new Vector2(1, 45),
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Icon = FontAwesome.Solid.Download,
-                                                            IconScale = new Vector2(1.2f),
-                                                            Text = NekoPlayerStrings.DownloadVideo,
-                                                            Hotkey = new Hotkey(GlobalAction.DownloadVideo),
-                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
-                                                        },
                                                         playlistOpenButton = new MenuButtonItem
                                                         {
                                                             Enabled = { Value = true },
@@ -5579,13 +5566,6 @@ namespace NekoPlayer.App.Screens
                 showOverlayContainer(reportAbuseOverlay);
             };
 
-            downloadOpenButton.Action = () =>
-            {
-                currentVideoSource?.Pause();
-                hideOverlays();
-                showOverlayContainer(downloadReadyContainer);
-            };
-
             playlistOpenButton.Action = () =>
             {
                 hideOverlays();
@@ -6697,8 +6677,6 @@ namespace NekoPlayer.App.Screens
                     Schedule(() => reportOpenButton.Enabled.Value = true);
                     Schedule(() => saveVideoOpenButton.Enabled.Value = true);
                 }
-
-                Schedule(() => downloadOpenButton.Enabled.Value = true);
                 //Schedule(() => seekbar.GetPalette(videoData));
 
                 commentsDisabled = videoData.Statistics.CommentCount == null;
