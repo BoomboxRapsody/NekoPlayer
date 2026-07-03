@@ -6589,29 +6589,38 @@ namespace NekoPlayer.App.Screens
         {
             Task.Run(async () =>
             {
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png");
-
-                using (var httpClient = new System.Net.Http.HttpClient())
+                try
                 {
-                    var imageBytes = await httpClient.GetByteArrayAsync(video.Snippet.Thumbnails.High.Url);
-                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                    var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png");
+
+                    using (var httpClient = new System.Net.Http.HttpClient())
+                    {
+                        var imageBytes = await httpClient.GetByteArrayAsync(video.Snippet.Thumbnails.High.Url);
+                        await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                    }
+
+                    using SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png"));
+
+                    IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
+                    PaletteBuilder paletteBuilder = new PaletteBuilder();
+                    Palette palette = paletteBuilder.Generate(bitmapHelper);
+                    int? rgbColor = palette.LightMutedSwatch.Rgb;
+                    int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
+
+                    if (rgbColor != null && rgbColor2 != null)
+                    {
+                        accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
+                        bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
+                        bgColor2 = System.Drawing.Color.FromArgb((int)rgbColor2);
+                    }
+                    else
+                    {
+                        accentColor = overlayColourProvider1.Content2;
+                        bgColor = overlayColourProvider1.Background3;
+                        bgColor2 = overlayColourProvider1.Content2.Darken(1);
+                    }
                 }
-
-                using SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache_").GetFullPath($"{video.Id}.png"));
-
-                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
-                PaletteBuilder paletteBuilder = new PaletteBuilder();
-                Palette palette = paletteBuilder.Generate(bitmapHelper);
-                int? rgbColor = palette.LightMutedSwatch.Rgb;
-                int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
-
-                if (rgbColor != null && rgbColor2 != null)
-                {
-                    accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
-                    bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
-                    bgColor2 = System.Drawing.Color.FromArgb((int)rgbColor2);
-                }
-                else
+                catch
                 {
                     accentColor = overlayColourProvider1.Content2;
                     bgColor = overlayColourProvider1.Background3;
