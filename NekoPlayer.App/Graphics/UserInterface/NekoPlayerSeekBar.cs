@@ -221,7 +221,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             if (Current != null && Current is BindableNumber<double>)
             {
-                if (((Current as BindableNumber<double>).Value >= ((Current as BindableNumber<double>).MaxValue * 0.03)) && ((Current as BindableNumber<double>).Value <= ((Current as BindableNumber<double>).MaxValue * 0.97))) // peak
+                if (((Current as BindableNumber<double>).Value >= ((Current as BindableNumber<double>).MaxValue * 0.04)) && ((Current as BindableNumber<double>).Value <= ((Current as BindableNumber<double>).MaxValue * 0.96))) // peak
                 {
                     if (!isWavy)
                     {
