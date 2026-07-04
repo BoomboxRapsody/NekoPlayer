@@ -236,7 +236,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
             {
-                float y = MathF.Sin((x - ((float)((Time.Current * 0.05f) * speedRolling.Value))) * frequency) * amplitude;
+                float y = MathF.Sin((x - ((float)(((Time.Current * -1f) * 0.05f) * speedRolling.Value))) * frequency) * amplitude;
                 points.Add(new Vector2(x, y));
             }
 

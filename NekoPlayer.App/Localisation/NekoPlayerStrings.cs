@@ -1216,6 +1216,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ShowVideoMetadataOnWindowTitle => new TranslatableString(getKey(@"show_video_metadata_on_window_title"), "Show video metadata on window title");
 
+        /// <summary>
+        /// "Always show player control"
+        /// </summary>
+        public static LocalisableString PlayerControlPin => new TranslatableString(getKey(@"player_control_pin"), "Always show player control");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

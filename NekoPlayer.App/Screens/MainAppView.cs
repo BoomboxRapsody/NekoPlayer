@@ -311,11 +311,12 @@ namespace NekoPlayer.App.Screens
         private FormEnumDropdown<Config.AudioQuality> audioQualitySettings;
 
         private Bindable<bool> repeat = new Bindable<bool>();
+        private Bindable<bool> alwaysShowControl = new Bindable<bool>();
 
         protected T GetShaderByType<T>() where T : InternalShader, new()
             => shaderManager.LocalInternalShader<T>();
 
-        private ControlBarIconButton repeatButton;
+        private ControlBarIconButton repeatButton, pinButton;
 
         private AdaptiveSpriteText timeText;
 
@@ -749,6 +750,20 @@ namespace NekoPlayer.App.Screens
                                                                                     ClickAction = _ =>
                                                                                     {
                                                                                         updateRepeatState();
+                                                                                    }
+                                                                                },
+                                                                                pinButton = new ControlBarIconButton(false)
+                                                                                {
+                                                                                    Width = 40,
+                                                                                    Enabled = { Value = true },
+                                                                                    Icon = FontAwesome.Solid.MapPin,
+                                                                                    TooltipText = NekoPlayerStrings.PlayerControlPin,
+                                                                                    IconColour = overlayColourProvider.Content2,
+                                                                                    BackgroundColour = overlayColourProvider.Background3,
+                                                                                    IconScale = new Vector2(0.85f),
+                                                                                    ClickAction = _ =>
+                                                                                    {
+                                                                                        updatePinState();
                                                                                     }
                                                                                 },
                                                                             }
@@ -4980,12 +4995,15 @@ namespace NekoPlayer.App.Screens
 
         private void hideControls()
         {
-            if (isControlVisible == true)
+            if (!alwaysShowControl.Value)
             {
-                isControlVisible = false;
-                uiContainer.FadeOutFromOne(250);
-                uiGradientContainer.FadeOutFromOne(250);
-                sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
+                if (isControlVisible == true)
+                {
+                    isControlVisible = false;
+                    uiContainer.FadeOutFromOne(250);
+                    uiGradientContainer.FadeOutFromOne(250);
+                    sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
+                }
             }
         }
 
@@ -5127,6 +5145,14 @@ namespace NekoPlayer.App.Screens
             repeatButton.SetEnabledValue3(repeat.Value);
             repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor, 250, Easing.OutQuint);
             repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
+        }
+
+        private void updatePinState()
+        {
+            alwaysShowControl.Value = !alwaysShowControl.Value;
+            pinButton.SetEnabledValue3(alwaysShowControl.Value);
+            pinButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor, 250, Easing.OutQuint);
+            pinButton.TransformTo(nameof(Width), alwaysShowControl.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
 
         private readonly BindableList<Size> resolutionsFullscreen = new BindableList<Size>(new[] { new Size(9999, 9999) });
@@ -6629,6 +6655,10 @@ namespace NekoPlayer.App.Screens
                     repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor);
                     repeatButton.AccentColor = accentColor;
                     repeatButton.BackgroundColour = bgColor;
+
+                    pinButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor);
+                    pinButton.AccentColor = accentColor;
+                    pinButton.BackgroundColour = bgColor;
 
                     speedBarSlider.AccentColour = accentColor;
                     speedBarSlider.BackgroundColour = bgColor.Lighten(0.5f);
