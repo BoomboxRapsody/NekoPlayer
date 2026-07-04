@@ -6661,6 +6661,9 @@ namespace NekoPlayer.App.Screens
                     seekbar.AccentColour = accentColor;
                     seekbar.BackgroundColour = bgColor2;
 
+                    spinner.AccentColor = accentColor;
+                    spinner.BackgroundColour = bgColor;
+
                     prevVideoButton.AccentColor = accentColor;
                     prevVideoButton.BackgroundColour = bgColor;
                     prevVideoButton.IconObject.FadeColour(accentColor);

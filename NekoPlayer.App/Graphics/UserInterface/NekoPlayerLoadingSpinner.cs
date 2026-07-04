@@ -33,6 +33,32 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private readonly bool inverted;
 
+        private Color4 bgColor;
+
+        public Color4 BackgroundColour
+        {
+            get => bgColor;
+            set
+            {
+                bgColor = value;
+
+                bg.FadeColour(value);
+            }
+        }
+
+        private Color4 accentColor;
+
+        public Color4 AccentColor
+        {
+            get => accentColor;
+            set
+            {
+                accentColor = value;
+
+                spinner.FadeColour(value);
+            }
+        }
+
         /// <summary>
         /// Constuct a new loading spinner.
         /// </summary>
@@ -73,8 +99,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider, TextureStore textures)
         {
-            bg.Colour = inverted ? overlayColourProvider.Background5 : overlayColourProvider.Content2;
-            spinner.Colour = inverted ? overlayColourProvider.Content2 : overlayColourProvider.Background5;
+            bg.Colour = inverted ? overlayColourProvider.Background3 : overlayColourProvider.Content2;
+            spinner.Colour = inverted ? overlayColourProvider.Content2 : overlayColourProvider.Background3;
 
             // 대략 30~60fps 기준 프레임들을 애니메이션에 추가합니다.
             // 예시: 프레임당 16ms(60fps) 혹은 동영상 싱크에 맞게 조절
