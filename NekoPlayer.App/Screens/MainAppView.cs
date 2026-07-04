@@ -740,7 +740,7 @@ namespace NekoPlayer.App.Screens
                                                                                 },
                                                                                 repeatButton = new ControlBarIconButton(false)
                                                                                 {
-                                                                                    Width = 40,
+                                                                                    Width = 50,
                                                                                     Enabled = { Value = true },
                                                                                     Icon = FontAwesome.Solid.Sync,
                                                                                     TooltipText = NekoPlayerStrings.Repeat,
@@ -754,7 +754,7 @@ namespace NekoPlayer.App.Screens
                                                                                 },
                                                                                 pinButton = new ControlBarIconButton(false)
                                                                                 {
-                                                                                    Width = 40,
+                                                                                    Width = 50,
                                                                                     Enabled = { Value = true },
                                                                                     Icon = FontAwesome.Solid.MapPin,
                                                                                     TooltipText = NekoPlayerStrings.PlayerControlPin,
@@ -4107,6 +4107,9 @@ namespace NekoPlayer.App.Screens
 
             prevVideoButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
             nextVideoButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
+
+            repeatButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
+            pinButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
             playPause.SetEnabledValue2(true);
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
@@ -5161,17 +5164,17 @@ namespace NekoPlayer.App.Screens
         private void updateRepeatState()
         {
             repeat.Value = !repeat.Value;
-            repeatButton.SetEnabledValue3(repeat.Value);
+            repeatButton.SetEnabledValueLeftSide(repeat.Value);
             repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor, 250, Easing.OutQuint);
-            repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
+            //repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
 
         private void updatePinState()
         {
             alwaysShowControl.Value = !alwaysShowControl.Value;
-            pinButton.SetEnabledValue3(alwaysShowControl.Value);
+            pinButton.SetEnabledValueRightSide(alwaysShowControl.Value);
             pinButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor, 250, Easing.OutQuint);
-            pinButton.TransformTo(nameof(Width), alwaysShowControl.Value ? 50f : 40f, 1000, Easing.OutElastic);
+            //pinButton.TransformTo(nameof(Width), alwaysShowControl.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
 
         private readonly BindableList<Size> resolutionsFullscreen = new BindableList<Size>(new[] { new Size(9999, 9999) });
