@@ -4283,6 +4283,8 @@ namespace NekoPlayer.App.Screens
                                 preferedLang = CultureInfo.CurrentCulture.Name;
                             }
 
+                            captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+
                             var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             ClosedCaptionTrack captionTrack = null;
@@ -4291,9 +4293,15 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(() =>
                                 {
-                                    Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
-
-                                    onScreenDisplay.Display(toast);
+                                    try
+                                    {
+                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                        onScreenDisplay.Display(toast);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Logger.Error(e, e.GetDescription());
+                                    }
                                 });
 
                                 captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
@@ -7546,6 +7554,8 @@ namespace NekoPlayer.App.Screens
                                 preferedLang = CultureInfo.CurrentCulture.Name;
                             }
 
+                            captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+
                             var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             if (trackInfo != null)
@@ -7560,9 +7570,15 @@ namespace NekoPlayer.App.Screens
                                         spinnerShow = Scheduler.AddDelayed(alert.Hide, 3000);
                                         */
 
-                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
-
-                                        onScreenDisplay.Display(toast);
+                                        try
+                                        {
+                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            onScreenDisplay.Display(toast);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Logger.Error(e, e.GetDescription());
+                                        }
                                     });
                                 }
 
@@ -7902,6 +7918,8 @@ namespace NekoPlayer.App.Screens
                                 preferedLang = CultureInfo.CurrentCulture.Name;
                             }
 
+                            captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+
                             var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             if (trackInfo != null)
@@ -7910,9 +7928,15 @@ namespace NekoPlayer.App.Screens
                                 {
                                     Schedule(() =>
                                     {
-                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
-
-                                        onScreenDisplay.Display(toast);
+                                        try
+                                        {
+                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            onScreenDisplay.Display(toast);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Logger.Error(e, e.GetDescription());
+                                        }
                                     });
                                 }
 
