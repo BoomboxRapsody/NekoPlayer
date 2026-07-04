@@ -4273,8 +4273,8 @@ namespace NekoPlayer.App.Screens
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
                             string preferedLang = string.Empty;
-
-                            if (!string.IsNullOrEmpty(captionLangDropdown.Current.Value.Hl.ToString()))
+                            
+                            if (captionLangDropdown.Current.Value != null)
                             {
                                 preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
                             }
@@ -7529,11 +7529,15 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
+                            if (trackManifest.Tracks.Count == 0)
+                            {
+                                captionEnabled.Value = false;
+                                captionEnabled.Disabled = true;
+                            }
 
                             string preferedLang = string.Empty;
 
-                            if (!string.IsNullOrEmpty(captionLangDropdown.Current.Value.Hl.ToString()))
+                            if (captionLangDropdown.Current.Value != null)
                             {
                                 preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
                             }
@@ -7881,11 +7885,15 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
+                            if (trackManifest.Tracks.Count == 0)
+                            {
+                                captionEnabled.Value = false;
+                                captionEnabled.Disabled = true;
+                            }
 
                             string preferedLang = string.Empty;
 
-                            if (!string.IsNullOrEmpty(captionLangDropdown.Current.Value.Hl.ToString()))
+                            if (captionLangDropdown.Current.Value != null)
                             {
                                 preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
                             }
