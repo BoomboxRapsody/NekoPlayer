@@ -102,12 +102,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
             bg.Colour = inverted ? overlayColourProvider.Background3 : overlayColourProvider.Content2;
             spinner.Colour = inverted ? overlayColourProvider.Content2 : overlayColourProvider.Background3;
 
-            // 대략 30~60fps 기준 프레임들을 애니메이션에 추가합니다.
-            // 예시: 프레임당 16ms(60fps) 혹은 동영상 싱크에 맞게 조절
             for (int i = 0; i < 279; i++)
             {
                 var texture = textures.Get($"LoadingSpinner/material3expressive_loadingindicator_{i}");
-                spinner.AddFrame(texture, 16); // 30ms 동안 표시
+                spinner.AddFrame(texture, 16);
             }
         }
 
