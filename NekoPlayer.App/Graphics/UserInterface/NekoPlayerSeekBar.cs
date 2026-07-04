@@ -219,11 +219,34 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             nubContainer.Padding = new MarginPadding { Horizontal = RangePadding };
 
+            if (Current != null && Current is BindableNumber<double>)
+            {
+                if (((Current as BindableNumber<double>).Value >= ((Current as BindableNumber<double>).MaxValue * 0.03)) && ((Current as BindableNumber<double>).Value <= ((Current as BindableNumber<double>).MaxValue * 0.97))) // peak
+                {
+                    if (!isWavy)
+                    {
+                        isWavy = true;
+                        this.TransformBindableTo(amplitudeAnimated2, 1f, 400, Easing.OutQuint);
+                    }
+                }
+                else
+                {
+                    if (isWavy)
+                    {
+                        isWavy = false;
+                        this.TransformBindableTo(amplitudeAnimated2, 0f, 400, Easing.OutQuint);
+                    }
+                }
+            }
+
             updateWavePath();
         }
 
+        private bool isWavy = false;
+
         private Bindable<double> speedRolling = new Bindable<double>(1);
         private Bindable<float> amplitudeAnimated = new Bindable<float>(0);
+        private Bindable<float> amplitudeAnimated2 = new Bindable<float>(0);
         public Bindable<bool> IsPlaying = new Bindable<bool>(false);
 
         private void updateWavePath()
@@ -231,7 +254,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             var points = new List<Vector2>();
 
             float frequency = 0.1f;
-            float amplitude = amplitudeAnimated.Value;
+            float amplitude = amplitudeAnimated.Value * amplitudeAnimated2.Value;
             float step = 1f;
 
             for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
