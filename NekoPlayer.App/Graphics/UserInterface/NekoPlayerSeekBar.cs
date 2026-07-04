@@ -226,7 +226,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     if (!isWavy)
                     {
                         isWavy = true;
-                        this.TransformBindableTo(amplitudeAnimated2, 1f, 750, Easing.OutQuint);
+                        this.TransformBindableTo(amplitudeAnimated2, 1f, 1500, Easing.OutQuint);
                     }
                 }
                 else
