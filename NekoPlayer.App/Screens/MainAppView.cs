@@ -4272,7 +4272,18 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
+                            string preferedLang = string.Empty;
+
+                            if (!string.IsNullOrEmpty(captionLangDropdown.Current.Value.Hl.ToString()))
+                            {
+                                preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                            }
+                            else
+                            {
+                                preferedLang = CultureInfo.CurrentCulture.Name;
+                            }
+
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             ClosedCaptionTrack captionTrack = null;
 
@@ -7520,7 +7531,18 @@ namespace NekoPlayer.App.Screens
 
                             captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
+                            string preferedLang = string.Empty;
+
+                            if (!string.IsNullOrEmpty(captionLangDropdown.Current.Value.Hl.ToString()))
+                            {
+                                preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                            }
+                            else
+                            {
+                                preferedLang = CultureInfo.CurrentCulture.Name;
+                            }
+
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             if (trackInfo != null)
                             {
@@ -7861,7 +7883,18 @@ namespace NekoPlayer.App.Screens
 
                             captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
+                            string preferedLang = string.Empty;
+
+                            if (!string.IsNullOrEmpty(captionLangDropdown.Current.Value.Hl.ToString()))
+                            {
+                                preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                            }
+                            else
+                            {
+                                preferedLang = CultureInfo.CurrentCulture.Name;
+                            }
+
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             if (trackInfo != null)
                             {
