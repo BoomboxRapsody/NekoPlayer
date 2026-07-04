@@ -125,7 +125,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public void SetEnabledValue(bool enabled)
         {
             enabledValue = enabled;
-            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f) : new CornersInfo(DrawHeight / 2), 250, Easing.OutQuint);
             Background.FadeColour(enabled ? accentColor : bgColor, 250, Easing.OutQuint);
             SpriteText.FadeColour(enabled ? bgColor : accentColor, 250, Easing.OutQuint);
         }
@@ -133,7 +133,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public void SetEnabledValue2(bool enabled)
         {
             enabledValue = !enabled;
-            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f) : new CornersInfo(DrawHeight / 2), 250, Easing.OutQuint);
             Background.FadeColour(!enabled ? accentColor : bgColor, 250, Easing.OutQuint);
             SpriteText.FadeColour(!enabled ? bgColor : accentColor, 250, Easing.OutQuint);
         }
@@ -141,7 +141,23 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public void SetEnabledValue3(bool enabled)
         {
             enabledValue = enabled;
-            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(DrawHeight) / 2, 250, Easing.OutQuint);
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f) : new CornersInfo(DrawHeight / 2), 250, Easing.OutQuint);
+            Background.FadeColour(enabled ? accentColor : bgColor, 250, Easing.OutQuint);
+            SpriteText.FadeColour(enabled ? bgColor : accentColor, 250, Easing.OutQuint);
+        }
+
+        public void SetEnabledValueLeftSide(bool enabled)
+        {
+            enabledValue = enabled;
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(DrawHeight / 2) : new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f), 250, Easing.OutQuint);
+            Background.FadeColour(enabled ? accentColor : bgColor, 250, Easing.OutQuint);
+            SpriteText.FadeColour(enabled ? bgColor : accentColor, 250, Easing.OutQuint);
+        }
+
+        public void SetEnabledValueRightSide(bool enabled)
+        {
+            enabledValue = enabled;
+            content.TransformTo(nameof(CornerRadius), enabled ? new CornersInfo(DrawHeight / 2) : new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15), 250, Easing.OutQuint);
             Background.FadeColour(enabled ? accentColor : bgColor, 250, Easing.OutQuint);
             SpriteText.FadeColour(enabled ? bgColor : accentColor, 250, Easing.OutQuint);
         }
@@ -156,6 +172,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 RelativeSizeAxes = Axes.Both,
                 Masking = true,
                 CornerRadius = 15,
+                /*
                 EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                 {
                     Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -163,6 +180,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Offset = new Vector2(0, 2),
                     Radius = 16,
                 },
+                */
                 Children = new Drawable[]
                 {
                     Background = new Box

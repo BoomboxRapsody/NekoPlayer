@@ -311,11 +311,12 @@ namespace NekoPlayer.App.Screens
         private FormEnumDropdown<Config.AudioQuality> audioQualitySettings;
 
         private Bindable<bool> repeat = new Bindable<bool>();
+        private Bindable<bool> alwaysShowControl = new Bindable<bool>();
 
         protected T GetShaderByType<T>() where T : InternalShader, new()
             => shaderManager.LocalInternalShader<T>();
 
-        private ControlBarIconButton repeatButton;
+        private ControlBarIconButton repeatButton, pinButton;
 
         private AdaptiveSpriteText timeText;
 
@@ -739,7 +740,7 @@ namespace NekoPlayer.App.Screens
                                                                                 },
                                                                                 repeatButton = new ControlBarIconButton(false)
                                                                                 {
-                                                                                    Width = 40,
+                                                                                    Width = 50,
                                                                                     Enabled = { Value = true },
                                                                                     Icon = FontAwesome.Solid.Sync,
                                                                                     TooltipText = NekoPlayerStrings.Repeat,
@@ -749,6 +750,20 @@ namespace NekoPlayer.App.Screens
                                                                                     ClickAction = _ =>
                                                                                     {
                                                                                         updateRepeatState();
+                                                                                    }
+                                                                                },
+                                                                                pinButton = new ControlBarIconButton(false)
+                                                                                {
+                                                                                    Width = 50,
+                                                                                    Enabled = { Value = true },
+                                                                                    Icon = FontAwesome.Solid.MapPin,
+                                                                                    TooltipText = NekoPlayerStrings.PlayerControlPin,
+                                                                                    IconColour = overlayColourProvider.Content2,
+                                                                                    BackgroundColour = overlayColourProvider.Background3,
+                                                                                    IconScale = new Vector2(0.85f),
+                                                                                    ClickAction = _ =>
+                                                                                    {
+                                                                                        updatePinState();
                                                                                     }
                                                                                 },
                                                                             }
@@ -761,6 +776,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 30,
                                                                     Masking = true,
                                                                     CornerRadius = 15,
+                                                                    /*
                                                                     EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                     {
                                                                         Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -768,6 +784,7 @@ namespace NekoPlayer.App.Screens
                                                                         Offset = new Vector2(0, 2),
                                                                         Radius = 16,
                                                                     },
+                                                                    */
                                                                     Children = new Drawable[]
                                                                     {
                                                                         speedBarBG = new Box
@@ -830,6 +847,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 30,
                                                                     Masking = true,
                                                                     CornerRadius = 15,
+                                                                    /*
                                                                     EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                     {
                                                                         Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -837,6 +855,7 @@ namespace NekoPlayer.App.Screens
                                                                         Offset = new Vector2(0, 2),
                                                                         Radius = 16,
                                                                     },
+                                                                    */
                                                                     Children = new Drawable[]
                                                                     {
                                                                         volumeBarBG = new Box
@@ -900,6 +919,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 30,
                                                                     Masking = true,
                                                                     CornerRadius = 15,
+                                                                    /*
                                                                     EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                     {
                                                                         Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -907,6 +927,7 @@ namespace NekoPlayer.App.Screens
                                                                         Offset = new Vector2(0, 2),
                                                                         Radius = 16,
                                                                     },
+                                                                    */
                                                                     Children = new Drawable[]
                                                                     {
                                                                         timeBG = new Box
@@ -4092,6 +4113,9 @@ namespace NekoPlayer.App.Screens
 
             prevVideoButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
             nextVideoButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
+
+            repeatButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
+            pinButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
             playPause.SetEnabledValue2(true);
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
@@ -4257,7 +4281,20 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
+                            string preferedLang = string.Empty;
+                            
+                            if (captionLangDropdown.Current.Value != null)
+                            {
+                                preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                            }
+                            else
+                            {
+                                preferedLang = CultureInfo.CurrentCulture.Name;
+                            }
+
+                            captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             ClosedCaptionTrack captionTrack = null;
 
@@ -4265,9 +4302,15 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(() =>
                                 {
-                                    Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
-
-                                    onScreenDisplay.Display(toast);
+                                    try
+                                    {
+                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                        onScreenDisplay.Display(toast);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Logger.Error(e, e.GetDescription());
+                                    }
                                 });
 
                                 captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
@@ -4980,12 +5023,15 @@ namespace NekoPlayer.App.Screens
 
         private void hideControls()
         {
-            if (isControlVisible == true)
+            if (!alwaysShowControl.Value)
             {
-                isControlVisible = false;
-                uiContainer.FadeOutFromOne(250);
-                uiGradientContainer.FadeOutFromOne(250);
-                sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
+                if (isControlVisible == true)
+                {
+                    isControlVisible = false;
+                    uiContainer.FadeOutFromOne(250);
+                    uiGradientContainer.FadeOutFromOne(250);
+                    sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
+                }
             }
         }
 
@@ -5124,9 +5170,17 @@ namespace NekoPlayer.App.Screens
         private void updateRepeatState()
         {
             repeat.Value = !repeat.Value;
-            repeatButton.SetEnabledValue3(repeat.Value);
+            repeatButton.SetEnabledValueLeftSide(repeat.Value);
             repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor, 250, Easing.OutQuint);
-            repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
+            //repeatButton.TransformTo(nameof(Width), repeat.Value ? 50f : 40f, 1000, Easing.OutElastic);
+        }
+
+        private void updatePinState()
+        {
+            alwaysShowControl.Value = !alwaysShowControl.Value;
+            pinButton.SetEnabledValueRightSide(alwaysShowControl.Value);
+            pinButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor, 250, Easing.OutQuint);
+            //pinButton.TransformTo(nameof(Width), alwaysShowControl.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
 
         private readonly BindableList<Size> resolutionsFullscreen = new BindableList<Size>(new[] { new Size(9999, 9999) });
@@ -6607,6 +6661,9 @@ namespace NekoPlayer.App.Screens
                     seekbar.AccentColour = accentColor;
                     seekbar.BackgroundColour = bgColor2;
 
+                    spinner.AccentColor = accentColor;
+                    spinner.BackgroundColour = bgColor;
+
                     prevVideoButton.AccentColor = accentColor;
                     prevVideoButton.BackgroundColour = bgColor;
                     prevVideoButton.IconObject.FadeColour(accentColor);
@@ -6629,6 +6686,10 @@ namespace NekoPlayer.App.Screens
                     repeatButton.IconObject.FadeColour(repeat.Value ? bgColor : accentColor);
                     repeatButton.AccentColor = accentColor;
                     repeatButton.BackgroundColour = bgColor;
+
+                    pinButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor);
+                    pinButton.AccentColor = accentColor;
+                    pinButton.BackgroundColour = bgColor;
 
                     speedBarSlider.AccentColour = accentColor;
                     speedBarSlider.BackgroundColour = bgColor.Lighten(0.5f);
@@ -7488,9 +7549,26 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
+                            if (trackManifest.Tracks.Count == 0)
+                            {
+                                captionEnabled.Value = false;
+                                captionEnabled.Disabled = true;
+                            }
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
+                            string preferedLang = string.Empty;
+
+                            if (captionLangDropdown.Current.Value != null)
+                            {
+                                preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                            }
+                            else
+                            {
+                                preferedLang = CultureInfo.CurrentCulture.Name;
+                            }
+
+                            captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             if (trackInfo != null)
                             {
@@ -7504,9 +7582,15 @@ namespace NekoPlayer.App.Screens
                                         spinnerShow = Scheduler.AddDelayed(alert.Hide, 3000);
                                         */
 
-                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
-
-                                        onScreenDisplay.Display(toast);
+                                        try
+                                        {
+                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            onScreenDisplay.Display(toast);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Logger.Error(e, e.GetDescription());
+                                        }
                                     });
                                 }
 
@@ -7829,9 +7913,26 @@ namespace NekoPlayer.App.Screens
                         {
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
-                            captionEnabled.Disabled = trackManifest.Tracks.Count == 0;
+                            if (trackManifest.Tracks.Count == 0)
+                            {
+                                captionEnabled.Value = false;
+                                captionEnabled.Disabled = true;
+                            }
 
-                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(captionLangDropdown.Current.Value.Hl.ToString())).First();
+                            string preferedLang = string.Empty;
+
+                            if (captionLangDropdown.Current.Value != null)
+                            {
+                                preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                            }
+                            else
+                            {
+                                preferedLang = CultureInfo.CurrentCulture.Name;
+                            }
+
+                            captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+
+                            var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
                             if (trackInfo != null)
                             {
@@ -7839,9 +7940,15 @@ namespace NekoPlayer.App.Screens
                                 {
                                     Schedule(() =>
                                     {
-                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
-
-                                        onScreenDisplay.Display(toast);
+                                        try
+                                        {
+                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            onScreenDisplay.Display(toast);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Logger.Error(e, e.GetDescription());
+                                        }
                                     });
                                 }
 
