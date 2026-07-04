@@ -172,6 +172,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 RelativeSizeAxes = Axes.Both,
                 Masking = true,
                 CornerRadius = 15,
+                /*
                 EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                 {
                     Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -179,6 +180,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Offset = new Vector2(0, 2),
                     Radius = 16,
                 },
+                */
                 Children = new Drawable[]
                 {
                     Background = new Box

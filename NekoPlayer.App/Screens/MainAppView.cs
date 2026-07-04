@@ -776,6 +776,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 30,
                                                                     Masking = true,
                                                                     CornerRadius = 15,
+                                                                    /*
                                                                     EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                     {
                                                                         Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -783,6 +784,7 @@ namespace NekoPlayer.App.Screens
                                                                         Offset = new Vector2(0, 2),
                                                                         Radius = 16,
                                                                     },
+                                                                    */
                                                                     Children = new Drawable[]
                                                                     {
                                                                         speedBarBG = new Box
@@ -845,6 +847,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 30,
                                                                     Masking = true,
                                                                     CornerRadius = 15,
+                                                                    /*
                                                                     EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                     {
                                                                         Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -852,6 +855,7 @@ namespace NekoPlayer.App.Screens
                                                                         Offset = new Vector2(0, 2),
                                                                         Radius = 16,
                                                                     },
+                                                                    */
                                                                     Children = new Drawable[]
                                                                     {
                                                                         volumeBarBG = new Box
@@ -915,6 +919,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 30,
                                                                     Masking = true,
                                                                     CornerRadius = 15,
+                                                                    /*
                                                                     EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                     {
                                                                         Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -922,6 +927,7 @@ namespace NekoPlayer.App.Screens
                                                                         Offset = new Vector2(0, 2),
                                                                         Radius = 16,
                                                                     },
+                                                                    */
                                                                     Children = new Drawable[]
                                                                     {
                                                                         timeBG = new Box
