@@ -5994,6 +5994,7 @@ namespace NekoPlayer.App.Screens
 
                     return true;
 
+                    /*
                 case GlobalAction.DownloadVideo:
                     if (videoData == null)
                         return true;
@@ -6008,6 +6009,7 @@ namespace NekoPlayer.App.Screens
                         hideOverlayContainer(downloadReadyContainer);
 
                     return true;
+                    */
 
                 case GlobalAction.OpenComments:
                     if (videoData == null)
@@ -7044,7 +7046,7 @@ namespace NekoPlayer.App.Screens
 
             if (audioNormalization.IntegratedLoudness == null)
             {
-                Logger.Log($"Failed to calculate audio normalization values for {api.GetChannel(videoData.Snippet.ChannelId)} - {videoData.Snippet.Title}", LoggingTarget.Runtime, LogLevel.Error);
+                Logger.Log($"Failed to calculate audio normalization values for {api.GetChannel(videoData.Snippet.ChannelId).Snippet.Title} - {videoData.Snippet.Title}", LoggingTarget.Runtime, LogLevel.Error);
             }
 
             app.CurrentTrackNormalizeVolume.Value = audioNormalization?.IntegratedLoudnessInVolumeOffset ?? AudioNormalizationManager.FALLBACK_VOLUME;
