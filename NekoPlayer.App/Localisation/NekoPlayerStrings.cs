@@ -1112,14 +1112,14 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString SystemMuteDesc => new TranslatableString(getKey(@"system_sound_mute_desc"), @"This setting mutes NekoPlayer sounds and other apps, and system sounds.");
 
         /// <summary>
-        /// "Report an issue"
+        /// "Send feedback"
         /// </summary>
-        public static LocalisableString ReportBugs => new TranslatableString(getKey(@"report_bugs"), @"Report an issue");
+        public static LocalisableString ReportBugs => new TranslatableString(getKey(@"report_bugs"), @"Send feedback");
 
         /// <summary>
-        /// "Report a problem with the app to the developers."
+        /// "Send a feedback with the app to the developers."
         /// </summary>
-        public static LocalisableString ReportBugsDesc => new TranslatableString(getKey(@"report_bugs_desc"), @"Report a problem with the app to the developers.");
+        public static LocalisableString ReportBugsDesc => new TranslatableString(getKey(@"report_bugs_desc"), @"Send a feedback with the app to the developers.");
 
         /// <summary>
         /// "Discord is not installed. Please install Discord and share your activities with your friends!"
