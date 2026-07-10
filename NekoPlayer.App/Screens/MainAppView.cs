@@ -1107,7 +1107,7 @@ namespace NekoPlayer.App.Screens
                                                             Padding = new MarginPadding { Horizontal = 30 },
                                                             Text = NekoPlayerStrings.ReportBugs,
                                                             TooltipText = NekoPlayerStrings.ReportBugsDesc,
-                                                            Action = () => host.OpenUrlExternally("https://boomboxrapsody.featurebase.app/en?b=6a50177df90a2c6347c1b216"),
+                                                            Action = () => host.OpenUrlExternally("https://boomboxrapsody.featurebase.app/en"),
                                                         },
                                                         new AdaptiveSpriteText
                                                         {
