@@ -3981,7 +3981,7 @@ namespace NekoPlayer.App.Screens
             };
 
             madeByText.AddText("made by ");
-            madeByText.AddLink("Mocha Studio", "https://github.com/BoomboxRapsody/");
+            madeByText.AddLink("BoomboxRapsody", "https://github.com/BoomboxRapsody/");
 
             videoMetadataDisplayAlignment.BindValueChanged(v =>
             {
