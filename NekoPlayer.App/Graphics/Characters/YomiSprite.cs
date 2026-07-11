@@ -35,7 +35,7 @@ namespace NekoPlayer.App.Graphics.Characters
             Skeleton.Y = DrawHeight * 2F / 3F;
 
             Skeleton.SetSkin("Normal");
-            State.SetAnimation(0, "Touch_Idle", true);
+            State.SetAnimation(0, "Happy_1", true);
         }
     }
 }
