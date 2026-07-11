@@ -1687,7 +1687,7 @@ namespace NekoPlayer.App.Screens
                                                                 {
                                                                     Width = 100,
                                                                     Height = 100,
-                                                                    Texture = textures.Get(@"NekoPlayer_LiquidGlass_Final"),
+                                                                    Texture = textures.Get(@"NekoPlayer_LiquidGlass_Remake"),
                                                                     FillMode = FillMode.Fit,
                                                                 }
                                                             },

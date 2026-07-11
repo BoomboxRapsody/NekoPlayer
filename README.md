@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Final.png">
+  <img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Remake.png">
 </p>
 
 <h1 align="center">NekoPlayer</h1>
