@@ -14,7 +14,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ManagedBass;
+using ManagedBass.DirectX8;
 using ManagedBass.Fx;
+using ManagedBass.Mix;
 using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
@@ -26,7 +29,7 @@ using NekoPlayer.App.Input;
 using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
-using NekoPlayer.App.Resources;
+//using NekoPlayer.App.Resources;
 using NekoPlayer.App.Utils;
 using osu.Framework;
 using osu.Framework.Allocation;
@@ -303,7 +306,7 @@ namespace NekoPlayer.App
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
                 //Logger.Log(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath("videoId") + @"\video.mp4");
-                Resources.AddStore(new DllResourceStore(typeof(NekoPlayerResources).Assembly));
+                //Resources.AddStore(new DllResourceStore(typeof(NekoPlayerResources).Assembly));
                 Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(typeof(NekoPlayerAppBase).Assembly), "BuiltInResources"));
 
                 InitialiseFonts();
@@ -444,6 +447,7 @@ namespace NekoPlayer.App
         private Bindable<bool> rotateEnabled = null!;
         private Bindable<bool> echoEnabled = null!;
         private Bindable<bool> distortionEnabled = null!;
+        private Bindable<bool> chorusEnabled = null!;
 
         private Bindable<float> reverbWetMix = null!;
         private Bindable<float> reverbRoomSize = null!;
@@ -460,11 +464,21 @@ namespace NekoPlayer.App
         private Bindable<float> distortionVolume = null!;
         private Bindable<float> distortionDrive = null!;
 
+        private Bindable<bool> karaokeModeEnabled = null!;
+
+        private Bindable<float> chorusDryMix = null!;
+        private Bindable<float> chorusWetMix = null!;
+        private Bindable<float> chorusFeedback = null!;
+        private Bindable<float> chorusMinSweep = null!;
+        private Bindable<float> chorusMaxSweep = null!;
+        private Bindable<float> chorusRate = null!;
+
         private ReverbParameters reverbParameters = new ReverbParameters();
         private RotateParameters rotateParameters = new RotateParameters();
         private EchoParameters echoParameters = new EchoParameters();
         private DistortionParameters distortionParameters = new DistortionParameters();
-        private BQFParameters karaokeModeParameters = new BQFParameters();
+        private ChorusParameters chorusParameters = new ChorusParameters();
+        private DSPProcedure _karaokeDsp;
 
         private void trackAudioEffects()
         {
@@ -611,14 +625,115 @@ namespace NekoPlayer.App
             }, true);
             #endregion
 
-            #region Karaoke Mode (WIP)
-            karaokeModeParameters.fCenter = 100;
-            karaokeModeParameters.lFilter = BQFType.HighPass;
-            karaokeModeParameters.fBandwidth = 0;
-            karaokeModeParameters.fQ = 0.7f;
+            #region Karaoke
+            _karaokeDsp = new DSPProcedure(KaraokeDsp);
+
+            karaokeModeEnabled = AudioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
+            karaokeModeEnabled.BindValueChanged(enabled =>
+            {
+                if (enabled.NewValue)
+                    Audio.TrackMixer.AddDSP(_karaokeDsp, 1);
+                else
+                    Audio.TrackMixer.RemoveDSP(_karaokeDsp);
+            }, true);
+            #endregion
+
+            #region Chorus
+            chorusEnabled = AudioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.ChorusEnabled);
+            chorusEnabled.BindValueChanged(enabled =>
+            {
+                if (enabled.NewValue)
+                    Audio.TrackMixer.AddEffect(chorusParameters);
+                else
+                    Audio.TrackMixer.RemoveEffect(chorusParameters);
+            }, true);
+
+            chorusDryMix = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusDryMix);
+            chorusDryMix.BindValueChanged(value =>
+            {
+                chorusParameters.fDryMix = value.NewValue - 2;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusWetMix = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusWetMix);
+            chorusWetMix.BindValueChanged(value =>
+            {
+                chorusParameters.fWetMix = value.NewValue - 2;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusFeedback = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusFeedback);
+            chorusFeedback.BindValueChanged(value =>
+            {
+                chorusParameters.fFeedback = value.NewValue - 1;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusMinSweep = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusMinSweep);
+            chorusMinSweep.BindValueChanged(value =>
+            {
+                chorusParameters.fMinSweep = value.NewValue;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusMaxSweep = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusMaxSweep);
+            chorusMaxSweep.BindValueChanged(value =>
+            {
+                chorusParameters.fMinSweep = value.NewValue;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusRate = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusRate);
+            chorusRate.BindValueChanged(value =>
+            {
+                chorusParameters.fMinSweep = value.NewValue;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
             #endregion
         }
         #endregion
+
+        private float _lpL, _lpR;
+        private const float LpAlpha = 0.08f;
+
+        private unsafe void KaraokeDsp(int handle, int channel, IntPtr buffer, int length, IntPtr user)
+        {
+            // 16비트(short) 오디오 샘플 배열로 변환
+            int sampleCount = length / 2; // byte 단위를 short 단위 개수로 변환
+            short[] samples = new short[sampleCount];
+
+            // 버퍼에서 데이터를 C# 배열로 복사
+            Marshal.Copy(buffer, samples, 0, sampleCount);
+
+            // 스테레오 데이터 처리 (L, R, L, R 순서로 배열되어 있음)
+            for (int i = 0; i < sampleCount; i += 2)
+            {
+                short left = samples[i];
+                short right = samples[i + 1];
+
+                // ⚠️ 핵심 원리: L - R 연산으로 중앙의 보컬 제거
+                short karaokeSample = (short)((left - right) / 2);
+
+                // 결과를 L채널과 R채널 모두에 할당하여 모노 형태로 출력
+                samples[i] = karaokeSample;     // Left
+                samples[i + 1] = karaokeSample; // Right
+            }
+
+            // 변조된 데이터를 다시 오디오 버퍼로 복사
+            Marshal.Copy(samples, 0, buffer, sampleCount);
+        }
 
         public virtual void AttemptExit(bool forceQuit = false)
         {

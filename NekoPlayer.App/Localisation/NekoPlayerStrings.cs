@@ -9,7 +9,7 @@ namespace NekoPlayer.App.Localisation
 {
     public static class NekoPlayerStrings
     {
-        private const string prefix = @"NekoPlayer.App.Resources.Localisation.YTPlayerEX";
+        private const string prefix = @"NekoPlayer.App.BuiltInResources.Localisation.YTPlayerEX";
 
         /// <summary>
         /// "{0} • {1} views • {2}"
@@ -1220,6 +1220,31 @@ namespace NekoPlayer.App.Localisation
         /// "Always show player control"
         /// </summary>
         public static LocalisableString PlayerControlPin => new TranslatableString(getKey(@"player_control_pin"), "Always show player control");
+
+        /// <summary>
+        /// "Vocal Remover (Experimental)"
+        /// </summary>
+        public static LocalisableString KaraokeMode => new TranslatableString(getKey(@"karaoke_mode"), "Vocal Remover (Experimental)");
+
+        /// <summary>
+        /// "Chorus"
+        /// </summary>
+        public static LocalisableString ChorusEffect => new TranslatableString(getKey(@"chorus_effect"), "Chorus");
+
+        /// <summary>
+        /// "Minimum sweep"
+        /// </summary>
+        public static LocalisableString ChorusMinSweep => new TranslatableString(getKey(@"chorus_min_sweep"), "Minimum sweep");
+
+        /// <summary>
+        /// "Maximum sweep"
+        /// </summary>
+        public static LocalisableString ChorusMaxSweep => new TranslatableString(getKey(@"chorus_max_sweep"), "Maximum sweep");
+
+        /// <summary>
+        /// "Rate"
+        /// </summary>
+        public static LocalisableString ChorusRate => new TranslatableString(getKey(@"chorus_rate"), "Rate");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

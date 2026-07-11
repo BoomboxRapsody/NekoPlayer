@@ -53,13 +53,12 @@ namespace NekoPlayer.App
         public static FontUsage Dovemayo_Gothic = FontUsage.Default.With("Dovemayo_Gothic", 16);
         public static FontUsage Griun_Mongtori = FontUsage.Default.With("Griun_Mongtori", 16);
         public static FontUsage ONE_Mobile_POP = FontUsage.Default.With("ONE_Mobile_POP", 16);
-        public static FontUsage PuzzleSansSuper = FontUsage.Default.With("PuzzleSansSuper", 16);
         public static FontUsage HayuFont = FontUsage.Default.With("HayuFont", 16);
-        public static FontUsage MaruMinyaHangul = FontUsage.Default.With("x12y12pxMaruMinyaHangul", 16);
+        public static FontUsage Cafe24Syongsyong = FontUsage.Default.With("Cafe24Syongsyong", 16);
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 
-        public static string KnownCodename = "Cinnamon Bun";
+        public static string KnownCodename = "Marshmallow";
 
         private BindableNumber<double> sampleVolume = null!;
         private FPSCounter fpsCounter;

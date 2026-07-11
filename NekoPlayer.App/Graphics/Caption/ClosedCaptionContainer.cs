@@ -126,14 +126,9 @@ namespace NekoPlayer.App.Graphics.Caption
                         spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
                         break;
                     }
-                    case CaptionFonts.PuzzleSansSuper:
+                    case CaptionFonts.Cafe24Syongsyong:
                     {
-                        spriteText.Font = NekoPlayerApp.PuzzleSansSuper.With(size: 24);
-                        break;
-                    }
-                    case CaptionFonts.x12y12pxMaruMinyaHangul:
-                    {
-                        spriteText.Font = NekoPlayerApp.MaruMinyaHangul.With(size: 24);
+                        spriteText.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
                         break;
                     }
                 }

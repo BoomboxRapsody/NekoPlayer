@@ -35,7 +35,7 @@ namespace NekoPlayer.App.Config
 
             SetDefault(AudioEffectsSetting.EchoEnabled, false);
             SetDefault(AudioEffectsSetting.EchoDryMix, 2f, 0f, 4f, 0.01f);
-            SetDefault(AudioEffectsSetting.EchoWetMix, 2f, 0f, 4f, 0.01f);
+            SetDefault(AudioEffectsSetting.EchoWetMix, 3f, 0f, 4f, 0.01f);
             SetDefault(AudioEffectsSetting.EchoFeedback, 1f, 0f, 2f, 0.01f);
             SetDefault(AudioEffectsSetting.EchoDelay, 0f, 0f, 6f, 0.01f);
 
@@ -44,6 +44,14 @@ namespace NekoPlayer.App.Config
             SetDefault(AudioEffectsSetting.DistortionDrive, 0f, 0f, 5f, 0.1f);
 
             SetDefault(AudioEffectsSetting.KaraokeEnabled, false);
+
+            SetDefault(AudioEffectsSetting.ChorusEnabled, false);
+            SetDefault(AudioEffectsSetting.ChorusDryMix, 2f, 0f, 4f, 0.01f);
+            SetDefault(AudioEffectsSetting.ChorusWetMix, 3f, 0f, 4f, 0.01f);
+            SetDefault(AudioEffectsSetting.ChorusFeedback, 1f, 0f, 2f, 0.01f);
+            SetDefault(AudioEffectsSetting.ChorusMinSweep, 1f, 0f, 6000f, 1f);
+            SetDefault(AudioEffectsSetting.ChorusMaxSweep, 400f, 0f, 6000f, 1f);
+            SetDefault(AudioEffectsSetting.ChorusRate, 200f, 0f, 1000f, 1f);
         }
 
         public AudioEffectsConfigManager(Storage storage, IDictionary<AudioEffectsSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -77,6 +85,15 @@ namespace NekoPlayer.App.Config
         DistortionDrive,
 
         //karaoke (what else)
-        KaraokeEnabled
+        KaraokeEnabled,
+
+        //Chorus
+        ChorusEnabled,
+        ChorusDryMix,
+        ChorusWetMix,
+        ChorusFeedback,
+        ChorusMinSweep,
+        ChorusMaxSweep,
+        ChorusRate,
     }
 }

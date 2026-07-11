@@ -56,6 +56,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString x12y12pxMaruMinyaHangul => new TranslatableString(getKey(@"x12y12pxMaruMinyaHangul"), "x12y12pxMaruMinyaHangul");
 
+        /// <summary>
+        /// "Cafe24 Ssong Ssong"
+        /// </summary>
+        public static LocalisableString Cafe24Syongsyong => new TranslatableString(getKey(@"Cafe24Syongsyong"), "Cafe24 Ssong Ssong");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

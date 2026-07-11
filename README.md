@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Final.png">
+  <img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Remake.png">
 </p>
 
 <h1 align="center">NekoPlayer</h1>
@@ -89,14 +89,17 @@ When it comes to contributing to the project, the two main things you can do to 
 **Note:** FFmpeg binaries are distributed under their original licenses (GPL/LGPL) from the source.
 Please refer to [FFmpeg License](https://www.ffmpeg.org/legal.html) for details.
 
-Please also note that app resources are covered by a separate licence. Please see the [BoomboxRapsody/NekoPlayer-resources](https://github.com/BoomboxRapsody/NekoPlayer-resources) repository for clarifications.
+This app uses `spine-csharp` (located as Spine in the source code) the C# Spine Runtime.
+Please refer to [Spine Runtimes License](https://esotericsoftware.com/spine-runtimes-license) for details.
+
+Please also note that app resources are covered by a separate licence. Please see the [licence(located as BuiltInResources in the source code)](https://github.com/BoomboxRapsody/NekoPlayer/tree/master/NekoPlayer.App/BuiltInResources/LICENSE.md) for clarifications.
 
 ## Star History
 
 <a href="https://www.star-history.com/?repos=BoomboxRapsody%2FNekoPlayer&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left&sealed_token=GDOM_kXm9ocpKnT2VBJZCjwxZTjTqIqwt-h8HjOv92ywmAT5W2ze9eyy3ogoG47hr20XyjA-jZRDHBU5hTbaI0_6e1oVxL0iyQ0hqug4j0JIs_DrEZ9rmbYpUAjSjhc6fH8eLfcFgCu_CgfQp7bxrvokx2lvwKZZnvW2vBdnKPAOlc6EvGnxW8_EwrWi" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left&sealed_token=GDOM_kXm9ocpKnT2VBJZCjwxZTjTqIqwt-h8HjOv92ywmAT5W2ze9eyy3ogoG47hr20XyjA-jZRDHBU5hTbaI0_6e1oVxL0iyQ0hqug4j0JIs_DrEZ9rmbYpUAjSjhc6fH8eLfcFgCu_CgfQp7bxrvokx2lvwKZZnvW2vBdnKPAOlc6EvGnxW8_EwrWi" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left&sealed_token=GDOM_kXm9ocpKnT2VBJZCjwxZTjTqIqwt-h8HjOv92ywmAT5W2ze9eyy3ogoG47hr20XyjA-jZRDHBU5hTbaI0_6e1oVxL0iyQ0hqug4j0JIs_DrEZ9rmbYpUAjSjhc6fH8eLfcFgCu_CgfQp7bxrvokx2lvwKZZnvW2vBdnKPAOlc6EvGnxW8_EwrWi" />
  </picture>
 </a>
