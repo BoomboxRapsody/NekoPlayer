@@ -55,7 +55,7 @@ namespace NekoPlayer.App.Utils
         private void load()
         {
             trayIconVisible = statics.GetBindable<bool>(Static.WindowIsTray);
-            appIcon = SDL3.SDL_LoadBMP(Directory.GetCurrentDirectory() + @"/appIcon.bmp");
+            appIcon = SDL3.SDL_LoadBMP(Directory.GetCurrentDirectory() + @"/nekoplayer_app.bmp");
         }
 
         public void HideToTrayIcon()

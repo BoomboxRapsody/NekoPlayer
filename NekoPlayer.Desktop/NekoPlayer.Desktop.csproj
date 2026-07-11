@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>NekoPlayer</AssemblyName>
-    <ApplicationIcon>game.ico</ApplicationIcon>
+    <ApplicationIcon>nekoplayer_app.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Version>0.0.0</Version>
     <FileVersion>0.0.0</FileVersion>
@@ -91,6 +91,12 @@
     </None>
     <None Update="material3expressive_loadingindicator.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="nekoplayer_app.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="nekoplayer_app.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="runtimes\linux-x64\native\libbassloud.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
