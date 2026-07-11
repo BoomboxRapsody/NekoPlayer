@@ -4666,7 +4666,7 @@ namespace NekoPlayer.App.Screens
                     if (chorusEnabled.Value == false)
                         chorusSettings.ResizeHeightTo(0, 400, Easing.OutQuint);
 
-                    chorusSettings.AutoSizeAxes = distortionEnabled.Value != false ? Axes.Y : Axes.None;
+                    chorusSettings.AutoSizeAxes = chorusEnabled.Value != false ? Axes.Y : Axes.None;
                 }
                 catch
                 {
