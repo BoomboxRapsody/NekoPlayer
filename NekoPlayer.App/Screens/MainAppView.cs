@@ -283,7 +283,7 @@ namespace NekoPlayer.App.Screens
         private PlaybackSpeedSliderBar speedBarSlider;
         private RoundedSliderBar<double> volumeBarSlider;
 
-        private SpineSprite menuOverlayCharacter;
+        private SpineSprite menuOverlayCharacter, audioEffectsOverlayCharacter;
 
         private LinkFlowContainer dislikeCounterCredits, playlistAuthor;
 
@@ -987,6 +987,17 @@ namespace NekoPlayer.App.Screens
                             }
                         },
                         menuOverlayCharacter = new ErpinSkin3Sprite
+                        {
+                            Margin = new MarginPadding
+                            {
+                                Right = 650,
+                            },
+                            Y = 30,
+                            Scale = new Vector2(0.4f),
+                            Origin = Anchor.BottomRight,
+                            Anchor = Anchor.BottomRight,
+                        },
+                        audioEffectsOverlayCharacter = new YomiSprite
                         {
                             Margin = new MarginPadding
                             {
@@ -2815,6 +2826,7 @@ namespace NekoPlayer.App.Screens
                         },
                         audioEffectsOverlay = new SideOverlayContainer
                         {
+                            Name = "Audio Effects Overlay",
                             Size = new Vector2(1f, 1f),
                             Width = 400,
                             RelativeSizeAxes = Axes.Y,
@@ -5279,6 +5291,11 @@ namespace NekoPlayer.App.Screens
                 menuOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
+            if (overlayContent.Name == "Audio Effects Overlay")
+            {
+                audioEffectsOverlayCharacter.FadeIn(500, Easing.OutQuint);
+            }
+
             if (overlayContent is BottomOverlayContainer)
             {
                 isAnyOverlayOpen.Value = true;
@@ -5330,6 +5347,11 @@ namespace NekoPlayer.App.Screens
             if (overlayContent.Name == "Menu Overlay")
             {
                 menuOverlayCharacter.FadeOut(250, Easing.OutQuint);
+            }
+
+            if (overlayContent.Name == "Audio Effects Overlay")
+            {
+                audioEffectsOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
 
             if (overlayContent is BottomOverlayContainer)
@@ -5572,6 +5594,7 @@ namespace NekoPlayer.App.Screens
             base.LoadComplete();
 
             menuOverlayCharacter.FadeOut();
+            audioEffectsOverlayCharacter.FadeOut();
 
             if (discordRPC != null)
             {
