@@ -623,7 +623,7 @@ namespace NekoPlayer.App
             karaokeModeEnabled.BindValueChanged(enabled =>
             {
                 if (enabled.NewValue)
-                    Audio.TrackMixer.AddDSP(_karaokeDsp, -1);
+                    Audio.TrackMixer.AddDSP(_karaokeDsp, 1);
                 else
                     Audio.TrackMixer.RemoveDSP(_karaokeDsp);
             }, true);

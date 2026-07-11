@@ -97,7 +97,7 @@ namespace NekoPlayer.App.Screens
         private Container uiGradientContainer;
         private OverlayContainer loadVideoContainer, settingsContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
-        private IconButtonWithShadow menuOverlayShow;
+        private IconButton menuOverlayShow;
         private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
         private VideoMetadataDisplayWithoutProfile videoMetadataDisplay;
         private VideoMetadataDisplay videoMetadataDisplayDetails, videoMetadataDisplayDetails2;
@@ -588,7 +588,7 @@ namespace NekoPlayer.App.Screens
                                     },
                                     Children = new Drawable[]
                                     {
-                                        menuOverlayShow = new IconButtonWithShadow
+                                        menuOverlayShow = new IconButton
                                         {
                                             Enabled = { Value = true },
                                             Origin = Anchor.TopRight,
