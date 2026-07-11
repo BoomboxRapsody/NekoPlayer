@@ -56,6 +56,7 @@ namespace NekoPlayer.App
         public static FontUsage PuzzleSansSuper = FontUsage.Default.With("PuzzleSansSuper", 16);
         public static FontUsage HayuFont = FontUsage.Default.With("HayuFont", 16);
         public static FontUsage MaruMinyaHangul = FontUsage.Default.With("x12y12pxMaruMinyaHangul", 16);
+        public static FontUsage Cafe24Syongsyong = FontUsage.Default.With("Cafe24Syongsyong", 16);
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 

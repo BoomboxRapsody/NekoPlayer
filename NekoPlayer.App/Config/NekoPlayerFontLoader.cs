@@ -174,6 +174,7 @@ namespace NekoPlayer.App.Config
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/HayuFont");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/PuzzleSansSuper");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/x12y12pxMaruMinyaHangul");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/Cafe24Syongsyong");
         }
     }
 }

@@ -28,5 +28,7 @@ namespace NekoPlayer.App.Config
         PuzzleSansSuper,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.x12y12pxMaruMinyaHangul))]
         x12y12pxMaruMinyaHangul,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Cafe24Syongsyong))]
+        Cafe24Syongsyong,
     }
 }

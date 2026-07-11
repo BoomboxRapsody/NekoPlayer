@@ -136,6 +136,11 @@ namespace NekoPlayer.App.Graphics.Caption
                         spriteText.Font = NekoPlayerApp.MaruMinyaHangul.With(size: 24);
                         break;
                     }
+                    case CaptionFonts.Cafe24Syongsyong:
+                    {
+                        spriteText.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
+                        break;
+                    }
                 }
             }, true);
 
