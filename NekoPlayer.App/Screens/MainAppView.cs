@@ -992,7 +992,7 @@ namespace NekoPlayer.App.Screens
                             {
                                 Right = 650,
                             },
-                            Y = 30,
+                            Y = 100,
                             Scale = new Vector2(0.4f),
                             Origin = Anchor.BottomRight,
                             Anchor = Anchor.BottomRight,
@@ -1003,7 +1003,7 @@ namespace NekoPlayer.App.Screens
                             {
                                 Right = 650,
                             },
-                            Y = 30,
+                            Y = 100,
                             Scale = new Vector2(0.4f),
                             Origin = Anchor.BottomRight,
                             Anchor = Anchor.BottomRight,
