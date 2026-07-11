@@ -92,7 +92,7 @@ Please refer to [FFmpeg License](https://www.ffmpeg.org/legal.html) for details.
 This app uses `spine-csharp` (located as Spine in the source code) the C# Spine Runtime.
 Please refer to [Spine Runtimes License](https://esotericsoftware.com/spine-runtimes-license) for details.
 
-Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/BoomboxRapsody/NekoPlayer/tree/master/NekoPlayer.App/BuiltInResources/LICENSE.md) for more information.
+Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/NekoPlayer.App/BuiltInResources/LICENSE.md) for more information.
 
 ## Star History
 
