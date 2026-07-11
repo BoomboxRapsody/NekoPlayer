@@ -9,7 +9,7 @@ namespace NekoPlayer.App.Localisation
 {
     public static class NekoPlayerStrings
     {
-        private const string prefix = @"NekoPlayer.App.Resources.Localisation.YTPlayerEX";
+        private const string prefix = @"NekoPlayer.App.BuiltInResources.Localisation.YTPlayerEX";
 
         /// <summary>
         /// "{0} • {1} views • {2}"
