@@ -5518,7 +5518,7 @@ namespace NekoPlayer.App.Screens
                                 LargeImageKey = videoData.Snippet.Thumbnails.High.Url,
                                 LargeImageUrl = $"https://youtu.be/{videoData.Id}",
                                 SmallImageText = "NekoPlayer",
-                                SmallImageKey = "new_nekoplayer_logo_withbg"
+                                SmallImageKey = "nekoplayer_liquidglass_remake"
                             },
                             Buttons =
                             [
@@ -5538,7 +5538,7 @@ namespace NekoPlayer.App.Screens
                             State = NekoPlayer_DiscordRPCStrings.IdleString,
                             Assets = new Assets()
                             {
-                                LargeImageKey = "new_nekoplayer_logo_withbg",
+                                LargeImageKey = "nekoplayer_liquidglass_remake",
                             },
                         });
                     }
@@ -5555,7 +5555,7 @@ namespace NekoPlayer.App.Screens
                             Timestamps = timestamps,
                             Assets = new Assets()
                             {
-                                LargeImageKey = "new_nekoplayer_logo_withbg"
+                                LargeImageKey = "nekoplayer_liquidglass_remake"
                             },
                             Buttons =
                             [
@@ -5575,7 +5575,7 @@ namespace NekoPlayer.App.Screens
                             State = NekoPlayer_DiscordRPCStrings.IdleString,
                             Assets = new Assets()
                             {
-                                LargeImageKey = "new_nekoplayer_logo_withbg",
+                                LargeImageKey = "nekoplayer_liquidglass_remake",
                             },
                         });
                     }
