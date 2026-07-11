@@ -98,8 +98,8 @@ Please also note that app resources are covered by a separate licence. Please se
 
 <a href="https://www.star-history.com/?repos=BoomboxRapsody%2FNekoPlayer&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left&sealed_token=oC4ShMmlZCJ8ShqvZ9U6p5t22P3gGpmJWrcGKqAuLm2j9U9mrtm2wlibxZYpYpR9azsQgyI3ue4wSRg0OIizQ9IoP-_cjKQ0Gfg-nvEEiD9txIBwHN_6gA" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left&sealed_token=oC4ShMmlZCJ8ShqvZ9U6p5t22P3gGpmJWrcGKqAuLm2j9U9mrtm2wlibxZYpYpR9azsQgyI3ue4wSRg0OIizQ9IoP-_cjKQ0Gfg-nvEEiD9txIBwHN_6gA" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left&sealed_token=oC4ShMmlZCJ8ShqvZ9U6p5t22P3gGpmJWrcGKqAuLm2j9U9mrtm2wlibxZYpYpR9azsQgyI3ue4wSRg0OIizQ9IoP-_cjKQ0Gfg-nvEEiD9txIBwHN_6gA" />
  </picture>
 </a>
