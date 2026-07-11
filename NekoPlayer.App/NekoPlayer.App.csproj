@@ -41,6 +41,7 @@
     <EmbeddedResource Include="BuiltInResources\Fonts\**\*" />
     <EmbeddedResource Include="BuiltInResources\Samples\**\*" />
     <EmbeddedResource Include="BuiltInResources\Textures\**\*" />
+    <EmbeddedResource Include="BuiltInResources\Spine\**\*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Localisation\NekoPlayerExtraStrings.Designer.cs">
@@ -83,5 +84,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Spine\" />
   </ItemGroup>
 </Project>

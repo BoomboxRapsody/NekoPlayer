@@ -625,7 +625,7 @@ namespace NekoPlayer.App
                 if (enabled.NewValue)
                     Audio.TrackMixer.AddDSP(_karaokeDsp, -1);
                 else
-                    Audio.TrackMixer.RemoveDSP(_karaokeDsp, -1);
+                    Audio.TrackMixer.RemoveDSP(_karaokeDsp);
             }, true);
             #endregion
         }

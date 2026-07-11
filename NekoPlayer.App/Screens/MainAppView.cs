@@ -22,8 +22,10 @@ using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics;
+using NekoPlayer.App.Graphics.Characters;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Graphics.Shaders;
+using NekoPlayer.App.Graphics.Spine;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Graphics.UserInterface;
 using NekoPlayer.App.Graphics.UserInterfaceV2;
@@ -280,6 +282,8 @@ namespace NekoPlayer.App.Screens
 
         private PlaybackSpeedSliderBar speedBarSlider;
         private RoundedSliderBar<double> volumeBarSlider;
+
+        private SpineSprite menuOverlayCharacter;
 
         private LinkFlowContainer dislikeCounterCredits, playlistAuthor;
 
@@ -981,6 +985,17 @@ namespace NekoPlayer.App.Screens
                                 RelativeSizeAxes = Axes.Both,
                                 Colour = Color4.Black,
                             }
+                        },
+                        menuOverlayCharacter = new ErpinSkin3Sprite
+                        {
+                            Margin = new MarginPadding
+                            {
+                                Right = 650,
+                            },
+                            Y = 30,
+                            Scale = new Vector2(0.4f),
+                            Origin = Anchor.BottomRight,
+                            Anchor = Anchor.BottomRight,
                         },
                         loadVideoContainer = new BottomOverlayContainer
                         {
@@ -3383,6 +3398,7 @@ namespace NekoPlayer.App.Screens
                         },
                         menuOverlay = new SideOverlayContainer
                         {
+                            Name = "Menu Overlay",
                             Size = new Vector2(1f, 1f),
                             Width = 400,
                             RelativeSizeAxes = Axes.Y,
@@ -5258,6 +5274,11 @@ namespace NekoPlayer.App.Screens
                 sample.Play();
             }
 
+            if (overlayContent.Name == "Menu Overlay")
+            {
+                menuOverlayCharacter.FadeIn(500, Easing.OutQuint);
+            }
+
             if (overlayContent is BottomOverlayContainer)
             {
                 isAnyOverlayOpen.Value = true;
@@ -5305,6 +5326,12 @@ namespace NekoPlayer.App.Screens
         private void hideOverlayContainer(OverlayContainer overlayContent)
         {
             //duckOperation?.Dispose();
+
+            if (overlayContent.Name == "Menu Overlay")
+            {
+                menuOverlayCharacter.FadeOut(250, Easing.OutQuint);
+            }
+
             if (overlayContent is BottomOverlayContainer)
             {
                 overlayContent.IsVisible = false;
@@ -5543,6 +5570,8 @@ namespace NekoPlayer.App.Screens
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            menuOverlayCharacter.FadeOut();
 
             if (discordRPC != null)
             {
