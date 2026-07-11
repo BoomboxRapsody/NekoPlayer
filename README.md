@@ -89,7 +89,7 @@ When it comes to contributing to the project, the two main things you can do to 
 **Note:** FFmpeg binaries are distributed under their original licenses (GPL/LGPL) from the source.
 Please refer to [FFmpeg License](https://www.ffmpeg.org/legal.html) for details.
 
-This library uses `spine-csharp` (located as Spine in the source code) the C# Spine Runtime. To use this library, you must first agree to the following license:
+This app uses `spine-csharp` (located as Spine in the source code) the C# Spine Runtime. To use this app, you must first agree to the following license:
 
 * [Spine Runtimes License](https://esotericsoftware.com/spine-runtimes-license).
 
