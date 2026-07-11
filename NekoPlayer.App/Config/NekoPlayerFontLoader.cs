@@ -166,15 +166,13 @@ namespace NekoPlayer.App.Config
             Logger.Log($"❤️👏 Colored emoji loaded");
 
             //caption fonts
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/Cafe24Syongsyong");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Hungeul");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Ownglyph_PDH");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Dovemayo_Gothic");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Griun_Mongtori");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/ONE_Mobile_POP");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/HayuFont");
-            game.AddOutlineFont(Resources, @"Fonts/UIFonts/PuzzleSansSuper");
-            game.AddOutlineFont(Resources, @"Fonts/UIFonts/x12y12pxMaruMinyaHangul");
-            game.AddOutlineFont(Resources, @"Fonts/UIFonts/Cafe24Syongsyong");
         }
     }
 }
