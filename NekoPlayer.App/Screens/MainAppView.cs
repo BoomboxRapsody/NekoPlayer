@@ -308,8 +308,8 @@ namespace NekoPlayer.App.Screens
 #nullable disable
 
         //effects
-        private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled, karaokeEnabled;
-        private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings, volumeOptions;
+        private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled, karaokeEnabled, chorusEnabled;
+        private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings, chorusSettings, volumeOptions;
 
         private FormEnumDropdown<Config.VideoQuality> videoQualitySettings;
         private FormEnumDropdown<Config.AudioQuality> audioQualitySettings;
@@ -375,6 +375,7 @@ namespace NekoPlayer.App.Screens
             echoEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.EchoEnabled);
             distortionEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.DistortionEnabled);
             karaokeEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
+            chorusEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.ChorusEnabled);
 
             videoMetadataDisplayAlignment = appConfig.GetBindable<VideoMetadataDisplayAlignment>(NekoPlayerSetting.VideoMetadataDisplayAlignment);
 
@@ -3000,6 +3001,55 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.KaraokeMode,
                                                             Current = karaokeEnabled,
                                                         }),
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.ChorusEffect,
+                                                            Current = chorusEnabled,
+                                                        }),
+                                                        chorusSettings = new FillFlowContainer
+                                                        {
+                                                            Direction = FillDirection.Vertical,
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Masking = true,
+                                                            Spacing = new Vector2(0, 4),
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new SettingsItemV2(new FormSliderBar<float>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.DryMix,
+                                                                    Current = audioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusDryMix),
+                                                                    LabelFormat = f => $"{f - 2}",
+                                                                }),
+                                                                new SettingsItemV2(new FormSliderBar<float>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.EchoWetMix,
+                                                                    Current = audioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusWetMix),
+                                                                    LabelFormat = f => $"{f - 2}",
+                                                                }),
+                                                                new SettingsItemV2(new FormSliderBar<float>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.EchoFeedback,
+                                                                    Current = audioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusFeedback),
+                                                                    LabelFormat = f => $"{f - 1}",
+                                                                }),
+                                                                new SettingsItemV2(new FormSliderBar<float>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.ChorusMinSweep,
+                                                                    Current = audioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusMinSweep),
+                                                                }),
+                                                                new SettingsItemV2(new FormSliderBar<float>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.ChorusMaxSweep,
+                                                                    Current = audioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusMaxSweep),
+                                                                }),
+                                                                new SettingsItemV2(new FormSliderBar<float>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.ChorusRate,
+                                                                    Current = audioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusRate),
+                                                                }),
+                                                            }
+                                                        },
                                                     }
                                                 }
                                             }
@@ -4455,6 +4505,15 @@ namespace NekoPlayer.App.Screens
 
                 updateAudioEffectsVisibility();
             });
+
+            chorusEnabled.BindValueChanged(_ =>
+            {
+                chorusSettings.ClearTransforms();
+                chorusSettings.AutoSizeDuration = 400;
+                chorusSettings.AutoSizeEasing = Easing.OutQuint;
+
+                updateAudioEffectsVisibility();
+            });
             updateAudioEffectsVisibility();
 
             videoProgress.BindValueChanged(seek =>
@@ -4602,6 +4661,12 @@ namespace NekoPlayer.App.Screens
                         distortionSettings.ResizeHeightTo(0, 400, Easing.OutQuint);
 
                     distortionSettings.AutoSizeAxes = distortionEnabled.Value != false ? Axes.Y : Axes.None;
+
+                    //chorus
+                    if (chorusEnabled.Value == false)
+                        chorusSettings.ResizeHeightTo(0, 400, Easing.OutQuint);
+
+                    chorusSettings.AutoSizeAxes = distortionEnabled.Value != false ? Axes.Y : Axes.None;
                 }
                 catch
                 {

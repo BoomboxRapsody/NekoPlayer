@@ -447,6 +447,7 @@ namespace NekoPlayer.App
         private Bindable<bool> rotateEnabled = null!;
         private Bindable<bool> echoEnabled = null!;
         private Bindable<bool> distortionEnabled = null!;
+        private Bindable<bool> chorusEnabled = null!;
 
         private Bindable<float> reverbWetMix = null!;
         private Bindable<float> reverbRoomSize = null!;
@@ -465,10 +466,18 @@ namespace NekoPlayer.App
 
         private Bindable<bool> karaokeModeEnabled = null!;
 
+        private Bindable<float> chorusDryMix = null!;
+        private Bindable<float> chorusWetMix = null!;
+        private Bindable<float> chorusFeedback = null!;
+        private Bindable<float> chorusMinSweep = null!;
+        private Bindable<float> chorusMaxSweep = null!;
+        private Bindable<float> chorusRate = null!;
+
         private ReverbParameters reverbParameters = new ReverbParameters();
         private RotateParameters rotateParameters = new RotateParameters();
         private EchoParameters echoParameters = new EchoParameters();
         private DistortionParameters distortionParameters = new DistortionParameters();
+        private ChorusParameters chorusParameters = new ChorusParameters();
         private DSPProcedure _karaokeDsp;
 
         private void trackAudioEffects()
@@ -616,7 +625,7 @@ namespace NekoPlayer.App
             }, true);
             #endregion
 
-            #region Karaoke Mode (WIP)
+            #region Karaoke
             _karaokeDsp = new DSPProcedure(KaraokeDsp);
 
             karaokeModeEnabled = AudioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
@@ -626,6 +635,71 @@ namespace NekoPlayer.App
                     Audio.TrackMixer.AddDSP(_karaokeDsp, 1);
                 else
                     Audio.TrackMixer.RemoveDSP(_karaokeDsp);
+            }, true);
+            #endregion
+
+            #region Chorus
+            chorusEnabled = AudioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.ChorusEnabled);
+            chorusEnabled.BindValueChanged(enabled =>
+            {
+                if (enabled.NewValue)
+                    Audio.TrackMixer.AddEffect(chorusParameters);
+                else
+                    Audio.TrackMixer.RemoveEffect(chorusParameters);
+            }, true);
+
+            chorusDryMix = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusDryMix);
+            chorusDryMix.BindValueChanged(value =>
+            {
+                chorusParameters.fDryMix = value.NewValue - 2;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusWetMix = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusWetMix);
+            chorusWetMix.BindValueChanged(value =>
+            {
+                chorusParameters.fWetMix = value.NewValue - 2;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusFeedback = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusFeedback);
+            chorusFeedback.BindValueChanged(value =>
+            {
+                chorusParameters.fFeedback = value.NewValue - 1;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusMinSweep = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusMinSweep);
+            chorusMinSweep.BindValueChanged(value =>
+            {
+                chorusParameters.fMinSweep = value.NewValue;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusMaxSweep = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusMaxSweep);
+            chorusMaxSweep.BindValueChanged(value =>
+            {
+                chorusParameters.fMinSweep = value.NewValue;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
+            }, true);
+
+            chorusRate = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.ChorusRate);
+            chorusRate.BindValueChanged(value =>
+            {
+                chorusParameters.fMinSweep = value.NewValue;
+
+                if (chorusEnabled.Value)
+                    Audio.TrackMixer.UpdateEffect(chorusParameters);
             }, true);
             #endregion
         }

@@ -793,4 +793,16 @@
   <data name="karaoke_mode" xml:space="preserve">
     <value>보컬 제거 (실험적)</value>
   </data>
+  <data name="chorus_effect" xml:space="preserve">
+    <value>코러스</value>
+  </data>
+  <data name="chorus_min_sweep" xml:space="preserve">
+    <value>최소 스윕</value>
+  </data>
+  <data name="chorus_max_sweep" xml:space="preserve">
+    <value>최대 스윕</value>
+  </data>
+  <data name="chorus_rate" xml:space="preserve">
+    <value>레이트</value>
+  </data>
 </root>

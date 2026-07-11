@@ -790,4 +790,16 @@
   <data name="karaoke_mode" xml:space="preserve">
     <value>ボーカルリムーバー（実験用）</value>
   </data>
+  <data name="chorus_effect" xml:space="preserve">
+    <value>コーラス</value>
+  </data>
+  <data name="chorus_min_sweep" xml:space="preserve">
+    <value>最小スイープ</value>
+  </data>
+  <data name="chorus_max_sweep" xml:space="preserve">
+    <value>最大スイープ</value>
+  </data>
+  <data name="chorus_rate" xml:space="preserve">
+    <value>レート</value>
+  </data>
 </root>

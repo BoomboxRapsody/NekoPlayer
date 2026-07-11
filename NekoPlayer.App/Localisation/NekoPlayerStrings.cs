@@ -1226,6 +1226,26 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString KaraokeMode => new TranslatableString(getKey(@"karaoke_mode"), "Vocal Remover (Experimental)");
 
+        /// <summary>
+        /// "Chorus"
+        /// </summary>
+        public static LocalisableString ChorusEffect => new TranslatableString(getKey(@"chorus_effect"), "Chorus");
+
+        /// <summary>
+        /// "Minimum sweep"
+        /// </summary>
+        public static LocalisableString ChorusMinSweep => new TranslatableString(getKey(@"chorus_min_sweep"), "Minimum sweep");
+
+        /// <summary>
+        /// "Maximum sweep"
+        /// </summary>
+        public static LocalisableString ChorusMaxSweep => new TranslatableString(getKey(@"chorus_max_sweep"), "Maximum sweep");
+
+        /// <summary>
+        /// "Rate"
+        /// </summary>
+        public static LocalisableString ChorusRate => new TranslatableString(getKey(@"chorus_rate"), "Rate");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
