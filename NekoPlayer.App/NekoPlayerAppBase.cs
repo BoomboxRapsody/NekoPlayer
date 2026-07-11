@@ -14,7 +14,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ManagedBass;
+using ManagedBass.DirectX8;
 using ManagedBass.Fx;
+using ManagedBass.Mix;
 using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
@@ -460,11 +463,13 @@ namespace NekoPlayer.App
         private Bindable<float> distortionVolume = null!;
         private Bindable<float> distortionDrive = null!;
 
+        private Bindable<bool> karaokeModeEnabled = null!;
+
         private ReverbParameters reverbParameters = new ReverbParameters();
         private RotateParameters rotateParameters = new RotateParameters();
         private EchoParameters echoParameters = new EchoParameters();
         private DistortionParameters distortionParameters = new DistortionParameters();
-        private BQFParameters karaokeModeParameters = new BQFParameters();
+        private DSPProcedure _karaokeDsp;
 
         private void trackAudioEffects()
         {
@@ -612,13 +617,49 @@ namespace NekoPlayer.App
             #endregion
 
             #region Karaoke Mode (WIP)
-            karaokeModeParameters.fCenter = 100;
-            karaokeModeParameters.lFilter = BQFType.HighPass;
-            karaokeModeParameters.fBandwidth = 0;
-            karaokeModeParameters.fQ = 0.7f;
+            _karaokeDsp = new DSPProcedure(KaraokeDsp);
+
+            karaokeModeEnabled = AudioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
+            karaokeModeEnabled.BindValueChanged(enabled =>
+            {
+                if (enabled.NewValue)
+                    Audio.TrackMixer.AddDSP(_karaokeDsp, -1);
+                else
+                    Audio.TrackMixer.RemoveDSP(_karaokeDsp, -1);
+            }, true);
             #endregion
         }
         #endregion
+
+        private float _lpL, _lpR;
+        private const float LpAlpha = 0.08f;
+
+        private unsafe void KaraokeDsp(int handle, int channel, IntPtr buffer, int length, IntPtr user)
+        {
+            // 16비트(short) 오디오 샘플 배열로 변환
+            int sampleCount = length / 2; // byte 단위를 short 단위 개수로 변환
+            short[] samples = new short[sampleCount];
+
+            // 버퍼에서 데이터를 C# 배열로 복사
+            Marshal.Copy(buffer, samples, 0, sampleCount);
+
+            // 스테레오 데이터 처리 (L, R, L, R 순서로 배열되어 있음)
+            for (int i = 0; i < sampleCount; i += 2)
+            {
+                short left = samples[i];
+                short right = samples[i + 1];
+
+                // ⚠️ 핵심 원리: L - R 연산으로 중앙의 보컬 제거
+                short karaokeSample = (short)((left - right) / 2);
+
+                // 결과를 L채널과 R채널 모두에 할당하여 모노 형태로 출력
+                samples[i] = karaokeSample;     // Left
+                samples[i + 1] = karaokeSample; // Right
+            }
+
+            // 변조된 데이터를 다시 오디오 버퍼로 복사
+            Marshal.Copy(samples, 0, buffer, sampleCount);
+        }
 
         public virtual void AttemptExit(bool forceQuit = false)
         {

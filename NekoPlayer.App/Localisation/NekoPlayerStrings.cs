@@ -1221,6 +1221,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString PlayerControlPin => new TranslatableString(getKey(@"player_control_pin"), "Always show player control");
 
+        /// <summary>
+        /// "Vocal Remover (Experimental)"
+        /// </summary>
+        public static LocalisableString KaraokeMode => new TranslatableString(getKey(@"karaoke_mode"), "Vocal Remover (Experimental)");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

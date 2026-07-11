@@ -2968,6 +2968,11 @@ namespace NekoPlayer.App.Screens
                                                                 }),
                                                             }
                                                         },
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.KaraokeMode,
+                                                            Current = karaokeEnabled,
+                                                        }),
                                                     }
                                                 }
                                             }
