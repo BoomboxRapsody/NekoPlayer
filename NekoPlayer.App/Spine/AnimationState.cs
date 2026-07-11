@@ -31,7 +31,6 @@ using System;
 using System.Collections.Generic;
 
 namespace Spine {
-
 	/// <summary>
 	/// <para>
 	/// Applies animations over time, queues animations for later playback, mixes (crossfading) between animations, and applies
@@ -124,7 +123,7 @@ namespace Spine {
 		private readonly Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
 
 		public AnimationState (AnimationStateData data) {
-			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
+			if (data == null) throw new ArgumentNullException(nameof(data), "data cannot be null.");
 			this.data = data;
 			this.queue = new EventQueue(
 				this,
@@ -161,7 +160,7 @@ namespace Spine {
 					float nextTime = current.trackLast - next.delay;
 					if (nextTime >= 0) {
 						next.delay = 0;
-						next.trackTime += current.timeScale == 0 ? 0 : (nextTime / current.timeScale + delta) * next.timeScale;
+						next.trackTime += current.timeScale == 0 ? 0 : ((nextTime / current.timeScale) + delta) * next.timeScale;
 						current.trackTime += currentDelta;
 						SetCurrent(i, next, true);
 						while (next.mixingFrom != null) {
@@ -226,7 +225,7 @@ namespace Spine {
 		/// skeletons to pose them identically.</summary>
 		/// <returns>True if any animations were applied.</returns>
 		public bool Apply (Skeleton skeleton) {
-			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
+			if (skeleton == null) throw new ArgumentNullException(nameof(skeleton), "skeleton cannot be null.");
 			if (animationsChanged) AnimationsChanged();
 
 			ExposedList<Event> events = this.events;
@@ -315,7 +314,7 @@ namespace Spine {
 		/// <param name="issueEvents">When set to false, only animation times of TrackEntries are updated.</param>
 		// Note: This method is not part of the libgdx reference implementation.
 		public bool ApplyEventTimelinesOnly (Skeleton skeleton, bool issueEvents = true) {
-			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
+			if (skeleton == null) throw new ArgumentNullException(nameof(skeleton), "skeleton cannot be null.");
 
 			ExposedList<Event> events = this.events;
 			bool applied = false;
@@ -416,7 +415,7 @@ namespace Spine {
 					default: // HoldMix
 						timelineBlend = MixBlend.Setup;
 						TrackEntry holdMix = timelineHoldMix[i];
-						alpha = alphaHold * Math.Max(0, 1 - holdMix.mixTime / holdMix.mixDuration);
+						alpha = alphaHold * Math.Max(0, 1 - (holdMix.mixTime / holdMix.mixDuration));
 						break;
 					}
 					from.totalAlpha += alpha;
@@ -449,7 +448,6 @@ namespace Spine {
 		private float ApplyMixingFromEventTimelinesOnly (TrackEntry to, Skeleton skeleton, bool issueEvents) {
 			TrackEntry from = to.mixingFrom;
 			if (from.mixingFrom != null) ApplyMixingFromEventTimelinesOnly(from, skeleton, issueEvents);
-
 
 			float mix;
 			if (to.mixDuration == 0) { // Single frame mix to undo mixingFrom changes.
@@ -487,7 +485,6 @@ namespace Spine {
 		/// timelines see any deform.</param>
 		private void ApplyAttachmentTimeline (AttachmentTimeline timeline, Skeleton skeleton, float time, MixBlend blend,
 			bool attachments) {
-
 			Slot slot = skeleton.slots.Items[timeline.SlotIndex];
 			if (!slot.bone.active) return;
 
@@ -512,7 +509,6 @@ namespace Spine {
 		/// the first time the mixing was applied.</summary>
 		static private void ApplyRotateTimeline (RotateTimeline timeline, Skeleton skeleton, float time, float alpha, MixBlend blend,
 			float[] timelinesRotation, int i, bool firstFrame) {
-
 			if (firstFrame) timelinesRotation[i] = 0;
 
 			if (alpha == 1) {
@@ -544,7 +540,7 @@ namespace Spine {
 
 			// Mix between rotations using the direction of the shortest route on the first frame.
 			float total, diff = r2 - r1;
-			diff -= (16384 - (int)(16384.499999999996 - diff / 360)) * 360;
+			diff -= (16384 - (int)(16384.499999999996 - (diff / 360))) * 360;
 			if (diff == 0) {
 				total = timelinesRotation[i];
 			} else {
@@ -563,12 +559,12 @@ namespace Spine {
 					if (Math.Abs(lastTotal) > 180) lastTotal += 360 * Math.Sign(lastTotal);
 					dir = current;
 				}
-				total = diff + lastTotal - lastTotal % 360; // Store loops as part of lastTotal.
+				total = diff + lastTotal - (lastTotal % 360); // Store loops as part of lastTotal.
 				if (dir != current) total += 360 * Math.Sign(lastTotal);
 				timelinesRotation[i] = total;
 			}
 			timelinesRotation[i + 1] = diff;
-			bone.rotation = r1 + total * alpha;
+			bone.rotation = r1 + (total * alpha);
 		}
 
 		private void QueueEvents (TrackEntry entry, float animationTime) {
@@ -674,7 +670,7 @@ namespace Spine {
 		/// <summary>Sets an animation by name. <seealso cref="SetAnimation(int, Animation, bool)" /></summary>
 		public TrackEntry SetAnimation (int trackIndex, string animationName, bool loop) {
 			Animation animation = data.skeletonData.FindAnimation(animationName);
-			if (animation == null) throw new ArgumentException("Animation not found: " + animationName, "animationName");
+			if (animation == null) throw new ArgumentException("Animation not found: " + animationName, nameof(animationName));
 			return SetAnimation(trackIndex, animation, loop);
 		}
 
@@ -685,7 +681,7 @@ namespace Spine {
 		/// <returns> A track entry to allow further customization of animation playback. References to the track entry must not be kept
 		///          after the <see cref="AnimationState.Dispose"/> event occurs.</returns>
 		public TrackEntry SetAnimation (int trackIndex, Animation animation, bool loop) {
-			if (animation == null) throw new ArgumentNullException("animation", "animation cannot be null.");
+			if (animation == null) throw new ArgumentNullException(nameof(animation), "animation cannot be null.");
 			bool interrupt = true;
 			TrackEntry current = ExpandToIndex(trackIndex);
 			if (current != null) {
@@ -710,7 +706,7 @@ namespace Spine {
 		/// <seealso cref="AddAnimation(int, Animation, bool, float)" />
 		public TrackEntry AddAnimation (int trackIndex, string animationName, bool loop, float delay) {
 			Animation animation = data.skeletonData.FindAnimation(animationName);
-			if (animation == null) throw new ArgumentException("Animation not found: " + animationName, "animationName");
+			if (animation == null) throw new ArgumentException("Animation not found: " + animationName, nameof(animationName));
 			return AddAnimation(trackIndex, animation, loop, delay);
 		}
 
@@ -725,7 +721,7 @@ namespace Spine {
 		/// <returns>A track entry to allow further customization of animation playback. References to the track entry must not be kept
 		/// after the <see cref="AnimationState.Dispose"/> event occurs.</returns>
 		public TrackEntry AddAnimation (int trackIndex, Animation animation, bool loop, float delay) {
-			if (animation == null) throw new ArgumentNullException("animation", "animation cannot be null.");
+			if (animation == null) throw new ArgumentNullException(nameof(animation), "animation cannot be null.");
 
 			TrackEntry last = ExpandToIndex(trackIndex);
 			if (last != null) {
@@ -1422,7 +1418,7 @@ namespace Spine {
 		}
 
 		public void Free (T obj) {
-			if (obj == null) throw new ArgumentNullException("obj", "obj cannot be null");
+			if (obj == null) throw new ArgumentNullException(nameof(obj), "obj cannot be null");
 			if (freeObjects.Count < max) {
 				freeObjects.Push(obj);
 				Peak = Math.Max(Peak, freeObjects.Count);

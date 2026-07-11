@@ -108,27 +108,27 @@ namespace Spine {
 						int clipOutputLength = clipOutput.Count;
 						if (clipOutputLength == 0) continue;
 						float d0 = y2 - y3, d1 = x3 - x2, d2 = x1 - x3, d4 = y3 - y1;
-						float d = 1 / (d0 * d2 + d1 * (y1 - y3));
+						float d = 1 / ((d0 * d2) + (d1 * (y1 - y3)));
 
 						int clipOutputCount = clipOutputLength >> 1;
 						float[] clipOutputItems = clipOutput.Items;
-						float[] clippedVerticesItems = clippedVertices.Resize(s + clipOutputCount * 2).Items;
-						float[] clippedUVsItems = clippedUVs.Resize(s + clipOutputCount * 2).Items;
+						float[] clippedVerticesItems = clippedVertices.Resize(s + (clipOutputCount * 2)).Items;
+						float[] clippedUVsItems = clippedUVs.Resize(s + (clipOutputCount * 2)).Items;
 						for (int ii = 0; ii < clipOutputLength; ii += 2) {
 							float x = clipOutputItems[ii], y = clipOutputItems[ii + 1];
 							clippedVerticesItems[s] = x;
 							clippedVerticesItems[s + 1] = y;
 							float c0 = x - x3, c1 = y - y3;
-							float a = (d0 * c0 + d1 * c1) * d;
-							float b = (d4 * c0 + d2 * c1) * d;
+							float a = ((d0 * c0) + (d1 * c1)) * d;
+							float b = ((d4 * c0) + (d2 * c1)) * d;
 							float c = 1 - a - b;
-							clippedUVsItems[s] = u1 * a + u2 * b + u3 * c;
-							clippedUVsItems[s + 1] = v1 * a + v2 * b + v3 * c;
+							clippedUVsItems[s] = (u1 * a) + (u2 * b) + (u3 * c);
+							clippedUVsItems[s + 1] = (v1 * a) + (v2 * b) + (v3 * c);
 							s += 2;
 						}
 
 						s = clippedTriangles.Count;
-						int[] clippedTrianglesItems = clippedTriangles.Resize(s + 3 * (clipOutputCount - 2)).Items;
+						int[] clippedTrianglesItems = clippedTriangles.Resize(s + (3 * (clipOutputCount - 2))).Items;
 						clipOutputCount--;
 						for (int ii = 1; ii < clipOutputCount; ii++) {
 							clippedTrianglesItems[s] = index;
@@ -138,8 +138,8 @@ namespace Spine {
 						}
 						index += clipOutputCount + 1;
 					} else {
-						float[] clippedVerticesItems = clippedVertices.Resize(s + 3 * 2).Items;
-						float[] clippedUVsItems = clippedUVs.Resize(s + 3 * 2).Items;
+						float[] clippedVerticesItems = clippedVertices.Resize(s + (3 * 2)).Items;
+						float[] clippedUVsItems = clippedUVs.Resize(s + (3 * 2)).Items;
 						clippedVerticesItems[s] = x1;
 						clippedVerticesItems[s + 1] = y1;
 						clippedVerticesItems[s + 2] = x2;
@@ -164,7 +164,6 @@ namespace Spine {
 					}
 				}
 			}
-
 		}
 
 		/** Clips the input triangle against the convex, clockwise clipping area. If the triangle lies entirely within the clipping
@@ -205,8 +204,8 @@ namespace Spine {
 				for (int ii = 0; ii < inputVerticesLength; ii += 2) {
 					float inputX = inputVertices[ii], inputY = inputVertices[ii + 1];
 					float inputX2 = inputVertices[ii + 2], inputY2 = inputVertices[ii + 3];
-					bool side2 = deltaX * (inputY2 - edgeY2) - deltaY * (inputX2 - edgeX2) > 0;
-					if (deltaX * (inputY - edgeY2) - deltaY * (inputX - edgeX2) > 0) {
+					bool side2 = (deltaX * (inputY2 - edgeY2)) - (deltaY * (inputX2 - edgeX2)) > 0;
+					if ((deltaX * (inputY - edgeY2)) - (deltaY * (inputX - edgeX2)) > 0) {
 						if (side2) { // v1 inside, v2 inside
 							output.Add(inputX2);
 							output.Add(inputY2);
@@ -214,22 +213,22 @@ namespace Spine {
 						}
 						// v1 inside, v2 outside
 						float c0 = inputY2 - inputY, c2 = inputX2 - inputX;
-						float s = c0 * (edgeX2 - edgeX) - c2 * (edgeY2 - edgeY);
+						float s = (c0 * (edgeX2 - edgeX)) - (c2 * (edgeY2 - edgeY));
 						if (Math.Abs(s) > 0.000001f) {
-							float ua = (c2 * (edgeY - inputY) - c0 * (edgeX - inputX)) / s;
-							output.Add(edgeX + (edgeX2 - edgeX) * ua);
-							output.Add(edgeY + (edgeY2 - edgeY) * ua);
+							float ua = ((c2 * (edgeY - inputY)) - (c0 * (edgeX - inputX))) / s;
+							output.Add(edgeX + ((edgeX2 - edgeX) * ua));
+							output.Add(edgeY + ((edgeY2 - edgeY) * ua));
 						} else {
 							output.Add(edgeX);
 							output.Add(edgeY);
 						}
 					} else if (side2) { // v1 outside, v2 inside
 						float c0 = inputY2 - inputY, c2 = inputX2 - inputX;
-						float s = c0 * (edgeX2 - edgeX) - c2 * (edgeY2 - edgeY);
+						float s = (c0 * (edgeX2 - edgeX)) - (c2 * (edgeY2 - edgeY));
 						if (Math.Abs(s) > 0.000001f) {
-							float ua = (c2 * (edgeY - inputY) - c0 * (edgeX - inputX)) / s;
-							output.Add(edgeX + (edgeX2 - edgeX) * ua);
-							output.Add(edgeY + (edgeY2 - edgeY) * ua);
+							float ua = ((c2 * (edgeY - inputY)) - (c0 * (edgeX - inputX))) / s;
+							output.Add(edgeX + ((edgeX2 - edgeX) * ua));
+							output.Add(edgeY + ((edgeY2 - edgeY) * ua));
 						} else {
 							output.Add(edgeX);
 							output.Add(edgeY);
@@ -269,13 +268,13 @@ namespace Spine {
 			float[] vertices = polygon.Items;
 			int verticeslength = polygon.Count;
 
-			float area = vertices[verticeslength - 2] * vertices[1] - vertices[0] * vertices[verticeslength - 1], p1x, p1y, p2x, p2y;
+			float area = (vertices[verticeslength - 2] * vertices[1]) - (vertices[0] * vertices[verticeslength - 1]), p1x, p1y, p2x, p2y;
 			for (int i = 0, n = verticeslength - 3; i < n; i += 2) {
 				p1x = vertices[i];
 				p1y = vertices[i + 1];
 				p2x = vertices[i + 2];
 				p2y = vertices[i + 3];
-				area += p1x * p2y - p2x * p1y;
+				area += (p1x * p2y) - (p2x * p1y);
 			}
 			if (area < 0) return;
 

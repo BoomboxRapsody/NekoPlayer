@@ -45,7 +45,7 @@ namespace Spine {
 		public float Balance { get; set; }
 
 		public EventData (string name) {
-			if (name == null) throw new ArgumentNullException("name", "name cannot be null.");
+			if (name == null) throw new ArgumentNullException(nameof(name), "name cannot be null.");
 			this.name = name;
 		}
 

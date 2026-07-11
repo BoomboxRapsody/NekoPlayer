@@ -81,8 +81,8 @@ namespace Spine {
 
 		/// <param name="parent">May be null.</param>
 		public BoneData (int index, string name, BoneData parent) {
-			if (index < 0) throw new ArgumentException("index must be >= 0", "index");
-			if (name == null) throw new ArgumentNullException("name", "name cannot be null.");
+			if (index < 0) throw new ArgumentException("index must be >= 0", nameof(index));
+			if (name == null) throw new ArgumentNullException(nameof(name), "name cannot be null.");
 			this.index = index;
 			this.name = name;
 			this.parent = parent;

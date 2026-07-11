@@ -30,7 +30,6 @@
 using System;
 
 namespace Spine {
-
 	/// <summary>
 	/// Collects each BoundingBoxAttachment that is visible and computes the world vertices for its polygon.
 	/// The polygon vertices are provided along with convenience methods for doing hit detection.
@@ -139,13 +138,13 @@ namespace Spine {
 			if ((x1 <= minX && x2 <= minX) || (y1 <= minY && y2 <= minY) || (x1 >= maxX && x2 >= maxX) || (y1 >= maxY && y2 >= maxY))
 				return false;
 			float m = (y2 - y1) / (x2 - x1);
-			float y = m * (minX - x1) + y1;
+			float y = (m * (minX - x1)) + y1;
 			if (y > minY && y < maxY) return true;
-			y = m * (maxX - x1) + y1;
+			y = (m * (maxX - x1)) + y1;
 			if (y > minY && y < maxY) return true;
-			float x = (minY - y1) / m + x1;
+			float x = ((minY - y1) / m) + x1;
 			if (x > minX && x < maxX) return true;
-			x = (maxY - y1) / m + x1;
+			x = ((maxY - y1) / m) + x1;
 			if (x > minX && x < maxX) return true;
 			return false;
 		}
@@ -167,7 +166,7 @@ namespace Spine {
 				float prevY = vertices[prevIndex + 1];
 				if ((vertexY < y && prevY >= y) || (prevY < y && vertexY >= y)) {
 					float vertexX = vertices[ii];
-					if (vertexX + (y - vertexY) / (prevY - vertexY) * (vertices[prevIndex] - vertexX) < x) inside = !inside;
+					if (vertexX + ((y - vertexY) / (prevY - vertexY) * (vertices[prevIndex] - vertexX)) < x) inside = !inside;
 				}
 				prevIndex = ii;
 			}
@@ -198,16 +197,16 @@ namespace Spine {
 			int nn = polygon.Count;
 
 			float width12 = x1 - x2, height12 = y1 - y2;
-			float det1 = x1 * y2 - y1 * x2;
+			float det1 = (x1 * y2) - (y1 * x2);
 			float x3 = vertices[nn - 2], y3 = vertices[nn - 1];
 			for (int ii = 0; ii < nn; ii += 2) {
 				float x4 = vertices[ii], y4 = vertices[ii + 1];
-				float det2 = x3 * y4 - y3 * x4;
+				float det2 = (x3 * y4) - (y3 * x4);
 				float width34 = x3 - x4, height34 = y3 - y4;
-				float det3 = width12 * height34 - height12 * width34;
-				float x = (det1 * width34 - width12 * det2) / det3;
+				float det3 = (width12 * height34) - (height12 * width34);
+				float x = ((det1 * width34) - (width12 * det2)) / det3;
 				if (((x >= x3 && x <= x4) || (x >= x4 && x <= x3)) && ((x >= x1 && x <= x2) || (x >= x2 && x <= x1))) {
-					float y = (det1 * height34 - height12 * det2) / det3;
+					float y = ((det1 * height34) - (height12 * det2)) / det3;
 					if (((y >= y3 && y <= y4) || (y >= y4 && y <= y3)) && ((y >= y1 && y <= y2) || (y >= y2 && y <= y1))) return true;
 				}
 				x3 = x4;

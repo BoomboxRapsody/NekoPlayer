@@ -52,7 +52,7 @@ namespace Spine {
 		public float Balance { get { return balance; } set { balance = value; } }
 
 		public Event (float time, EventData data) {
-			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
+			if (data == null) throw new ArgumentNullException(nameof(data), "data cannot be null.");
 			this.time = time;
 			this.data = data;
 		}

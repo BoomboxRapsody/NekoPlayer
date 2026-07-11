@@ -117,15 +117,15 @@ namespace Spine {
 
 		/// <summary>Returns the version string of binary skeleton data.</summary>
 		public static string GetVersionString (Stream file) {
-			if (file == null) throw new ArgumentNullException("file");
+            ArgumentNullException.ThrowIfNull(file);
 
-			SkeletonInput input = new SkeletonInput(file);
+            SkeletonInput input = new SkeletonInput(file);
 			return input.GetVersionString();
 		}
 
 		public SkeletonData ReadSkeletonData (Stream file) {
-			if (file == null) throw new ArgumentNullException("file");
-			float scale = this.scale;
+            ArgumentNullException.ThrowIfNull(file);
+            float scale = this.scale;
 
 			SkeletonData skeletonData = new SkeletonData();
 			SkeletonInput input = new SkeletonInput(file);
@@ -330,7 +330,6 @@ namespace Spine {
 
 		/// <returns>May be null.</returns>
 		private Skin ReadSkin (SkeletonInput input, SkeletonData skeletonData, bool defaultSkin, bool nonessential) {
-
 			Skin skin;
 			int slotCount;
 
@@ -1140,7 +1139,7 @@ namespace Spine {
 			}
 
 			public float ReadFloat () {
-				input.Read(bytesBigEndian, 0, 4);
+				input.ReadExactly(bytesBigEndian, 0, 4);
 				chars[3] = bytesBigEndian[0];
 				chars[2] = bytesBigEndian[1];
 				chars[1] = bytesBigEndian[2];
@@ -1149,7 +1148,7 @@ namespace Spine {
 			}
 
 			public int ReadInt () {
-				input.Read(bytesBigEndian, 0, 4);
+				input.ReadExactly(bytesBigEndian, 0, 4);
 				return (bytesBigEndian[0] << 24)
 					+ (bytesBigEndian[1] << 16)
 					+ (bytesBigEndian[2] << 8)
@@ -1157,7 +1156,7 @@ namespace Spine {
 			}
 
 			public long ReadLong () {
-				input.Read(bytesBigEndian, 0, 8);
+				input.ReadExactly(bytesBigEndian, 0, 8);
 				return ((long)(bytesBigEndian[0]) << 56)
 					+ ((long)(bytesBigEndian[1]) << 48)
 					+ ((long)(bytesBigEndian[2]) << 40)

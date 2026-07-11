@@ -37,7 +37,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 
-
 namespace Spine {
 	public class TextureRegion {
 		public int width, height;

@@ -50,7 +50,6 @@ namespace Spine {
 		/// <summary>Copy constructor.</summary>
 		protected PathAttachment (PathAttachment other)
 			: base(other) {
-
 			lengths = new float[other.lengths.Length];
 			Array.Copy(other.lengths, 0, lengths, 0, lengths.Length);
 

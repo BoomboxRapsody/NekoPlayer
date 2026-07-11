@@ -145,7 +145,7 @@ namespace Spine {
 		protected abstract float Apply (float a);
 
 		public float Apply (float start, float end, float a) {
-			return start + (end - start) * Apply(a);
+			return start + ((end - start) * Apply(a));
 		}
 	}
 
@@ -158,7 +158,7 @@ namespace Spine {
 
 		protected override float Apply (float a) {
 			if (a <= 0.5f) return (float)Math.Pow(a * 2, Power) / 2;
-			return (float)Math.Pow((a - 1) * 2, Power) / (Power % 2 == 0 ? -2 : 2) + 1;
+			return ((float)Math.Pow((a - 1) * 2, Power) / (Power % 2 == 0 ? -2 : 2)) + 1;
 		}
 	}
 
@@ -167,7 +167,7 @@ namespace Spine {
 		}
 
 		protected override float Apply (float a) {
-			return (float)Math.Pow(a - 1, Power) * (Power % 2 == 0 ? -1 : 1) + 1;
+			return ((float)Math.Pow(a - 1, Power) * (Power % 2 == 0 ? -1 : 1)) + 1;
 		}
 	}
 }

@@ -41,7 +41,6 @@ using Windows.Storage;
 #endif
 
 namespace Spine {
-
 	/// <summary>
 	/// Loads skeleton data in the Spine JSON format.
 	/// <para>
@@ -52,7 +51,6 @@ namespace Spine {
 	/// Runtimes Guide.</para>
 	/// </summary>
 	public class SkeletonJson : SkeletonLoader {
-
 		public SkeletonJson (AttachmentLoader attachmentLoader)
 			: base(attachmentLoader) {
 		}
@@ -90,7 +88,7 @@ namespace Spine {
 #endif
 
 		public SkeletonData ReadSkeletonData (TextReader reader) {
-			if (reader == null) throw new ArgumentNullException("reader", "reader cannot be null.");
+			if (reader == null) throw new ArgumentNullException(nameof(reader), "reader cannot be null.");
 
 			float scale = this.scale;
 			SkeletonData skeletonData = new SkeletonData();
@@ -571,7 +569,6 @@ namespace Spine {
 								timeline.SetFrame(frame++, GetFloat(keyMap, "time", 0), GetString(keyMap, "name", null));
 							}
 							timelines.Add(timeline);
-
 						} else if (timelineName == "rgba") {
 							RGBATimeline timeline = new RGBATimeline(frames, frames << 2, slotIndex);
 
@@ -614,7 +611,6 @@ namespace Spine {
 								keyMap = nextMap;
 							}
 							timelines.Add(timeline);
-
 						} else if (timelineName == "rgb") {
 							RGBTimeline timeline = new RGBTimeline(frames, frames * 3, slotIndex);
 
@@ -653,12 +649,10 @@ namespace Spine {
 								keyMap = nextMap;
 							}
 							timelines.Add(timeline);
-
 						} else if (timelineName == "alpha") {
 							List<object>.Enumerator keyMapEnumerator = values.GetEnumerator();
 							keyMapEnumerator.MoveNext();
 							timelines.Add(ReadTimeline(ref keyMapEnumerator, new AlphaTimeline(frames, frames, slotIndex), 0, 1));
-
 						} else if (timelineName == "rgba2") {
 							RGBA2Timeline timeline = new RGBA2Timeline(frames, frames * 7, slotIndex);
 
@@ -715,7 +709,6 @@ namespace Spine {
 								keyMap = nextMap;
 							}
 							timelines.Add(timeline);
-
 						} else if (timelineName == "rgb2") {
 							RGB2Timeline timeline = new RGB2Timeline(frames, frames * 6, slotIndex);
 
@@ -768,7 +761,6 @@ namespace Spine {
 								keyMap = nextMap;
 							}
 							timelines.Add(timeline);
-
 						} else
 							throw new Exception("Invalid timeline type for a slot: " + timelineName + " (" + slotName + ")");
 					}
@@ -1029,7 +1021,6 @@ namespace Spine {
 									float lastDelay = 0;
 									for (int frame = 0; keyMap != null; keyMap = keyMapEnumerator.MoveNext() ?
 										(Dictionary<string, Object>)keyMapEnumerator.Current : null, frame++) {
-
 										float delay = GetFloat(keyMap, "delay", lastDelay);
 										SequenceMode sequenceMode = (SequenceMode)Enum.Parse(typeof(SequenceMode),
 											GetString(keyMap, "mode", "hold"), true);
@@ -1137,7 +1128,6 @@ namespace Spine {
 
 		static Timeline ReadTimeline (ref List<object>.Enumerator keyMapEnumerator, CurveTimeline2 timeline, String name1, String name2, float defaultValue,
 			float scale) {
-
 			Dictionary<string, object> keyMap = (Dictionary<string, Object>)keyMapEnumerator.Current;
 			float time = GetFloat(keyMap, "time", 0);
 			float value1 = GetFloat(keyMap, name1, defaultValue) * scale, value2 = GetFloat(keyMap, name2, defaultValue) * scale;
@@ -1164,7 +1154,6 @@ namespace Spine {
 
 		static int ReadCurve (object curve, CurveTimeline timeline, int bezier, int frame, int value, float time1, float time2,
 			float value1, float value2, float scale) {
-
 			string curveString = curve as string;
 			if (curveString != null) {
 				if (curveString == "stepped") timeline.SetStepped(frame);
@@ -1233,7 +1222,7 @@ namespace Spine {
 
 		static float ToColor (string hexString, int colorIndex, int expectedLength = 8) {
 			if (hexString.Length < expectedLength)
-				throw new ArgumentException("Color hexadecimal length must be " + expectedLength + ", received: " + hexString, "hexString");
+				throw new ArgumentException("Color hexadecimal length must be " + expectedLength + ", received: " + hexString, nameof(hexString));
 			return Convert.ToInt32(hexString.Substring(colorIndex * 2, 2), 16) / (float)255;
 		}
 	}

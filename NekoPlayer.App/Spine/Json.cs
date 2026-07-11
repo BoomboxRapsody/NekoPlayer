@@ -85,7 +85,7 @@ namespace SharpJson {
 			CurlyClose,
 			SquaredOpen,
 			SquaredClose,
-		};
+		}
 
 		public bool hasError {
 			get {

@@ -28,7 +28,6 @@
  *****************************************************************************/
 
 namespace Spine {
-
 	///<summary>The interface for items updated by <see cref="Skeleton.UpdateWorldTransform()"/>.</summary>
 	public interface IUpdatable {
 		void Update ();

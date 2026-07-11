@@ -80,7 +80,7 @@ namespace Spine {
 		}
 
 		public Skeleton (SkeletonData data) {
-			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
+			if (data == null) throw new ArgumentNullException(nameof(data), "data cannot be null.");
 			this.data = data;
 
 			bones = new ExposedList<Bone>(data.bones.Count);
@@ -123,7 +123,7 @@ namespace Spine {
 
 		/// <summary>Copy constructor.</summary>
 		public Skeleton (Skeleton skeleton) {
-			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
+			if (skeleton == null) throw new ArgumentNullException(nameof(skeleton), "skeleton cannot be null.");
 			data = skeleton.data;
 
 			bones = new ExposedList<Bone>(skeleton.bones.Count);
@@ -383,23 +383,23 @@ namespace Spine {
 		/// all constraints.
 		/// </summary>
 		public void UpdateWorldTransform (Bone parent) {
-			if (parent == null) throw new ArgumentNullException("parent", "parent cannot be null.");
+			if (parent == null) throw new ArgumentNullException(nameof(parent), "parent cannot be null.");
 
 			// Apply the parent bone transform to the root bone. The root bone always inherits scale, rotation and reflection.
 			Bone rootBone = this.RootBone;
 			float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
-			rootBone.worldX = pa * x + pb * y + parent.worldX;
-			rootBone.worldY = pc * x + pd * y + parent.worldY;
+			rootBone.worldX = (pa * x) + (pb * y) + parent.worldX;
+			rootBone.worldY = (pc * x) + (pd * y) + parent.worldY;
 
 			float rotationY = rootBone.rotation + 90 + rootBone.shearY;
 			float la = MathUtils.CosDeg(rootBone.rotation + rootBone.shearX) * rootBone.scaleX;
 			float lb = MathUtils.CosDeg(rotationY) * rootBone.scaleY;
 			float lc = MathUtils.SinDeg(rootBone.rotation + rootBone.shearX) * rootBone.scaleX;
 			float ld = MathUtils.SinDeg(rotationY) * rootBone.scaleY;
-			rootBone.a = (pa * la + pb * lc) * scaleX;
-			rootBone.b = (pa * lb + pb * ld) * scaleX;
-			rootBone.c = (pc * la + pd * lc) * scaleY;
-			rootBone.d = (pc * lb + pd * ld) * scaleY;
+			rootBone.a = ((pa * la) + (pb * lc)) * scaleX;
+			rootBone.b = ((pa * lb) + (pb * ld)) * scaleX;
+			rootBone.c = ((pc * la) + (pd * lc)) * scaleY;
+			rootBone.d = ((pc * lb) + (pd * ld)) * scaleY;
 
 			// Update everything except root bone.
 			IUpdatable[] updateCache = this.updateCache.Items;
@@ -468,7 +468,7 @@ namespace Spine {
 		/// repeatedly.</summary>
 		/// <returns>May be null.</returns>
 		public Bone FindBone (string boneName) {
-			if (boneName == null) throw new ArgumentNullException("boneName", "boneName cannot be null.");
+			if (boneName == null) throw new ArgumentNullException(nameof(boneName), "boneName cannot be null.");
 			Bone[] bones = this.bones.Items;
 			for (int i = 0, n = this.bones.Count; i < n; i++) {
 				Bone bone = bones[i];
@@ -481,7 +481,7 @@ namespace Spine {
 		/// repeatedly.</summary>
 		/// <returns>May be null.</returns>
 		public Slot FindSlot (string slotName) {
-			if (slotName == null) throw new ArgumentNullException("slotName", "slotName cannot be null.");
+			if (slotName == null) throw new ArgumentNullException(nameof(slotName), "slotName cannot be null.");
 			Slot[] slots = this.slots.Items;
 			for (int i = 0, n = this.slots.Count; i < n; i++) {
 				Slot slot = slots[i];
@@ -493,7 +493,7 @@ namespace Spine {
 		/// <summary>Sets a skin by name (see <see cref="SetSkin(Skin)"/>).</summary>
 		public void SetSkin (string skinName) {
 			Skin foundSkin = data.FindSkin(skinName);
-			if (foundSkin == null) throw new ArgumentException("Skin not found: " + skinName, "skinName");
+			if (foundSkin == null) throw new ArgumentException("Skin not found: " + skinName, nameof(skinName));
 			SetSkin(foundSkin);
 		}
 
@@ -540,7 +540,7 @@ namespace Spine {
 		/// <summary>Finds an attachment by looking in the skin and skeletonData.defaultSkin using the slot index and attachment name.First the skin is checked and if the attachment was not found, the default skin is checked.</summary>
 		/// <returns>May be null.</returns>
 		public Attachment GetAttachment (int slotIndex, string attachmentName) {
-			if (attachmentName == null) throw new ArgumentNullException("attachmentName", "attachmentName cannot be null.");
+			if (attachmentName == null) throw new ArgumentNullException(nameof(attachmentName), "attachmentName cannot be null.");
 			if (skin != null) {
 				Attachment attachment = skin.GetAttachment(slotIndex, attachmentName);
 				if (attachment != null) return attachment;
@@ -551,7 +551,7 @@ namespace Spine {
 		/// <summary>A convenience method to set an attachment by finding the slot with FindSlot, finding the attachment with GetAttachment, then setting the slot's slot.Attachment.</summary>
 		/// <param name="attachmentName">May be null to clear the slot's attachment.</param>
 		public void SetAttachment (string slotName, string attachmentName) {
-			if (slotName == null) throw new ArgumentNullException("slotName", "slotName cannot be null.");
+			if (slotName == null) throw new ArgumentNullException(nameof(slotName), "slotName cannot be null.");
 			Slot[] slots = this.slots.Items;
 			for (int i = 0, n = this.slots.Count; i < n; i++) {
 				Slot slot = slots[i];
@@ -572,7 +572,7 @@ namespace Spine {
 		/// than to call it repeatedly.</summary>
 		/// <returns>May be null.</returns>
 		public IkConstraint FindIkConstraint (string constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
+			if (constraintName == null) throw new ArgumentNullException(nameof(constraintName), "constraintName cannot be null.");
 			IkConstraint[] ikConstraints = this.ikConstraints.Items;
 			for (int i = 0, n = this.ikConstraints.Count; i < n; i++) {
 				IkConstraint ikConstraint = ikConstraints[i];
@@ -585,7 +585,7 @@ namespace Spine {
 		/// this method than to call it repeatedly.</summary>
 		/// <returns>May be null.</returns>
 		public TransformConstraint FindTransformConstraint (string constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
+			if (constraintName == null) throw new ArgumentNullException(nameof(constraintName), "constraintName cannot be null.");
 			TransformConstraint[] transformConstraints = this.transformConstraints.Items;
 			for (int i = 0, n = this.transformConstraints.Count; i < n; i++) {
 				TransformConstraint transformConstraint = transformConstraints[i];
@@ -598,7 +598,7 @@ namespace Spine {
 		/// than to call it repeatedly.</summary>
 		/// <returns>May be null.</returns>
 		public PathConstraint FindPathConstraint (string constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
+			if (constraintName == null) throw new ArgumentNullException(nameof(constraintName), "constraintName cannot be null.");
 			PathConstraint[] pathConstraints = this.pathConstraints.Items;
 			for (int i = 0, n = this.pathConstraints.Count; i < n; i++) {
 				PathConstraint constraint = pathConstraints[i];

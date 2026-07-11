@@ -53,7 +53,6 @@ namespace Spine {
 
 		public VertexAttachment (string name)
 			: base(name) {
-
 			lock (VertexAttachment.nextIdLock) {
 				id = VertexAttachment.nextID++;
 			}
@@ -63,7 +62,6 @@ namespace Spine {
 		/// <summary>Copy constructor.</summary>
 		public VertexAttachment (VertexAttachment other)
 			: base(other) {
-
 			lock (VertexAttachment.nextIdLock) {
 				id = VertexAttachment.nextID++;
 			}
@@ -100,7 +98,7 @@ namespace Spine {
 		/// <param name="offset">The <paramref name="worldVertices"/> index to begin writing values.</param>
 		/// <param name="stride">The number of <paramref name="worldVertices"/> entries between the value pairs written.</param>
 		public virtual void ComputeWorldVertices (Slot slot, int start, int count, float[] worldVertices, int offset, int stride = 2) {
-			count = offset + (count >> 1) * stride;
+			count = offset + ((count >> 1) * stride);
 			ExposedList<float> deformArray = slot.deform;
 			float[] vertices = this.vertices;
 			int[] bones = this.bones;
@@ -111,8 +109,8 @@ namespace Spine {
 				float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
 				for (int vv = start, w = offset; w < count; vv += 2, w += stride) {
 					float vx = vertices[vv], vy = vertices[vv + 1];
-					worldVertices[w] = vx * a + vy * b + x;
-					worldVertices[w + 1] = vx * c + vy * d + y;
+					worldVertices[w] = (vx * a) + (vy * b) + x;
+					worldVertices[w + 1] = (vx * c) + (vy * d) + y;
 				}
 				return;
 			}
@@ -131,8 +129,8 @@ namespace Spine {
 					for (; v < n; v++, b += 3) {
 						Bone bone = skeletonBones[bones[v]];
 						float vx = vertices[b], vy = vertices[b + 1], weight = vertices[b + 2];
-						wx += (vx * bone.a + vy * bone.b + bone.worldX) * weight;
-						wy += (vx * bone.c + vy * bone.d + bone.worldY) * weight;
+						wx += ((vx * bone.a) + (vy * bone.b) + bone.worldX) * weight;
+						wy += ((vx * bone.c) + (vy * bone.d) + bone.worldY) * weight;
 					}
 					worldVertices[w] = wx;
 					worldVertices[w + 1] = wy;
@@ -146,8 +144,8 @@ namespace Spine {
 					for (; v < n; v++, b += 3, f += 2) {
 						Bone bone = skeletonBones[bones[v]];
 						float vx = vertices[b] + deform[f], vy = vertices[b + 1] + deform[f + 1], weight = vertices[b + 2];
-						wx += (vx * bone.a + vy * bone.b + bone.worldX) * weight;
-						wy += (vx * bone.c + vy * bone.d + bone.worldY) * weight;
+						wx += ((vx * bone.a) + (vy * bone.b) + bone.worldX) * weight;
+						wy += ((vx * bone.c) + (vy * bone.d) + bone.worldY) * weight;
 					}
 					worldVertices[w] = wx;
 					worldVertices[w + 1] = wy;

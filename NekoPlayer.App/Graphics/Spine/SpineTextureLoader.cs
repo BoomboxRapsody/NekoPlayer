@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
+// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
@@ -58,7 +58,6 @@ namespace NekoPlayer.App.Graphics.Spine
 
         private static string GetLayerName(string firstLayerPath, string firstLayerSuffix, string replacementSuffix)
         {
-
             var suffixLocation = firstLayerPath.LastIndexOf(firstLayerSuffix + ".", StringComparison.Ordinal);
             if (suffixLocation == -1)
             {

@@ -51,14 +51,14 @@ namespace Spine {
 		public ExposedList<ConstraintData> Constraints { get { return constraints; } }
 
 		public Skin (string name) {
-			if (name == null) throw new ArgumentNullException("name", "name cannot be null.");
+			if (name == null) throw new ArgumentNullException(nameof(name), "name cannot be null.");
 			this.name = name;
 		}
 
 		/// <summary>Adds an attachment to the skin for the specified slot index and name.
 		/// If the name already exists for the slot, the previous value is replaced.</summary>
 		public void SetAttachment (int slotIndex, string name, Attachment attachment) {
-			if (attachment == null) throw new ArgumentNullException("attachment", "attachment cannot be null.");
+			if (attachment == null) throw new ArgumentNullException(nameof(attachment), "attachment cannot be null.");
 			attachments[new SkinKey(slotIndex, name)] = new SkinEntry(slotIndex, name, attachment);
 		}
 
@@ -111,7 +111,7 @@ namespace Spine {
 		/// <param name="slotIndex">The target slotIndex. To find the slot index, use <see cref="Spine.SkeletonData.FindSlot"/> and <see cref="Spine.SlotData.Index"/>.
 		public void GetAttachments (int slotIndex, List<SkinEntry> attachments) {
 			if (slotIndex < 0) throw new ArgumentException("slotIndex must be >= 0.");
-			if (attachments == null) throw new ArgumentNullException("attachments", "attachments cannot be null.");
+			if (attachments == null) throw new ArgumentNullException(nameof(attachments), "attachments cannot be null.");
 			foreach (KeyValuePair<SkinKey, SkinEntry> item in this.attachments) {
 				SkinEntry entry = item.Value;
 				if (entry.slotIndex == slotIndex) attachments.Add(entry);
@@ -182,10 +182,10 @@ namespace Spine {
 
 			public SkinKey (int slotIndex, string name) {
 				if (slotIndex < 0) throw new ArgumentException("slotIndex must be >= 0.");
-				if (name == null) throw new ArgumentNullException("name", "name cannot be null");
+				if (name == null) throw new ArgumentNullException(nameof(name), "name cannot be null");
 				this.slotIndex = slotIndex;
 				this.name = name;
-				this.hashCode = name.GetHashCode() + slotIndex * 37;
+				this.hashCode = name.GetHashCode() + (slotIndex * 37);
 			}
 		}
 

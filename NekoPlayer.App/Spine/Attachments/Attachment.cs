@@ -30,14 +30,13 @@
 using System;
 
 namespace Spine {
-
 	/// <summary>The base class for all attachments.</summary>
 	abstract public class Attachment {
 		/// <summary>The attachment's name.</summary>
 		public string Name { get; }
 
 		protected Attachment (string name) {
-			if (name == null) throw new ArgumentNullException("name", "name cannot be null");
+			if (name == null) throw new ArgumentNullException(nameof(name), "name cannot be null");
 			this.Name = name;
 		}
 

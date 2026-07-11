@@ -103,17 +103,17 @@ namespace Spine {
 #endif
 
 		public Atlas (List<AtlasPage> pages, List<AtlasRegion> regions) {
-			if (pages == null) throw new ArgumentNullException("pages", "pages cannot be null.");
-			if (regions == null) throw new ArgumentNullException("regions", "regions cannot be null.");
+			if (pages == null) throw new ArgumentNullException(nameof(pages), "pages cannot be null.");
+			if (regions == null) throw new ArgumentNullException(nameof(regions), "regions cannot be null.");
 			this.pages = pages;
 			this.regions = regions;
 			this.textureLoader = null;
 		}
 
 		public Atlas (TextReader reader, string imagesDir, TextureLoader textureLoader) {
-			if (reader == null) throw new ArgumentNullException("reader", "reader cannot be null.");
-			if (imagesDir == null) throw new ArgumentNullException("imagesDir", "imagesDir cannot be null.");
-			if (textureLoader == null) throw new ArgumentNullException("textureLoader", "textureLoader cannot be null.");
+			if (reader == null) throw new ArgumentNullException(nameof(reader), "reader cannot be null.");
+			if (imagesDir == null) throw new ArgumentNullException(nameof(imagesDir), "imagesDir cannot be null.");
+			if (textureLoader == null) throw new ArgumentNullException(nameof(textureLoader), "textureLoader cannot be null.");
 			this.textureLoader = textureLoader;
 
 			string[] entry = new string[5];

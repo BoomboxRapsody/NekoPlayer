@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
+// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
@@ -59,13 +59,13 @@ namespace NekoPlayer.App.Graphics.Spine.Rendering
         {
             var x = vertex.Position.X - _worldX;
             var y = vertex.Position.Y - _worldY;
-            var dist = (float)Math.Sqrt(x * x + y * y);
+            var dist = (float)Math.Sqrt((x * x) + (y * y));
             if (dist > Radius) return;
 
             var theta = Interpolation!.Apply(0, _angle, (Radius - dist) / Radius);
             float cos = MathUtils.Cos(theta), sin = MathUtils.Sin(theta);
-            vertex.Position.X = cos * x - sin * y + _worldX;
-            vertex.Position.Y = sin * x + cos * y + _worldY;
+            vertex.Position.X = (cos * x) - (sin * y) + _worldX;
+            vertex.Position.Y = (sin * x) + (cos * y) + _worldY;
         }
     }
 }

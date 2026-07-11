@@ -30,7 +30,6 @@
 using System;
 
 namespace Spine {
-
 	/// <summary>
 	/// Stores a slot's current pose. Slots organize attachments for <see cref="Skeleton.DrawOrder"/> purposes and provide a place to store
 	/// state for an attachment.State cannot be stored in an attachment itself because attachments are stateless and may be shared
@@ -48,8 +47,8 @@ namespace Spine {
 		internal int attachmentState;
 
 		public Slot (SlotData data, Bone bone) {
-			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
-			if (bone == null) throw new ArgumentNullException("bone", "bone cannot be null.");
+			if (data == null) throw new ArgumentNullException(nameof(data), "data cannot be null.");
+			if (bone == null) throw new ArgumentNullException(nameof(bone), "bone cannot be null.");
 			this.data = data;
 			this.bone = bone;
 
@@ -63,8 +62,8 @@ namespace Spine {
 
 		/// <summary>Copy constructor.</summary>
 		public Slot (Slot slot, Bone bone) {
-			if (slot == null) throw new ArgumentNullException("slot", "slot cannot be null.");
-			if (bone == null) throw new ArgumentNullException("bone", "bone cannot be null.");
+			if (slot == null) throw new ArgumentNullException(nameof(slot), "slot cannot be null.");
+			if (bone == null) throw new ArgumentNullException(nameof(bone), "bone cannot be null.");
 			data = slot.data;
 			this.bone = bone;
 			r = slot.r;

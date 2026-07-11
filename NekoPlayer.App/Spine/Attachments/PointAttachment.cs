@@ -59,8 +59,8 @@ namespace Spine {
 
 		public float ComputeWorldRotation (Bone bone) {
 			float cos = MathUtils.CosDeg(rotation), sin = MathUtils.SinDeg(rotation);
-			float ix = cos * bone.a + sin * bone.b;
-			float iy = cos * bone.c + sin * bone.d;
+			float ix = (cos * bone.a) + (sin * bone.b);
+			float iy = (cos * bone.c) + (sin * bone.d);
 			return MathUtils.Atan2(iy, ix) * MathUtils.RadDeg;
 		}
 

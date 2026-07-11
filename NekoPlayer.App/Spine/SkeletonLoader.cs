@@ -32,7 +32,6 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Spine {
-
 	/// <summary>
 	/// Base class for loading skeleton data from a file.
 	/// <para>
@@ -54,7 +53,7 @@ namespace Spine {
 		/// <para>See <a href='http://esotericsoftware.com/spine-loading-skeleton-data#JSON-and-binary-data'>Loading skeleton data</a> in the
 		/// Spine Runtimes Guide.</para></summary>
 		public SkeletonLoader (AttachmentLoader attachmentLoader) {
-			if (attachmentLoader == null) throw new ArgumentNullException("attachmentLoader", "attachmentLoader cannot be null.");
+			if (attachmentLoader == null) throw new ArgumentNullException(nameof(attachmentLoader), "attachmentLoader cannot be null.");
 			this.attachmentLoader = attachmentLoader;
 		}
 
@@ -87,6 +86,5 @@ namespace Spine {
 				this.inheritTimelines = inheritTimelines;
 			}
 		}
-
 	}
 }

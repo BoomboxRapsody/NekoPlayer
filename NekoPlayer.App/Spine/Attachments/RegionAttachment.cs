@@ -137,13 +137,13 @@ namespace Spine {
 			float sin = MathUtils.SinDeg(this.rotation);
 			float x = X;
 			float y = Y;
-			float localXCos = localX * cos + x;
+			float localXCos = (localX * cos) + x;
 			float localXSin = localX * sin;
-			float localYCos = localY * cos + y;
+			float localYCos = (localY * cos) + y;
 			float localYSin = localY * sin;
-			float localX2Cos = localX2 * cos + x;
+			float localX2Cos = (localX2 * cos) + x;
 			float localX2Sin = localX2 * sin;
-			float localY2Cos = localY2 * cos + y;
+			float localY2Cos = (localY2 * cos) + y;
 			float localY2Sin = localY2 * sin;
 			float[] offset = this.offset;
 			offset[BLX] = localXCos - localYSin;
@@ -195,26 +195,26 @@ namespace Spine {
 			// Vertex order is different from RegionAttachment.java
 			offsetX = vertexOffset[BRX]; // 0
 			offsetY = vertexOffset[BRY]; // 1
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // bl
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
+			worldVertices[offset] = (offsetX * a) + (offsetY * b) + bwx; // bl
+			worldVertices[offset + 1] = (offsetX * c) + (offsetY * d) + bwy;
 			offset += stride;
 
 			offsetX = vertexOffset[BLX]; // 2
 			offsetY = vertexOffset[BLY]; // 3
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // ul
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
+			worldVertices[offset] = (offsetX * a) + (offsetY * b) + bwx; // ul
+			worldVertices[offset + 1] = (offsetX * c) + (offsetY * d) + bwy;
 			offset += stride;
 
 			offsetX = vertexOffset[ULX]; // 4
 			offsetY = vertexOffset[ULY]; // 5
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // ur
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
+			worldVertices[offset] = (offsetX * a) + (offsetY * b) + bwx; // ur
+			worldVertices[offset + 1] = (offsetX * c) + (offsetY * d) + bwy;
 			offset += stride;
 
 			offsetX = vertexOffset[URX]; // 6
 			offsetY = vertexOffset[URY]; // 7
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // br
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
+			worldVertices[offset] = (offsetX * a) + (offsetY * b) + bwx; // br
+			worldVertices[offset + 1] = (offsetX * c) + (offsetY * d) + bwy;
 			//offset += stride;
 		}
 

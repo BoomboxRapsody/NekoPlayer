@@ -30,7 +30,6 @@
 using System;
 
 namespace Spine {
-
 	/// <summary>Stores the setup pose and all of the stateless data for a skeleton.</summary>
 	public class SkeletonData {
 		internal string name;
@@ -102,7 +101,7 @@ namespace Spine {
 		/// It is more efficient to cache the results of this method than to call it multiple times.</summary>
 		/// <returns>May be null.</returns>
 		public BoneData FindBone (string boneName) {
-			if (boneName == null) throw new ArgumentNullException("boneName", "boneName cannot be null.");
+			if (boneName == null) throw new ArgumentNullException(nameof(boneName), "boneName cannot be null.");
 			BoneData[] bones = this.bones.Items;
 			for (int i = 0, n = this.bones.Count; i < n; i++) {
 				BoneData bone = bones[i];
@@ -115,7 +114,7 @@ namespace Spine {
 
 		/// <returns>May be null.</returns>
 		public SlotData FindSlot (string slotName) {
-			if (slotName == null) throw new ArgumentNullException("slotName", "slotName cannot be null.");
+			if (slotName == null) throw new ArgumentNullException(nameof(slotName), "slotName cannot be null.");
 			SlotData[] slots = this.slots.Items;
 			for (int i = 0, n = this.slots.Count; i < n; i++) {
 				SlotData slot = slots[i];
@@ -128,7 +127,7 @@ namespace Spine {
 
 		/// <returns>May be null.</returns>
 		public Skin FindSkin (string skinName) {
-			if (skinName == null) throw new ArgumentNullException("skinName", "skinName cannot be null.");
+			if (skinName == null) throw new ArgumentNullException(nameof(skinName), "skinName cannot be null.");
 			foreach (Skin skin in skins)
 				if (skin.name == skinName) return skin;
 			return null;
@@ -138,7 +137,7 @@ namespace Spine {
 
 		/// <returns>May be null.</returns>
 		public EventData FindEvent (string eventDataName) {
-			if (eventDataName == null) throw new ArgumentNullException("eventDataName", "eventDataName cannot be null.");
+			if (eventDataName == null) throw new ArgumentNullException(nameof(eventDataName), "eventDataName cannot be null.");
 			foreach (EventData eventData in events)
 				if (eventData.name == eventDataName) return eventData;
 			return null;
@@ -148,7 +147,7 @@ namespace Spine {
 
 		/// <returns>May be null.</returns>
 		public Animation FindAnimation (string animationName) {
-			if (animationName == null) throw new ArgumentNullException("animationName", "animationName cannot be null.");
+			if (animationName == null) throw new ArgumentNullException(nameof(animationName), "animationName cannot be null.");
 			Animation[] animations = this.animations.Items;
 			for (int i = 0, n = this.animations.Count; i < n; i++) {
 				Animation animation = animations[i];
@@ -161,7 +160,7 @@ namespace Spine {
 
 		/// <returns>May be null.</returns>
 		public IkConstraintData FindIkConstraint (string constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
+			if (constraintName == null) throw new ArgumentNullException(nameof(constraintName), "constraintName cannot be null.");
 			IkConstraintData[] ikConstraints = this.ikConstraints.Items;
 			for (int i = 0, n = this.ikConstraints.Count; i < n; i++) {
 				IkConstraintData ikConstraint = ikConstraints[i];
@@ -174,7 +173,7 @@ namespace Spine {
 
 		/// <returns>May be null.</returns>
 		public TransformConstraintData FindTransformConstraint (string constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
+			if (constraintName == null) throw new ArgumentNullException(nameof(constraintName), "constraintName cannot be null.");
 			TransformConstraintData[] transformConstraints = this.transformConstraints.Items;
 			for (int i = 0, n = this.transformConstraints.Count; i < n; i++) {
 				TransformConstraintData transformConstraint = transformConstraints[i];
@@ -191,7 +190,7 @@ namespace Spine {
 		/// </summary>
 		/// <returns>May be null.</returns>
 		public PathConstraintData FindPathConstraint (string constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName", "constraintName cannot be null.");
+			if (constraintName == null) throw new ArgumentNullException(nameof(constraintName), "constraintName cannot be null.");
 			PathConstraintData[] pathConstraints = this.pathConstraints.Items;
 			for (int i = 0, n = this.pathConstraints.Count; i < n; i++) {
 				PathConstraintData constraint = pathConstraints[i];

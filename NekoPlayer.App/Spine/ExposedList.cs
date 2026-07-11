@@ -41,7 +41,7 @@ namespace Spine {
 		public T[] Items;
 		public int Count;
 		private const int DefaultCapacity = 4;
-		private static readonly T[] EmptyArray = new T[0];
+		private static readonly T[] EmptyArray = Array.Empty<T>();
 		private int version;
 
 		public ExposedList () {
@@ -63,9 +63,8 @@ namespace Spine {
 		}
 
 		public ExposedList (int capacity) {
-			if (capacity < 0)
-				throw new ArgumentOutOfRangeException("capacity");
-			Items = new T[capacity];
+            ArgumentOutOfRangeException.ThrowIfNegative(capacity);
+            Items = new T[capacity];
 		}
 
 		internal ExposedList (T[] data, int size) {
@@ -112,13 +111,11 @@ namespace Spine {
 		}
 
 		private void CheckRange (int index, int count) {
-			if (index < 0)
-				throw new ArgumentOutOfRangeException("index");
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
 
-			if (count < 0)
-				throw new ArgumentOutOfRangeException("count");
+            ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-			if ((uint)index + (uint)count > (uint)Count)
+            if ((uint)index + (uint)count > (uint)Count)
 				throw new ArgumentException("index and count exceed length of list");
 		}
 
@@ -192,9 +189,8 @@ namespace Spine {
 		}
 
 		public ExposedList<TOutput> ConvertAll<TOutput> (Converter<T, TOutput> converter) {
-			if (converter == null)
-				throw new ArgumentNullException("converter");
-			ExposedList<TOutput> u = new ExposedList<TOutput>(Count);
+            ArgumentNullException.ThrowIfNull(converter);
+            ExposedList<TOutput> u = new ExposedList<TOutput>(Count);
 			u.Count = Count;
 			T[] items = Items;
 			TOutput[] uItems = u.Items;
@@ -228,9 +224,8 @@ namespace Spine {
 		}
 
 		private static void CheckMatch (Predicate<T> match) {
-			if (match == null)
-				throw new ArgumentNullException("match");
-		}
+            ArgumentNullException.ThrowIfNull(match);
+        }
 
 		public ExposedList<T> FindAll (Predicate<T> match) {
 			CheckMatch(match);
@@ -305,9 +300,8 @@ namespace Spine {
 		}
 
 		public void ForEach (Action<T> action) {
-			if (action == null)
-				throw new ArgumentNullException("action");
-			for (int i = 0; i < Count; i++)
+            ArgumentNullException.ThrowIfNull(action);
+            for (int i = 0; i < Count; i++)
 				action(Items[i]);
 		}
 
@@ -332,13 +326,11 @@ namespace Spine {
 		}
 
 		public int IndexOf (T item, int index, int count) {
-			if (index < 0)
-				throw new ArgumentOutOfRangeException("index");
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
 
-			if (count < 0)
-				throw new ArgumentOutOfRangeException("count");
+            ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-			if ((uint)index + (uint)count > (uint)Count)
+            if ((uint)index + (uint)count > (uint)Count)
 				throw new ArgumentOutOfRangeException("index and count exceed length of list");
 
 			return Array.IndexOf<T>(Items, item, index, count);
@@ -359,7 +351,7 @@ namespace Spine {
 
 		private void CheckIndex (int index) {
 			if (index < 0 || (uint)index > (uint)Count)
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 		}
 
 		public void Insert (int index, T item) {
@@ -372,9 +364,8 @@ namespace Spine {
 		}
 
 		private void CheckCollection (IEnumerable<T> collection) {
-			if (collection == null)
-				throw new ArgumentNullException("collection");
-		}
+            ArgumentNullException.ThrowIfNull(collection);
+        }
 
 		public void InsertRange (int index, IEnumerable<T> collection) {
 			CheckCollection(collection);
@@ -419,13 +410,13 @@ namespace Spine {
 
 		public int LastIndexOf (T item, int index, int count) {
 			if (index < 0)
-				throw new ArgumentOutOfRangeException("index", index, "index is negative");
+				throw new ArgumentOutOfRangeException(nameof(index), index, "index is negative");
 
 			if (count < 0)
-				throw new ArgumentOutOfRangeException("count", count, "count is negative");
+				throw new ArgumentOutOfRangeException(nameof(count), count, "count is negative");
 
 			if (index - count + 1 < 0)
-				throw new ArgumentOutOfRangeException("count", count, "count is too large");
+				throw new ArgumentOutOfRangeException(nameof(count), count, "count is too large");
 
 			return Array.LastIndexOf<T>(Items, item, index, count);
 		}
@@ -467,7 +458,7 @@ namespace Spine {
 
 		public void RemoveAt (int index) {
 			if (index < 0 || (uint)index >= (uint)Count)
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 			Shift(index, -1);
 			Array.Clear(Items, Count, 1);
 			version++;

@@ -93,7 +93,6 @@ namespace Spine {
 		/// <summary>Copy constructor. Use <see cref="NewLinkedMesh"/> if the other mesh is a linked mesh.</summary>
 		protected MeshAttachment (MeshAttachment other)
 			: base(other) {
-
 			if (parentMesh != null) throw new ArgumentException("Use newLinkedMesh to copy a linked mesh.");
 
 			region = other.region;
@@ -124,7 +123,6 @@ namespace Spine {
 			Height = other.Height;
 		}
 
-
 		public void UpdateRegion () {
 			float[] regionUVs = this.regionUVs;
 			if (this.uvs == null || this.uvs.Length != regionUVs.Length) this.uvs = new float[regionUVs.Length];
@@ -147,8 +145,8 @@ namespace Spine {
 					width = region.originalHeight / textureWidth;
 					height = region.originalWidth / textureHeight;
 					for (int i = 0; i < n; i += 2) {
-						uvs[i] = u + regionUVs[i + 1] * width;
-						uvs[i + 1] = v + (1 - regionUVs[i]) * height;
+						uvs[i] = u + (regionUVs[i + 1] * width);
+						uvs[i + 1] = v + ((1 - regionUVs[i]) * height);
 					}
 					return;
 				case 180:
@@ -157,8 +155,8 @@ namespace Spine {
 					width = region.originalWidth / textureWidth;
 					height = region.originalHeight / textureHeight;
 					for (int i = 0; i < n; i += 2) {
-						uvs[i] = u + (1 - regionUVs[i]) * width;
-						uvs[i + 1] = v + (1 - regionUVs[i + 1]) * height;
+						uvs[i] = u + ((1 - regionUVs[i]) * width);
+						uvs[i + 1] = v + ((1 - regionUVs[i + 1]) * height);
 					}
 					return;
 				case 270:
@@ -167,8 +165,8 @@ namespace Spine {
 					width = region.originalHeight / textureWidth;
 					height = region.originalWidth / textureHeight;
 					for (int i = 0; i < n; i += 2) {
-						uvs[i] = u + (1 - regionUVs[i + 1]) * width;
-						uvs[i + 1] = v + regionUVs[i] * height;
+						uvs[i] = u + ((1 - regionUVs[i + 1]) * width);
+						uvs[i + 1] = v + (regionUVs[i] * height);
 					}
 					return;
 				}
@@ -186,8 +184,8 @@ namespace Spine {
 				height = region.v2 - v;
 			}
 			for (int i = 0; i < n; i += 2) {
-				uvs[i] = u + regionUVs[i] * width;
-				uvs[i + 1] = v + regionUVs[i + 1] * height;
+				uvs[i] = u + (regionUVs[i] * width);
+				uvs[i + 1] = v + (regionUVs[i + 1] * height);
 			}
 		}
 

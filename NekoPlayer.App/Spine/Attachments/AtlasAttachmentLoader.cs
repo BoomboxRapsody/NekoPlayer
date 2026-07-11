@@ -30,7 +30,6 @@
 using System;
 
 namespace Spine {
-
 	/// <summary>
 	/// An AttachmentLoader that configures attachments using texture regions from an Atlas.
 	/// See <a href='http://esotericsoftware.com/spine-loading-skeleton-data#JSON-and-binary-data'>Loading Skeleton Data</a> in the Spine Runtimes Guide.
