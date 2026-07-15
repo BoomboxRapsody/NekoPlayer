@@ -4,7 +4,6 @@
 #nullable disable
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,9 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ManagedBass;
-using ManagedBass.DirectX8;
 using ManagedBass.Fx;
-using ManagedBass.Mix;
 using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
@@ -29,7 +26,6 @@ using NekoPlayer.App.Input;
 using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
-//using NekoPlayer.App.Resources;
 using NekoPlayer.App.Utils;
 using osu.Framework;
 using osu.Framework.Allocation;
@@ -45,7 +41,6 @@ using osu.Framework.IO.Stores;
 using osu.Framework.Localisation;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
-using osu.Framework.Text;
 using osuTK.Graphics;
 using YoutubeExplode;
 
