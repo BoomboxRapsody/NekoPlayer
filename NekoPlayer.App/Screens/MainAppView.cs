@@ -2026,61 +2026,6 @@ namespace NekoPlayer.App.Screens
                                                         }
                                                     }
                                                 },
-                                                new RoundedButtonContainer
-                                                {
-                                                    Enabled = { Value = true },
-                                                    AutoSizeAxes = Axes.X,
-                                                    Height = 32,
-                                                    CornerRadius = 16,
-                                                    Masking = true,
-                                                    AlwaysPresent = true,
-                                                    ClickAction = f =>
-                                                    {
-                                                        if (string.IsNullOrEmpty(videoUrl))
-                                                            return;
-
-                                                        LocalisableString prompt = NekoPlayerExtraStrings.gpt_summarize_prompt.Replace("{0}", videoUrl);
-
-                                                        host.OpenUrlExternally($"https://chat.openai.com/?q={prompt}");
-                                                    },
-                                                    Children = new Drawable[]
-                                                    {
-                                                        new Container
-                                                        {
-                                                            RelativeSizeAxes = Axes.Both,
-                                                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
-                                                            Child = new Box
-                                                            {
-                                                                RelativeSizeAxes = Axes.Both,
-                                                                Colour = overlayColourProvider.Background3,
-                                                                Alpha = 1f,
-                                                            },
-                                                        },
-                                                        new FillFlowContainer
-                                                        {
-                                                            AutoSizeAxes = Axes.X,
-                                                            RelativeSizeAxes = Axes.Y,
-                                                            Direction = FillDirection.Horizontal,
-                                                            Spacing = new Vector2(4, 0),
-                                                            Padding = new MarginPadding(8),
-                                                            Children = new Drawable[]
-                                                            {
-                                                                new SpriteIcon
-                                                                {
-                                                                    Width = 15,
-                                                                    Height = 15,
-                                                                    Icon = FontAwesome.Regular.StickyNote,
-                                                                    Colour = overlayColourProvider.Content2,
-                                                                },
-                                                                new AdaptiveSpriteText
-                                                                {
-                                                                    Text = NekoPlayerStrings.SummarizeViaGPT,
-                                                                    Colour = overlayColourProvider.Content2,
-                                                                },
-                                                            }
-                                                        }
-                                                    }
-                                                },
                                             }
                                         },
                                     }
