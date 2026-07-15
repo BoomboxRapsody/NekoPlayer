@@ -805,4 +805,7 @@
   <data name="sort_relevance" xml:space="preserve">
     <value>関連性</value>
   </data>
+  <data name="sort_alphabet" xml:space="preserve">
+    <value>アルファベット (A-Z)</value>
+  </data>
 </root>
