@@ -1114,7 +1114,7 @@ namespace NekoPlayer.App.Localisation
         /// <summary>
         /// "Send feedback"
         /// </summary>
-        public static LocalisableString ReportBugs => new TranslatableString(getKey(@"report_bugs"), @"Send feedback");
+        public static LocalisableString ReportBugs => new TranslatableString(getKey(@"report_bugs"), @"Send a feedback");
 
         /// <summary>
         /// "Send a feedback with the app to the developers."
@@ -1245,6 +1245,16 @@ namespace NekoPlayer.App.Localisation
         /// "Rate"
         /// </summary>
         public static LocalisableString ChorusRate => new TranslatableString(getKey(@"chorus_rate"), "Rate");
+
+        /// <summary>
+        /// "Relevance"
+        /// </summary>
+        public static LocalisableString SearchSortRelevance => new TranslatableString(getKey(@"sort_relevance"), "Relevance");
+
+        /// <summary>
+        /// "Alphabet (A-Z)"
+        /// </summary>
+        public static LocalisableString SearchSortAlphabet => new TranslatableString(getKey(@"sort_alphabet"), "Alphabet (A-Z)");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

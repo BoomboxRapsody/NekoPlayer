@@ -10,5 +10,6 @@ namespace NekoPlayer.App.Utils
         void SelectPlaylist(string id);
         void OpenMyPlaylists();
         void SelectVideo(string id);
+        void OpenAudioEffects();
     }
 }

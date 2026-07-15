@@ -337,6 +337,7 @@ namespace NekoPlayer.App.Screens
         };
 
         private Bindable<CommentsSortCriteria> CommentsSort;
+        private Bindable<SearchSortCriteria> SearchSort;
 
         private SettingsItemV2 systemMuteSwitchBase;
 
@@ -366,6 +367,7 @@ namespace NekoPlayer.App.Screens
 
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
+            SearchSort = appConfig.GetBindable<SearchSortCriteria>(NekoPlayerSetting.SearchSortCriteria);
 
             var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
             automaticRendererInUse = renderer.Value == RendererType.Automatic;
@@ -2024,61 +2026,6 @@ namespace NekoPlayer.App.Screens
                                                         }
                                                     }
                                                 },
-                                                new RoundedButtonContainer
-                                                {
-                                                    Enabled = { Value = true },
-                                                    AutoSizeAxes = Axes.X,
-                                                    Height = 32,
-                                                    CornerRadius = 16,
-                                                    Masking = true,
-                                                    AlwaysPresent = true,
-                                                    ClickAction = f =>
-                                                    {
-                                                        if (string.IsNullOrEmpty(videoUrl))
-                                                            return;
-
-                                                        LocalisableString prompt = NekoPlayerExtraStrings.gpt_summarize_prompt.Replace("{0}", videoUrl);
-
-                                                        host.OpenUrlExternally($"https://chat.openai.com/?q={prompt}");
-                                                    },
-                                                    Children = new Drawable[]
-                                                    {
-                                                        new Container
-                                                        {
-                                                            RelativeSizeAxes = Axes.Both,
-                                                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
-                                                            Child = new Box
-                                                            {
-                                                                RelativeSizeAxes = Axes.Both,
-                                                                Colour = overlayColourProvider.Background3,
-                                                                Alpha = 1f,
-                                                            },
-                                                        },
-                                                        new FillFlowContainer
-                                                        {
-                                                            AutoSizeAxes = Axes.X,
-                                                            RelativeSizeAxes = Axes.Y,
-                                                            Direction = FillDirection.Horizontal,
-                                                            Spacing = new Vector2(4, 0),
-                                                            Padding = new MarginPadding(8),
-                                                            Children = new Drawable[]
-                                                            {
-                                                                new SpriteIcon
-                                                                {
-                                                                    Width = 15,
-                                                                    Height = 15,
-                                                                    Icon = FontAwesome.Regular.StickyNote,
-                                                                    Colour = overlayColourProvider.Content2,
-                                                                },
-                                                                new AdaptiveSpriteText
-                                                                {
-                                                                    Text = NekoPlayerStrings.SummarizeViaGPT,
-                                                                    Colour = overlayColourProvider.Content2,
-                                                                },
-                                                            }
-                                                        }
-                                                    }
-                                                },
                                             }
                                         },
                                     }
@@ -2218,7 +2165,11 @@ namespace NekoPlayer.App.Screens
                                     Origin = Anchor.TopRight,
                                     Anchor = Anchor.TopRight,
                                     Current = CommentsSort,
-                                    Margin = new MarginPadding(20),
+                                    Margin = new MarginPadding()
+                                    {
+                                        Top = 15,
+                                        Right = 20,
+                                    },
                                 },
                                 new Container
                                 {
@@ -2261,7 +2212,7 @@ namespace NekoPlayer.App.Screens
                                                 if (string.IsNullOrEmpty(commentTextBox.Text))
                                                     return;
 
-                                                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded);
+                                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
                                                 api.SendComment(videoId, commentTextBox.Text);
 
                                                 Scheduler.AddDelayed(() => updateComments(videoId), 2000);
@@ -2419,6 +2370,17 @@ namespace NekoPlayer.App.Screens
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
                                     Colour = overlayColourProvider.Content2,
+                                },
+                                new OverlaySortTabControl<SearchSortCriteria>
+                                {
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Current = SearchSort,
+                                    Margin = new MarginPadding()
+                                    {
+                                        Top = 15,
+                                        Right = 20,
+                                    },
                                 },
                                 new Container
                                 {
@@ -2842,29 +2804,23 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = overlayColourProvider.Background5,
                                 },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    Text = NekoPlayerStrings.AudioEffects,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
                                 new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
-                                        Top = 56,
                                     },
                                     Children = new Drawable[] {
                                         new AdaptiveScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
+                                            Padding = new MarginPadding
+                                            {
+                                                Bottom = 16,
+                                                Top = 56,
+                                            },
                                             Children = new Drawable[]
                                             {
                                                 new FillFlowContainer
@@ -3055,7 +3011,23 @@ namespace NekoPlayer.App.Screens
                                             }
                                         }
                                     }
-                                }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 + 20),
+                                },
+                                new AdaptiveSpriteText
+                                {
+                                    Origin = Anchor.TopLeft,
+                                    Anchor = Anchor.TopLeft,
+                                    Text = NekoPlayerStrings.AudioEffects,
+                                    Margin = new MarginPadding(16),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Colour = overlayColourProvider.Content2,
+                                },
                             }
                         },
                         unsubscribeDialog = new BottomOverlayContainer
@@ -4336,7 +4308,7 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(() =>
                                 {
-                                    Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, lang.NewValue.Name);
+                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, lang.NewValue.Name, FontAwesome.Solid.ClosedCaptioning);
 
                                     onScreenDisplay.Display(toast);
                                 });
@@ -4387,7 +4359,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     try
                                     {
-                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                         onScreenDisplay.Display(toast);
                                     }
                                     catch (Exception e)
@@ -5064,7 +5036,7 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Solid.Bookmark;
 
-                Toast toast = new Toast(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoSavedToPlaylist(videoId, myPlaylistsDropdown.Current.Value.Snippet.Title));
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoSavedToPlaylist(videoId, myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
             });
@@ -5081,7 +5053,7 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Regular.Bookmark;
 
-                Toast toast = new Toast(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoRemovedFromPlaylist(videoId, myPlaylistsDropdown.Current.Value.Snippet.Title));
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoRemovedFromPlaylist(videoId, myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
             });
@@ -5162,7 +5134,7 @@ namespace NekoPlayer.App.Screens
                     */
                     if (settingsContainer.IsVisible)
                     {
-                        Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.RunningLatestRelease(game.Version));
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.RunningLatestRelease(game.Version), FontAwesome.Solid.CheckCircle);
 
                         onScreenDisplay.Display(toast);
                     }
@@ -5482,7 +5454,28 @@ namespace NekoPlayer.App.Screens
                 item.Expire();
             }
 
-            IList<SearchResult> searchResults = api.GetSearchResult(searchTextBox.Text);
+            Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum orderEnum = Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum.Relevance;
+
+            switch (SearchSort.Value)
+            {
+                case SearchSortCriteria.Date:
+                {
+                    orderEnum = SearchResource.ListRequest.OrderEnum.Date;
+                    break;
+                }
+                case SearchSortCriteria.Alphabet:
+                {
+                    orderEnum = SearchResource.ListRequest.OrderEnum.Title;
+                    break;
+                }
+                case SearchSortCriteria.Relevance:
+                {
+                    orderEnum = SearchResource.ListRequest.OrderEnum.Relevance;
+                    break;
+                }
+            }
+
+            IList<SearchResult> searchResults = api.GetSearchResult(searchTextBox.Text, orderEnum);
             foreach (SearchResult item in searchResults)
             {
                 if (item.Id.Kind == "youtube#video")
@@ -6947,7 +6940,7 @@ namespace NekoPlayer.App.Screens
 
                                     Logger.Log("UnsubscribeChannel()");
 
-                                    Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionRemoved);
+                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionRemoved, FontAwesome.Solid.SignOutAlt);
 
                                     Schedule(() => onScreenDisplay.Display(toast));
                                     Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
@@ -6965,7 +6958,7 @@ namespace NekoPlayer.App.Screens
 
                                 Logger.Log("SubscribeChannel()");
 
-                                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionAdded);
+                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionAdded, FontAwesome.Solid.SignInAlt);
 
                                 Schedule(() => onScreenDisplay.Display(toast));
                                 Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
@@ -7000,7 +6993,7 @@ namespace NekoPlayer.App.Screens
 
                                     Logger.Log("UnsubscribeChannel()");
 
-                                    Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionRemoved);
+                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionRemoved, FontAwesome.Solid.SignOutAlt);
 
                                     Schedule(() => onScreenDisplay.Display(toast));
                                     Schedule(() => videoMetadataDisplayDetails2.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
@@ -7018,7 +7011,7 @@ namespace NekoPlayer.App.Screens
 
                                 Logger.Log("SubscribeChannel()");
 
-                                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionAdded);
+                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionAdded, FontAwesome.Solid.SignInAlt);
 
                                 Schedule(() => onScreenDisplay.Display(toast));
                                 Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
@@ -7031,7 +7024,7 @@ namespace NekoPlayer.App.Screens
                         if (!googleOAuth2.SignedIn.Value)
                             return;
 
-                        Toast toast = new Toast(NekoPlayerStrings.Report, NekoPlayerStrings.ReportSuccess);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Report, NekoPlayerStrings.ReportSuccess, FontAwesome.Solid.CheckCircle);
                         api.ReportAbuse(videoId, reportReason.Current.Value.Id, (reportReason.Current.Value.ContainsSecondaryReasons ? reportSubReason.Current.Value.Id : null), (!string.IsNullOrEmpty(reportComment.Current.Value) ? reportComment.Current.Value : null));
                         Schedule(() => onScreenDisplay.Display(toast));
                         reportComment.Current.Value = string.Empty;
@@ -7048,7 +7041,7 @@ namespace NekoPlayer.App.Screens
                         if (!googleOAuth2.SignedIn.Value)
                             return;
 
-                        Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
                         api.SendComment(videoId, commentTextBox.Text);
 
                         Scheduler.AddDelayed(() => updateComments(videoId), 2000);
@@ -7246,7 +7239,7 @@ namespace NekoPlayer.App.Screens
         {
             if (string.IsNullOrEmpty(videoId))
             {
-                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.NoVideoIdError);
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.NoVideoIdError, FontAwesome.Solid.MinusCircle);
 
                 onScreenDisplay.Display(toast);
                 return;
@@ -7362,7 +7355,7 @@ namespace NekoPlayer.App.Screens
                 {
                     Schedule(() =>
                     {
-                        Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CannotPlayPrivateVideos);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CannotPlayPrivateVideos, FontAwesome.Solid.MinusCircle);
 
                         onScreenDisplay.Display(toast);
                     });
@@ -7595,7 +7588,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7608,7 +7601,7 @@ namespace NekoPlayer.App.Screens
                                 .GetVideoOnlyStreams()
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7625,7 +7618,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7639,7 +7632,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7708,7 +7701,7 @@ namespace NekoPlayer.App.Screens
 
                                         try
                                         {
-                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                             onScreenDisplay.Display(toast);
                                         }
                                         catch (Exception e)
@@ -7978,7 +7971,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7991,7 +7984,7 @@ namespace NekoPlayer.App.Screens
                                 .GetVideoOnlyStreams()
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -8008,7 +8001,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -8022,7 +8015,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -8066,7 +8059,7 @@ namespace NekoPlayer.App.Screens
                                     {
                                         try
                                         {
-                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                             onScreenDisplay.Display(toast);
                                         }
                                         catch (Exception e)
@@ -8156,7 +8149,7 @@ namespace NekoPlayer.App.Screens
 
             Schedule(() =>
             {
-                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.LogsExportFinished);
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.LogsExportFinished, FontAwesome.Regular.ListAlt);
 
                 onScreenDisplay.Display(toast);
                 exportStorage.PresentFileExternally(archive_filename);
@@ -8202,6 +8195,15 @@ namespace NekoPlayer.App.Screens
             {
                 hideOverlays();
                 showOverlayContainer(myPlaylistsOverlay);
+            });
+        }
+
+        public void OpenAudioEffects()
+        {
+            Schedule(() =>
+            {
+                hideOverlays();
+                showOverlayContainer(audioEffectsOverlay);
             });
         }
 

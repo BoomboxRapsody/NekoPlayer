@@ -8,6 +8,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Localisation;
 using osuTK.Graphics;
 using NekoPlayer.App.Graphics.UserInterface;
@@ -89,25 +90,30 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             AutoSizeAxes = Axes.Y;
             this.FadeIn(250, Easing.OutQuint);
 
+            text.Text = string.Empty;
+
             switch (Current.Value.Type)
             {
                 case Type.Informational:
                     background.Colour = colourProvider.Dark2;
                     text.Colour = colourProvider.Content2;
+                    text.AddIcon(FontAwesome.Solid.InfoCircle, o => o.Margin = new MarginPadding() { Right = 4 });
                     break;
 
                 case Type.Warning:
                     background.Colour = colours.Orange1;
                     text.Colour = colourProvider.Background5;
+                    text.AddIcon(FontAwesome.Solid.ExclamationTriangle, o => o.Margin = new MarginPadding() { Right = 4 });
                     break;
 
                 case Type.Critical:
                     background.Colour = colours.Red1;
                     text.Colour = colourProvider.Background5;
+                    text.AddIcon(FontAwesome.Solid.TimesCircle, o => o.Margin = new MarginPadding() { Right = 4 });
                     break;
             }
 
-            text.Text = Current.Value.Text;
+            text.AddText(Current.Value.Text);
         }
 
         public record Data(LocalisableString Text, Type Type);

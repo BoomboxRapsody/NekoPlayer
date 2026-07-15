@@ -21,7 +21,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public SortButton()
         {
             AutoSizeAxes = Axes.X;
-            Height = 20;
+            Height = 25;
             Masking = true;
             AddRangeInternal(new Drawable[]
             {
@@ -46,6 +46,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             background.Colour = colourProvider.Background3;
         }
 
+        [Resolved]
+        private OverlayColourProvider colourProvider { get; set; }
+
         protected override bool OnHover(HoverEvent e)
         {
             ShowBackground();
@@ -57,6 +60,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.OnHoverLost(e);
             HideBackground();
         }
+
+        protected void ItemFocused(bool focused) => background.FadeColour(focused ? colourProvider.Background2 : colourProvider.Background3, transition_duration, Easing.OutQuint);
 
         protected void ShowBackground() => background.FadeIn(transition_duration, Easing.OutQuint);
 

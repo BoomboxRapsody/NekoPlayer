@@ -126,7 +126,7 @@ namespace NekoPlayer.App.Overlays
         /// Displays the provided <see cref="Toast"/> temporarily.
         /// </summary>
         /// <param name="toast"></param>
-        public void Display(Toast toast) => Schedule(() =>
+        public void Display(ToastBase toast) => Schedule(() =>
         {
             box.Child = toast;
             DisplayTemporarily(box);

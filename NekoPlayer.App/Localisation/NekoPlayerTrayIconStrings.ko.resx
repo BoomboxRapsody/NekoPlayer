@@ -132,4 +132,7 @@
   <data name="Quit" xml:space="preserve">
     <value>종료</value>
   </data>
+  <data name="AudioEffects" xml:space="preserve">
+    <value>오디오 효과 (베타)</value>
+  </data>
 </root>

@@ -109,6 +109,15 @@ namespace NekoPlayer.App.Utils
                                 app.AppMessageHandler.OpenMyPlaylists();
                             },
                         },
+                        new TrayButton
+                        {
+                            Label = NekoPlayerTrayIconStrings.AudioEffects,
+                            Action = () =>
+                            {
+                                onShow(previousState);
+                                app.AppMessageHandler.OpenAudioEffects();
+                            },
+                        },
                         new TraySeparator(),
                         new TrayButton
                         {

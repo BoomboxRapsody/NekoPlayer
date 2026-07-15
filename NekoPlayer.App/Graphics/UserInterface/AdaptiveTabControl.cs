@@ -26,7 +26,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     {
         private Color4 accentColour;
 
-        public const float HORIZONTAL_SPACING = 10;
+        public const float HORIZONTAL_SPACING = 2;
 
         public virtual Color4 AccentColour
         {
