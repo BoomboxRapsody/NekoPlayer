@@ -337,6 +337,7 @@ namespace NekoPlayer.App.Screens
         };
 
         private Bindable<CommentsSortCriteria> CommentsSort;
+        private Bindable<SearchSortCriteria> SearchSort;
 
         private SettingsItemV2 systemMuteSwitchBase;
 
@@ -366,6 +367,7 @@ namespace NekoPlayer.App.Screens
 
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
+            SearchSort = appConfig.GetBindable<SearchSortCriteria>(NekoPlayerSetting.SearchSortCriteria);
 
             var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
             automaticRendererInUse = renderer.Value == RendererType.Automatic;
@@ -2423,6 +2425,17 @@ namespace NekoPlayer.App.Screens
                                     Margin = new MarginPadding(16),
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
                                     Colour = overlayColourProvider.Content2,
+                                },
+                                new OverlaySortTabControl<SearchSortCriteria>
+                                {
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Current = SearchSort,
+                                    Margin = new MarginPadding()
+                                    {
+                                        Top = 15,
+                                        Right = 20,
+                                    },
                                 },
                                 new Container
                                 {
@@ -5496,7 +5509,28 @@ namespace NekoPlayer.App.Screens
                 item.Expire();
             }
 
-            IList<SearchResult> searchResults = api.GetSearchResult(searchTextBox.Text);
+            Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum orderEnum = Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum.Relevance;
+
+            switch (SearchSort.Value)
+            {
+                case SearchSortCriteria.Date:
+                {
+                    orderEnum = SearchResource.ListRequest.OrderEnum.Date;
+                    break;
+                }
+                case SearchSortCriteria.Alphabet:
+                {
+                    orderEnum = SearchResource.ListRequest.OrderEnum.Title;
+                    break;
+                }
+                case SearchSortCriteria.Relevance:
+                {
+                    orderEnum = SearchResource.ListRequest.OrderEnum.Relevance;
+                    break;
+                }
+            }
+
+            IList<SearchResult> searchResults = api.GetSearchResult(searchTextBox.Text, orderEnum);
             foreach (SearchResult item in searchResults)
             {
                 if (item.Id.Kind == "youtube#video")

@@ -1246,6 +1246,16 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ChorusRate => new TranslatableString(getKey(@"chorus_rate"), "Rate");
 
+        /// <summary>
+        /// "Relevance"
+        /// </summary>
+        public static LocalisableString SearchSortRelevance => new TranslatableString(getKey(@"sort_relevance"), "Relevance");
+
+        /// <summary>
+        /// "Alphabet (A-Z)"
+        /// </summary>
+        public static LocalisableString SearchSortAlphabet => new TranslatableString(getKey(@"sort_alphabet"), "Alphabet (A-Z)");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

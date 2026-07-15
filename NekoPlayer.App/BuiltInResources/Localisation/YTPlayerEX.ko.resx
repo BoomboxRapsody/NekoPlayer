@@ -805,4 +805,10 @@
   <data name="chorus_rate" xml:space="preserve">
     <value>레이트</value>
   </data>
+  <data name="sort_relevance" xml:space="preserve">
+    <value>검색어와의 관련성</value>
+  </data>
+  <data name="sort_alphabet" xml:space="preserve">
+    <value>알파벳순 (ㄱ-ㅎ)</value>
+  </data>
 </root>

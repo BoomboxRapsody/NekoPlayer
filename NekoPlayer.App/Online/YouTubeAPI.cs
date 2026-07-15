@@ -360,13 +360,16 @@ namespace NekoPlayer.App.Online
             return result;
         }
 
-        public IList<SearchResult> GetSearchResult(string query)
+        public IList<SearchResult> GetSearchResult(string query, SearchResource.ListRequest.OrderEnum orderEnum)
         {
+            //calling search on youtube api is 100 units is so intresting
             var part = "snippet";
             var request = youtubeService.Search.List(part);
 
             request.MaxResults = 50; // <------ why 50? dues to quota limits
             request.Q = query;
+
+            request.Order = orderEnum;
 
             if (googleOAuth2.SignedIn.Value == true)
                 request.AccessToken = googleOAuth2.GetAccessToken();

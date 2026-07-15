@@ -802,4 +802,7 @@
   <data name="chorus_rate" xml:space="preserve">
     <value>レート</value>
   </data>
+  <data name="sort_relevance" xml:space="preserve">
+    <value>関連性</value>
+  </data>
 </root>
