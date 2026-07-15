@@ -2218,7 +2218,11 @@ namespace NekoPlayer.App.Screens
                                     Origin = Anchor.TopRight,
                                     Anchor = Anchor.TopRight,
                                     Current = CommentsSort,
-                                    Margin = new MarginPadding(20),
+                                    Margin = new MarginPadding()
+                                    {
+                                        Top = 15,
+                                        Right = 20,
+                                    },
                                 },
                                 new Container
                                 {
@@ -2842,29 +2846,23 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = overlayColourProvider.Background5,
                                 },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    Text = NekoPlayerStrings.AudioEffects,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
                                 new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Padding = new MarginPadding
                                     {
                                         Horizontal = 16,
-                                        Bottom = 16,
-                                        Top = 56,
                                     },
                                     Children = new Drawable[] {
                                         new AdaptiveScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
+                                            Padding = new MarginPadding
+                                            {
+                                                Bottom = 16,
+                                                Top = 56,
+                                            },
                                             Children = new Drawable[]
                                             {
                                                 new FillFlowContainer
@@ -3055,7 +3053,23 @@ namespace NekoPlayer.App.Screens
                                             }
                                         }
                                     }
-                                }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 + 20),
+                                },
+                                new AdaptiveSpriteText
+                                {
+                                    Origin = Anchor.TopLeft,
+                                    Anchor = Anchor.TopLeft,
+                                    Text = NekoPlayerStrings.AudioEffects,
+                                    Margin = new MarginPadding(16),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Colour = overlayColourProvider.Content2,
+                                },
                             }
                         },
                         unsubscribeDialog = new BottomOverlayContainer
@@ -8202,6 +8216,15 @@ namespace NekoPlayer.App.Screens
             {
                 hideOverlays();
                 showOverlayContainer(myPlaylistsOverlay);
+            });
+        }
+
+        public void OpenAudioEffects()
+        {
+            Schedule(() =>
+            {
+                hideOverlays();
+                showOverlayContainer(audioEffectsOverlay);
             });
         }
 

@@ -8,8 +8,10 @@ using NekoPlayer.App.Localisation;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
@@ -39,31 +41,72 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private readonly AdaptiveSpriteText text;
 
+        private Box bg;
+
         public OverlaySortTabControl()
         {
             AutoSizeAxes = Axes.Both;
-            AddInternal(new FillFlowContainer
+            AddInternal(new Container
             {
                 AutoSizeAxes = Axes.Both,
-                Direction = FillDirection.Horizontal,
-                Spacing = new Vector2(10, 0),
                 Children = new Drawable[]
                 {
-                    text = new AdaptiveSpriteText
+                    new FillFlowContainer
                     {
-                        Anchor = Anchor.CentreLeft,
-                        Origin = Anchor.CentreLeft,
-                        Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "SemiBold"),
-                        Text = NekoPlayerStrings.SortDefault
-                    },
-                    TabControl = CreateControl().With(c =>
-                    {
-                        c.Anchor = Anchor.CentreLeft;
-                        c.Origin = Anchor.CentreLeft;
-                        c.Current = current;
-                    })
+                        AutoSizeAxes = Axes.Both,
+                        Direction = FillDirection.Horizontal,
+                        Spacing = new Vector2(4, 0),
+                        Children = new Drawable[]
+                        {
+                            text = new AdaptiveSpriteText
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Bold"),
+                                Text = NekoPlayerStrings.SortDefault
+                            },
+                            new CircularContainer
+                            {
+                                AutoSizeAxes = Axes.Both,
+                                Masking = true,
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
+                                {
+                                    Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                    Colour = Color4.Black.Opacity(0.25f),
+                                    Offset = new Vector2(0, 8),
+                                    Radius = 64,
+                                },
+                                Children = new Drawable[]
+                                {
+                                    bg = new Box
+                                    {
+                                        RelativeSizeAxes = Axes.Both,
+                                    },
+                                    TabControl = CreateControl().With(c =>
+                                    {
+                                        c.Anchor = Anchor.Centre;
+                                        c.Origin = Anchor.Centre;
+                                        c.Current = current;
+                                        c.Margin = new MarginPadding()
+                                        {
+                                            Horizontal = 4,
+                                            Vertical = 4,
+                                        };
+                                    })
+                                }
+                            }
+                        }
+                    }
                 }
             });
+        }
+
+        [BackgroundDependencyLoader]
+        private void load(OverlayColourProvider overlayColourProvider)
+        {
+            bg.Colour = overlayColourProvider.Background4;
         }
 
         [NotNull]
@@ -79,7 +122,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 AutoSizeAxes = Axes.Both,
                 Direction = FillDirection.Horizontal,
-                Spacing = new Vector2(5, 0),
+                Spacing = new Vector2(2, 0),
             };
 
             public SortTabControl()
@@ -135,14 +178,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 {
                     AutoSizeAxes = Axes.Both,
                     Direction = FillDirection.Horizontal,
-                    Spacing = new Vector2(3, 0),
+                    Spacing = new Vector2(0, 0),
+                    Padding = new MarginPadding(8),
                     Children = new Drawable[]
                     {
                         text = new AdaptiveSpriteText
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "SemiBold"),
+                            Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Regular"),
                             Text = (value as Enum)?.GetLocalisableDescription() ?? value.ToString()
                         }
                     }
@@ -172,9 +216,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 else
                     HideBackground();
 
-                ContentColour = Active.Value && !IsHovered ? colourProvider.Light1 : Color4.White;
+                if (Active.Value)
+                    ItemFocused(IsHovered);
 
-                text.Font = text.Font.With(weight: Active.Value ? "Bold" : "SemiBold");
+                ContentColour = Active.Value ? colourProvider.Light1 : Color4.White;
+
+                text.Font = text.Font.With(weight: Active.Value ? "Bold" : "Regular");
             }
         }
     }

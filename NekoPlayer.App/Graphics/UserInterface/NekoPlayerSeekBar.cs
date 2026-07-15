@@ -160,7 +160,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             PlaybackSpeed.BindValueChanged(speed =>
             {
-                this.TransformBindableTo(speedRolling, speed.NewValue, 400, Easing.OutQuint);
+                this.TransformBindableTo(speedRolling, speed.NewValue, 2400, Easing.OutQuint);
             }, true);
 
             IsPlaying.BindValueChanged(what =>
