@@ -4308,7 +4308,7 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(() =>
                                 {
-                                    Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, lang.NewValue.Name);
+                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, lang.NewValue.Name, FontAwesome.Solid.ClosedCaptioning);
 
                                     onScreenDisplay.Display(toast);
                                 });
@@ -4359,7 +4359,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     try
                                     {
-                                        Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                         onScreenDisplay.Display(toast);
                                     }
                                     catch (Exception e)
@@ -5134,7 +5134,7 @@ namespace NekoPlayer.App.Screens
                     */
                     if (settingsContainer.IsVisible)
                     {
-                        Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.RunningLatestRelease(game.Version));
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.RunningLatestRelease(game.Version), FontAwesome.Solid.CheckCircle);
 
                         onScreenDisplay.Display(toast);
                     }
@@ -7239,7 +7239,7 @@ namespace NekoPlayer.App.Screens
         {
             if (string.IsNullOrEmpty(videoId))
             {
-                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.NoVideoIdError);
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.NoVideoIdError, FontAwesome.Solid.MinusCircle);
 
                 onScreenDisplay.Display(toast);
                 return;
@@ -7355,7 +7355,7 @@ namespace NekoPlayer.App.Screens
                 {
                     Schedule(() =>
                     {
-                        Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.CannotPlayPrivateVideos);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CannotPlayPrivateVideos, FontAwesome.Solid.MinusCircle);
 
                         onScreenDisplay.Display(toast);
                     });
@@ -7588,7 +7588,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7601,7 +7601,7 @@ namespace NekoPlayer.App.Screens
                                 .GetVideoOnlyStreams()
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7618,7 +7618,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7632,7 +7632,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7701,7 +7701,7 @@ namespace NekoPlayer.App.Screens
 
                                         try
                                         {
-                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                             onScreenDisplay.Display(toast);
                                         }
                                         catch (Exception e)
@@ -7971,7 +7971,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -7984,7 +7984,7 @@ namespace NekoPlayer.App.Screens
                                 .GetVideoOnlyStreams()
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -8001,7 +8001,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -8015,7 +8015,7 @@ namespace NekoPlayer.App.Screens
                                 .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                                 .TryGetWithHighestVideoQuality();
 
-                            Toast toast = new Toast(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
@@ -8059,7 +8059,7 @@ namespace NekoPlayer.App.Screens
                                     {
                                         try
                                         {
-                                            Toast toast = new Toast(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name);
+                                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                             onScreenDisplay.Display(toast);
                                         }
                                         catch (Exception e)
@@ -8149,7 +8149,7 @@ namespace NekoPlayer.App.Screens
 
             Schedule(() =>
             {
-                Toast toast = new Toast(NekoPlayerStrings.General, NekoPlayerStrings.LogsExportFinished);
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.LogsExportFinished, FontAwesome.Regular.ListAlt);
 
                 onScreenDisplay.Display(toast);
                 exportStorage.PresentFileExternally(archive_filename);
