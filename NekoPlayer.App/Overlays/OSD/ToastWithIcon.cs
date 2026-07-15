@@ -9,10 +9,11 @@ using osu.Framework.Localisation;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Graphics;
 using osu.Framework.Allocation;
+using osu.Framework.Graphics.Sprites;
 
 namespace NekoPlayer.App.Overlays.OSD
 {
-    public partial class Toast : ToastBase
+    public partial class ToastWithIcon : ToastBase
     {
         /// <summary>
         /// Extra text to be shown at the bottom of the toast. Usually a key binding if available.
@@ -32,11 +33,12 @@ namespace NekoPlayer.App.Overlays.OSD
 
         protected readonly AdaptiveSpriteText ValueSpriteText;
         private readonly AdaptiveSpriteText extraText, descriptionText;
+        private readonly SpriteIcon spriteIcon;
 
         [Resolved]
         private OverlayColourProvider overlayColourProvider { get; set; } = null!;
 
-        public Toast(LocalisableString description, LocalisableString value)
+        public ToastWithIcon(LocalisableString description, LocalisableString value, IconUsage icon)
         {
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
@@ -64,9 +66,19 @@ namespace NekoPlayer.App.Overlays.OSD
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                 },
+                spriteIcon = new SpriteIcon
+                {
+                    Margin = new MarginPadding { Horizontal = 22, Vertical = 15 },
+                    Name = "Description",
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+                    Icon = icon,
+                    Width = 16,
+                    Height = 16,
+                },
                 descriptionText = new AdaptiveSpriteText
                 {
-                    Padding = new MarginPadding { Horizontal = 22, Vertical = 15 },
+                    Padding = new MarginPadding { Horizontal = 46, Vertical = 15 },
                     Name = "Description",
                     Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
                     Anchor = Anchor.TopLeft,
@@ -87,7 +99,7 @@ namespace NekoPlayer.App.Overlays.OSD
                     Anchor = Anchor.BottomLeft,
                     Origin = Anchor.BottomLeft,
                     Name = "Extra Text",
-                    Margin = new MarginPadding { Bottom = 15, Horizontal = 22 },
+                    Margin = new MarginPadding { Bottom = 15, Horizontal = 46 },
                     Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Bold"),
                 },
             };
@@ -97,7 +109,8 @@ namespace NekoPlayer.App.Overlays.OSD
         private void load()
         {
             descriptionText.Origin = descriptionText.Anchor = (string.IsNullOrEmpty(extraText.Text.ToString())) ? Anchor.CentreLeft : Anchor.TopLeft;
-            descriptionText.Colour = ValueSpriteText.Colour = overlayColourProvider.Content2;
+            spriteIcon.Origin = spriteIcon.Anchor = (string.IsNullOrEmpty(extraText.Text.ToString())) ? Anchor.CentreLeft : Anchor.TopLeft;
+            descriptionText.Colour = ValueSpriteText.Colour = spriteIcon.Colour = overlayColourProvider.Content2;
             background.Colour = overlayColourProvider.Background5;
             extraText.Colour = overlayColourProvider.Background1;
         }
