@@ -1114,7 +1114,7 @@ namespace NekoPlayer.App.Localisation
         /// <summary>
         /// "Send feedback"
         /// </summary>
-        public static LocalisableString ReportBugs => new TranslatableString(getKey(@"report_bugs"), @"Send feedback");
+        public static LocalisableString ReportBugs => new TranslatableString(getKey(@"report_bugs"), @"Send a feedback");
 
         /// <summary>
         /// "Send a feedback with the app to the developers."
