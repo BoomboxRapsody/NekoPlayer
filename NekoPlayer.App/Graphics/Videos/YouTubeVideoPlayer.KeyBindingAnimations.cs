@@ -126,7 +126,7 @@ namespace NekoPlayer.App.Graphics.Videos
                                             {
                                                 Left = 30,
                                             },
-                                            Font = NekoPlayerApp.DefaultFont.With(family: "Torus", size: 25),
+                                            Font = NekoPlayerApp.DefaultFont.With(size: 25),
                                         },
                                     }
                                 }
