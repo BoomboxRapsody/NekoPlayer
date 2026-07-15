@@ -126,7 +126,7 @@ namespace NekoPlayer.App.Graphics.Videos
                                             {
                                                 Left = 30,
                                             },
-                                            Font = NekoPlayerApp.DefaultFont.With(size: 25),
+                                            Font = NekoPlayerApp.DefaultFont.With(size: 25, weight: "Bold"),
                                         },
                                     }
                                 }
@@ -169,7 +169,7 @@ namespace NekoPlayer.App.Graphics.Videos
                                             {
                                                 Right = 45,
                                             },
-                                            Font = NekoPlayerApp.DefaultFont.With(size: 25),
+                                            Font = NekoPlayerApp.DefaultFont.With(size: 25, weight: "Bold"),
                                         },
                                     }
                                 }
