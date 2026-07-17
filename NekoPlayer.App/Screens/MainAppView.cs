@@ -4284,6 +4284,7 @@ namespace NekoPlayer.App.Screens
             {
                 captionButton.SetEnabledValue2(!enabled.NewValue);
                 captionButton.IconObject.FadeColour(enabled.NewValue ? bgColor : accentColor, 250, Easing.OutQuint);
+                captionButton.Icon = enabled.NewValue ? FontAwesome.Solid.ClosedCaptioning : FontAwesome.Regular.ClosedCaptioning;
 
                 if (enabled.NewValue)
                     captionLangOptions.Show();
