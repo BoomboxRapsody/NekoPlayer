@@ -467,9 +467,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString CommentAdded => new TranslatableString(getKey(@"comment_added"), "Comment added.");
 
         /// <summary>
-        /// "Write comment as {0}..."
+        /// "Write comment..."
         /// </summary>
-        public static LocalisableString CommentWith(string username) => new TranslatableString(getKey(@"comment_with"), "Write comment as {0}...", username);
+        public static LocalisableString CommentWith => new TranslatableString(getKey(@"comment_with"), "Write comment...");
 
         /// <summary>
         /// "Signed in to {0}"
@@ -687,9 +687,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString HardwareAccelerationEnabledNote => new TranslatableString(getKey(@"hw_acceleration_enabled_note"), "Hardware acceleration via GPU is enabled. If you experience any issues, please keep hardware acceleration disabled for now.");
 
         /// <summary>
-        /// "Audio effects (Beta)"
+        /// "Audio effects"
         /// </summary>
-        public static LocalisableString AudioEffects => new TranslatableString(getKey(@"audio_effects"), "Audio effects (Beta)");
+        public static LocalisableString AudioEffects => new TranslatableString(getKey(@"audio_effects"), "Audio effects");
 
         /// <summary>
         /// "Reverb"
@@ -1255,6 +1255,21 @@ namespace NekoPlayer.App.Localisation
         /// "Alphabet (A-Z)"
         /// </summary>
         public static LocalisableString SearchSortAlphabet => new TranslatableString(getKey(@"sort_alphabet"), "Alphabet (A-Z)");
+
+        /// <summary>
+        /// "Log in to send comments (Menu - Settings - Google account)"
+        /// </summary>
+        public static LocalisableString LoginToComment => new TranslatableString(getKey(@"login_to_comment"), "Log in to send comments (Menu - Settings - Google account)");
+
+        /// <summary>
+        /// "If you changes this settings, app will restart and applied."
+        /// </summary>
+        public static LocalisableString SettingsItem_RestartRequired => new TranslatableString(getKey(@"settings_item_restart_required"), "If you changes this settings, app will restart and applied.");
+
+        /// <summary>
+        /// "Video Settings"
+        /// </summary>
+        public static LocalisableString VideoSettings => new TranslatableString(getKey(@"video_settings"), "Video Settings");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

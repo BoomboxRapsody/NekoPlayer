@@ -330,7 +330,7 @@
     <value>댓글이 추가되었습니다</value>
   </data>
   <data name="comment_with" xml:space="preserve">
-    <value>{0} 채널로 댓글 올리기...</value>
+    <value>댓글 올리기...</value>
   </data>
   <data name="signed_in" xml:space="preserve">
     <value>{0}으(로) 로그인함</value>
@@ -470,7 +470,7 @@
     <comment>hw_acceleration_enabled_note</comment>
   </data>
   <data name="audio_effects" xml:space="preserve">
-    <value>오디오 효과 (베타)</value>
+    <value>오디오 효과</value>
   </data>
   <data name="reverb" xml:space="preserve">
     <value>리버브</value>
@@ -810,5 +810,14 @@
   </data>
   <data name="sort_alphabet" xml:space="preserve">
     <value>알파벳순 (ㄱ-ㅎ)</value>
+  </data>
+  <data name="login_to_comment" xml:space="preserve">
+    <value>로그인하여 댓글 작성 (메뉴 - 설정 - Google 계정)</value>
+  </data>
+  <data name="settings_item_restart_required" xml:space="preserve">
+    <value>이 설정을 변경하면 앱이 다시 시작되고 적용됩니다.</value>
+  </data>
+  <data name="video_settings" xml:space="preserve">
+    <value>동영상 설정</value>
   </data>
 </root>

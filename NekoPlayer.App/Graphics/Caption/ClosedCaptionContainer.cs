@@ -76,7 +76,7 @@ namespace NekoPlayer.App.Graphics.Caption
                     },
                     spriteText = new AdaptiveSpriteText(false)
                     {
-                        Font = NekoPlayerApp.DefaultFont.With(size: 24),
+                        Font = NekoPlayerApp.GoogleSansFlex.With(size: 24),
                         Margin = new MarginPadding(4),
                     }
                 }
@@ -88,7 +88,7 @@ namespace NekoPlayer.App.Graphics.Caption
                 {
                     case CaptionFonts.GoogleSansFlex:
                     {
-                        spriteText.Font = NekoPlayerApp.DefaultFont.With(size: 24);
+                        spriteText.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Rubik:

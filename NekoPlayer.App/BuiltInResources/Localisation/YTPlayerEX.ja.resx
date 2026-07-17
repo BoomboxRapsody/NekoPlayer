@@ -330,7 +330,7 @@
     <value>コメントを追加しました。</value>
   </data>
   <data name="comment_with" xml:space="preserve">
-    <value>コメントを{0}で書き込みます···</value>
+    <value>コメント作成···</value>
   </data>
   <data name="signed_in" xml:space="preserve">
     <value>{0} にサインインしました</value>
@@ -470,7 +470,7 @@
     <comment>hw_acceleration_enabled_note</comment>
   </data>
   <data name="audio_effects" xml:space="preserve">
-    <value>オーディオ効果 (ベータ)</value>
+    <value>オーディオ効果</value>
   </data>
   <data name="reverb" xml:space="preserve">
     <value>リバーブ</value>
@@ -807,5 +807,14 @@
   </data>
   <data name="sort_alphabet" xml:space="preserve">
     <value>アルファベット (A-Z)</value>
+  </data>
+  <data name="login_to_comment" xml:space="preserve">
+    <value>ログインしてコメントを送信します(メニュー - 設定 - Google アカウント)</value>
+  </data>
+  <data name="settings_item_restart_required" xml:space="preserve">
+    <value>この設定を変更すると、アプリが再起動して適用されます。</value>
+  </data>
+  <data name="video_settings" xml:space="preserve">
+    <value>ビデオ設定</value>
   </data>
 </root>

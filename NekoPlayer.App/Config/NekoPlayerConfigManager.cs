@@ -34,7 +34,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.VideoQuality, VideoQuality.PreferHighQuality);
             SetDefault(NekoPlayerSetting.AudioLanguage, Language.en);
             SetDefault(NekoPlayerSetting.AdjustPitchOnSpeedChange, false);
-            SetDefault(NekoPlayerSetting.VideoDimLevel, 0, 0, .8, 0.01);
+            SetDefault(NekoPlayerSetting.VideoDimLevel, 0, 0, .3, 0.01);
             SetDefault(NekoPlayerSetting.ShowFpsDisplay, false);
             SetDefault(NekoPlayerSetting.UIFont, UIFont.GoogleSansFlex);
 
