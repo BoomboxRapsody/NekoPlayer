@@ -319,7 +319,7 @@ namespace NekoPlayer.App.Screens
         protected T GetShaderByType<T>() where T : InternalShader, new()
             => shaderManager.LocalInternalShader<T>();
 
-        private ControlBarIconButton repeatButton, pinButton, captionButton, videoSettingsButton;
+        private ControlBarIconButton repeatButton, pinButton, captionButton, videoSettingsButton, playlistButton;
 
         private AdaptiveSpriteText timeText;
 
@@ -784,6 +784,20 @@ namespace NekoPlayer.App.Screens
                                                                                     ClickAction = _ =>
                                                                                     {
                                                                                         ShowSettingsOverlayAtName("Video Settings");
+                                                                                    }
+                                                                                },
+                                                                                playlistButton = new ControlBarIconButton(false)
+                                                                                {
+                                                                                    Width = 50,
+                                                                                    Enabled = { Value = true },
+                                                                                    Icon = FontAwesome.Solid.List,
+                                                                                    TooltipText = NekoPlayerStrings.Playlists,
+                                                                                    IconColour = overlayColourProvider.Content2,
+                                                                                    BackgroundColour = overlayColourProvider.Background3,
+                                                                                    IconScale = new Vector2(0.85f),
+                                                                                    ClickAction = _ =>
+                                                                                    {
+                                                                                        showOverlayContainer(playlistOverlay);
                                                                                     }
                                                                                 },
                                                                                 pinButton = new ControlBarIconButton(false)
@@ -4217,6 +4231,7 @@ namespace NekoPlayer.App.Screens
             playPause.SetEnabledValue2(true);
             captionButton.SetEnabledValue2(true);
             videoSettingsButton.SetEnabledValue2(true);
+            playlistButton.SetEnabledValue2(true);
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
 
@@ -6896,6 +6911,10 @@ namespace NekoPlayer.App.Screens
                     videoSettingsButton.IconObject.FadeColour(accentColor);
                     videoSettingsButton.AccentColor = accentColor;
                     videoSettingsButton.BackgroundColour = bgColor;
+
+                    playlistButton.IconObject.FadeColour(accentColor);
+                    playlistButton.AccentColor = accentColor;
+                    playlistButton.BackgroundColour = bgColor;
 
                     captionButton.IconObject.FadeColour(captionEnabled.Value ? bgColor : accentColor);
                     captionButton.AccentColor = accentColor;
