@@ -5359,8 +5359,8 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                //videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                //videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
@@ -5387,8 +5387,8 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                //videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                //videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
@@ -5418,8 +5418,8 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.MoveToY(200, 500, Easing.OutQuart);
@@ -5442,8 +5442,8 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                //videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                //videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
+                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.ScaleTo(0.8f, 250, Easing.OutQuart);
