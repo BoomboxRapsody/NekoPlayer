@@ -814,4 +814,7 @@
   <data name="settings_item_restart_required" xml:space="preserve">
     <value>この設定を変更すると、アプリが再起動して適用されます。</value>
   </data>
+  <data name="video_settings" xml:space="preserve">
+    <value>ビデオ設定</value>
+  </data>
 </root>

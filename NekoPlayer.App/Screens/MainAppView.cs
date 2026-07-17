@@ -64,6 +64,7 @@ using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Platform.Windows;
 using osu.Framework.Statistics;
+using osu.Framework.Testing;
 using osu.Framework.Threading;
 using osuTK;
 using osuTK.Graphics;
@@ -102,6 +103,8 @@ namespace NekoPlayer.App.Screens
         private VideoMetadataDisplayWithoutProfile videoMetadataDisplay;
         private VideoMetadataDisplay videoMetadataDisplayDetails, videoMetadataDisplayDetails2;
         private RoundedButtonContainer commentOpenButtonDetails, likeButton;
+
+        private AdaptiveScrollContainer settingsSections;
 
         private string[] broWhat = new[]
         {
@@ -316,7 +319,7 @@ namespace NekoPlayer.App.Screens
         protected T GetShaderByType<T>() where T : InternalShader, new()
             => shaderManager.LocalInternalShader<T>();
 
-        private ControlBarIconButton repeatButton, pinButton, captionButton;
+        private ControlBarIconButton repeatButton, pinButton, captionButton, videoSettingsButton;
 
         private AdaptiveSpriteText timeText;
 
@@ -769,6 +772,20 @@ namespace NekoPlayer.App.Screens
                                                                                         CycleCaptionLanguage();
                                                                                     }
                                                                                 },
+                                                                                videoSettingsButton = new ControlBarIconButton(false)
+                                                                                {
+                                                                                    Width = 50,
+                                                                                    Enabled = { Value = true },
+                                                                                    Icon = FontAwesome.Solid.Cog,
+                                                                                    TooltipText = NekoPlayerStrings.VideoSettings,
+                                                                                    IconColour = overlayColourProvider.Content2,
+                                                                                    BackgroundColour = overlayColourProvider.Background3,
+                                                                                    IconScale = new Vector2(0.85f),
+                                                                                    ClickAction = _ =>
+                                                                                    {
+                                                                                        ShowSettingsOverlayAtName("Video Settings");
+                                                                                    }
+                                                                                },
                                                                                 pinButton = new ControlBarIconButton(false)
                                                                                 {
                                                                                     Width = 50,
@@ -1122,7 +1139,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        settingsSections = new AdaptiveScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -1464,6 +1481,7 @@ namespace NekoPlayer.App.Screens
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "Video Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.Video,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -4198,6 +4216,7 @@ namespace NekoPlayer.App.Screens
             pinButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
             playPause.SetEnabledValue2(true);
             captionButton.SetEnabledValue2(true);
+            videoSettingsButton.SetEnabledValue2(true);
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
 
@@ -6873,6 +6892,10 @@ namespace NekoPlayer.App.Screens
                     repeatButton.AccentColor = accentColor;
                     repeatButton.BackgroundColour = bgColor;
 
+                    videoSettingsButton.IconObject.FadeColour(accentColor);
+                    videoSettingsButton.AccentColor = accentColor;
+                    videoSettingsButton.BackgroundColour = bgColor;
+
                     captionButton.IconObject.FadeColour(captionEnabled.Value ? bgColor : accentColor);
                     captionButton.AccentColor = accentColor;
                     captionButton.BackgroundColour = bgColor;
@@ -8232,6 +8255,20 @@ namespace NekoPlayer.App.Screens
 
         [Resolved]
         private NekoPlayerApp game { get; set; }
+
+        public void ShowSettingsOverlayAtName(string name)
+        {
+            showOverlayContainer(settingsContainer);
+
+            // wait for load of sections
+            if (!settingsSections.Any())
+            {
+                Scheduler.Add(() => ShowSettingsOverlayAtName(name));
+                return;
+            }
+
+            settingsSections.ScrollTo(settingsSections.ChildrenOfType<Drawable>().Where(child => child.Name == name).Single());
+        }
 
         private enum GCLatencyMode
         {

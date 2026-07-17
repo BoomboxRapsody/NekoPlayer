@@ -1266,6 +1266,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString SettingsItem_RestartRequired => new TranslatableString(getKey(@"settings_item_restart_required"), "If you changes this settings, app will restart and applied.");
 
+        /// <summary>
+        /// "Video Settings"
+        /// </summary>
+        public static LocalisableString VideoSettings => new TranslatableString(getKey(@"video_settings"), "Video Settings");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
