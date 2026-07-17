@@ -120,7 +120,7 @@ namespace NekoPlayer.App.Screens
 
         private YouTubeChannelMetadataDisplay youtubeChannelMetadataDisplay, youtubeChannelMetadataDisplay2;
 
-        private SettingsItemV2 audioLanguageItem, audioLanguageItem2, wasapiExperimentalItem, captionLangOptions;
+        private SettingsItemV2 audioLanguageItem, audioLanguageItem2, captionLangOptions;
 
         private Sample overlayShowSample;
         private Sample overlayHideSample;
@@ -185,10 +185,6 @@ namespace NekoPlayer.App.Screens
         private AudioManager audio { get; set; } = null!;
 
         private AudioDeviceDropdown audioDeviceDropdown = null!;
-
-#nullable enable
-        private FormCheckBox? wasapiExperimental;
-#nullable disable
 
         private AdaptiveSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, playlistName, volumeText;
         private AdaptiveSpriteText speedText;
@@ -1585,13 +1581,6 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.OutputDevice,
                                                             Icon = FontAwesome.Solid.VolumeUp,
-                                                        }),
-                                                        wasapiExperimentalItem = new SettingsItemV2(wasapiExperimental = new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.WasapiLabel,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                            HintText = NekoPlayerStrings.WasapiTooltip,
-                                                            Current = audio.UseExperimentalWasapi,
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
@@ -4204,11 +4193,6 @@ namespace NekoPlayer.App.Screens
             }, true);
 
             oauth_note.Value = new SettingsNote.Data(NekoPlayerStrings.OAuthNote, SettingsNote.Type.Informational);
-
-            if (RuntimeInfo.OS != RuntimeInfo.Platform.Windows)
-            {
-                wasapiExperimentalItem.Hide();
-            }
 
             playlistName.Text = NekoPlayerStrings.PlaylistNotLoaded;
             playlistAuthor.Text = NekoPlayerStrings.PlaylistNotLoadedDesc;
