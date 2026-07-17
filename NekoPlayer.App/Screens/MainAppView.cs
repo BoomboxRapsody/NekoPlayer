@@ -8287,7 +8287,7 @@ namespace NekoPlayer.App.Screens
                 return;
             }
 
-            settingsSections.ScrollTo(settingsSections.ChildrenOfType<Drawable>().Where(child => child.Name == name).Single());
+            settingsSections.ScrollTo(settingsSections.ChildrenOfType<Drawable>().Where(child => child.Name == name).Single(), false);
         }
 
         private enum GCLatencyMode
