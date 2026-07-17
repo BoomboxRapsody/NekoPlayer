@@ -814,4 +814,7 @@
   <data name="login_to_comment" xml:space="preserve">
     <value>로그인하여 댓글 작성 (메뉴 - 설정 - Google 계정)</value>
   </data>
+  <data name="settings_item_restart_required" xml:space="preserve">
+    <value>이 설정을 변경하면 앱이 다시 시작되고 적용됩니다.</value>
+  </data>
 </root>

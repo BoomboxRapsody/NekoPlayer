@@ -1261,6 +1261,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString LoginToComment => new TranslatableString(getKey(@"login_to_comment"), "Log in to send comments (Menu - Settings - Google account)");
 
+        /// <summary>
+        /// "If you changes this settings, app will restart and applied."
+        /// </summary>
+        public static LocalisableString SettingsItem_RestartRequired => new TranslatableString(getKey(@"settings_item_restart_required"), "If you changes this settings, app will restart and applied.");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

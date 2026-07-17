@@ -295,47 +295,47 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                     {
                         case CaptionFonts.GoogleSansFlex:
                         {
-                            label.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                            label.Font = NekoPlayerApp.GoogleSansFlex;
                             break;
                         }
                         case CaptionFonts.Rubik:
                         {
-                            label.Font = NekoPlayerApp.Rubik.With(size: 24);
+                            label.Font = NekoPlayerApp.Rubik;
                             break;
                         }
                         case CaptionFonts.Pretendard:
                         {
-                            label.Font = NekoPlayerApp.Pretendard.With(size: 24);
+                            label.Font = NekoPlayerApp.Pretendard;
                             break;
                         }
                         case CaptionFonts.Hungeul:
                         {
-                            label.Font = NekoPlayerApp.Hungeul.With(size: 24);
+                            label.Font = NekoPlayerApp.Hungeul;
                             break;
                         }
                         case CaptionFonts.Ownglyph_PDH:
                         {
-                            label.Font = NekoPlayerApp.Ownglyph_PDH.With(size: 24);
+                            label.Font = NekoPlayerApp.Ownglyph_PDH;
                             break;
                         }
                         case CaptionFonts.Dovemayo_Gothic:
                         {
-                            label.Font = NekoPlayerApp.Dovemayo_Gothic.With(size: 24);
+                            label.Font = NekoPlayerApp.Dovemayo_Gothic;
                             break;
                         }
                         case CaptionFonts.Griun_Mongtori:
                         {
-                            label.Font = NekoPlayerApp.Griun_Mongtori.With(size: 24);
+                            label.Font = NekoPlayerApp.Griun_Mongtori;
                             break;
                         }
                         case CaptionFonts.ONE_Mobile_POP:
                         {
-                            label.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
+                            label.Font = NekoPlayerApp.ONE_Mobile_POP;
                             break;
                         }
                         case CaptionFonts.Cafe24Syongsyong:
                         {
-                            label.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
+                            label.Font = NekoPlayerApp.Cafe24Syongsyong;
                             break;
                         }
                     }

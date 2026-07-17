@@ -1246,12 +1246,14 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.ColourScheme,
                                                             Current = colourSchemeBindable,
                                                             Icon = FontAwesome.Solid.Palette,
+                                                            HintText = NekoPlayerStrings.SettingsItem_RestartRequired,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<UIFont>
                                                         {
                                                             Caption = NekoPlayerStrings.UIFont,
                                                             Current = ui_font,
                                                             Icon = FontAwesome.Solid.Font,
+                                                            HintText = NekoPlayerStrings.SettingsItem_RestartRequired,
                                                         }),
                                                         new SettingsItemV2(new FormEnumDropdown<ProfileImageShape>
                                                         {
@@ -1346,6 +1348,7 @@ namespace NekoPlayer.App.Screens
                                                             #pragma warning disable CS0612 // Type or member is obsolete
                                                             .Where(t => t != RendererType.Vulkan && t != RendererType.OpenGLLegacy),
                                                             #pragma warning restore CS0612 // Type or member is obsolete
+                                                            HintText = NekoPlayerStrings.SettingsItem_RestartRequired,
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
