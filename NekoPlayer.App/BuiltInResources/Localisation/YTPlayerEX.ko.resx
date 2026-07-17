@@ -470,7 +470,7 @@
     <comment>hw_acceleration_enabled_note</comment>
   </data>
   <data name="audio_effects" xml:space="preserve">
-    <value>오디오 효과 (베타)</value>
+    <value>오디오 효과</value>
   </data>
   <data name="reverb" xml:space="preserve">
     <value>리버브</value>

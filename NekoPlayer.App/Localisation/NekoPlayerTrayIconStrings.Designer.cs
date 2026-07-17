@@ -70,7 +70,7 @@ namespace NekoPlayer.App.Localisation {
         }
         
         /// <summary>
-        ///   Audio effects (Beta)과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Audio effects과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string AudioEffects {
             get {

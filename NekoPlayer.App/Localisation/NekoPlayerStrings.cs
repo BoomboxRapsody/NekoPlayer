@@ -687,9 +687,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString HardwareAccelerationEnabledNote => new TranslatableString(getKey(@"hw_acceleration_enabled_note"), "Hardware acceleration via GPU is enabled. If you experience any issues, please keep hardware acceleration disabled for now.");
 
         /// <summary>
-        /// "Audio effects (Beta)"
+        /// "Audio effects"
         /// </summary>
-        public static LocalisableString AudioEffects => new TranslatableString(getKey(@"audio_effects"), "Audio effects (Beta)");
+        public static LocalisableString AudioEffects => new TranslatableString(getKey(@"audio_effects"), "Audio effects");
 
         /// <summary>
         /// "Reverb"

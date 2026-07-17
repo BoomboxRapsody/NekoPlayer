@@ -133,6 +133,6 @@
     <value>Exit</value>
   </data>
   <data name="AudioEffects" xml:space="preserve">
-    <value>Audio effects (Beta)</value>
+    <value>Audio effects</value>
   </data>
 </root>
