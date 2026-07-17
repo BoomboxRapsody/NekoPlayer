@@ -93,13 +93,3 @@ This app uses `spine-csharp` (located as Spine in the source code) the C# Spine 
 Please refer to [Spine Runtimes License](https://esotericsoftware.com/spine-runtimes-license) for details.
 
 Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/NekoPlayer.App/BuiltInResources/LICENSE.md) for more information.
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=BoomboxRapsody%2FNekoPlayer&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&theme=dark&legend=top-left&sealed_token=GDOM_kXm9ocpKnT2VBJZCjwxZTjTqIqwt-h8HjOv92ywmAT5W2ze9eyy3ogoG47hr20XyjA-jZRDHBU5hTbaI0_6e1oVxL0iyQ0hqug4j0JIs_DrEZ9rmbYpUAjSjhc6fH8eLfcFgCu_CgfQp7bxrvokx2lvwKZZnvW2vBdnKPAOlc6EvGnxW8_EwrWi" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left&sealed_token=GDOM_kXm9ocpKnT2VBJZCjwxZTjTqIqwt-h8HjOv92ywmAT5W2ze9eyy3ogoG47hr20XyjA-jZRDHBU5hTbaI0_6e1oVxL0iyQ0hqug4j0JIs_DrEZ9rmbYpUAjSjhc6fH8eLfcFgCu_CgfQp7bxrvokx2lvwKZZnvW2vBdnKPAOlc6EvGnxW8_EwrWi" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=BoomboxRapsody/NekoPlayer&type=date&legend=top-left&sealed_token=GDOM_kXm9ocpKnT2VBJZCjwxZTjTqIqwt-h8HjOv92ywmAT5W2ze9eyy3ogoG47hr20XyjA-jZRDHBU5hTbaI0_6e1oVxL0iyQ0hqug4j0JIs_DrEZ9rmbYpUAjSjhc6fH8eLfcFgCu_CgfQp7bxrvokx2lvwKZZnvW2vBdnKPAOlc6EvGnxW8_EwrWi" />
- </picture>
-</a>
