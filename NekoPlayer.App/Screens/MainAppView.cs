@@ -1927,7 +1927,7 @@ namespace NekoPlayer.App.Screens
                                                 {
                                                     AutoSizeAxes = Axes.X,
                                                     Height = 32,
-                                                    CornerRadius = 16,
+                                                    CornerRadius = new CornersInfo(16, 16, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f),
                                                     Masking = true,
                                                     AlwaysPresent = true,
                                                     Children = new Drawable[]
@@ -1978,7 +1978,7 @@ namespace NekoPlayer.App.Screens
                                                 {
                                                     AutoSizeAxes = Axes.X,
                                                     Height = 32,
-                                                    CornerRadius = 16,
+                                                    CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 16, 16),
                                                     Masking = true,
                                                     AlwaysPresent = true,
                                                     Children = new Drawable[]
