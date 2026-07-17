@@ -5359,8 +5359,11 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                if (overlayContent.DrawHeight >= 450)
+                {
+                    videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                    videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
+                }
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
