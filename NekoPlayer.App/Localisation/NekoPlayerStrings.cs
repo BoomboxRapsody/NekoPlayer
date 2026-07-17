@@ -467,9 +467,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString CommentAdded => new TranslatableString(getKey(@"comment_added"), "Comment added.");
 
         /// <summary>
-        /// "Write comment as {0}..."
+        /// "Write comment..."
         /// </summary>
-        public static LocalisableString CommentWith(string username) => new TranslatableString(getKey(@"comment_with"), "Write comment as {0}...", username);
+        public static LocalisableString CommentWith => new TranslatableString(getKey(@"comment_with"), "Write comment...");
 
         /// <summary>
         /// "Signed in to {0}"
@@ -1255,6 +1255,11 @@ namespace NekoPlayer.App.Localisation
         /// "Alphabet (A-Z)"
         /// </summary>
         public static LocalisableString SearchSortAlphabet => new TranslatableString(getKey(@"sort_alphabet"), "Alphabet (A-Z)");
+
+        /// <summary>
+        /// "Log in to send comments (Menu - Settings - Google account)"
+        /// </summary>
+        public static LocalisableString LoginToComment => new TranslatableString(getKey(@"login_to_comment"), "Log in to send comments (Menu - Settings - Google account)");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

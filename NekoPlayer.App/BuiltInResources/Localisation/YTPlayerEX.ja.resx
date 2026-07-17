@@ -330,7 +330,7 @@
     <value>コメントを追加しました。</value>
   </data>
   <data name="comment_with" xml:space="preserve">
-    <value>コメントを{0}で書き込みます···</value>
+    <value>コメント作成···</value>
   </data>
   <data name="signed_in" xml:space="preserve">
     <value>{0} にサインインしました</value>
@@ -807,5 +807,8 @@
   </data>
   <data name="sort_alphabet" xml:space="preserve">
     <value>アルファベット (A-Z)</value>
+  </data>
+  <data name="login_to_comment" xml:space="preserve">
+    <value>ログインしてコメントを送信します(メニュー - 設定 - Google アカウント)</value>
   </data>
 </root>

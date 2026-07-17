@@ -320,7 +320,7 @@ namespace NekoPlayer.App.Screens
         protected T GetShaderByType<T>() where T : InternalShader, new()
             => shaderManager.LocalInternalShader<T>();
 
-        private ControlBarIconButton repeatButton, pinButton;
+        private ControlBarIconButton repeatButton, pinButton, captionButton;
 
         private AdaptiveSpriteText timeText;
 
@@ -757,6 +757,20 @@ namespace NekoPlayer.App.Screens
                                                                                     ClickAction = _ =>
                                                                                     {
                                                                                         updateRepeatState();
+                                                                                    }
+                                                                                },
+                                                                                captionButton = new ControlBarIconButton(false)
+                                                                                {
+                                                                                    Width = 50,
+                                                                                    Enabled = { Value = true },
+                                                                                    Icon = FontAwesome.Solid.ClosedCaptioning,
+                                                                                    TooltipText = NekoPlayerStrings.ClosedCaptions,
+                                                                                    IconColour = overlayColourProvider.Content2,
+                                                                                    BackgroundColour = overlayColourProvider.Background3,
+                                                                                    IconScale = new Vector2(0.85f),
+                                                                                    ClickAction = _ =>
+                                                                                    {
+                                                                                        CycleCaptionLanguage();
                                                                                     }
                                                                                 },
                                                                                 pinButton = new ControlBarIconButton(false)
@@ -2194,6 +2208,7 @@ namespace NekoPlayer.App.Screens
                                             Text = "",
                                             FontSize = 20,
                                             Height = 45,
+                                            PlaceholderText = NekoPlayerStrings.LoginToComment,
                                             EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                             {
                                                 Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
@@ -4105,7 +4120,7 @@ namespace NekoPlayer.App.Screens
 
                     if (api.TryToGetMineChannel() != null)
                     {
-                        commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith(api.GetLocalizedChannelTitle(api.GetMineChannel()));
+                        commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith;
                         commentTextBox.RefreshChannelProfile(api.GetMineChannel());
                     }
 
@@ -4128,7 +4143,7 @@ namespace NekoPlayer.App.Screens
                         Schedule(() => item.Expire());
                     }
 
-                    commentTextBox.PlaceholderText = string.Empty;
+                    commentTextBox.PlaceholderText = NekoPlayerStrings.LoginToComment;
                     Schedule(() => login.UpdateLoginState());
                 }
             }, true);
@@ -4172,6 +4187,7 @@ namespace NekoPlayer.App.Screens
             repeatButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
             pinButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
             playPause.SetEnabledValue2(true);
+            captionButton.SetEnabledValue2(true);
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
 
@@ -4242,6 +4258,9 @@ namespace NekoPlayer.App.Screens
 
             captionEnabled.BindValueChanged(enabled =>
             {
+                captionButton.SetEnabledValue2(!enabled.NewValue);
+                captionButton.IconObject.FadeColour(enabled.NewValue ? bgColor : accentColor, 250, Easing.OutQuint);
+
                 if (enabled.NewValue)
                     captionLangOptions.Show();
                 else
@@ -6804,6 +6823,10 @@ namespace NekoPlayer.App.Screens
                     repeatButton.AccentColor = accentColor;
                     repeatButton.BackgroundColour = bgColor;
 
+                    captionButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor);
+                    captionButton.AccentColor = accentColor;
+                    captionButton.BackgroundColour = bgColor;
+
                     pinButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor);
                     pinButton.AccentColor = accentColor;
                     pinButton.BackgroundColour = bgColor;
@@ -7064,7 +7087,7 @@ namespace NekoPlayer.App.Screens
                         updateWindowTitle();
                         //game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
                         if (api.TryToGetMineChannel() != null)
-                            commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith(api.GetLocalizedChannelTitle(api.GetMineChannel()));
+                            commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith;
                     });
                 }, true);
 
