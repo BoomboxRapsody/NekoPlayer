@@ -2842,6 +2842,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.ReverbEffect,
                                                             Current = reverbEnabled,
+                                                            Hotkey = new Hotkey(GlobalAction.ToggleReverbEffect),
                                                         }),
                                                         reverbSettings = new FillFlowContainer
                                                         {
@@ -2880,6 +2881,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.RotateParameters_Enabled,
                                                             Current = rotateEnabled,
+                                                            Hotkey = new Hotkey(GlobalAction.ToggleRotateEffect),
                                                         }),
                                                         rotateSettings = new FillFlowContainer
                                                         {
@@ -2902,6 +2904,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.EchoEffect,
                                                             Current = echoEnabled,
+                                                            Hotkey = new Hotkey(GlobalAction.ToggleEchoEffect),
                                                         }),
                                                         echoSettings = new FillFlowContainer
                                                         {
@@ -2941,6 +2944,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.DistortionEffect,
                                                             Current = distortionEnabled,
+                                                            Hotkey = new Hotkey(GlobalAction.ToggleDistortionEffect),
                                                         }),
                                                         distortionSettings = new FillFlowContainer
                                                         {
@@ -2963,11 +2967,13 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.KaraokeMode,
                                                             Current = karaokeEnabled,
+                                                            Hotkey = new Hotkey(GlobalAction.ToggleKaraokeEffect),
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ChorusEffect,
                                                             Current = chorusEnabled,
+                                                            Hotkey = new Hotkey(GlobalAction.ToggleChorusEffect),
                                                         }),
                                                         chorusSettings = new FillFlowContainer
                                                         {
