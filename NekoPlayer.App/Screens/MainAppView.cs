@@ -6773,20 +6773,27 @@ namespace NekoPlayer.App.Screens
                     IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
                     PaletteBuilder paletteBuilder = new PaletteBuilder();
                     Palette palette = paletteBuilder.Generate(bitmapHelper);
-                    int? rgbColor = palette.LightMutedSwatch.Rgb;
-                    int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
+                    try
+                    {
+                        int? rgbColor = palette.LightMutedSwatch?.Rgb;
+                        int? rgbColor2 = palette.DarkMutedSwatch?.Rgb;
 
-                    if (rgbColor != null && rgbColor2 != null)
-                    {
-                        accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
-                        bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
-                        bgColor2 = System.Drawing.Color.FromArgb((int)rgbColor2);
+                        if (rgbColor != null && rgbColor2 != null)
+                        {
+                            accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
+                            bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
+                            bgColor2 = System.Drawing.Color.FromArgb((int)rgbColor2);
+                        }
+                        else
+                        {
+                            accentColor = overlayColourProvider1.Content2;
+                            bgColor = overlayColourProvider1.Background3;
+                            bgColor2 = overlayColourProvider1.Content2.Darken(1);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        accentColor = overlayColourProvider1.Content2;
-                        bgColor = overlayColourProvider1.Background3;
-                        bgColor2 = overlayColourProvider1.Content2.Darken(1);
+                        Logger.Error(e, e.GetDescription());
                     }
                 }
                 catch
