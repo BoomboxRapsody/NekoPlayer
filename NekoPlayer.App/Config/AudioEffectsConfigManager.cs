@@ -57,6 +57,16 @@ namespace NekoPlayer.App.Config
         public AudioEffectsConfigManager(Storage storage, IDictionary<AudioEffectsSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
         {
         }
+
+        public override TrackedSettings CreateTrackedSettings() => new TrackedSettings
+        {
+            new TrackedSetting<bool>(AudioEffectsSetting.ReverbEnabled, v => new SettingDescription(v, NekoPlayerStrings.ReverbEffect, v == true ? NekoPlayerStrings.Enabled.ToLower() : NekoPlayerStrings.Disabled.ToLower(), "Shift+F1")),
+            new TrackedSetting<bool>(AudioEffectsSetting.RotateEnabled, v => new SettingDescription(v, NekoPlayerStrings.RotateParameters_Enabled, v == true ? NekoPlayerStrings.Enabled.ToLower() : NekoPlayerStrings.Disabled.ToLower(), "Shift+F2")),
+            new TrackedSetting<bool>(AudioEffectsSetting.EchoEnabled, v => new SettingDescription(v, NekoPlayerStrings.EchoEffect, v == true ? NekoPlayerStrings.Enabled.ToLower() : NekoPlayerStrings.Disabled.ToLower(), "Shift+F3")),
+            new TrackedSetting<bool>(AudioEffectsSetting.DistortionEnabled, v => new SettingDescription(v, NekoPlayerStrings.DistortionEffect, v == true ? NekoPlayerStrings.Enabled.ToLower() : NekoPlayerStrings.Disabled.ToLower(), "Shift+F4")),
+            new TrackedSetting<bool>(AudioEffectsSetting.KaraokeEnabled, v => new SettingDescription(v, NekoPlayerStrings.KaraokeMode, v == true ? NekoPlayerStrings.Enabled.ToLower() : NekoPlayerStrings.Disabled.ToLower(), "Shift+F5")),
+            new TrackedSetting<bool>(AudioEffectsSetting.ChorusEnabled, v => new SettingDescription(v, NekoPlayerStrings.ChorusEffect, v == true ? NekoPlayerStrings.Enabled.ToLower() : NekoPlayerStrings.Disabled.ToLower(), "Shift+F6")),
+        };
     }
 
     public enum AudioEffectsSetting

@@ -6227,6 +6227,30 @@ namespace NekoPlayer.App.Screens
                 case GlobalAction.CycleScalingMode:
                     CycleScalingMode();
                     return true;
+
+                case GlobalAction.ToggleReverbEffect:
+                    reverbEnabled.Value = !reverbEnabled.Value;
+                    return true;
+
+                case GlobalAction.ToggleRotateEffect:
+                    rotateEnabled.Value = !rotateEnabled.Value;
+                    return true;
+
+                case GlobalAction.ToggleEchoEffect:
+                    echoEnabled.Value = !echoEnabled.Value;
+                    return true;
+
+                case GlobalAction.ToggleDistortionEffect:
+                    distortionEnabled.Value = !distortionEnabled.Value;
+                    return true;
+
+                case GlobalAction.ToggleKaraokeEffect:
+                    karaokeEnabled.Value = !karaokeEnabled.Value;
+                    return true;
+
+                case GlobalAction.ToggleChorusEffect:
+                    chorusEnabled.Value = !chorusEnabled.Value;
+                    return true;
             }
 
             return false;

@@ -104,6 +104,13 @@ namespace NekoPlayer.App.Input.Binding
             new KeyBinding(new[] { InputKey.Alt, InputKey.D }, GlobalAction.DownloadVideo),
             new KeyBinding(InputKey.S, GlobalAction.ResetPlaybackSpeed),
             new KeyBinding(new[] { InputKey.Alt, InputKey.Shift, InputKey.F4 }, GlobalAction.QuitApp),
+
+            new KeyBinding(new[] { InputKey.Shift, InputKey.F1 }, GlobalAction.ToggleReverbEffect),
+            new KeyBinding(new[] { InputKey.Shift, InputKey.F2 }, GlobalAction.ToggleRotateEffect),
+            new KeyBinding(new[] { InputKey.Shift, InputKey.F3 }, GlobalAction.ToggleEchoEffect),
+            new KeyBinding(new[] { InputKey.Shift, InputKey.F4 }, GlobalAction.ToggleDistortionEffect),
+            new KeyBinding(new[] { InputKey.Shift, InputKey.F5 }, GlobalAction.ToggleKaraokeEffect),
+            new KeyBinding(new[] { InputKey.Shift, InputKey.F6 }, GlobalAction.ToggleChorusEffect),
         };
     }
 
@@ -166,5 +173,12 @@ namespace NekoPlayer.App.Input.Binding
         DownloadVideo,
         ResetPlaybackSpeed,
         QuitApp,
+
+        ToggleReverbEffect,
+        ToggleRotateEffect,
+        ToggleEchoEffect,
+        ToggleDistortionEffect,
+        ToggleKaraokeEffect,
+        ToggleChorusEffect,
     }
 }
