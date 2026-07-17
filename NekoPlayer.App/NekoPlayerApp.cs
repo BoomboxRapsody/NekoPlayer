@@ -46,6 +46,7 @@ namespace NekoPlayer.App
         private ScreenStack screenStack;
 
         public static FontUsage DefaultFont = FontUsage.Default.With("GoogleSansFlex", 16, "Regular");
+        public static FontUsage GoogleSansFlex = FontUsage.Default.With("GoogleSansFlex", 16, "Regular");
         public static FontUsage Rubik = FontUsage.Default.With("Rubik", 16, "Regular");
         public static FontUsage Pretendard = FontUsage.Default.With("PretendardVariable", 16, "Regular");
         public static FontUsage Hungeul = FontUsage.Default.With("Hungeul", 16);

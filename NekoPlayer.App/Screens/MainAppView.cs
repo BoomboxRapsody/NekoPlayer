@@ -1523,7 +1523,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
-                                                        new SettingsItemV2(new FormEnumDropdown<CaptionFonts>
+                                                        new SettingsItemV2(new FormEnumFontDropdown<CaptionFonts>
                                                         {
                                                             Caption = NekoPlayerStrings.CaptionFont,
                                                             Current = caption_font,
@@ -6823,7 +6823,7 @@ namespace NekoPlayer.App.Screens
                     repeatButton.AccentColor = accentColor;
                     repeatButton.BackgroundColour = bgColor;
 
-                    captionButton.IconObject.FadeColour(alwaysShowControl.Value ? bgColor : accentColor);
+                    captionButton.IconObject.FadeColour(captionEnabled.Value ? bgColor : accentColor);
                     captionButton.AccentColor = accentColor;
                     captionButton.BackgroundColour = bgColor;
 
