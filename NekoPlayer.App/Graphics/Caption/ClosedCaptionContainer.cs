@@ -14,6 +14,8 @@ using YoutubeExplode.Videos.ClosedCaptions;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Graphics.Videos;
+using NekoPlayer.App.Graphics.UserInterface;
+using osu.Framework.Graphics.Sprites;
 
 namespace NekoPlayer.App.Graphics.Caption
 {
@@ -21,7 +23,7 @@ namespace NekoPlayer.App.Graphics.Caption
     {
         public Bindable<bool> UIVisiblity = new Bindable<bool>();
 
-        private AdaptiveSpriteText spriteText;
+        private AdaptiveTextFlowContainer spriteText;
         private YouTubeVideoPlayer videoPlayer;
         private ClosedCaptionTrack captionTrack;
         private Bindable<bool> captionEnabled;
@@ -51,6 +53,8 @@ namespace NekoPlayer.App.Graphics.Caption
 
         private Bindable<bool> controlsVisibleState = null!;
 
+        private Action<SpriteText> textCreationParameters;
+
         [BackgroundDependencyLoader]
         private void load(NekoPlayerConfigManager config, SessionStatics sessionStatics)
         {
@@ -74,9 +78,9 @@ namespace NekoPlayer.App.Graphics.Caption
                         Colour = Color4.Black,
                         Alpha = 0.5f
                     },
-                    spriteText = new AdaptiveSpriteText(false)
+                    spriteText = new AdaptiveTextFlowContainer(t => t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24))
                     {
-                        Font = NekoPlayerApp.GoogleSansFlex.With(size: 24),
+                        AutoSizeAxes = Axes.Both,
                         Margin = new MarginPadding(4),
                     }
                 }
@@ -88,47 +92,47 @@ namespace NekoPlayer.App.Graphics.Caption
                 {
                     case CaptionFonts.GoogleSansFlex:
                     {
-                        spriteText.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Rubik:
                     {
-                        spriteText.Font = NekoPlayerApp.Rubik.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Rubik.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Pretendard:
                     {
-                        spriteText.Font = NekoPlayerApp.Pretendard.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Pretendard.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Hungeul:
                     {
-                        spriteText.Font = NekoPlayerApp.Hungeul.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Hungeul.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Ownglyph_PDH:
                     {
-                        spriteText.Font = NekoPlayerApp.Ownglyph_PDH.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Ownglyph_PDH.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Dovemayo_Gothic:
                     {
-                        spriteText.Font = NekoPlayerApp.Dovemayo_Gothic.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Dovemayo_Gothic.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Griun_Mongtori:
                     {
-                        spriteText.Font = NekoPlayerApp.Griun_Mongtori.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Griun_Mongtori.With(size: 24);
                         break;
                     }
                     case CaptionFonts.ONE_Mobile_POP:
                     {
-                        spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Cafe24Syongsyong:
                     {
-                        spriteText.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
                         break;
                     }
                 }
@@ -177,7 +181,8 @@ namespace NekoPlayer.App.Graphics.Caption
                     if (caption != null)
                     {
                         var text = caption.Text; // "collection acts as the parent collection"
-                        spriteText.Text = text;
+                        spriteText.Text = string.Empty;
+                        spriteText.AddText(text, textCreationParameters);
                         captionContainer.FadeIn(150, Easing.OutQuart);
                     }
                     else
