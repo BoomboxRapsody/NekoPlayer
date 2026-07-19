@@ -59,7 +59,7 @@ namespace NekoPlayer.App
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 
-        public static string KnownCodename = "Nougat";
+        public static string KnownCodename = "Oreo";
 
         private BindableNumber<double> sampleVolume = null!;
         private FPSCounter fpsCounter;
