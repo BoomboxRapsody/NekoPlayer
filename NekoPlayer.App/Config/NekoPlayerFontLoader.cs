@@ -161,7 +161,7 @@ namespace NekoPlayer.App.Config
             @"InflateVF-ClockFont");
 
             //game.AddOutlineFont(Resources, @"Fonts/UIFonts/NotoColorEmoji");
-            //game.Fonts.AddStore(new EmojiStore(game.Host.Renderer, Resources)); //moved to framework side
+            game.Fonts.AddStore(new EmojiStore(game.Host.Renderer, Resources));
 
             Logger.Log($"❤️👏 Colored emoji loaded");
 
