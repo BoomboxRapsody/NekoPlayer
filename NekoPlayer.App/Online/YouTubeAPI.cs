@@ -814,13 +814,18 @@ namespace NekoPlayer.App.Online
                 // lang=json
                 $$"""
             {
-              "videoId": "{{Json.Serialize(videoId)}}",
+              "videoId": {{Json.Encode(videoId)}},
               "contentCheckOk": true,
               "context": {
                 "client": {
-                  "clientName": "NekoPlayer",
-                  "clientVersion": "{{app.Version}}",
-                  "visitorData": {{Json.Serialize(visitorData)}},
+                  "clientName": "ANDROID_VR",
+                  "clientVersion": "1.60.19",
+                  "deviceMake": "Oculus",
+                  "deviceModel": "Quest 3",
+                  "osName": "Android",
+                  "osVersion": "12L",
+                  "platform": "MOBILE",
+                  "visitorData": {{Json.Encode(visitorData)}},
                   "hl": "en",
                   "gl": "US",
                   "utcOffsetMinutes": 0
@@ -834,7 +839,7 @@ namespace NekoPlayer.App.Online
             // https://github.com/iv-org/invidious/issues/3230#issuecomment-1226887639
             request.Headers.Add(
                 "User-Agent",
-                $"NekoPlayer/{(app.IsDeployedBuild ? app.Version : "Development")}"
+                "com.google.android.apps.youtube.vr.oculus/1.60.19 (Linux; U; Android 12L; Quest 3 Build/SQ3A.220605.009.A1) gzip"
             );
 
             if (googleOAuth2.SignedIn.Value)
