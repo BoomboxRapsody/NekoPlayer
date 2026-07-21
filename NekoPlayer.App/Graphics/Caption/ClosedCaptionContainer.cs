@@ -80,6 +80,7 @@ namespace NekoPlayer.App.Graphics.Caption
                     },
                     spriteText = new AdaptiveTextFlowContainer(t => t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24))
                     {
+                        TextAnchor = Anchor.Centre,
                         AutoSizeAxes = Axes.Both,
                         Margin = new MarginPadding(4),
                     }
