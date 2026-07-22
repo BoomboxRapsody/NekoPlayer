@@ -324,7 +324,7 @@
     <value>사용자 이름으로 표시 (2005~2022)</value>
   </data>
   <data name="username_display_mode_handle" xml:space="preserve">
-    <value>핸들 (@username)으로 표시 (2022~지금)</value>
+    <value>핸들 (@username)으로 표시 (2022~)</value>
   </data>
   <data name="comment_added" xml:space="preserve">
     <value>댓글이 추가되었습니다</value>
@@ -819,5 +819,20 @@
   </data>
   <data name="video_settings" xml:space="preserve">
     <value>동영상 설정</value>
+  </data>
+  <data name="alsa_exclusive_notice" xml:space="preserve">
+    <value>전용 액세스 드라이버가 있는 디바이스를 선택했으므로 NekoPlayer에서 사용하는 동안 다른 앱의 소리를 들을 수 없습니다. 또한 올바르게 초기화하려면 먼저 다른 애플리케이션에서 적극적으로 사용하지 않도록 해야 합니다. 다른 오디오 드라이버를 통해 사용한 경우 NekoPlayer를 재시작하고 잠시 기다렸다가 초기화를 해제해야 할 수도 있습니다.</value>
+  </data>
+  <data name="sfx_type" xml:space="preserve">
+    <value>오버레이 효과음 유형</value>
+  </data>
+  <data name="sfx_new" xml:space="preserve">
+    <value>새로운 효과음</value>
+  </data>
+  <data name="sfx_legacy" xml:space="preserve">
+    <value>레거시 (YouTube Player EX)</value>
+  </data>
+  <data name="play_overlay_sfx" xml:space="preserve">
+    <value>오버레이 효과음 재생</value>
   </data>
 </root>

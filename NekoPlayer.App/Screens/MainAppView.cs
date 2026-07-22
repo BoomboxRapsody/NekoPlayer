@@ -125,8 +125,7 @@ namespace NekoPlayer.App.Screens
 
         private SettingsItemV2 audioLanguageItem, audioLanguageItem2, captionLangOptions;
 
-        private Sample overlayShowSample;
-        private Sample overlayHideSample;
+        private Sample overlayShowSample, overlayHideSample;
         private AdaptiveMaterialButton reportButton;
         private FormTextBox reportComment, playlistTitleBox, editPlaylistTitleBox;
 
@@ -157,6 +156,25 @@ namespace NekoPlayer.App.Screens
             currentVideoSource?.SeekTo((videoProgress.MaxValue * (input * 0.1)) * 1000);
         }
 
+        // An example driver name of an ALSA device will look like this: "hw:4,0".
+        // For contrast, Pipewire Server and Default devices will have driver names called respectively "pipewire" and "default".
+        public const string LINUX_ALSA_DEVICE_DRIVER_PREFIX = "hw:";
+
+        private readonly Bindable<SettingsNote.Data?> alsaExclusiveDeviceNote = new Bindable<SettingsNote.Data?>();
+
+        private void onDeviceSelected(string selectedDevice)
+        {
+            string? currentDriver = audio.AudioDeviceNames.Where(d => d.Name == selectedDevice).Select(d => d.Driver).FirstOrDefault();
+            if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux && currentDriver.IsNotNull() && currentDriver.StartsWith(LINUX_ALSA_DEVICE_DRIVER_PREFIX, System.StringComparison.Ordinal))
+            {
+                alsaExclusiveDeviceNote.Value = new SettingsNote.Data(NekoPlayerStrings.AlsaExclusiveNotice, SettingsNote.Type.Warning);
+            }
+            else
+            {
+                alsaExclusiveDeviceNote.Value = null;
+            }
+        }
+
         private void onAudioDeviceChanged(string _)
         {
             updateAudioDeviceItems();
@@ -165,7 +183,7 @@ namespace NekoPlayer.App.Screens
         private void updateAudioDeviceItems()
         {
             var deviceItems = new List<string> { string.Empty };
-            deviceItems.AddRange(audio.AudioDeviceNames);
+            deviceItems.AddRange(audio.AudioDeviceNames.Select(d => d.Name));
 
             string preferredDeviceName = audio.AudioDevice.Value;
             if (deviceItems.All(kv => kv != preferredDeviceName))
@@ -342,6 +360,9 @@ namespace NekoPlayer.App.Screens
 
         protected Bindable<ReleaseStream> ReleaseStream;
 
+        private Bindable<SFXType> overlaySFXType;
+        private Bindable<bool> playOverlaySFX;
+
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
         {
@@ -363,6 +384,9 @@ namespace NekoPlayer.App.Screens
             videoPlaying = sessionStatics.GetBindable<bool>(Static.IsVideoPlaying);
             trayIconVisible = sessionStatics.GetBindable<bool>(Static.WindowIsTray);
             ReleaseStream = appConfig.GetBindable<ReleaseStream>(NekoPlayerSetting.ReleaseStream);
+
+            playOverlaySFX = appConfig.GetBindable<bool>(NekoPlayerSetting.PlayOverlaySFX);
+            overlaySFXType = appConfig.GetBindable<SFXType>(NekoPlayerSetting.OverlaySFXType);
 
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
@@ -424,6 +448,11 @@ namespace NekoPlayer.App.Screens
 
             windowedResolution.Value = sizeWindowed.Value;
 
+            overlaySFXType.BindValueChanged(sfx =>
+            {
+                RefreshSFX();
+            }, true);
+
             if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
             {
                 discordRichPresence.Disabled = !DiscordInstallationChecker.IsDiscordInstalled();
@@ -466,9 +495,6 @@ namespace NekoPlayer.App.Screens
 
             if (host.Renderer is IWindowsRenderer windowsRenderer)
                 fullscreenCapability.BindTo(windowsRenderer.FullscreenCapability);
-
-            overlayShowSample = sampleStore.Get(@"New_Fix/overlay-pop-in");
-            overlayHideSample = sampleStore.Get(@"New_Fix/overlay-pop-out");
 
             #region The UI Components
             InternalChildren = new Drawable[]
@@ -607,7 +633,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Height = 88,
+                                    Height = 84,
                                     Masking = false,
                                     //CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
                                     /*
@@ -630,7 +656,7 @@ namespace NekoPlayer.App.Screens
                                         new FillFlowContainer {
                                             RelativeSizeAxes = Axes.Both,
                                             Padding = new MarginPadding(16),
-                                            Spacing = new Vector2(0, 4),
+                                            Spacing = new Vector2(0, 2),
                                             Children = new Drawable[] {
                                                 seekbar = new RoundedSeekBar
                                                 {
@@ -1314,6 +1340,18 @@ namespace NekoPlayer.App.Screens
                                                             Icon = FontAwesome.Solid.MousePointer,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.UseSystemCursor),
                                                         }),
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.PlayOverlaySFX,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
+                                                            Current = playOverlaySFX,
+                                                        }),
+                                                        new SettingsItemV2(new FormEnumDropdown<SFXType>
+                                                        {
+                                                            Caption = NekoPlayerStrings.SFXType,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
+                                                            Current = overlaySFXType,
+                                                        }),
                                                         new AdaptiveSpriteText
                                                         {
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -1624,7 +1662,10 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.OutputDevice,
                                                             Icon = FontAwesome.Solid.VolumeUp,
-                                                        }),
+                                                        })
+                                                        {
+                                                            Note = { BindTarget = alsaExclusiveDeviceNote },
+                                                        },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.AdjustPitchOnSpeedChange,
@@ -4253,6 +4294,8 @@ namespace NekoPlayer.App.Screens
             audio.OnLostDevice += onAudioDeviceChanged;
             audioDeviceDropdown.Current = audio.AudioDevice;
 
+            audioDeviceDropdown.Current.ValueChanged += d => onDeviceSelected(d.NewValue);
+
             onAudioDeviceChanged(string.Empty);
 
             videoQuality.BindValueChanged(quality =>
@@ -5397,6 +5440,9 @@ namespace NekoPlayer.App.Screens
                 audioEffectsOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
+            if (playOverlaySFX.Value)
+                overlayShowSample.Play();
+
             if (overlayContent is BottomOverlayContainer)
             {
                 isAnyOverlayOpen.Value = true;
@@ -5444,6 +5490,23 @@ namespace NekoPlayer.App.Screens
             }
         }
 
+        private void RefreshSFX()
+        {
+            if (appGlobalConfig.Get<SFXType>(NekoPlayerSetting.OverlaySFXType) == SFXType.Legacy)
+            {
+                overlayShowSample = sampleStoreGlobal.Get(@"overlay-pop-in");
+                overlayHideSample = sampleStoreGlobal.Get(@"overlay-pop-out");
+            }
+            else
+            {
+                overlayShowSample = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-in");
+                overlayHideSample = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-out");
+            }
+        }
+
+        [Resolved]
+        private ISampleStore sampleStoreGlobal { get; set; }
+
         private void hideOverlayContainer(OverlayContainer overlayContent)
         {
             //duckOperation?.Dispose();
@@ -5462,6 +5525,9 @@ namespace NekoPlayer.App.Screens
             {
                 audioEffectsOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
+
+            if (playOverlaySFX.Value)
+                overlayHideSample.Play();
 
             if (overlayContent is BottomOverlayContainer)
             {

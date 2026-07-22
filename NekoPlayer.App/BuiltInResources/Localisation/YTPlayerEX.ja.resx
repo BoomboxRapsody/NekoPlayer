@@ -324,7 +324,7 @@
     <value>ユーザー名を優先（2005年~2022年）</value>
   </data>
   <data name="username_display_mode_handle" xml:space="preserve">
-    <value>ディスプレイハンドルを優先 (2022~今)</value>
+    <value>ディスプレイハンドルを優先 (2022~)</value>
   </data>
   <data name="comment_added" xml:space="preserve">
     <value>コメントを追加しました。</value>
@@ -816,5 +816,20 @@
   </data>
   <data name="video_settings" xml:space="preserve">
     <value>ビデオ設定</value>
+  </data>
+  <data name="alsa_exclusive_notice" xml:space="preserve">
+    <value>NekoPlayerが使用している間は、他のアプリから音を聞くことができない専用のドライバを使用しているデバイスを選択していることに注意しましょう。 また、正しく初期化するには、まず、他のアプリケーションでアクティブに使用されていないことを確認します。 NekoPlayerを再起動し、他のオーディオドライバを使用している場合は、しばらく待ってから初期化を解除する必要があります。</value>
+  </data>
+  <data name="sfx_type" xml:space="preserve">
+    <value>オーバーレイ効果音タイプ</value>
+  </data>
+  <data name="sfx_new" xml:space="preserve">
+    <value>新効果音</value>
+  </data>
+  <data name="sfx_legacy" xml:space="preserve">
+    <value>レガシー (YouTube Player EX)</value>
+  </data>
+  <data name="play_overlay_sfx" xml:space="preserve">
+    <value>再生オーバーレイ効果音</value>
   </data>
 </root>

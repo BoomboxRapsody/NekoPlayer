@@ -457,9 +457,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString UsernameDisplayMode_DisplayName => new TranslatableString(getKey(@"username_display_mode_nickname"), @"Prefer display username (2005~2022)");
 
         /// <summary>
-        /// "Prefer display handle (2022~now)"
+        /// "Prefer display handle (2022~)"
         /// </summary>
-        public static LocalisableString UsernameDisplayMode_Handle => new TranslatableString(getKey(@"username_display_mode_handle"), @"Prefer display handle (2022~now)");
+        public static LocalisableString UsernameDisplayMode_Handle => new TranslatableString(getKey(@"username_display_mode_handle"), @"Prefer display handle (2022~)");
 
         /// <summary>
         /// "Comment added."
@@ -1270,6 +1270,31 @@ namespace NekoPlayer.App.Localisation
         /// "Video Settings"
         /// </summary>
         public static LocalisableString VideoSettings => new TranslatableString(getKey(@"video_settings"), "Video Settings");
+
+        /// <summary>
+        /// "Note that you've selected a device with an exclusive-access driver, which means that you won't be able to hear sounds from other apps while in use by NekoPlayer. Also, to initialize it correctly, first ensure it's not being actively used by other applications. You may need to restart NekoPlayer and wait a moment to for it de-initialize if you've just used it through other audio driver."
+        /// </summary>
+        public static LocalisableString AlsaExclusiveNotice => new TranslatableString(getKey(@"alsa_exclusive_notice"), @"Note that you've selected a device with an exclusive-access driver, which means that you won't be able to hear sounds from other apps while in use by NekoPlayer. Also, to initialize it correctly, first ensure it's not being actively used by other applications. You may need to restart NekoPlayer and wait a moment to for it de-initialize if you've just used it through other audio driver.");
+
+        /// <summary>
+        /// "Overlay SFX Type"
+        /// </summary>
+        public static LocalisableString SFXType => new TranslatableString(getKey(@"sfx_type"), "Overlay SFX Type");
+
+        /// <summary>
+        /// "New SFX"
+        /// </summary>
+        public static LocalisableString SFXNew => new TranslatableString(getKey(@"sfx_new"), "New SFX");
+
+        /// <summary>
+        /// "Legacy (YouTube Player EX)"
+        /// </summary>
+        public static LocalisableString SFXLegacy => new TranslatableString(getKey(@"sfx_legacy"), "Legacy (YouTube Player EX)");
+
+        /// <summary>
+        /// "Play Overlay SFX"
+        /// </summary>
+        public static LocalisableString PlayOverlaySFX => new TranslatableString(getKey(@"play_overlay_sfx"), "Play Overlay SFX");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
