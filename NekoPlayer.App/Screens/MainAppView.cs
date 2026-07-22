@@ -207,7 +207,7 @@ namespace NekoPlayer.App.Screens
 
         private AudioDeviceDropdown audioDeviceDropdown = null!;
 
-        private AdaptiveSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, playlistName, volumeText;
+        private AdaptiveSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, volumeText;
         private AdaptiveSpriteText speedText;
         private LinkFlowContainer videoDescription, gameVersion;
         private FillFlowContainer commentContainer, searchResultContainer, playlistItemsView, myPlaylistItemsView;
@@ -5183,7 +5183,7 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private ScreenshotManager screenshotManager { get; set; }
 
-        private AdaptiveTextFlowContainer infoForNerds;
+        private AdaptiveTextFlowContainer infoForNerds, playlistName;
 
         private Bindable<float> scalingPositionX = null!;
         private Bindable<float> scalingPositionY = null!;
