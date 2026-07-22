@@ -1797,7 +1797,7 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
-                                                            Text = "as known as YouTube Player EX",
+                                                            Text = "known as YouTube Player EX",
                                                             TextAnchor = Anchor.Centre,
                                                             Colour = overlayColourProvider.Content2,
                                                         },
