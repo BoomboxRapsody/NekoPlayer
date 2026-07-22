@@ -1340,6 +1340,18 @@ namespace NekoPlayer.App.Screens
                                                             Icon = FontAwesome.Solid.MousePointer,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.UseSystemCursor),
                                                         }),
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.PlayOverlaySFX,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
+                                                            Current = playOverlaySFX,
+                                                        }),
+                                                        new SettingsItemV2(new FormEnumDropdown<SFXType>
+                                                        {
+                                                            Caption = NekoPlayerStrings.SFXType,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
+                                                            Current = overlaySFXType,
+                                                        }),
                                                         new AdaptiveSpriteText
                                                         {
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -1660,18 +1672,6 @@ namespace NekoPlayer.App.Screens
                                                             Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = adjustPitch,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleAdjustPitchOnSpeedChange),
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.PlayOverlaySFX,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                            Current = playOverlaySFX,
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<SFXType>
-                                                        {
-                                                            Caption = NekoPlayerStrings.SFXType,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                            Current = overlaySFXType,
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
