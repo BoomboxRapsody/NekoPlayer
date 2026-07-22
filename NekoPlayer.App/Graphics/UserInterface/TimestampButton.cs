@@ -10,6 +10,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 
@@ -29,6 +30,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             TooltipText = NekoPlayerStrings.JumpTo(text);
         }
 
+        private AdaptiveTextFlowContainer textFlow;
+
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
@@ -46,15 +49,23 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             RelativeSizeAxes = Axes.Both,
                             Colour = overlayColourProvider.Background2,
                         },
-                        new AdaptiveSpriteText
+                        textFlow = new AdaptiveTextFlowContainer(f =>
+                        {
+                            f.Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Bold");
+                        })
                         {
                             Margin = new MarginPadding(2),
-                            Text = text,
-                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Bold"),
                         }
                     }
                 }
             });
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            textFlow.AddIcon(FontAwesome.Solid.Stopwatch);
+            textFlow.AddText(text);
         }
 
         protected override bool OnClick(ClickEvent e)
