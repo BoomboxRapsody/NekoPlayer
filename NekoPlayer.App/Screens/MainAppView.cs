@@ -2687,14 +2687,18 @@ namespace NekoPlayer.App.Screens
                                                     Spacing = new Vector2(4),
                                                     Children = new Drawable[]
                                                     {
-                                                        playlistName = new TruncatingSpriteText
+                                                        playlistName = new AdaptiveTextFlowContainer(f =>
                                                         {
+                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold");
+                                                            f.Colour = overlayColourProvider.Content2;
+                                                        })
+                                                        {
+                                                            TextAnchor = Anchor.Centre,
                                                             Origin = Anchor.TopCentre,
                                                             Anchor = Anchor.TopCentre,
                                                             Text = NekoPlayerStrings.PlaylistNotLoaded,
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
-                                                            Colour = overlayColourProvider.Content2,
+                                                             RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
                                                         },
                                                         playlistAuthor = new LinkFlowContainer(f =>
                                                         {
