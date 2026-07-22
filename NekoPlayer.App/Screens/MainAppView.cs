@@ -328,7 +328,7 @@ namespace NekoPlayer.App.Screens
         private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled, karaokeEnabled, chorusEnabled;
         private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings, chorusSettings, volumeOptions;
 
-        private FormEnumDropdown<Config.VideoQuality> videoQualitySettings;
+        private YouTubeQualityDropdown videoQualitySettings;
         private FormEnumDropdown<Config.AudioQuality> audioQualitySettings;
 
         private Bindable<bool> repeat = new Bindable<bool>();
@@ -726,7 +726,10 @@ namespace NekoPlayer.App.Screens
                                                                                             if (playlistItemIndex != 0)
                                                                                                 playlistItemIndex--;
 
-                                                                                            await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                            Schedule(async () =>
+                                                                                            {
+                                                                                                await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                            });
                                                                                         }
                                                                                     }
                                                                                 },
@@ -766,7 +769,10 @@ namespace NekoPlayer.App.Screens
                                                                                             if (playlistItemIndex != playlists.Count - 1)
                                                                                                 playlistItemIndex++;
 
-                                                                                            await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                            Schedule(async () =>
+                                                                                            {
+                                                                                                await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                            });
                                                                                         }
                                                                                     }
                                                                                 },
@@ -1144,7 +1150,10 @@ namespace NekoPlayer.App.Screens
                                                 Schedule(async () =>
                                                 {
                                                     ClearPlaylistItems();
-                                                    await SetVideoSource(videoIdBox.Text);
+                                                    Schedule(async () =>
+                                                    {
+                                                        await SetVideoSource(videoIdBox.Text);
+                                                    });
                                                 });
                                             }
                                             catch (Exception ex)
@@ -1561,11 +1570,10 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Note = { BindTarget = hwAccelNote },
                                                         },
-                                                        new SettingsItemV2(videoQualitySettings = new FormEnumDropdown<Config.VideoQuality>
+                                                        new SettingsItemV2(videoQualitySettings = new YouTubeQualityDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.VideoQuality,
                                                             Icon = FontAwesome.Solid.Video,
-                                                            Current = videoQuality,
                                                         }),
                                                         new SettingsItemV2(audioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
                                                         {
@@ -4303,14 +4311,16 @@ namespace NekoPlayer.App.Screens
 
             onAudioDeviceChanged(string.Empty);
 
-            videoQuality.BindValueChanged(quality =>
+            videoQualitySettings.Current.BindValueChanged(quality =>
             {
-                videoQualityWarning.Value = (quality.NewValue == Config.VideoQuality.Quality_8K) ? new SettingsNote.Data(NekoPlayerStrings.VideoQuality8KWarning, SettingsNote.Type.Warning) : null;
                 if (currentVideoSource != null)
                 {
                     Task.Run(async () =>
                     {
-                        await SetVideoSource(videoId, true, LoadType.VideoOnly);
+                        Schedule(async () =>
+                        {
+                            await SetVideoSource(videoId, true, LoadType.VideoOnly);
+                        });
                     });
                 }
             });
@@ -4321,7 +4331,10 @@ namespace NekoPlayer.App.Screens
                 {
                     Task.Run(async () =>
                     {
-                        await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                        Schedule(async () =>
+                        {
+                            await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                        });
                     });
                 }
             });
@@ -4372,7 +4385,10 @@ namespace NekoPlayer.App.Screens
                 {
                     Task.Run(async () =>
                     {
-                        await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                        Schedule(async () =>
+                        {
+                            await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                        });
                     });
                 }
             }, true);
@@ -4392,7 +4408,10 @@ namespace NekoPlayer.App.Screens
                 {
                     Task.Run(async () =>
                     {
-                        await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                        Schedule(async () =>
+                        {
+                            await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                        });
                     });
                 }
             });
@@ -5633,7 +5652,10 @@ namespace NekoPlayer.App.Screens
                     trickcal_is_good_game.ClickAction = async _ =>
                     {
                         ClearPlaylistItems();
-                        await SetVideoSource(item.Id.VideoId);
+                        Schedule(async () =>
+                        {
+                            await SetVideoSource(item.Id.VideoId);
+                        });
                     };
 
                     trickcal_is_good_game.Enabled.Value = true;
@@ -5853,7 +5875,10 @@ namespace NekoPlayer.App.Screens
             loadBtn.ClickAction = async _ =>
             {
                 ClearPlaylistItems();
-                await SetVideoSource(videoIdBox.Text);
+                Schedule(async () =>
+                {
+                    await SetVideoSource(videoIdBox.Text);
+                });
             };
 
             loadPlaylistBtn.ClickAction = async _ =>
@@ -6325,7 +6350,12 @@ namespace NekoPlayer.App.Screens
                             if (playlistItemIndex != 0)
                                 playlistItemIndex--;
 
-                            Task.Run(async () => await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId));
+                            Task.Run(async () => {
+                                Schedule(async () =>
+                                {
+                                    await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                });
+                            });
                         }
                     }
                     return true;
@@ -6338,7 +6368,13 @@ namespace NekoPlayer.App.Screens
                             if (playlistItemIndex != playlists.Count - 1)
                                 playlistItemIndex++;
 
-                            Task.Run(async () => await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId));
+                            Task.Run(async () =>
+                            {
+                                Schedule(async () =>
+                                {
+                                    await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                });
+                            });
                         }
                     }
                     return true;
@@ -6407,6 +6443,8 @@ namespace NekoPlayer.App.Screens
         private IList<PlaylistItem> playlists = new List<PlaylistItem>();
         private List<PlaylistItemView> playlistItemViews = new List<PlaylistItemView>();
 
+        private YoutubeExplode.Videos.Streams.VideoQuality currentVideoQuality;
+
         public void ClearPlaylistItems()
         {
             playlists.Clear();
@@ -6460,7 +6498,10 @@ namespace NekoPlayer.App.Screens
                         Schedule(async () =>
                         {
                             playlistItemIndex = playlistItemView.Index;
-                            await SetVideoSource(item.Snippet.ResourceId.VideoId);
+                            Schedule(async () =>
+                            {
+                                await SetVideoSource(item.Snippet.ResourceId.VideoId);
+                            });
                         });
                     };
 
@@ -6481,7 +6522,10 @@ namespace NekoPlayer.App.Screens
                 }
             }
 
-            await SetVideoSource(playlists[0].Snippet.ResourceId.VideoId);
+            Schedule(async () =>
+            {
+                await SetVideoSource(playlists[0].Snippet.ResourceId.VideoId);
+            });
         }
 
         public void SetPlaylistInfo(Playlist playlist)
@@ -7381,7 +7425,10 @@ namespace NekoPlayer.App.Screens
                     if (playlistItemIndex != playlists.Count - 1)
                         playlistItemIndex++;
 
-                    await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                    Schedule(async () =>
+                    {
+                        await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                    });
                 };
             }
             else
@@ -7562,7 +7609,7 @@ namespace NekoPlayer.App.Screens
 
                 if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
                 {
-                    Schedule(() => videoQuality.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = true);
+                    Schedule(() => videoQualitySettings.Current.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = true);
 
                     if (loadType == LoadType.Full)
                         Directory.CreateDirectory(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}"));
@@ -7765,65 +7812,42 @@ namespace NekoPlayer.App.Screens
 
                     IVideoStreamInfo videoStreamInfo;
 
-                    if (videoQuality.Value == Config.VideoQuality.PreferHighQuality)
+                    try
                     {
-                        try
-                        {
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                .TryGetWithHighestVideoQuality();
+                        // Select best video stream (1080p60 in this example)
+                        videoStreamInfo = streamManifest
+                            .GetVideoOnlyStreams()
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                            .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                            .TryGetWithHighestVideoQuality();
 
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Error(e, e.GetDescription());
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .TryGetWithHighestVideoQuality();
-
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
+                        onScreenDisplay.Display(toast);
+                        videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                     }
-                    else
+                    catch (Exception e)
                     {
-                        try
-                        {
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
-                                .TryGetWithHighestVideoQuality();
+                        Logger.Error(e, e.GetDescription());
+                        // Select best video stream (1080p60 in this example)
+                        videoStreamInfo = streamManifest
+                            .GetVideoOnlyStreams()
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                            .TryGetWithHighestVideoQuality();
 
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Error(e, e.GetDescription());
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
-                                .TryGetWithHighestVideoQuality();
+                        onScreenDisplay.Display(toast);
+                        videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                    }
 
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
+                    try
+                    {
+                        await videoQualitySettings.RefreshQualityList(videoUrl);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e, e.GetDescription());
                     }
 
                     if (videoStreamInfo.VideoCodec.Contains("avc1"))
@@ -7943,7 +7967,7 @@ namespace NekoPlayer.App.Screens
                     spinnerShow = Scheduler.AddDelayed(() => playVideo(), 0);
                     Schedule(() => thumbnailContainer.Hide());
 
-                    Schedule(() => videoQuality.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = false);
+                    Schedule(() => videoQualitySettings.Current.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = false);
                 }
                 else
                 {
@@ -8148,65 +8172,43 @@ namespace NekoPlayer.App.Screens
 
                     IVideoStreamInfo videoStreamInfo;
 
-                    if (videoQuality.Value == Config.VideoQuality.PreferHighQuality)
+                    try
                     {
-                        try
-                        {
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                .TryGetWithHighestVideoQuality();
+                        // Select best video stream (1080p60 in this example)
+                        videoStreamInfo = streamManifest
+                            .GetVideoOnlyStreams()
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                            .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                            .TryGetWithHighestVideoQuality();
 
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Error(e, e.GetDescription());
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .TryGetWithHighestVideoQuality();
-
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
+                        onScreenDisplay.Display(toast);
+                        videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                     }
-                    else
+                    catch (Exception e)
                     {
-                        try
-                        {
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
-                                .TryGetWithHighestVideoQuality();
+                        Logger.Error(e, e.GetDescription());
+                        // Select best video stream (1080p60 in this example)
+                        videoStreamInfo = streamManifest
+                            .GetVideoOnlyStreams()
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                            .TryGetWithHighestVideoQuality();
 
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Error(e, e.GetDescription());
-                            // Select best video stream (1080p60 in this example)
-                            videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
-                                .TryGetWithHighestVideoQuality();
+                        onScreenDisplay.Display(toast);
+                        videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                    }
 
-                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
-                            onScreenDisplay.Display(toast);
-                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
-                        }
+                    try
+                    {
+                        await videoQualitySettings.RefreshQualityList(videoUrl);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e, e.GetDescription());
                     }
 
                     ClosedCaptionTrack captionTrack = null;
@@ -8412,7 +8414,13 @@ namespace NekoPlayer.App.Screens
         {
             Schedule(() => hideOverlays());
             ClearPlaylistItems();
-            Task.Run(async () => SetVideoSource(id));
+            Task.Run(async () =>
+            {
+                Schedule(async () =>
+                {
+                    SetVideoSource(id);
+                });
+            });
         }
 
 #nullable enable
@@ -8563,6 +8571,74 @@ namespace NekoPlayer.App.Screens
             {
                 base.OnTextCommitted(textChanged);
                 OnEnterKeyPressed.Invoke();
+            }
+        }
+
+        private partial class YouTubeQualityDropdown : FormDropdown<string>
+        {
+            [Resolved]
+            private NekoPlayerApp app { get; set; }
+
+            [Resolved]
+            private NekoPlayerConfigManager config { get; set; }
+
+            [Resolved]
+            private YoutubeExplode.YoutubeClient youtubeService { get; set; }
+
+            [Resolved]
+            private GoogleTranslate googleTranslate { get; set; }
+
+            public YoutubeExplode.Videos.Streams.VideoQuality currentVideoQuality;
+
+            [BackgroundDependencyLoader]
+            private void load()
+            {
+            }
+
+            public async Task RefreshQualityList(string videoId)
+            {
+                try
+                {
+                    var streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoId);
+
+                    List<string> items = new List<string>();
+
+                    List<VideoOnlyStreamInfo> videoStreamInfo;
+                    IVideoStreamInfo maxVideoStreamInfo;
+
+                    videoStreamInfo = streamManifest
+                                .GetVideoOnlyStreams()
+                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                .ToList();
+
+                    maxVideoStreamInfo = streamManifest
+                                .GetVideoOnlyStreams()
+                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                .GetWithHighestVideoQuality();
+
+                    foreach (var item in videoStreamInfo)
+                    {
+                        items.Add(item.VideoQuality.Label);
+                    }
+
+                    if (items.Count > 0)
+                        Current.Disabled = true;
+                    else
+                        Current.Disabled = false;
+
+                    Items = items;
+
+                    if (!Current.Disabled)
+                    {
+                        Current.Value = items.Where(quality => quality.Contains(maxVideoStreamInfo.VideoQuality.Label)).First();
+                        Current.Default = items.Where(quality => quality.Contains(maxVideoStreamInfo.VideoQuality.Label)).First();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Current.Disabled = false;
+                    Logger.Error(e, e.GetDescription());
+                }
             }
         }
 
