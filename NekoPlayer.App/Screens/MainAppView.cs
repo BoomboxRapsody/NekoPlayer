@@ -125,8 +125,7 @@ namespace NekoPlayer.App.Screens
 
         private SettingsItemV2 audioLanguageItem, audioLanguageItem2, captionLangOptions;
 
-        private Sample overlayShowSample;
-        private Sample overlayHideSample;
+        private Sample overlayShowSample, overlayHideSample;
         private AdaptiveMaterialButton reportButton;
         private FormTextBox reportComment, playlistTitleBox, editPlaylistTitleBox;
 
@@ -361,6 +360,9 @@ namespace NekoPlayer.App.Screens
 
         protected Bindable<ReleaseStream> ReleaseStream;
 
+        private Bindable<SFXType> overlaySFXType;
+        private Bindable<bool> playOverlaySFX;
+
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
         {
@@ -382,6 +384,9 @@ namespace NekoPlayer.App.Screens
             videoPlaying = sessionStatics.GetBindable<bool>(Static.IsVideoPlaying);
             trayIconVisible = sessionStatics.GetBindable<bool>(Static.WindowIsTray);
             ReleaseStream = appConfig.GetBindable<ReleaseStream>(NekoPlayerSetting.ReleaseStream);
+
+            playOverlaySFX = appConfig.GetBindable<bool>(NekoPlayerSetting.PlayOverlaySFX);
+            overlaySFXType = appConfig.GetBindable<SFXType>(NekoPlayerSetting.OverlaySFXType);
 
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
@@ -443,6 +448,11 @@ namespace NekoPlayer.App.Screens
 
             windowedResolution.Value = sizeWindowed.Value;
 
+            overlaySFXType.BindValueChanged(sfx =>
+            {
+                RefreshSFX();
+            }, true);
+
             if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
             {
                 discordRichPresence.Disabled = !DiscordInstallationChecker.IsDiscordInstalled();
@@ -485,9 +495,6 @@ namespace NekoPlayer.App.Screens
 
             if (host.Renderer is IWindowsRenderer windowsRenderer)
                 fullscreenCapability.BindTo(windowsRenderer.FullscreenCapability);
-
-            overlayShowSample = sampleStore.Get(@"New_Fix/overlay-pop-in");
-            overlayHideSample = sampleStore.Get(@"New_Fix/overlay-pop-out");
 
             #region The UI Components
             InternalChildren = new Drawable[]
@@ -626,7 +633,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Height = 88,
+                                    Height = 84,
                                     Masking = false,
                                     //CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
                                     /*
@@ -649,7 +656,7 @@ namespace NekoPlayer.App.Screens
                                         new FillFlowContainer {
                                             RelativeSizeAxes = Axes.Both,
                                             Padding = new MarginPadding(16),
-                                            Spacing = new Vector2(0, 4),
+                                            Spacing = new Vector2(0, 2),
                                             Children = new Drawable[] {
                                                 seekbar = new RoundedSeekBar
                                                 {
@@ -1653,6 +1660,18 @@ namespace NekoPlayer.App.Screens
                                                             Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = adjustPitch,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleAdjustPitchOnSpeedChange),
+                                                        }),
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.PlayOverlaySFX,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
+                                                            Current = playOverlaySFX,
+                                                        }),
+                                                        new SettingsItemV2(new FormEnumDropdown<SFXType>
+                                                        {
+                                                            Caption = NekoPlayerStrings.SFXType,
+                                                            Icon = FontAwesome.Solid.VolumeUp,
+                                                            Current = overlaySFXType,
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
@@ -5421,6 +5440,9 @@ namespace NekoPlayer.App.Screens
                 audioEffectsOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
+            if (playOverlaySFX.Value)
+                overlayShowSample.Play();
+
             if (overlayContent is BottomOverlayContainer)
             {
                 isAnyOverlayOpen.Value = true;
@@ -5468,6 +5490,23 @@ namespace NekoPlayer.App.Screens
             }
         }
 
+        private void RefreshSFX()
+        {
+            if (appGlobalConfig.Get<SFXType>(NekoPlayerSetting.OverlaySFXType) == SFXType.Legacy)
+            {
+                overlayShowSample = sampleStoreGlobal.Get(@"overlay-pop-in");
+                overlayHideSample = sampleStoreGlobal.Get(@"overlay-pop-out");
+            }
+            else
+            {
+                overlayShowSample = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-in");
+                overlayHideSample = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-out");
+            }
+        }
+
+        [Resolved]
+        private ISampleStore sampleStoreGlobal { get; set; }
+
         private void hideOverlayContainer(OverlayContainer overlayContent)
         {
             //duckOperation?.Dispose();
@@ -5486,6 +5525,9 @@ namespace NekoPlayer.App.Screens
             {
                 audioEffectsOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
+
+            if (playOverlaySFX.Value)
+                overlayHideSample.Play();
 
             if (overlayContent is BottomOverlayContainer)
             {

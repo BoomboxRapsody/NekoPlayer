@@ -44,7 +44,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 backgroundColour = value;
                 Background.FadeColour(value);
                 triangleGradientSecondColour = BackgroundColour.Lighten(0.2f);
-                updateColours();
             }
         }
 
@@ -126,7 +125,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         private Color4? triangleGradientSecondColour;
-        private TrianglesV2? triangles { get; set; }
 
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
@@ -141,28 +139,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             Content.CornerRadius = Height / 2;
 
-            Add(triangles = new TrianglesV2
-            {
-                Thickness = 0.02f,
-                SpawnRatio = 0.6f,
-                RelativeSizeAxes = Axes.Both,
-                Depth = float.MaxValue,
-            });
-
-            updateColours();
-
             Colour = dimColour;
             Enabled.BindValueChanged(_ => this.FadeColour(dimColour, 200, Easing.OutQuint));
-        }
-
-        private void updateColours()
-        {
-            if (triangles == null)
-                return;
-
-            Debug.Assert(triangleGradientSecondColour != null);
-
-            triangles.Colour = ColourInfo.GradientVertical(triangleGradientSecondColour.Value, BackgroundColour);
         }
 
         private Color4 dimColour => Enabled.Value ? Color4.White : Color4.Gray;

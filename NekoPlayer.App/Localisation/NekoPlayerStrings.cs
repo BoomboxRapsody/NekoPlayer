@@ -1276,6 +1276,26 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString AlsaExclusiveNotice => new TranslatableString(getKey(@"alsa_exclusive_notice"), @"Note that you've selected a device with an exclusive-access driver, which means that you won't be able to hear sounds from other apps while in use by NekoPlayer. Also, to initialize it correctly, first ensure it's not being actively used by other applications. You may need to restart NekoPlayer and wait a moment to for it de-initialize if you've just used it through other audio driver.");
 
+        /// <summary>
+        /// "SFX Type"
+        /// </summary>
+        public static LocalisableString SFXType => new TranslatableString(getKey(@"sfx_type"), "SFX Type");
+
+        /// <summary>
+        /// "New SFX"
+        /// </summary>
+        public static LocalisableString SFXNew => new TranslatableString(getKey(@"sfx_new"), "New SFX");
+
+        /// <summary>
+        /// "Legacy (YouTube Player EX)"
+        /// </summary>
+        public static LocalisableString SFXLegacy => new TranslatableString(getKey(@"sfx_legacy"), "Legacy (YouTube Player EX)");
+
+        /// <summary>
+        /// "Play Overlay SFX"
+        /// </summary>
+        public static LocalisableString PlayOverlaySFX => new TranslatableString(getKey(@"play_overlay_sfx"), "Play Overlay SFX");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

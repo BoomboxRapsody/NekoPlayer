@@ -87,6 +87,9 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.VideoMetadataDisplayAlignment, VideoMetadataDisplayAlignment.Left);
 
             SetDefault(NekoPlayerSetting.SearchSortCriteria, SearchSortCriteria.Relevance);
+
+            SetDefault(NekoPlayerSetting.PlayOverlaySFX, false);
+            SetDefault(NekoPlayerSetting.OverlaySFXType, SFXType.Normal);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -164,5 +167,8 @@ namespace NekoPlayer.App.Config
         CaptionFont,
         VideoMetadataDisplayAlignment,
         SearchSortCriteria,
+
+        PlayOverlaySFX,
+        OverlaySFXType,
     }
 }
