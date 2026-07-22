@@ -124,7 +124,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 },
                                 desc = new TruncatingSpriteText
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
                                     RelativeSizeAxes = Axes.X,
                                     Colour = overlayColourProvider.Foreground2,
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,

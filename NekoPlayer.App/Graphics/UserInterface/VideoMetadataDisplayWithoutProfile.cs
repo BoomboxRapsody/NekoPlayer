@@ -100,7 +100,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 },
                                 desc = new AdaptiveSpriteText
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
                                     Colour = Color4.Gray,
                                     Position = new osuTK.Vector2(0, 20),
