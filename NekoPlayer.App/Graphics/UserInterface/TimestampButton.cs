@@ -54,6 +54,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             f.Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Bold");
                         })
                         {
+                            AutoSizeAxes = Axes.Both,
                             Margin = new MarginPadding(2),
                         }
                     }
@@ -64,7 +65,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected override void LoadComplete()
         {
             base.LoadComplete();
-            textFlow.AddIcon(FontAwesome.Solid.Stopwatch);
+            textFlow.AddIcon(FontAwesome.Solid.Stopwatch, o => o.Margin = new MarginPadding() { Right = 4 });
             textFlow.AddText(text);
         }
 
