@@ -199,7 +199,7 @@ namespace NekoPlayer.App.Graphics
     public class BackdropBlurDrawNodeSharedData : BufferedDrawNodeSharedData
     {
         public BackdropBlurDrawNodeSharedData(RenderBufferFormat[] mainBufferFormats)
-            : base(2, mainBufferFormats, clipToRootNode: true)
+            : base(effectBufferCount: 2, textureFormat: TexturePixelFormat.R8G8B8A8Float, mainBufferFormats, clipToRootNode: true)
         {
         }
 

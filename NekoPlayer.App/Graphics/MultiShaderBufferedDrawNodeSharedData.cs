@@ -59,11 +59,11 @@ namespace NekoPlayer.App.Graphics
                 case IStepShader stepShader:
                 {
                     var stepShaderAmount = Math.Min(stepShader.StepShaders.Count, 2);
-                    return new BufferedDrawNodeSharedData(stepShaderAmount, formats, PixelSnapping, ClipToRootNode);
+                    return new BufferedDrawNodeSharedData(effectBufferCount: stepShaderAmount, textureFormat: TexturePixelFormat.R8G8B8A8Float, formats, PixelSnapping, ClipToRootNode);
                 }
 
                 default:
-                    return new BufferedDrawNodeSharedData(formats, PixelSnapping, ClipToRootNode);
+                    return new BufferedDrawNodeSharedData(textureFormat: TexturePixelFormat.R8G8B8A8Float, formats: formats, PixelSnapping, ClipToRootNode);
             }
         }
 

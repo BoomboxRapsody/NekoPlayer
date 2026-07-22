@@ -8,6 +8,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Primitives;
+using osu.Framework.Graphics.Rendering;
 using osu.Framework.Graphics.Shaders;
 using osu.Framework.Layout;
 using osuTK;
@@ -92,7 +93,7 @@ namespace NekoPlayer.App.Graphics.Shaders.New
         public IShader TextureShader { get; private set; }
         public DrawColourInfo? FrameBufferDrawColour => base.DrawColourInfo;
 
-        protected BufferedDrawNodeSharedData SharedData { get; } = new(2, null, false, true);
+        protected BufferedDrawNodeSharedData SharedData { get; } = new(effectBufferCount: 2, textureFormat: TexturePixelFormat.R8G8B8A8Float, null, false, true);
         private IShader shader { get; set; }
 
         Color4 IBufferedDrawable.BackgroundColour => Color4.White;
