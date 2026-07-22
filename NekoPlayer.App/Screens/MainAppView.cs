@@ -2689,8 +2689,8 @@ namespace NekoPlayer.App.Screens
                                                     {
                                                         playlistName = new TruncatingSpriteText
                                                         {
-                                                            Origin = Anchor.TopLeft,
-                                                            Anchor = Anchor.TopLeft,
+                                                            Origin = Anchor.TopCentre,
+                                                            Anchor = Anchor.TopCentre,
                                                             Text = NekoPlayerStrings.PlaylistNotLoaded,
                                                             RelativeSizeAxes = Axes.X,
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
@@ -2702,8 +2702,9 @@ namespace NekoPlayer.App.Screens
                                                             f.Colour = overlayColourProvider.Background1;
                                                         })
                                                         {
-                                                            Origin = Anchor.TopLeft,
-                                                            Anchor = Anchor.TopLeft,
+                                                            TextAnchor = Anchor.Centre,
+                                                            Origin = Anchor.TopCentre,
+                                                            Anchor = Anchor.TopCentre,
                                                             Text = NekoPlayerStrings.PlaylistNotLoadedDesc,
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
