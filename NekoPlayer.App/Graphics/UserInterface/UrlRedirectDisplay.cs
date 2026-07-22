@@ -121,13 +121,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                         {
                                             Margin = new MarginPadding(2),
                                             Text = url,
+                                            Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                         },
                                         urlText = new AdaptiveSpriteText
                                         {
                                             Margin = new MarginPadding(2),
                                             Text = url,
                                             Colour = overlayColourProvider.Foreground1,
-                                            Font = NekoPlayerApp.DefaultFont.With(size: 12),
+                                            Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Light"),
                                         }
                                     }
                                 },

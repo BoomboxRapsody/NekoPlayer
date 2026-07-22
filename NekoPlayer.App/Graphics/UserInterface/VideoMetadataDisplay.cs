@@ -117,14 +117,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             {
                                 videoName = new TruncatingSpriteText
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
                                     RelativeSizeAxes = Axes.X,
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 desc = new TruncatingSpriteText
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"),
                                     RelativeSizeAxes = Axes.X,
                                     Colour = overlayColourProvider.Foreground2,
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,

@@ -50,7 +50,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         {
                             Margin = new MarginPadding(2),
                             Text = text,
-                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f),
+                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Bold"),
                         }
                     }
                 }

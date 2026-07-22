@@ -102,7 +102,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             Spacing = new Vector2(0, 2),
                             Children = new Drawable[]
                             {
-                                channelName = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"))
+                                channelName = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Bold"))
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     AutoSizeAxes = Axes.Y,
@@ -161,7 +161,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                         likeCount = new AdaptiveSpriteText
                                                         {
                                                             Colour = overlayColourProvider.Content2,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Regular"),
+                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),
                                                         },
                                                     }
                                                 }
@@ -206,7 +206,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                         replyCount = new AdaptiveSpriteText
                                                         {
                                                             Colour = overlayColourProvider.Content2,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Regular"),
+                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),
                                                         },
                                                     }
                                                 }
