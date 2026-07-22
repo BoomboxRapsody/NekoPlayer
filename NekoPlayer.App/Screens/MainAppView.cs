@@ -1785,7 +1785,7 @@ namespace NekoPlayer.App.Screens
                                                                 }
                                                             },
                                                         },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"))
+                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"))
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
@@ -1793,7 +1793,7 @@ namespace NekoPlayer.App.Screens
                                                             TextAnchor = Anchor.Centre,
                                                             Colour = overlayColourProvider.Content2,
                                                         },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 15, weight: "Bold"))
+                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 15, weight: "SemiBold"))
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
