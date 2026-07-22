@@ -75,7 +75,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.AccessToken, string.Empty);
             SetDefault(NekoPlayerSetting.AudioQuality, AudioQuality.PreferHighQuality);
             SetDefault(NekoPlayerSetting.CloseButtonAction, CloseButtonAction.HideToTrayIcon);
-            SetDefault(NekoPlayerSetting.ColourScheme, OverlayColourScheme.Aquamarine);
+            SetDefault(NekoPlayerSetting.ColourScheme, OverlayColourScheme.Purple);
             SetDefault(NekoPlayerSetting.ProfileImageShape, ProfileImageShape.Circle);
             SetDefault(NekoPlayerSetting.CommentsSortCriteria, CommentsSortCriteria.Top);
 
