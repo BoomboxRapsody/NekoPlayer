@@ -280,7 +280,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             if (NekoPlayerDescriptionParser.IsYouTubeVideo(url))
                 app.AppMessageHandler.SelectVideo(url);
-            if (NekoPlayerDescriptionParser.IsYouTubePlaylist(url))
+            else if (NekoPlayerDescriptionParser.IsYouTubePlaylist(url))
                 app.AppMessageHandler.SelectPlaylist(url);
             else
                 host.OpenUrlExternally(url);
