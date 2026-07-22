@@ -93,7 +93,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
 
-            InternalChild = textFlow = new AdaptiveTextFlowContainer(t => t.Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "SemiBold"))
+            InternalChild = textFlow = new AdaptiveTextFlowContainer(t => t.Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "ExtraBold"))
             {
                 RelativeSizeAxes = Axes.X,
                 AutoSizeAxes = Axes.Y,
