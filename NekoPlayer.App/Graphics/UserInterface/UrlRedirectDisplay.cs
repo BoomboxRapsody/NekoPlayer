@@ -121,13 +121,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                         {
                                             Margin = new MarginPadding(2),
                                             Text = url,
+                                            Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                         },
                                         urlText = new AdaptiveSpriteText
                                         {
                                             Margin = new MarginPadding(2),
                                             Text = url,
                                             Colour = overlayColourProvider.Foreground1,
-                                            Font = NekoPlayerApp.DefaultFont.With(size: 12),
+                                            Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Light"),
                                         }
                                     }
                                 },
@@ -279,7 +280,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             if (NekoPlayerDescriptionParser.IsYouTubeVideo(url))
                 app.AppMessageHandler.SelectVideo(url);
-            if (NekoPlayerDescriptionParser.IsYouTubePlaylist(url))
+            else if (NekoPlayerDescriptionParser.IsYouTubePlaylist(url))
                 app.AppMessageHandler.SelectPlaylist(url);
             else
                 host.OpenUrlExternally(url);

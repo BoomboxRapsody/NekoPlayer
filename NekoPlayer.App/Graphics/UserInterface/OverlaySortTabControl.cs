@@ -221,7 +221,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                 ContentColour = Active.Value ? colourProvider.Light1 : Color4.White;
 
-                text.Font = text.Font.With(weight: Active.Value ? "Bold" : "Regular");
+                text.Font = text.Font.With(weight: Active.Value ? "ExtraBold" : "SemiBold");
             }
         }
     }

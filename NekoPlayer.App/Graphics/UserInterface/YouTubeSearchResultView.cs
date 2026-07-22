@@ -122,7 +122,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoNameText = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Bold"))
+                                videoNameText = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "ExtraBold"))
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Colour = overlayColourProvider.Content2,
@@ -131,14 +131,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Position = new Vector2(0, 17),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"),
                                     Colour = overlayColourProvider.Background1,
                                 },
                                 viewsText = new TruncatingSpriteText
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Position = new Vector2(0, (17 + 13)),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"),
                                     Colour = overlayColourProvider.Background1,
                                 },
                             }

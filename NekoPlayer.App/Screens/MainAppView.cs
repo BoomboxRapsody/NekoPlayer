@@ -207,7 +207,7 @@ namespace NekoPlayer.App.Screens
 
         private AudioDeviceDropdown audioDeviceDropdown = null!;
 
-        private AdaptiveSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, playlistName, volumeText;
+        private AdaptiveSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, volumeText;
         private AdaptiveSpriteText speedText;
         private LinkFlowContainer videoDescription, gameVersion;
         private FillFlowContainer commentContainer, searchResultContainer, playlistItemsView, myPlaylistItemsView;
@@ -908,7 +908,7 @@ namespace NekoPlayer.App.Screens
                                                                                         Top = 7
                                                                                     },
                                                                                     AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont,
+                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                 },
                                                                             }
@@ -980,7 +980,7 @@ namespace NekoPlayer.App.Screens
                                                                                         Top = 7
                                                                                     },
                                                                                     AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont,
+                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                 },
                                                                             }
@@ -1028,7 +1028,7 @@ namespace NekoPlayer.App.Screens
                                                                                         Top = 7
                                                                                     },
                                                                                     AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont,
+                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                     Text = "0:00 / 0:00"
                                                                                 },
@@ -1111,7 +1111,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.LoadFromVideoId,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 loadBtn = new AdaptiveButton
@@ -1785,7 +1785,7 @@ namespace NekoPlayer.App.Screens
                                                                 }
                                                             },
                                                         },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"))
+                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"))
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
@@ -1793,11 +1793,11 @@ namespace NekoPlayer.App.Screens
                                                             TextAnchor = Anchor.Centre,
                                                             Colour = overlayColourProvider.Content2,
                                                         },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 15, weight: "Bold"))
+                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 15, weight: "SemiBold"))
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
-                                                            Text = "as known as YouTube Player EX",
+                                                            Text = "known as YouTube Player EX",
                                                             TextAnchor = Anchor.Centre,
                                                             Colour = overlayColourProvider.Content2,
                                                         },
@@ -1852,7 +1852,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Settings,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -2247,7 +2247,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Comments("0"),
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 new OverlaySortTabControl<CommentsSortCriteria>
@@ -2360,7 +2360,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = "Video info (Expert)",
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 new Container
@@ -2459,7 +2459,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Search,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 new OverlaySortTabControl<SearchSortCriteria>
@@ -2638,7 +2638,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.Report,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -2687,14 +2687,18 @@ namespace NekoPlayer.App.Screens
                                                     Spacing = new Vector2(4),
                                                     Children = new Drawable[]
                                                     {
-                                                        playlistName = new TruncatingSpriteText
+                                                        playlistName = new AdaptiveTextFlowContainer(f =>
                                                         {
-                                                            Origin = Anchor.TopLeft,
-                                                            Anchor = Anchor.TopLeft,
+                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold");
+                                                            f.Colour = overlayColourProvider.Content2;
+                                                        })
+                                                        {
+                                                            TextAnchor = Anchor.Centre,
+                                                            Origin = Anchor.TopCentre,
+                                                            Anchor = Anchor.TopCentre,
                                                             Text = NekoPlayerStrings.PlaylistNotLoaded,
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
-                                                            Colour = overlayColourProvider.Content2,
+                                                             RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
                                                         },
                                                         playlistAuthor = new LinkFlowContainer(f =>
                                                         {
@@ -2702,8 +2706,9 @@ namespace NekoPlayer.App.Screens
                                                             f.Colour = overlayColourProvider.Background1;
                                                         })
                                                         {
-                                                            Origin = Anchor.TopLeft,
-                                                            Anchor = Anchor.TopLeft,
+                                                            TextAnchor = Anchor.Centre,
+                                                            Origin = Anchor.TopCentre,
+                                                            Anchor = Anchor.TopCentre,
                                                             Text = NekoPlayerStrings.PlaylistNotLoadedDesc,
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
@@ -2735,7 +2740,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = NekoPlayerStrings.Playlists,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 loadPlaylistOpenButton = new IconButton
@@ -2821,7 +2826,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = NekoPlayerStrings.MyPlaylists,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -2848,7 +2853,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.LoadFromPlaylistId,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 loadPlaylistBtn = new AdaptiveButton
@@ -3123,7 +3128,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = NekoPlayerStrings.AudioEffects,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -3305,7 +3310,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.SaveLocation,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -3412,7 +3417,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.EditPlaylist,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -3523,7 +3528,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.AddNewPlaylist,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -3750,7 +3755,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = NekoPlayerStrings.Menu,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                             }
@@ -3777,7 +3782,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = NekoPlayerStrings.ExitOptions,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 new Container
@@ -3849,7 +3854,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.GoogleAccount,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 youtubeChannelMetadataDisplay2 = new YouTubeChannelMetadataDisplay
@@ -3912,7 +3917,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopCentre,
                                     Text = NekoPlayerStrings.DownloadVideo,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 new Container
@@ -4017,7 +4022,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = NekoPlayerStrings.DownloadVideo,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 downloadingText = new AdaptiveSpriteText
@@ -4058,7 +4063,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     Text = NekoPlayerStrings.DownloadVideo,
                                     Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
                                 new AdaptiveButton
@@ -5178,7 +5183,7 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private ScreenshotManager screenshotManager { get; set; }
 
-        private AdaptiveTextFlowContainer infoForNerds;
+        private AdaptiveTextFlowContainer infoForNerds, playlistName;
 
         private Bindable<float> scalingPositionX = null!;
         private Bindable<float> scalingPositionY = null!;

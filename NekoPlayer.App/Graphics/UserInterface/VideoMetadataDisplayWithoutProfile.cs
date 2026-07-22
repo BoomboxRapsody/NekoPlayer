@@ -94,7 +94,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             {
                                 videoName = new AdaptiveSpriteText
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                     Colour = Color4.White,
                                 },

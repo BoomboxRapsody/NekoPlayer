@@ -1,8 +1,6 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-using Humanizer;
-using NekoPlayer.App.Extensions;
 using osu.Framework.Localisation;
 
 namespace NekoPlayer.App.Localisation
@@ -339,7 +337,7 @@ namespace NekoPlayer.App.Localisation
         /// <summary>
         /// "Playback speed: {0}"
         /// </summary>
-        public static LocalisableString PlaybackSpeed(double value) => new TranslatableString(getKey(@"playback_speed"), "Playback speed: {0}", value.ToStandardFormattedString(5, true));
+        public static LocalisableString PlaybackSpeed(double value) => new TranslatableString(getKey(@"playback_speed"), "Playback speed: {0}", $@"{value:0.##}x");
 
         /// <summary>
         /// "Comments"

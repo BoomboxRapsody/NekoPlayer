@@ -68,7 +68,7 @@ namespace NekoPlayer.App.Overlays.OSD
                 {
                     Padding = new MarginPadding { Horizontal = 22, Vertical = 15 },
                     Name = "Description",
-                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
+                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
                     Text = description

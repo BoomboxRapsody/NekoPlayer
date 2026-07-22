@@ -143,14 +143,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Position = new Vector2(0, 17),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"),
                                     Colour = overlayColourProvider.Background1,
                                 },
                                 privacyStatusText = new TruncatingSpriteText
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Position = new Vector2(0, (17 + 13)),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
+                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"),
                                     Colour = overlayColourProvider.Background1,
                                 },
                             }
