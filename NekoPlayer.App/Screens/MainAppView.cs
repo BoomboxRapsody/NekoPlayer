@@ -908,7 +908,7 @@ namespace NekoPlayer.App.Screens
                                                                                         Top = 7
                                                                                     },
                                                                                     AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont,
+                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                 },
                                                                             }
@@ -980,7 +980,7 @@ namespace NekoPlayer.App.Screens
                                                                                         Top = 7
                                                                                     },
                                                                                     AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont,
+                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                 },
                                                                             }
@@ -1028,7 +1028,7 @@ namespace NekoPlayer.App.Screens
                                                                                         Top = 7
                                                                                     },
                                                                                     AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont,
+                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
                                                                                     Colour = overlayColourProvider.Content2,
                                                                                     Text = "0:00 / 0:00"
                                                                                 },
