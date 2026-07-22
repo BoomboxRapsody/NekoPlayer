@@ -224,7 +224,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                     {
                         Vertical = 5,
                         Left = 9,
-                        Right = 5,
+                        Right = 8,
                     },
                     Children = new Drawable[]
                     {
