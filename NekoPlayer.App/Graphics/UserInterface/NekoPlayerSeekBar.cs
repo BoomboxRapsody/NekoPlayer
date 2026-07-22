@@ -257,7 +257,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             float amplitude = amplitudeAnimated.Value * amplitudeAnimated2.Value;
             float step = 1f;
 
-            for (float x = 0; x <= LeftBoxContainer.DrawWidth - 8f; x += step)
+            for (float x = 0; x <= LeftBoxContainer.Width - 8f; x += step)
             {
                 float y = MathF.Sin((x - ((float)(((Time.Current * -1f) * 0.05f) * speedRolling.Value))) * frequency) * amplitude;
                 points.Add(new Vector2(x, y));
