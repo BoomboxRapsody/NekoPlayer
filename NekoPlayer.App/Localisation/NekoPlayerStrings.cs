@@ -4,6 +4,7 @@
 using Humanizer;
 using NekoPlayer.App.Extensions;
 using osu.Framework.Localisation;
+using SixLabors.ImageSharp.Metadata.Profiles.Iptc;
 
 namespace NekoPlayer.App.Localisation
 {
@@ -339,7 +340,7 @@ namespace NekoPlayer.App.Localisation
         /// <summary>
         /// "Playback speed: {0}"
         /// </summary>
-        public static LocalisableString PlaybackSpeed(double value) => new TranslatableString(getKey(@"playback_speed"), "Playback speed: {0}", value.ToStandardFormattedString(5, true));
+        public static LocalisableString PlaybackSpeed(double value) => new TranslatableString(getKey(@"playback_speed"), "Playback speed: {0}", $@"{value:0.##}x");
 
         /// <summary>
         /// "Comments"
