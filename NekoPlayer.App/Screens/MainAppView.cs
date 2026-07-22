@@ -8201,7 +8201,6 @@ namespace NekoPlayer.App.Screens
                         videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                     }
 
-
                     try
                     {
                         await videoQualitySettings.RefreshQualityList(videoUrl);
