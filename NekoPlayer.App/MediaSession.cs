@@ -13,6 +13,7 @@ namespace NekoPlayer.App
     public partial class MediaSession : CompositeDrawable
     {
         protected YouTubeAPI YouTubeAPI;
+        protected bool IsLoaded;
 
         public MediaSession()
         {

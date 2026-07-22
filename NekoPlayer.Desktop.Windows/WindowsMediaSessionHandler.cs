@@ -57,6 +57,7 @@ namespace NekoPlayer.Desktop.Windows
                 smtc.DisplayUpdater.MusicProperties.Artist = "(unknown)";
 
                 smtc.DisplayUpdater.Update();
+                IsLoaded = true;
 
                 base.YouTubeAPI = youtubeAPI;
             });
@@ -95,14 +96,17 @@ namespace NekoPlayer.Desktop.Windows
         {
             try
             {
-                smtc.UpdateTimelineProperties(new SystemMediaTransportControlsTimelineProperties
+                if (IsLoaded)
                 {
-                    StartTime = TimeSpan.Zero,
-                    EndTime = XmlConvert.ToTimeSpan(video.ContentDetails.Duration),
-                    Position = TimeSpan.FromSeconds(pos * 0.001f)
-                });
+                    smtc.UpdateTimelineProperties(new SystemMediaTransportControlsTimelineProperties
+                    {
+                        StartTime = TimeSpan.Zero,
+                        EndTime = XmlConvert.ToTimeSpan(video.ContentDetails.Duration),
+                        Position = TimeSpan.FromSeconds(pos * 0.001f)
+                    });
 
-                mediaPlayer.Position = TimeSpan.FromSeconds(pos * 0.001f);
+                    mediaPlayer.Position = TimeSpan.FromSeconds(pos * 0.001f);
+                }
             }
             catch (Exception ex)
             {
@@ -114,6 +118,7 @@ namespace NekoPlayer.Desktop.Windows
         {
             smtc.DisplayUpdater.ClearAll();
             smtc = null;
+            IsLoaded = false;
             mediaPlayer.Dispose();
         }
 
