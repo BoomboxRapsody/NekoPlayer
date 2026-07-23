@@ -74,7 +74,7 @@
     <value>사용 안함</value>
   </data>
   <data name="caption_language" xml:space="preserve">
-    <value>자막 언어 (가능한 경우)</value>
+    <value>자막 언어</value>
   </data>
   <data name="disabled" xml:space="preserve">
     <value>꺼짐</value>

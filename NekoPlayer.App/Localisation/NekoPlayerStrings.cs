@@ -90,9 +90,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString ScreenMode => new TranslatableString(getKey(@"screen_mode"), "Screen mode");
 
         /// <summary>
-        /// "Closed caption language (only available)"
+        /// "Closed caption language"
         /// </summary>
-        public static LocalisableString CaptionLanguage => new TranslatableString(getKey(@"caption_language"), "Closed caption language (only available)");
+        public static LocalisableString CaptionLanguage => new TranslatableString(getKey(@"caption_language"), "Closed caption language");
 
         /// <summary>
         /// "Closed caption font"

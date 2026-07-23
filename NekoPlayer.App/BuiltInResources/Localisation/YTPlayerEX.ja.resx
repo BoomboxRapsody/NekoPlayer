@@ -74,7 +74,7 @@
     <value>無効</value>
   </data>
   <data name="caption_language" xml:space="preserve">
-    <value>クローズドキャプション言語（使用可能）</value>
+    <value>クローズドキャプション言語</value>
   </data>
   <data name="disabled" xml:space="preserve">
     <value>無効</value>
