@@ -1670,7 +1670,7 @@ namespace NekoPlayer.App.Screens
                                                             Current = caption_font,
                                                             Icon = FontAwesome.Solid.Font,
                                                         }),
-                                                        new SettingsItemV2(new FormSliderBar<double>
+                                                        new SettingsItemV2(new FormSliderBar<float>
                                                         {
                                                             Caption = NekoPlayerStrings.CaptionBGOpacity,
                                                             Icon = FontAwesome.Solid.Sun,
@@ -8605,7 +8605,7 @@ namespace NekoPlayer.App.Screens
             [Resolved]
             private GoogleTranslate googleTranslate { get; set; }
 
-            public YoutubeExplode.Videos.Streams.VideoQuality currentVideoQuality;
+            public YoutubeExplode.Videos.Streams.VideoQuality CurrentVideoQuality;
 
             [BackgroundDependencyLoader]
             private void load()
