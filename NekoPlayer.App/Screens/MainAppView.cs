@@ -8742,11 +8742,6 @@ namespace NekoPlayer.App.Screens
                         items.Add(youTubeI18NLangItem);
                     }
 
-                    if (items.Count > 0)
-                        Current.Disabled = true;
-                    else
-                        Current.Disabled = false;
-
                     Items = items;
 
                     if (!Current.Disabled)
