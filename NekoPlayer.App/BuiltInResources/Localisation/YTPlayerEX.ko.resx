@@ -835,4 +835,7 @@
   <data name="play_overlay_sfx" xml:space="preserve">
     <value>오버레이 효과음 재생</value>
   </data>
+  <data name="closed_captions_bg_opacity" xml:space="preserve">
+    <value>자막 배경의 투명도</value>
+  </data>
 </root>

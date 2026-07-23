@@ -1294,6 +1294,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString PlayOverlaySFX => new TranslatableString(getKey(@"play_overlay_sfx"), "Play Overlay SFX");
 
+        /// <summary>
+        /// "Closed captions background opacity"
+        /// </summary>
+        public static LocalisableString CaptionBGOpacity => new TranslatableString(getKey(@"closed_captions_bg_opacity"), @"Closed captions background opacity");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

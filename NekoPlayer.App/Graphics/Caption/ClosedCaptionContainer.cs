@@ -55,12 +55,16 @@ namespace NekoPlayer.App.Graphics.Caption
 
         private Action<SpriteText> textCreationParameters;
 
+        private Bindable<double> captionBGOpacity;
+        private Box bg;
+
         [BackgroundDependencyLoader]
         private void load(NekoPlayerConfigManager config, SessionStatics sessionStatics)
         {
             controlsVisibleState = sessionStatics.GetBindable<bool>(Static.IsControlVisible);
             captionEnabled = config.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
             captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
+            captionBGOpacity = config.GetBindable<double>(NekoPlayerSetting.CaptionBGOpacity);
 
             Add(captionContainer = new Container
             {
@@ -72,13 +76,17 @@ namespace NekoPlayer.App.Graphics.Caption
                 Masking = true,
                 Children = new Drawable[]
                 {
-                    new Box
+                    bg = new Box
                     {
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4.Black,
                         Alpha = 0.5f
                     },
-                    spriteText = new AdaptiveTextFlowContainer(t => t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24))
+                    spriteText = new AdaptiveTextFlowContainer(t =>
+                    {
+                        t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                        t.Shadow = false;
+                    })
                     {
                         TextAnchor = Anchor.Centre,
                         AutoSizeAxes = Axes.Both,
@@ -86,6 +94,11 @@ namespace NekoPlayer.App.Graphics.Caption
                     }
                 }
             });
+
+            captionBGOpacity.BindValueChanged(opacity =>
+            {
+                bg.Alpha = Convert.ToSingle(opacity.NewValue);
+            }, true);
 
             captionFont.BindValueChanged(v =>
             {

@@ -363,6 +363,8 @@ namespace NekoPlayer.App.Screens
         private Bindable<SFXType> overlaySFXType;
         private Bindable<bool> playOverlaySFX;
 
+        private Bindable<double> captionBGOpacity;
+
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
         {
@@ -387,6 +389,8 @@ namespace NekoPlayer.App.Screens
 
             playOverlaySFX = appConfig.GetBindable<bool>(NekoPlayerSetting.PlayOverlaySFX);
             overlaySFXType = appConfig.GetBindable<SFXType>(NekoPlayerSetting.OverlaySFXType);
+
+            captionBGOpacity = appConfig.GetBindable<double>(NekoPlayerSetting.CaptionBGOpacity);
 
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
@@ -1598,27 +1602,6 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
-                                                            Caption = NekoPlayerStrings.ClosedCaptions,
-                                                            Icon = FontAwesome.Solid.ClosedCaptioning,
-                                                            Current = captionEnabled,
-                                                            Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
-                                                        }),
-                                                        captionLangOptions = new SettingsItemV2(captionLangDropdown = new YouTubeI18nLangDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.CaptionLanguage,
-                                                            Icon = FontAwesome.Solid.Language,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                        },
-                                                        new SettingsItemV2(new FormEnumFontDropdown<CaptionFonts>
-                                                        {
-                                                            Caption = NekoPlayerStrings.CaptionFont,
-                                                            Current = caption_font,
-                                                            Icon = FontAwesome.Solid.Font,
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
                                                             Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,
                                                             Icon = FontAwesome.Solid.Font,
                                                             Current = showVideoMetadataOnWindowTitle,
@@ -1658,6 +1641,40 @@ namespace NekoPlayer.App.Screens
                                                             Current = appConfig.GetBindable<float>(NekoPlayerSetting.VideoHueShift),
                                                             KeyboardStep = 1,
                                                             LabelFormat = value => $"{value:N0}°"
+                                                        }),
+                                                        new AdaptiveSpriteText
+                                                        {
+                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
+                                                            Text = NekoPlayerStrings.ClosedCaptions,
+                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
+                                                            Colour = overlayColourProvider.Content2,
+                                                        },
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.ClosedCaptions,
+                                                            Icon = FontAwesome.Solid.ClosedCaptioning,
+                                                            Current = captionEnabled,
+                                                            Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
+                                                        }),
+                                                        captionLangOptions = new SettingsItemV2(captionLangDropdown = new YouTubeI18nLangDropdown
+                                                        {
+                                                            Caption = NekoPlayerStrings.CaptionLanguage,
+                                                            Icon = FontAwesome.Solid.Language,
+                                                        })
+                                                        {
+                                                            ShowRevertToDefaultButton = false,
+                                                        },
+                                                        new SettingsItemV2(new FormEnumFontDropdown<CaptionFonts>
+                                                        {
+                                                            Caption = NekoPlayerStrings.CaptionFont,
+                                                            Current = caption_font,
+                                                            Icon = FontAwesome.Solid.Font,
+                                                        }),
+                                                        new SettingsItemV2(new FormSliderBar<double>
+                                                        {
+                                                            Caption = NekoPlayerStrings.CaptionBGOpacity,
+                                                            Icon = FontAwesome.Solid.Sun,
+                                                            Current = captionBGOpacity,
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
