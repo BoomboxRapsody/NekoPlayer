@@ -237,11 +237,27 @@ namespace NekoPlayer.App
 
             sentry.Dispose();
 
+            DirectoryInfo directoryInfo = new DirectoryInfo(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath(string.Empty));
+
+            RecursiveDelete(directoryInfo);
+
             AudioEffectsConfig?.Dispose();
             LocalConfig?.Dispose();
 
             if (Host != null)
                 Host.ExceptionThrown -= onExceptionThrown;
+        }
+
+        public static void RecursiveDelete(DirectoryInfo baseDir)
+        {
+            if (!baseDir.Exists)
+                return;
+
+            foreach (var dir in baseDir.EnumerateDirectories())
+            {
+                RecursiveDelete(dir);
+            }
+            baseDir.Delete(true);
         }
 
         protected SessionStatics SessionStatics { get; private set; }

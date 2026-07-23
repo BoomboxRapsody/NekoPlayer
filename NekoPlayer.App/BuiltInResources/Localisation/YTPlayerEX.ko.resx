@@ -74,7 +74,7 @@
     <value>사용 안함</value>
   </data>
   <data name="caption_language" xml:space="preserve">
-    <value>자막 언어 (가능한 경우)</value>
+    <value>자막 언어</value>
   </data>
   <data name="disabled" xml:space="preserve">
     <value>꺼짐</value>
@@ -834,5 +834,8 @@
   </data>
   <data name="play_overlay_sfx" xml:space="preserve">
     <value>오버레이 효과음 재생</value>
+  </data>
+  <data name="closed_captions_bg_opacity" xml:space="preserve">
+    <value>자막 배경의 투명도</value>
   </data>
 </root>

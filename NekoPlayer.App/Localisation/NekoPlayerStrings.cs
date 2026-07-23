@@ -90,9 +90,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString ScreenMode => new TranslatableString(getKey(@"screen_mode"), "Screen mode");
 
         /// <summary>
-        /// "Closed caption language (only available)"
+        /// "Closed caption language"
         /// </summary>
-        public static LocalisableString CaptionLanguage => new TranslatableString(getKey(@"caption_language"), "Closed caption language (only available)");
+        public static LocalisableString CaptionLanguage => new TranslatableString(getKey(@"caption_language"), "Closed caption language");
 
         /// <summary>
         /// "Closed caption font"
@@ -1293,6 +1293,11 @@ namespace NekoPlayer.App.Localisation
         /// "Play Overlay SFX"
         /// </summary>
         public static LocalisableString PlayOverlaySFX => new TranslatableString(getKey(@"play_overlay_sfx"), "Play Overlay SFX");
+
+        /// <summary>
+        /// "Closed captions background opacity"
+        /// </summary>
+        public static LocalisableString CaptionBGOpacity => new TranslatableString(getKey(@"closed_captions_bg_opacity"), @"Closed captions background opacity");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

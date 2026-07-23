@@ -74,7 +74,7 @@
     <value>無効</value>
   </data>
   <data name="caption_language" xml:space="preserve">
-    <value>クローズドキャプション言語（使用可能）</value>
+    <value>クローズドキャプション言語</value>
   </data>
   <data name="disabled" xml:space="preserve">
     <value>無効</value>
@@ -831,5 +831,8 @@
   </data>
   <data name="play_overlay_sfx" xml:space="preserve">
     <value>再生オーバーレイ効果音</value>
+  </data>
+  <data name="closed_captions_bg_opacity" xml:space="preserve">
+    <value>クローズドキャプション背景不透明度</value>
   </data>
 </root>

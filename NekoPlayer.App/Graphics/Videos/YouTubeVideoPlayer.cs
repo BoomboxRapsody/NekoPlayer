@@ -293,13 +293,13 @@ namespace NekoPlayer.App.Graphics.Videos
 
         protected override void Dispose(bool isDisposing)
         {
-            base.Dispose(isDisposing);
             uiLanguage.UnbindEvents();
             mediaSession?.UnregisterControlEvents();
             mediaSession?.DeleteMediaSession();
 
             drawableTrack.Dispose();
             video.Dispose();
+            base.Dispose(isDisposing);
         }
 
         public bool IsPlaying()
