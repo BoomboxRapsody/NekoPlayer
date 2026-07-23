@@ -8751,8 +8751,16 @@ namespace NekoPlayer.App.Screens
 
                     if (!Current.Disabled)
                     {
-                        Current.Value = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
-                        Current.Default = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                        if (items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First() == null)
+                        {
+                            Current.Value = items.First();
+                            Current.Default = items.First();
+                        }
+                        else
+                        {
+                            Current.Value = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                            Current.Default = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
+                        }
                     }
                 }
                 catch (Exception e)
