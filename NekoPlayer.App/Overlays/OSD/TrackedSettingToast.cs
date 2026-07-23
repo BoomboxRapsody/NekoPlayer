@@ -4,6 +4,8 @@
 #nullable disable
 
 using System;
+using NekoPlayer.App.Config;
+using NekoPlayer.App.Graphics;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -11,9 +13,8 @@ using osu.Framework.Bindables;
 using osu.Framework.Configuration.Tracking;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
-using NekoPlayer.App.Config;
-using NekoPlayer.App.Graphics;
 using osuTK;
 using osuTK.Graphics;
 
@@ -141,7 +142,7 @@ namespace NekoPlayer.App.Overlays.OSD
 
             private const float transition_speed = 300;
 
-            private const float glow_strength = 0.4f;
+            private const float glow_strength = 0.5f;
 
             private readonly Box fill;
 
@@ -179,6 +180,13 @@ namespace NekoPlayer.App.Overlays.OSD
                 Size = new Vector2(10, 10);
 
                 Masking = true;
+
+                EdgeEffect = new EdgeEffectParameters
+                {
+                    Colour = glowingColour,
+                    Type = EdgeEffectType.Glow,
+                    Radius = 8,
+                };
             }
 
             protected override void LoadComplete()
@@ -192,9 +200,11 @@ namespace NekoPlayer.App.Overlays.OSD
                 if (glowing)
                 {
                     fill.FadeColour(glowingColour, transition_speed, Easing.OutQuint);
+                    FadeEdgeEffectTo(glow_strength, transition_speed, Easing.OutQuint);
                 }
                 else
                 {
+                    FadeEdgeEffectTo(0, transition_speed, Easing.OutQuint);
                     fill.FadeColour(idleColour, transition_speed, Easing.OutQuint);
                 }
             }
