@@ -38,7 +38,7 @@ namespace NekoPlayer.Desktop
                     await dbusConnection.ConnectAsync();
 
                     await dbusConnection.RegisterObjectAsync(mprisPlayer);
-                    await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
+                    await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.Player");
 
                     IsLoaded = true;
                     base.YouTubeAPI = youtubeAPI;
