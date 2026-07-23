@@ -36,10 +36,6 @@ namespace NekoPlayer.App.Screens
         {
             base.OnEntering(e);
 
-            LoadComponentAsync(precompiler = CreateShaderPrecompiler(), AddInternal);
-
-            LoadComponentAsync(loadableScreen = CreateLoadableScreen());
-
             LoadComponentAsync(spinner = new NekoPlayerLoadingSpinner(true, true)
             {
                 Anchor = Anchor.Centre,
@@ -49,6 +45,10 @@ namespace NekoPlayer.App.Screens
                 AddInternal(spinner);
                 spinnerShow = Scheduler.AddDelayed(spinner.Show, 200);
             });
+
+            LoadComponentAsync(precompiler = CreateShaderPrecompiler(), AddInternal);
+
+            LoadComponentAsync(loadableScreen = CreateLoadableScreen());
 
             checkIfLoaded();
         }
