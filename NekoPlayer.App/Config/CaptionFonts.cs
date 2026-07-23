@@ -26,5 +26,6 @@ namespace NekoPlayer.App.Config
         ONE_Mobile_POP,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Cafe24Syongsyong))]
         Cafe24Syongsyong,
+        Roboto,
     }
 }

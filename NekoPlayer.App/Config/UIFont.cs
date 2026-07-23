@@ -14,5 +14,6 @@ namespace NekoPlayer.App.Config
         Rubik,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Pretendard))]
         Pretendard,
+        Roboto,
     }
 }

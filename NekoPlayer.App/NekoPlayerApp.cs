@@ -210,6 +210,11 @@ namespace NekoPlayer.App
                     fontName = @"PretendardVariable";
                     break;
                 }
+                case UIFont.Roboto:
+                {
+                    fontName = @"Roboto";
+                    break;
+                }
             }
 
             DefaultFont = FontUsage.Default.With(fontName, 16, "Regular");
