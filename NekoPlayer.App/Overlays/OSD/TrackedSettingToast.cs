@@ -176,7 +176,7 @@ namespace NekoPlayer.App.Overlays.OSD
                 fill.Colour = idleColour = overlayColourProvider.Background1;
                 glowingColour = overlayColourProvider.Content2;
 
-                Size = new Vector2(25, 5);
+                Size = new Vector2(5, 5);
 
                 Masking = true;
                 CornerRadius = 3;
