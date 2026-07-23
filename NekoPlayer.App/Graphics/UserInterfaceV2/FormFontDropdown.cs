@@ -338,6 +338,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             label.Font = NekoPlayerApp.Cafe24Syongsyong;
                             break;
                         }
+                        case CaptionFonts.Roboto:
+                        {
+                            label.Font = NekoPlayerApp.Roboto;
+                            break;
+                        }
                     }
                 }, true);
 

@@ -149,6 +149,11 @@ namespace NekoPlayer.App.Graphics.Caption
                         textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
                         break;
                     }
+                    case CaptionFonts.Roboto:
+                    {
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Roboto.With(size: 24);
+                        break;
+                    }
                 }
             }, true);
 
