@@ -113,10 +113,10 @@
     <value>レターボックス</value>
   </data>
   <data name="load_from_video_id" xml:space="preserve">
-    <value>ビデオ ID または URL からロードします</value>
+    <value>ビデオまたは再生リストの ID または URL からロードします</value>
   </data>
   <data name="load_video" xml:space="preserve">
-    <value>ビデオロード</value>
+    <value>ビデオまたは再生リストをロードします</value>
   </data>
   <data name="master_volume" xml:space="preserve">
     <value>マスターボリューム</value>
@@ -708,6 +708,9 @@
   </data>
   <data name="sort_newest" xml:space="preserve">
     <value>新しい順</value>
+  </data>
+  <data name="user_interface" xml:space="preserve">
+    <value>ユーザ インターフェイス</value>
   </data>
   <data name="no_comments" xml:space="preserve">
     <value>コメントがありません···</value>

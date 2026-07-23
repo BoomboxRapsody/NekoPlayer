@@ -30,14 +30,14 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString ExportLogs => new TranslatableString(getKey(@"export_logs"), "Export logs");
 
         /// <summary>
-        /// "Load from video ID or URL"
+        /// "Load from video or playlist's ID or URL"
         /// </summary>
-        public static LocalisableString LoadFromVideoId => new TranslatableString(getKey(@"load_from_video_id"), "Load from video ID or URL");
+        public static LocalisableString LoadFromVideoId => new TranslatableString(getKey(@"load_from_video_id"), "Load from video or playlist's ID or URL");
 
         /// <summary>
-        /// "Load Video"
+        /// "Load Video or Playlist"
         /// </summary>
-        public static LocalisableString LoadVideo => new TranslatableString(getKey(@"load_video"), "Load Video");
+        public static LocalisableString LoadVideo => new TranslatableString(getKey(@"load_video"), "Load Video or Playlist");
 
         /// <summary>
         /// "Video ID must not be empty!"
