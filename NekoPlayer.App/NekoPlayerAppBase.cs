@@ -237,6 +237,8 @@ namespace NekoPlayer.App
 
             sentry.Dispose();
 
+            Directory.Delete(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath(string.Empty));
+
             AudioEffectsConfig?.Dispose();
             LocalConfig?.Dispose();
 

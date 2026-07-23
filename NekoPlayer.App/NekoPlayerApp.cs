@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Google.Apis.YouTube.v3.Data;
 using NekoPlayer.App.Audio.Effects;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
