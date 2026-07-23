@@ -1299,6 +1299,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString CaptionBGOpacity => new TranslatableString(getKey(@"closed_captions_bg_opacity"), @"Closed captions background opacity");
 
+        /// <summary>
+        /// "This is how the subtitles appear."
+        /// </summary>
+        public static LocalisableString ClosedCaptionPreview => new TranslatableString(getKey(@"closed_captions_preview"), @"This is how the subtitles appear.");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

@@ -22,6 +22,7 @@ using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics;
+using NekoPlayer.App.Graphics.Caption;
 using NekoPlayer.App.Graphics.Characters;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Graphics.Shaders;
@@ -1651,6 +1652,12 @@ namespace NekoPlayer.App.Screens
                                                             Text = NekoPlayerStrings.ClosedCaptions,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
                                                             Colour = overlayColourProvider.Content2,
+                                                        },
+                                                        new ClosedCaptionPreview
+                                                        {
+                                                            Padding = new MarginPadding { Horizontal = 30 },
+                                                            RelativeSizeAxes = Axes.X,
+                                                            Height = 150,
                                                         },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
