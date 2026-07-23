@@ -58,7 +58,7 @@ namespace NekoPlayer.App
 
         public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
 
-        public static string KnownCodename = "Bloomy";
+        public static string KnownCodename = "Pie";
 
         private BindableNumber<double> sampleVolume = null!;
         private FPSCounter fpsCounter;
