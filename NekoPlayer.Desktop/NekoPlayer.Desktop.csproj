@@ -12,6 +12,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Tmds.DBus" Version="0.94.2" />
+    <PackageReference Include="Tmds.DBus.Generator" Version="0.94.2" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.94.2" />
     <PackageReference Include="Velopack" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup Label="Project References">
@@ -34,54 +36,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="FFmpeg\bin\win-x64\ffmpeg.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libavcodec.so.61">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libavdevice.so.61">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libavfilter.so.10">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libavformat.so.61">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libavutil.so.59">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libpostproc.so.58">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libswresample.so.5">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libswscale.so.8">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avcodec-61.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avdevice-61.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avfilter-10.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avformat-61.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avutil-59.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\postproc-58.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\swresample-5.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\swscale-8.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="libbassloud.dylib">
