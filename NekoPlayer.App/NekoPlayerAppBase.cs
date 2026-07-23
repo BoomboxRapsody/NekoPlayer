@@ -4,6 +4,7 @@
 #nullable disable
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -307,6 +308,11 @@ namespace NekoPlayer.App
         {
             try
             {
+                if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux || RuntimeInfo.OS == RuntimeInfo.Platform.macOS)
+                {
+                    Process.Start("chmod", $"-x {GetFFmpegPath()}"); //fix Win32Exception on linux or macos
+                }
+
                 DirectoryInfo directoryInfo = new DirectoryInfo(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath(string.Empty));
 
                 RecursiveDelete(directoryInfo);
