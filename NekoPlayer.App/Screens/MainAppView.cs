@@ -7817,7 +7817,6 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                             .TryGetWithHighestVideoQuality();
 
@@ -7832,7 +7831,6 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .TryGetWithHighestVideoQuality();
 
                         ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
@@ -8177,7 +8175,6 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                             .TryGetWithHighestVideoQuality();
 
@@ -8192,7 +8189,6 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .TryGetWithHighestVideoQuality();
 
                         ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
@@ -8607,12 +8603,10 @@ namespace NekoPlayer.App.Screens
 
                     videoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .ToList();
 
                     maxVideoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .GetWithHighestVideoQuality();
 
                     foreach (var item in videoStreamInfo)
