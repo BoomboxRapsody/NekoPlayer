@@ -14,7 +14,7 @@ using Tmds.DBus;
 using NekoPlayer.App;
 using NekoPlayer.App.Online;
 
-namespace NekoPlayer.Desktop.Linux
+namespace NekoPlayer.Desktop
 {
     public partial class LinuxMediaSessionHandler : MediaSession
     {
