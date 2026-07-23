@@ -135,7 +135,7 @@ namespace NekoPlayer.App.Overlays.OSD
             sampleChange = audio.Samples.Get("UI/osd-change");
         }
 
-        private partial class OptionLight : Container
+        private partial class OptionLight : CircularContainer
         {
             private Color4 glowingColour, idleColour;
 
@@ -176,10 +176,9 @@ namespace NekoPlayer.App.Overlays.OSD
                 fill.Colour = idleColour = overlayColourProvider.Background1;
                 glowingColour = overlayColourProvider.Content2;
 
-                Size = new Vector2(5, 5);
+                Size = new Vector2(10, 10);
 
                 Masking = true;
-                CornerRadius = 3;
             }
 
             protected override void LoadComplete()
