@@ -363,7 +363,7 @@ namespace NekoPlayer.App.Screens
         private Bindable<SFXType> overlaySFXType;
         private Bindable<bool> playOverlaySFX;
 
-        private Bindable<double> captionBGOpacity;
+        private Bindable<float> captionBGOpacity;
 
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
@@ -390,7 +390,7 @@ namespace NekoPlayer.App.Screens
             playOverlaySFX = appConfig.GetBindable<bool>(NekoPlayerSetting.PlayOverlaySFX);
             overlaySFXType = appConfig.GetBindable<SFXType>(NekoPlayerSetting.OverlaySFXType);
 
-            captionBGOpacity = appConfig.GetBindable<double>(NekoPlayerSetting.CaptionBGOpacity);
+            captionBGOpacity = appConfig.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
 
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);

@@ -55,7 +55,7 @@ namespace NekoPlayer.App.Graphics.Caption
 
         private Action<SpriteText> textCreationParameters;
 
-        private Bindable<double> captionBGOpacity;
+        private Bindable<float> captionBGOpacity;
         private Box bg;
 
         [BackgroundDependencyLoader]
@@ -64,7 +64,7 @@ namespace NekoPlayer.App.Graphics.Caption
             controlsVisibleState = sessionStatics.GetBindable<bool>(Static.IsControlVisible);
             captionEnabled = config.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
             captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
-            captionBGOpacity = config.GetBindable<double>(NekoPlayerSetting.CaptionBGOpacity);
+            captionBGOpacity = config.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
 
             Add(captionContainer = new Container
             {
@@ -97,7 +97,7 @@ namespace NekoPlayer.App.Graphics.Caption
 
             captionBGOpacity.BindValueChanged(opacity =>
             {
-                bg.Alpha = Convert.ToSingle(opacity.NewValue);
+                bg.Alpha = opacity.NewValue;
             }, true);
 
             captionFont.BindValueChanged(v =>
