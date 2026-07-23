@@ -4341,7 +4341,7 @@ namespace NekoPlayer.App.Screens
 
             videoQualitySettings.Current.BindValueChanged(quality =>
             {
-                if (currentVideoSource != null)
+                if (currentVideoSource != null && isVideoLoading == false)
                 {
                     Task.Run(async () =>
                     {
@@ -4355,7 +4355,7 @@ namespace NekoPlayer.App.Screens
 
             audioQuality.BindValueChanged(quality =>
             {
-                if (currentVideoSource != null)
+                if (currentVideoSource != null && isVideoLoading == false)
                 {
                     Task.Run(async () =>
                     {
@@ -4409,7 +4409,7 @@ namespace NekoPlayer.App.Screens
                     audioLanguageItem2.Show();
                 }
 
-                if (currentVideoSource != null)
+                if (currentVideoSource != null && isVideoLoading == false)
                 {
                     Task.Run(async () =>
                     {
@@ -4432,7 +4432,7 @@ namespace NekoPlayer.App.Screens
 
             audioLanguage.BindValueChanged(_ =>
             {
-                if (currentVideoSource != null)
+                if (currentVideoSource != null && isVideoLoading == false)
                 {
                     Task.Run(async () =>
                     {
@@ -6773,6 +6773,8 @@ namespace NekoPlayer.App.Screens
             });
         }
 
+        private bool isVideoLoading;
+
         private void updateRatingButtons(string videoId, bool ratingButtonsEnabled)
         {
             if (!googleOAuth2.SignedIn.Value)
@@ -7516,6 +7518,7 @@ namespace NekoPlayer.App.Screens
                 return;
             }
 
+            isVideoLoading = true;
             this.videoId = YoutubeExplode.Videos.VideoId.Parse(videoId);
             //ClearPlaylistItems();
             pausedTime = clearCache ? currentVideoSource.VideoProgress.Value : 0;
@@ -8011,6 +8014,7 @@ namespace NekoPlayer.App.Screens
 
                     spinnerShow = Scheduler.AddDelayed(() => playVideo(), 0);
                     Schedule(() => thumbnailContainer.Hide());
+                    isVideoLoading = false;
                 }
                 else
                 {
@@ -8349,6 +8353,7 @@ namespace NekoPlayer.App.Screens
 
                     spinnerShow = Scheduler.AddDelayed(() => playVideo(), 0);
                     Schedule(() => thumbnailContainer.Hide());
+                    isVideoLoading = false;
                 }
             }
             else
