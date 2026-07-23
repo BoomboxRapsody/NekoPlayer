@@ -7641,6 +7641,15 @@ namespace NekoPlayer.App.Screens
                 }
                 Schedule(() => thumbnailContainer.Show());
 
+                try
+                {
+                    await videoQualitySettings.RefreshQualityList(videoUrl);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, e.GetDescription());
+                }
+
                 if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
                 {
                     if (loadType == LoadType.Full)
@@ -7887,15 +7896,6 @@ namespace NekoPlayer.App.Screens
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                         }
-                    }
-
-                    try
-                    {
-                        await videoQualitySettings.RefreshQualityList(videoUrl);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e, e.GetDescription());
                     }
 
                     if (videoStreamInfo.VideoCodec.Contains("avc1"))
@@ -8262,15 +8262,6 @@ namespace NekoPlayer.App.Screens
                             onScreenDisplay.Display(toast);
                             videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                         }
-                    }
-
-                    try
-                    {
-                        await videoQualitySettings.RefreshQualityList(videoUrl);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e, e.GetDescription());
                     }
 
                     ClosedCaptionTrack captionTrack = null;
