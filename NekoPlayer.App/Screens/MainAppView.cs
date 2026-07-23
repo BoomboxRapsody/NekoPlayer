@@ -1578,7 +1578,10 @@ namespace NekoPlayer.App.Screens
                                                         {
                                                             Caption = NekoPlayerStrings.VideoQuality,
                                                             Icon = FontAwesome.Solid.Video,
-                                                        }),
+                                                        })
+                                                        {
+                                                            ShowRevertToDefaultButton = false,
+                                                        },
                                                         new SettingsItemV2(audioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
                                                         {
                                                             Caption = NekoPlayerStrings.AudioQuality,
@@ -7849,16 +7852,33 @@ namespace NekoPlayer.App.Screens
                     }
                     catch (Exception e)
                     {
-                        Logger.Error(e, e.GetDescription());
-                        // Select best video stream (1080p60 in this example)
-                        videoStreamInfo = streamManifest
-                            .GetVideoOnlyStreams()
-                            .TryGetWithHighestVideoQuality();
+                        try
+                        {
+                            Logger.Error(e, e.GetDescription());
+                            // Select best video stream (1080p60 in this example)
+                            videoStreamInfo = streamManifest
+                                .GetVideoOnlyStreams()
+                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                .TryGetWithHighestVideoQuality();
 
-                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
-                        onScreenDisplay.Display(toast);
-                        videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                            onScreenDisplay.Display(toast);
+                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                        }
+                        catch (Exception e2)
+                        {
+                            Logger.Error(e2, e2.GetDescription());
+                            // Select best video stream (1080p60 in this example)
+                            videoStreamInfo = streamManifest
+                                .GetVideoOnlyStreams()
+                                .TryGetWithHighestVideoQuality();
+
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+
+                            onScreenDisplay.Display(toast);
+                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                        }
                     }
 
                     try
@@ -8208,16 +8228,33 @@ namespace NekoPlayer.App.Screens
                     }
                     catch (Exception e)
                     {
-                        Logger.Error(e, e.GetDescription());
-                        // Select best video stream (1080p60 in this example)
-                        videoStreamInfo = streamManifest
-                            .GetVideoOnlyStreams()
-                            .TryGetWithHighestVideoQuality();
+                        try
+                        {
+                            Logger.Error(e, e.GetDescription());
+                            // Select best video stream (1080p60 in this example)
+                            videoStreamInfo = streamManifest
+                                .GetVideoOnlyStreams()
+                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                .TryGetWithHighestVideoQuality();
 
-                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
-                        onScreenDisplay.Display(toast);
-                        videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                            onScreenDisplay.Display(toast);
+                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                        }
+                        catch (Exception e2)
+                        {
+                            Logger.Error(e2, e2.GetDescription());
+                            // Select best video stream (1080p60 in this example)
+                            videoStreamInfo = streamManifest
+                                .GetVideoOnlyStreams()
+                                .TryGetWithHighestVideoQuality();
+
+                            ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
+
+                            onScreenDisplay.Display(toast);
+                            videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                        }
                     }
 
                     try
