@@ -7604,7 +7604,10 @@ namespace NekoPlayer.App.Screens
                 Schedule(() => videoProgress.MaxValue = 1);
                 videoUrl = $"https://youtube.com/watch?v={this.videoId}";
 
-                Schedule(() => updateVideoMetadata(this.videoId));
+                if (loadType == LoadType.Full)
+                {
+                    Schedule(() => updateVideoMetadata(this.videoId));
+                }
                 Schedule(() => thumbnailContainer.Show());
 
                 if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
@@ -7817,6 +7820,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                             .TryGetWithHighestVideoQuality();
 
@@ -8175,6 +8179,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                             .TryGetWithHighestVideoQuality();
 
@@ -8601,13 +8606,29 @@ namespace NekoPlayer.App.Screens
                     List<VideoOnlyStreamInfo> videoStreamInfo;
                     IVideoStreamInfo maxVideoStreamInfo;
 
-                    videoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .ToList();
+                    try
+                    {
+                        videoStreamInfo = streamManifest
+                                    .GetVideoOnlyStreams()
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                    .ToList();
 
-                    maxVideoStreamInfo = streamManifest
-                                .GetVideoOnlyStreams()
-                                .GetWithHighestVideoQuality();
+                        maxVideoStreamInfo = streamManifest
+                                    .GetVideoOnlyStreams()
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                    .GetWithHighestVideoQuality();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e, e.GetDescription());
+                        videoStreamInfo = streamManifest
+                                    .GetVideoOnlyStreams()
+                                    .ToList();
+
+                        maxVideoStreamInfo = streamManifest
+                                    .GetVideoOnlyStreams()
+                                    .GetWithHighestVideoQuality();
+                    }
 
                     foreach (var item in videoStreamInfo)
                     {
