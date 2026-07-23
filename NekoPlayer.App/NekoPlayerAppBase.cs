@@ -237,10 +237,6 @@ namespace NekoPlayer.App
 
             sentry.Dispose();
 
-            DirectoryInfo directoryInfo = new DirectoryInfo(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath(string.Empty));
-
-            RecursiveDelete(directoryInfo);
-
             AudioEffectsConfig?.Dispose();
             LocalConfig?.Dispose();
 
@@ -311,7 +307,11 @@ namespace NekoPlayer.App
         {
             try
             {
-                Logger.Log($"------------------------------------------------\nNekoPlayer by Mocha Studio\n------------------------------------------------\nApp version is: {Version}\nApp version hash is: {VersionHash}\nCultureInfo.CurrentCulture name is {CultureInfo.CurrentCulture.Name}\n------------------------------------------------\ngood luck ^^\n------------------------------------------------");
+                DirectoryInfo directoryInfo = new DirectoryInfo(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath(string.Empty));
+
+                RecursiveDelete(directoryInfo);
+
+                Logger.Log($"------------------------------------------------\nNekoPlayer by BoomboxRapsody\n------------------------------------------------\nApp version is: {Version}\nApp version hash is: {VersionHash}\nCultureInfo.CurrentCulture name is {CultureInfo.CurrentCulture.Name}\n------------------------------------------------\ngood luck ^^\n------------------------------------------------");
                 RestartRequired.Value = false;
                 UpdateManagerVersionText.Value = Version;
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

@@ -8690,14 +8690,9 @@ namespace NekoPlayer.App.Screens
                         items.Add(item.VideoQuality.Label);
                     }
 
-                    if (items.Count > 0)
-                        Current.Disabled = true;
-                    else
-                        Current.Disabled = false;
-
                     Items = items;
 
-                    if (!Current.Disabled)
+                    if (!Current.Disabled && string.IsNullOrEmpty(Current.Value))
                     {
                         Current.Value = items.Where(quality => quality.Contains(maxVideoStreamInfo.VideoQuality.Label)).First();
                         Current.Default = items.Where(quality => quality.Contains(maxVideoStreamInfo.VideoQuality.Label)).First();
