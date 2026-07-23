@@ -7633,7 +7633,7 @@ namespace NekoPlayer.App.Screens
 
                 if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
                 {
-                    Schedule(() => videoQualitySettings.Current.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = true);
+                    Schedule(() => audioLanguage.Disabled = alwaysUseOriginalAudio.Disabled = true);
 
                     if (loadType == LoadType.Full)
                         Directory.CreateDirectory(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}"));
@@ -8007,7 +8007,7 @@ namespace NekoPlayer.App.Screens
                     spinnerShow = Scheduler.AddDelayed(() => playVideo(), 0);
                     Schedule(() => thumbnailContainer.Hide());
 
-                    Schedule(() => videoQualitySettings.Current.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = false);
+                    Schedule(() => audioLanguage.Disabled = alwaysUseOriginalAudio.Disabled = false);
                 }
                 else
                 {
