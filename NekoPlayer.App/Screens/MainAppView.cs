@@ -7889,7 +7889,8 @@ namespace NekoPlayer.App.Screens
                             // Select best video stream (1080p60 in this example)
                             videoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .TryGetWithHighestVideoQuality();
+                                .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                                .First();
 
                             ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
@@ -8255,7 +8256,8 @@ namespace NekoPlayer.App.Screens
                             // Select best video stream (1080p60 in this example)
                             videoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .TryGetWithHighestVideoQuality();
+                                .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                                .First();
 
                             ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
