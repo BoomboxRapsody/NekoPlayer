@@ -838,4 +838,7 @@
   <data name="closed_captions_bg_opacity" xml:space="preserve">
     <value>자막 배경의 투명도</value>
   </data>
+  <data name="closed_captions_preview" xml:space="preserve">
+    <value>자막이 이렇게 표시됩니다.</value>
+  </data>
 </root>

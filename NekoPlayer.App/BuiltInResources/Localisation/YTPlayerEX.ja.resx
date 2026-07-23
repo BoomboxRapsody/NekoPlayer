@@ -835,4 +835,7 @@
   <data name="closed_captions_bg_opacity" xml:space="preserve">
     <value>クローズドキャプション背景不透明度</value>
   </data>
+  <data name="closed_captions_preview" xml:space="preserve">
+    <value>字幕はこんな感じです。</value>
+  </data>
 </root>

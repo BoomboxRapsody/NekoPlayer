@@ -1,76 +1,41 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-#nullable disable
-
 using System;
+using NekoPlayer.App.Config;
+using NekoPlayer.App.Graphics.UserInterface;
+using NekoPlayer.App.Localisation;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osuTK.Graphics;
-using YoutubeExplode.Videos.ClosedCaptions;
-using NekoPlayer.App.Config;
-using NekoPlayer.App.Graphics.Sprites;
-using NekoPlayer.App.Graphics.Videos;
-using NekoPlayer.App.Graphics.UserInterface;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.Caption
 {
-    public partial class ClosedCaptionContainer : Container
+    public partial class ClosedCaptionPreview : Container
     {
-        public Bindable<bool> UIVisiblity = new Bindable<bool>();
-
         private AdaptiveTextFlowContainer spriteText;
-        private YouTubeVideoPlayer videoPlayer;
-        private ClosedCaptionTrack captionTrack;
-        private Bindable<bool> captionEnabled;
         private Bindable<CaptionFonts> captionFont;
+        private Bindable<float> captionBGOpacity;
         private Container captionContainer;
-
-        private Bindable<float> bottomMargin = new Bindable<float>();
-
-        public ClosedCaptionContainer(YouTubeVideoPlayer videoPlayer, ClosedCaptionTrack captionTrack)
-        {
-            this.videoPlayer = videoPlayer;
-            this.captionTrack = captionTrack;
-            Padding = new MarginPadding(32);
-            RelativeSizeAxes = Axes.Both;
-            Anchor = Anchor.BottomCentre;
-            Origin = Anchor.BottomCentre;
-            AlwaysPresent = true;
-        }
-
-        public void UpdateCaptionTrack(ClosedCaptionLanguage captionLanguage, ClosedCaptionTrack captionTrack)
-        {
-            if (captionTrack != null)
-                this.captionTrack = captionTrack;
-            else
-                this.captionTrack = null;
-        }
-
-        private Bindable<bool> controlsVisibleState = null!;
-
+        private Box bg;
         private Action<SpriteText> textCreationParameters;
 
-        private Bindable<float> captionBGOpacity;
-        private Box bg;
-
         [BackgroundDependencyLoader]
-        private void load(NekoPlayerConfigManager config, SessionStatics sessionStatics)
+        private void load(NekoPlayerConfigManager config, SessionStatics sessionStatics, TextureStore textureStore)
         {
-            controlsVisibleState = sessionStatics.GetBindable<bool>(Static.IsControlVisible);
-            captionEnabled = config.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
             captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
             captionBGOpacity = config.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
 
-            Add(captionContainer = new Container
+            captionContainer = new Container
             {
                 AutoSizeAxes = Axes.Both,
-                Anchor = Anchor.BottomCentre,
-                Origin = Anchor.BottomCentre,
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
                 AutoSizeDuration = 350,
                 AutoSizeEasing = Easing.OutQuart,
                 Masking = true,
@@ -92,6 +57,25 @@ namespace NekoPlayer.App.Graphics.Caption
                         AutoSizeAxes = Axes.Both,
                         Margin = new MarginPadding(4),
                     }
+                }
+            };
+
+            Add(new Container
+            {
+                RelativeSizeAxes = Axes.Both,
+                Masking = true,
+                CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                Children = new Drawable[]
+                {
+                    new Sprite
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Origin = Anchor.Centre,
+                        Anchor = Anchor.Centre,
+                        FillMode = FillMode.Fill,
+                        Texture = textureStore.Get("ClosedCaptionPreviewBG"),
+                    },
+                    captionContainer,
                 }
             });
 
@@ -155,65 +139,14 @@ namespace NekoPlayer.App.Graphics.Caption
                         break;
                     }
                 }
-            }, true);
-
-            controlsVisibleState.BindValueChanged(v =>
-            {
-                UpdateControlsVisibleState(v.NewValue);
-            }, true);
-
-            bottomMargin.BindValueChanged(v =>
-            {
-                captionContainer.Margin = new MarginPadding
-                {
-                    Bottom = v.NewValue
-                };
+                RefreshFont();
             }, true);
         }
 
-        public void UpdateControlsVisibleState(bool state)
+        private void RefreshFont()
         {
-            /*
-            captionContainer.Margin = new MarginPadding
-            {
-                Bottom = state ? 90 : 0
-            };
-            */
-
-            this.TransformBindableTo(bottomMargin, state ? 55 : 0, 500, Easing.OutQuint);
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (captionTrack == null)
-                Hide();
-            else
-                Show();
-
-            if (captionTrack != null)
-            {
-                try
-                {
-                    var caption = captionTrack.TryGetByTime(TimeSpan.FromSeconds(videoPlayer.VideoProgress.Value));
-                    if (caption != null)
-                    {
-                        var text = caption.Text; // "collection acts as the parent collection"
-                        spriteText.Text = string.Empty;
-                        spriteText.AddText(text, textCreationParameters);
-                        captionContainer.FadeIn(150, Easing.OutQuart);
-                    }
-                    else
-                    {
-                        captionContainer.FadeOut(150, Easing.OutQuart);
-                    }
-                }
-                catch
-                {
-                    captionContainer.FadeOut(150, Easing.OutQuart);
-                }
-            }
+            spriteText.Text = "";
+            spriteText.AddText(NekoPlayerStrings.ClosedCaptionPreview, textCreationParameters);
         }
     }
 }
