@@ -1675,6 +1675,7 @@ namespace NekoPlayer.App.Screens
                                                             Caption = NekoPlayerStrings.CaptionBGOpacity,
                                                             Icon = FontAwesome.Solid.Sun,
                                                             Current = captionBGOpacity,
+                                                            DisplayAsPercentage = true,
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
@@ -7627,7 +7628,7 @@ namespace NekoPlayer.App.Screens
                 }
                 Schedule(() => thumbnailContainer.Show());
 
-                if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg"))
+                if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
                 {
                     Schedule(() => videoQualitySettings.Current.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = true);
 

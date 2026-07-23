@@ -91,7 +91,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.PlayOverlaySFX, false);
             SetDefault(NekoPlayerSetting.OverlaySFXType, SFXType.Normal);
 
-            SetDefault(NekoPlayerSetting.CaptionBGOpacity, 0.5f, 0f, 1f, 0.01f);
+            SetDefault(NekoPlayerSetting.CaptionBGOpacity, 0.5f, 0.5f, 1f, 0.01f);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
