@@ -34,5 +34,7 @@ namespace NekoPlayer.Desktop
             base.RequestHideToTrayIcon();
             trayIconManager.HideToTrayIcon();
         }
+
+        public override MediaSession CreateMediaSession() => new WindowsMediaSessionHandler();
     }
 }
