@@ -7,6 +7,7 @@ using NekoPlayer.App;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Updater;
 using NekoPlayer.App.Utils;
+using NekoPlayer.Desktop.Linux;
 using NekoPlayer.Desktop.Updater;
 using osu.Framework;
 
