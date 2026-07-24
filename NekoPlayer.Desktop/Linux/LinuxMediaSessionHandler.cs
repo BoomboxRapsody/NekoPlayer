@@ -202,24 +202,22 @@ namespace NekoPlayer.Desktop.Linux
             // IPlayer - Event Handlers
             public Task PlayAsync()
             {
-                handler.controls?.PlayButtonPressed?.Invoke();
+                //handler.controls?.PlayButtonPressed?.Invoke();
                 return Task.CompletedTask;
             }
 
             public Task PauseAsync()
             {
-                handler.controls?.PauseButtonPressed?.Invoke();
+                //handler.controls?.PauseButtonPressed?.Invoke();
                 return Task.CompletedTask;
             }
 
             public Task PlayPauseAsync()
             {
-                /*
                 if (PlaybackStatus == "Playing")
                     handler.controls?.PauseButtonPressed?.Invoke();
                 else
                     handler.controls?.PlayButtonPressed?.Invoke();
-                */
 
                 return Task.CompletedTask;
             }
