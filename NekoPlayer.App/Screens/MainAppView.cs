@@ -5755,7 +5755,7 @@ namespace NekoPlayer.App.Screens
             }
         }
 
-        public static string TruncateWithEllipsis(this string value, int maxLength)
+        public string TruncateWithEllipsis(string value, int maxLength)
         {
             if (string.IsNullOrEmpty(value)) return string.Empty;
 
