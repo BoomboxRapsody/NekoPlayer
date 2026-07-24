@@ -5018,7 +5018,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
                             .TryGetWithHighestVideoQuality();
                     }
                     catch (Exception e)
@@ -5037,7 +5037,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
                             .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                             .TryGetWithHighestVideoQuality();
                     }
@@ -7902,7 +7902,7 @@ namespace NekoPlayer.App.Screens
                         }
                     }
 
-                    if (videoStreamInfo.VideoCodec.Contains("avc1"))
+                    if (videoStreamInfo.VideoCodec.Contains("avc1") || videoStreamInfo.VideoCodec.Contains("av01"))
                     {
                         videoFile = app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.mp4";
                     }
