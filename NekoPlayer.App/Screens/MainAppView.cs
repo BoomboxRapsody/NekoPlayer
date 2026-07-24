@@ -6605,7 +6605,7 @@ namespace NekoPlayer.App.Screens
         {
             base.Update();
 
-            seekbar.PlaybackSpeed.Value = playbackSpeed.Value;
+            //seekbar.PlaybackSpeed.Value = playbackSpeed.Value;
 
             if (game.UseSystemCursor.Value == true)
             {
