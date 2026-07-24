@@ -841,4 +841,10 @@
   <data name="closed_captions_preview" xml:space="preserve">
     <value>자막이 이렇게 표시됩니다.</value>
   </data>
+  <data name="like_button" xml:space="preserve">
+    <value>이 동영상이 마음에 듭니다.</value>
+  </data>
+  <data name="dislike_button" xml:space="preserve">
+    <value>이 동영상이 마음에 들지 않습니다.</value>
+  </data>
 </root>

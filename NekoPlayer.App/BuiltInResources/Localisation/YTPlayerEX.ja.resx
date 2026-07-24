@@ -841,4 +841,10 @@
   <data name="closed_captions_preview" xml:space="preserve">
     <value>字幕はこんな感じです。</value>
   </data>
+  <data name="like_button" xml:space="preserve">
+    <value>私はこれが好きです</value>
+  </data>
+  <data name="dislike_button" xml:space="preserve">
+    <value>私はこれが嫌いです</value>
+  </data>
 </root>

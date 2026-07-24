@@ -1304,6 +1304,16 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ClosedCaptionPreview => new TranslatableString(getKey(@"closed_captions_preview"), @"This is how the subtitles appear.");
 
+        /// <summary>
+        /// "I like this"
+        /// </summary>
+        public static LocalisableString LikeButton => new TranslatableString(getKey(@"like_button"), "I like this");
+
+        /// <summary>
+        /// "I dislike this"
+        /// </summary>
+        public static LocalisableString DislikeButton => new TranslatableString(getKey(@"dislike_button"), "I dislike this");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
