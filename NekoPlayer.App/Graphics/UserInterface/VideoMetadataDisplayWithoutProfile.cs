@@ -139,6 +139,19 @@ namespace NekoPlayer.App.Graphics.UserInterface
             };
         }
 
+        public string TruncateWithEllipsis(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return string.Empty;
+
+            // If the string is already short enough, return it as-is
+            if (value.Length <= maxLength) return value;
+
+            // Ensure we don't get a negative length if maxLength is smaller than the ellipsis
+            int truncateLength = Math.Max(0, maxLength - 3);
+
+            return value.Substring(0, truncateLength) + "...";
+        }
+
         private Video videoData;
 
         protected override bool OnClick(ClickEvent e)
@@ -248,7 +261,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 DateTimeOffset? dateTime = videoData.Snippet.PublishedAtDateTimeOffset;
                 DateTimeOffset now = DateTime.Now;
                 Channel channelData = api.GetChannel(videoData.Snippet.ChannelId);
-                desc.Text = NekoPlayerStrings.VideoMetadataDescWithLikeCount(api.GetLocalizedChannelTitle(channelData), videoData.Statistics.LikeCount != null ? Convert.ToDouble(videoData.Statistics.LikeCount).ToStandardFormattedString(0) : Convert.ToDouble(ReturnYouTubeDislike.GetDislikes(videoData.Id).RawLikes).ToStandardFormattedString(0), Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), dateTime.Value.Humanize(dateToCompareAgainst: now));
+                desc.Text = NekoPlayerStrings.VideoMetadataDescWithLikeCount(TruncateWithEllipsis(api.GetLocalizedChannelTitle(channelData), 50), videoData.Statistics.LikeCount != null ? Convert.ToDouble(videoData.Statistics.LikeCount).ToStandardFormattedString(0) : Convert.ToDouble(ReturnYouTubeDislike.GetDislikes(videoData.Id).RawLikes).ToStandardFormattedString(0), Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), dateTime.Value.Humanize(dateToCompareAgainst: now));
             });
         }
 
