@@ -5755,6 +5755,19 @@ namespace NekoPlayer.App.Screens
             }
         }
 
+        public static string TruncateWithEllipsis(this string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return string.Empty;
+
+            // If the string is already short enough, return it as-is
+            if (value.Length <= maxLength) return value;
+
+            // Ensure we don't get a negative length if maxLength is smaller than the ellipsis
+            int truncateLength = Math.Max(0, maxLength - 3);
+
+            return value.Substring(0, truncateLength) + "...";
+        }
+
         private void updatePresence(DiscordRichPresenceMode mode)
         {
             Timestamps timestamps = Timestamps.Now;
@@ -5798,8 +5811,8 @@ namespace NekoPlayer.App.Screens
                         discordRPC?.UpdatePresence(new RichPresence()
                         {
                             Type = activityType,
-                            Details = api.GetLocalizedVideoTitle(videoData),
-                            State = api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId)),
+                            Details = TruncateWithEllipsis(api.GetLocalizedVideoTitle(videoData), 128),
+                            State = TruncateWithEllipsis(api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId)), 128),
                             Timestamps = timestamps,
                             StatusDisplay = StatusDisplayType.Details,
                             StateUrl = $"https://www.youtube.com/channel/{api.GetChannel(videoData.Snippet.ChannelId).Id}",
@@ -7621,7 +7634,7 @@ namespace NekoPlayer.App.Screens
 
         private void addVideoToScreen()
         {
-            Task.Run(async () => await api.SendPlayerResponseAsync(videoId));
+            //Task.Run(async () => await api.SendPlayerResponseAsync(videoId));
 
             string audioFile = app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{videoId}") + @"/audio.ogg";
 
