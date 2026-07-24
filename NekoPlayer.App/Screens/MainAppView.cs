@@ -4335,7 +4335,6 @@ namespace NekoPlayer.App.Screens
 
             audioDeviceDropdown.Current.ValueChanged += d => onDeviceSelected(d.NewValue);
 
-            onDeviceSelected(audioDeviceDropdown.Current.Value);
             onAudioDeviceChanged(string.Empty);
 
             videoQualitySettings.Current.BindValueChanged(quality =>
@@ -4490,7 +4489,7 @@ namespace NekoPlayer.App.Screens
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
                             string preferedLang = string.Empty;
-                            
+
                             if (captionLangDropdown.Current.Value != null)
                             {
                                 preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
@@ -5018,7 +5017,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .TryGetWithHighestVideoQuality();
                     }
                     catch (Exception e)
@@ -5037,7 +5036,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
                             .TryGetWithHighestVideoQuality();
                     }
@@ -6308,22 +6307,22 @@ namespace NekoPlayer.App.Screens
 
                     return true;
 
-                    /*
-                case GlobalAction.DownloadVideo:
-                    if (videoData == null)
-                        return true;
-
-                    if (!downloadReadyContainer.IsVisible)
-                    {
-                        currentVideoSource?.Pause();
-                        hideOverlays();
-                        showOverlayContainer(downloadReadyContainer);
-                    }
-                    else
-                        hideOverlayContainer(downloadReadyContainer);
-
+                /*
+            case GlobalAction.DownloadVideo:
+                if (videoData == null)
                     return true;
-                    */
+
+                if (!downloadReadyContainer.IsVisible)
+                {
+                    currentVideoSource?.Pause();
+                    hideOverlays();
+                    showOverlayContainer(downloadReadyContainer);
+                }
+                else
+                    hideOverlayContainer(downloadReadyContainer);
+
+                return true;
+                */
 
                 case GlobalAction.OpenComments:
                     if (videoData == null)
@@ -7860,8 +7859,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
-                            .Where(s => s.VideoCodec.Contains("avc1"))
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                             .First();
 
@@ -7878,8 +7876,7 @@ namespace NekoPlayer.App.Screens
                             // Select best video stream (1080p60 in this example)
                             videoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
-                                .Where(s => s.VideoCodec.Contains("avc1"))
+                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .TryGetWithHighestVideoQuality();
 
                             ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
@@ -7893,8 +7890,6 @@ namespace NekoPlayer.App.Screens
                             // Select best video stream (1080p60 in this example)
                             videoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
-                                .Where(s => s.VideoCodec.Contains("avc1"))
                                 .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                                 .First();
 
@@ -7905,7 +7900,7 @@ namespace NekoPlayer.App.Screens
                         }
                     }
 
-                    if (videoStreamInfo.VideoCodec.Contains("avc1") || videoStreamInfo.VideoCodec.Contains("av01"))
+                    if (videoStreamInfo.VideoCodec.Contains("avc1"))
                     {
                         videoFile = app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.mp4";
                     }
@@ -7994,13 +7989,13 @@ namespace NekoPlayer.App.Screens
                     {
                         case LoadType.Full:
                         {
-                            await app.YouTubeClient.Videos.DownloadAsync([audioStreamInfo], new ConversionRequestBuilder(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg").SetFFmpegPath(app.GetFFmpegPath()).Build(), audioDownloadProgress);
+                            await app.YouTubeClient.Videos.DownloadAsync([audioStreamInfo], new ConversionRequestBuilder(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"\audio.ogg").SetFFmpegPath(app.GetFFmpegPath()).Build(), audioDownloadProgress);
                             await app.YouTubeClient.Videos.DownloadAsync([videoStreamInfo], new ConversionRequestBuilder(videoFile).SetFFmpegPath(app.GetFFmpegPath()).Build(), videoDownloadProgress);
                             break;
                         }
                         case LoadType.AudioOnly:
                         {
-                            await app.YouTubeClient.Videos.DownloadAsync([audioStreamInfo], new ConversionRequestBuilder(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg").SetFFmpegPath(app.GetFFmpegPath()).Build(), audioDownloadProgress);
+                            await app.YouTubeClient.Videos.DownloadAsync([audioStreamInfo], new ConversionRequestBuilder(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"\audio.ogg").SetFFmpegPath(app.GetFFmpegPath()).Build(), audioDownloadProgress);
                             break;
                         }
                         case LoadType.VideoOnly:
@@ -8231,8 +8226,7 @@ namespace NekoPlayer.App.Screens
                         // Select best video stream (1080p60 in this example)
                         videoStreamInfo = streamManifest
                             .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
-                            .Where(s => s.VideoCodec.Contains("avc1"))
+                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                             .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                             .First();
 
@@ -8249,8 +8243,7 @@ namespace NekoPlayer.App.Screens
                             // Select best video stream (1080p60 in this example)
                             videoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
-                                .Where(s => s.VideoCodec.Contains("avc1"))
+                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                 .TryGetWithHighestVideoQuality();
 
                             ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
@@ -8264,8 +8257,6 @@ namespace NekoPlayer.App.Screens
                             // Select best video stream (1080p60 in this example)
                             videoStreamInfo = streamManifest
                                 .GetVideoOnlyStreams()
-                                .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
-                                .Where(s => s.VideoCodec.Contains("avc1"))
                                 .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
                                 .First();
 
@@ -8676,10 +8667,12 @@ namespace NekoPlayer.App.Screens
                     {
                         videoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                     .ToList();
 
                         maxVideoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                     .GetWithHighestVideoQuality();
                     }
                     catch (Exception e)
