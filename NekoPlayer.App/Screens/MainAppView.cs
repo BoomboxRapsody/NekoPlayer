@@ -4335,6 +4335,7 @@ namespace NekoPlayer.App.Screens
 
             audioDeviceDropdown.Current.ValueChanged += d => onDeviceSelected(d.NewValue);
 
+            onDeviceSelected(audioDeviceDropdown.Current.Value);
             onAudioDeviceChanged(string.Empty);
 
             videoQualitySettings.Current.BindValueChanged(quality =>
