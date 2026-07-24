@@ -141,13 +141,13 @@ namespace NekoPlayer.App.Graphics.Videos
 
             mediaSessionControls = new MediaSessionControls()
             {
-                NextButtonPressed = FastForward10Sec,
-                PrevButtonPressed = FastRewind10Sec,
-                PlayButtonPressed = () => Play(),
-                PauseButtonPressed = () => Pause(),
+                NextButtonPressed = () => Schedule(() => FastForward10Sec()),
+                PrevButtonPressed = () => Schedule(() => FastRewind10Sec()),
+                PlayButtonPressed = () => Schedule(() => Play()),
+                PauseButtonPressed = () => Schedule(() => Pause()),
                 OnSeek = pos =>
                 {
-                    SeekTo(pos);
+                    Schedule(() => SeekTo(pos));
                 },
             };
 
