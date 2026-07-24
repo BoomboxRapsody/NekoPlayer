@@ -107,7 +107,7 @@ namespace NekoPlayer.App
                 }
                 case RuntimeInfo.Platform.Linux:
                 {
-                    return "ffmpeg";
+                    return Directory.GetCurrentDirectory() + "/FFmpeg/bin/linux-x64/ffmpeg";
                 }
                 case RuntimeInfo.Platform.macOS:
                 {
