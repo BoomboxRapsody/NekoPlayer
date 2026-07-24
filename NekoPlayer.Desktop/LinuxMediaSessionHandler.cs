@@ -8,11 +8,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using Google.Apis.YouTube.v3.Data;
+using NekoPlayer.App;
+using NekoPlayer.App.Online;
 using osu.Framework.Extensions;
 using osu.Framework.Logging;
 using Tmds.DBus;
-using NekoPlayer.App;
-using NekoPlayer.App.Online;
+using Tmds.DBus.Protocol;
 
 namespace NekoPlayer.Desktop
 {
