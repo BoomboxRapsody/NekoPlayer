@@ -18,24 +18,12 @@ namespace NekoPlayer.Desktop.Linux
 {
     public partial class LinuxMediaSessionHandler : MediaSession
     {
-        private Connection connection;
+        private Connection dbusConnection;
         private MprisPlayer mprisPlayer;
-
-        private string playbackStatus = "Paused";
-        private double positionSeconds;
-        private double durationSeconds;
-        private double playbackRate = 1.0;
-        private string currentTitle = "(unknown)";
-        private string currentArtist = "(unknown)";
-        private string currentArtUrl;
 
 #nullable enable
         private MediaSessionControls? controls;
 #nullable disable
-
-        // MPRIS requires a trackid path; NekoPlayer only ever has one "current track"
-        // so we just bump a counter whenever UpdateMediaSession is called.
-        private int trackId;
 
         public override void CreateMediaSession(YouTubeAPI youtubeAPI, string audioPath)
         {
@@ -43,13 +31,14 @@ namespace NekoPlayer.Desktop.Linux
             {
                 try
                 {
-                    connection = new Connection(Address.Session);
-                    await connection.ConnectAsync();
-
                     mprisPlayer = new MprisPlayer(this);
 
-                    await connection.RegisterObjectAsync(mprisPlayer);
-                    await connection.RegisterServiceAsync("org.mpris.MediaPlayer2.nekoplayer");
+                    // Direct Connection으로 D-Bus 연결
+                    dbusConnection = new Connection(Address.Session);
+                    await dbusConnection.ConnectAsync();
+
+                    await dbusConnection.RegisterObjectAsync(mprisPlayer);
+                    await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
 
                     IsLoaded = true;
                     base.YouTubeAPI = youtubeAPI;
@@ -65,13 +54,21 @@ namespace NekoPlayer.Desktop.Linux
         {
             Task.Run(async () =>
             {
-                currentTitle = YouTubeAPI.GetLocalizedVideoTitle(video);
-                currentArtist = YouTubeAPI.GetLocalizedChannelTitle(YouTubeAPI.GetChannel(video.Snippet.ChannelId));
-                currentArtUrl = video.Snippet.Thumbnails.High.Url;
-                durationSeconds = XmlConvert.ToTimeSpan(video.ContentDetails.Duration).TotalSeconds;
-                trackId++;
+                if (!IsLoaded || mprisPlayer == null) return;
 
-                await mprisPlayer.NotifyMetadataChangedAsync();
+                try
+                {
+                    string title = YouTubeAPI.GetLocalizedVideoTitle(video);
+                    string artist = YouTubeAPI.GetLocalizedChannelTitle(YouTubeAPI.GetChannel(video.Snippet.ChannelId));
+                    string artUrl = video.Snippet.Thumbnails.High.Url;
+                    long durationMicroseconds = (long)(XmlConvert.ToTimeSpan(video.ContentDetails.Duration).TotalMilliseconds * 1000);
+
+                    mprisPlayer.SetMetadata(title, artist, artUrl, durationMicroseconds);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, ex.GetDescription());
+                }
             });
         }
 
@@ -79,9 +76,8 @@ namespace NekoPlayer.Desktop.Linux
         {
             Task.Run(async () =>
             {
-                playbackStatus = playing ? "Playing" : "Paused";
-
-                await mprisPlayer.NotifyPlaybackStatusChangedAsync();
+                if (!IsLoaded || mprisPlayer == null) return;
+                mprisPlayer.SetPlaybackStatus(playing ? "Playing" : "Paused");
             });
         }
 
@@ -89,14 +85,9 @@ namespace NekoPlayer.Desktop.Linux
         {
             try
             {
-                if (IsLoaded)
+                if (IsLoaded && mprisPlayer != null)
                 {
-                    positionSeconds = pos * 0.001d;
-
-                    // MPRIS doesn't push position updates via PropertiesChanged (clients poll
-                    // GetPosition / the Position property instead), but we do need to emit
-                    // Seeked whenever the position jumps discontinuously (e.g. YouTube video change).
-                    mprisPlayer.EmitSeeked((long)(positionSeconds * 1_000_000));
+                    mprisPlayer.Position = (long)(pos * 1000);
                 }
             }
             catch (Exception ex)
@@ -105,13 +96,18 @@ namespace NekoPlayer.Desktop.Linux
             }
         }
 
+        public override void UpdatePlaybackSpeed(double speed)
+        {
+            if (!IsLoaded || mprisPlayer == null) return;
+            mprisPlayer.Rate = speed;
+        }
+
         public override void DeleteMediaSession()
         {
-            mprisPlayer?.Dispose();
-            connection?.Dispose();
-            connection = null;
-            mprisPlayer = null;
             IsLoaded = false;
+            mprisPlayer = null;
+            dbusConnection?.Dispose();
+            dbusConnection = null;
         }
 
         public override void RegisterControlEvents(MediaSessionControls controls)
@@ -124,202 +120,250 @@ namespace NekoPlayer.Desktop.Linux
             controls = null;
         }
 
-        public override void UpdatePlaybackSpeed(double speed)
+        #region MPRIS D-Bus Interfaces & Implementation
+
+        // GNOME / KDE 등 데스크톱 환경 필수 속성 조회 인터페이스
+        [DBusInterface("org.freedesktop.DBus.Properties")]
+        public interface IProperties : IDBusObject
         {
-            playbackRate = speed;
-            Task.Run(() => mprisPlayer.NotifyPlaybackRateChangedAsync());
+            Task<object> GetAsync(string interfaceName, string propertyName);
+            Task<IDictionary<string, object>> GetAllAsync(string interfaceName);
+            Task SetAsync(string interfaceName, string propertyName, object value);
+            Task<IDisposable> WatchPropertiesAsync(Action<PropertyChanges> handler);
         }
 
-        // ------------------------------------------------------------------
-        // MPRIS2 D-Bus object. Kept nested since it only ever wraps the
-        // state living on the outer handler above (mirrors the way the
-        // Windows version keeps everything on one class via SMTC events).
-        // ------------------------------------------------------------------
-        private sealed class MprisPlayer : IMediaPlayer2, IMediaPlayer2Player, IDisposable
+        [DBusInterface("org.mpris.MediaPlayer2")]
+        public interface IMediaPlayer2 : IDBusObject
         {
-            private readonly LinuxMediaSessionHandler owner;
+            Task RaiseAsync();
+            Task QuitAsync();
+            Task<bool> GetCanQuitAsync();
+            Task<bool> GetCanRaiseAsync();
+            Task<string> GetIdentityAsync();
+            Task<string> GetDesktopEntryAsync();
+        }
 
-            public MprisPlayer(LinuxMediaSessionHandler owner)
-            {
-                this.owner = owner;
-            }
+        [DBusInterface("org.mpris.MediaPlayer2.Player")]
+        public interface IPlayer : IDBusObject
+        {
+            Task NextAsync();
+            Task PreviousAsync();
+            Task PauseAsync();
+            Task PlayPauseAsync();
+            Task StopAsync();
+            Task PlayAsync();
+            Task SeekAsync(long offset);
+            Task SetPositionAsync(ObjectPath trackId, long position);
+            Task OpenUriAsync(string uri);
 
-            public ObjectPath ObjectPath { get; } = new ObjectPath("/org/mpris/MediaPlayer2");
+            Task<string> GetPlaybackStatusAsync();
+            Task<IDictionary<string, object>> GetMetadataAsync();
+            Task<double> GetVolumeAsync();
+            Task SetVolumeAsync(double volume);
+            Task<long> GetPositionAsync();
+            Task<double> GetRateAsync();
+            Task<bool> GetCanControlAsync();
+            Task<bool> GetCanPlayAsync();
+            Task<bool> GetCanPauseAsync();
+            Task<bool> GetCanGoNextAsync();
+            Task<bool> GetCanGoPreviousAsync();
+            Task<bool> GetCanSeekAsync();
+        }
 
-            // ---- org.mpris.MediaPlayer2 ----
+        public class MprisPlayer : IMediaPlayer2, IPlayer, IProperties
+        {
+            private readonly LinuxMediaSessionHandler handler;
+            private readonly Dictionary<string, object> metadata = new();
 
-            public Task<bool> GetCanQuitAsync() => Task.FromResult(false);
-            public Task<bool> GetCanRaiseAsync() => Task.FromResult(false);
-            public Task<string> GetIdentityAsync() => Task.FromResult("NekoPlayer");
-            public Task<string[]> GetSupportedUriSchemesAsync() => Task.FromResult(new[] { "file", "https" });
-            public Task<string[]> GetSupportedMimeTypesAsync() => Task.FromResult(new[] { "audio/mpeg", "audio/webm" });
-
-            public Task QuitAsync() => Task.CompletedTask;
-            public Task RaiseAsync() => Task.CompletedTask;
-
-            // ---- org.mpris.MediaPlayer2.Player ----
-
-            public Task<string> GetPlaybackStatusAsync() => Task.FromResult(owner.playbackStatus);
-            public Task<double> GetRateAsync() => Task.FromResult(owner.playbackRate);
-            public Task<double> GetVolumeAsync() => Task.FromResult(0d); // audio handled elsewhere, mirrors Windows Volume = 0
-            public Task<long> GetPositionAsync() => Task.FromResult((long)(owner.positionSeconds * 1_000_000));
-
-            public Task<IDictionary<string, object>> GetMetadataAsync()
-            {
-                IDictionary<string, object> metadata = new Dictionary<string, object>
-                {
-                    ["mpris:trackid"] = new ObjectPath($"/org/nekoplayer/track/{owner.trackId}"),
-                    ["mpris:length"] = (long)(owner.durationSeconds * 1_000_000),
-                    ["xesam:title"] = owner.currentTitle,
-                    ["xesam:artist"] = new[] { owner.currentArtist },
-                };
-
-                if (!string.IsNullOrEmpty(owner.currentArtUrl))
-                    metadata["mpris:artUrl"] = owner.currentArtUrl;
-
-                return Task.FromResult(metadata);
-            }
-
-            // ---- org.freedesktop.DBus.Properties (required so PlaybackStatus/Metadata/etc. are readable) ----
-            // Tmds.DBus's own convention (see its issue #62 and PropertyObject test) is: implement
-            // GetAsync/GetAllAsync/SetAsync as plain methods, and WatchPropertiesAsync just wires the
-            // handler onto a local event via SignalWatcher.AddAsync. There's no interface_name argument
-            // in this simplified model, so both org.mpris.MediaPlayer2 and .Player interfaces route
-            // through the same table below - all NekoPlayer properties are read-only, so it never needs SetAsync.
+            public ObjectPath ObjectPath => new ObjectPath("/org/mpris/MediaPlayer2");
 
             public event Action<PropertyChanges> OnPropertiesChanged;
 
-            public Task<T> GetAsync<T>(string prop)
-            {
-                object value = prop switch
-                {
-                    "CanQuit" => false,
-                    "CanRaise" => false,
-                    "Identity" => "NekoPlayer",
-                    "PlaybackStatus" => owner.playbackStatus,
-                    "Rate" => owner.playbackRate,
-                    "Volume" => 0d,
-                    "Position" => (long)(owner.positionSeconds * 1_000_000),
-                    _ => throw new ArgumentException($"Unknown property {prop}"),
-                };
+            public string PlaybackStatus { get; private set; } = "Paused";
+            public long Position { get; set; }
+            public double Rate { get; set; } = 1.0;
 
-                return Task.FromResult((T)value);
+            public MprisPlayer(LinuxMediaSessionHandler handler)
+            {
+                this.handler = handler;
+
+                // GNOME/KDE 상단 패널 인식용 초기 메타데이터 세팅
+                metadata["mpris:trackid"] = new ObjectPath("/org/mpris/MediaPlayer2/Track/1");
+                metadata["xesam:title"] = "NekoPlayer";
+                metadata["xesam:artist"] = new string[] { "NekoPlayer" };
             }
 
-            public async Task<IDictionary<string, object>> GetAllAsync()
+            public void SetPlaybackStatus(string status)
             {
-                var metadata = await GetMetadataAsync();
-
-                return new Dictionary<string, object>
+                if (PlaybackStatus != status)
                 {
-                    ["PlaybackStatus"] = owner.playbackStatus,
-                    ["Rate"] = owner.playbackRate,
-                    ["Volume"] = 0d,
-                    ["Position"] = (long)(owner.positionSeconds * 1_000_000),
-                    ["Metadata"] = metadata,
-                    ["CanPlay"] = true,
-                    ["CanPause"] = true,
-                    ["CanGoNext"] = true,
-                    ["CanGoPrevious"] = true,
-                    ["CanSeek"] = true,
-                    ["CanControl"] = true,
-                };
+                    PlaybackStatus = status;
+                    OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("PlaybackStatus", PlaybackStatus));
+                }
             }
 
-            public Task SetAsync(string prop, object val) => Task.CompletedTask; // nothing settable from clients
+            public void SetMetadata(string title, string artist, string artUrl, long lengthMicroseconds)
+            {
+                metadata["mpris:trackid"] = new ObjectPath("/org/mpris/MediaPlayer2/Track/1");
+                metadata["mpris:length"] = lengthMicroseconds;
+                metadata["xesam:title"] = string.IsNullOrEmpty(title) ? "Unknown Title" : title;
+                metadata["xesam:artist"] = new string[] { string.IsNullOrEmpty(artist) ? "Unknown Artist" : artist };
+
+                if (!string.IsNullOrEmpty(artUrl))
+                    metadata["mpris:artUrl"] = artUrl;
+
+                OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("Metadata", metadata));
+            }
+
+            // --- IProperties 구현 (리눅스 OS 상단 제어바 연동의 핵심) ---
+            public Task<object> GetAsync(string interfaceName, string propertyName)
+            {
+                var props = GetAllInternal(interfaceName);
+                if (props.TryGetValue(propertyName, out var value))
+                    return Task.FromResult(value);
+
+                throw new DBusException("org.freedesktop.DBus.Error.UnknownProperty", $"Property '{propertyName}' not found.");
+            }
+
+            public Task<IDictionary<string, object>> GetAllAsync(string interfaceName)
+            {
+                return Task.FromResult(GetAllInternal(interfaceName));
+            }
+
+            private IDictionary<string, object> GetAllInternal(string interfaceName)
+            {
+                if (interfaceName == "org.mpris.MediaPlayer2")
+                {
+                    return new Dictionary<string, object>
+                    {
+                        { "CanQuit", false },
+                        { "CanRaise", false },
+                        { "HasTrackList", false },
+                        { "Identity", "NekoPlayer" },
+                        { "DesktopEntry", "" }, // 빈 문자열이어야 OS가 존재하지 않는 .desktop 파일 탐색을 안 함
+                        { "SupportedUriSchemes", new string[0] },
+                        { "SupportedMimeTypes", new string[0] }
+                    };
+                }
+
+                if (interfaceName == "org.mpris.MediaPlayer2.Player")
+                {
+                    return new Dictionary<string, object>
+                    {
+                        { "PlaybackStatus", PlaybackStatus },
+                        { "Rate", Rate },
+                        { "Metadata", metadata },
+                        { "Volume", 1.0 },
+                        { "Position", Position },
+                        { "MinimumRate", 1.0 },
+                        { "MaximumRate", 1.0 },
+                        { "CanControl", true },
+                        { "CanPlay", true },
+                        { "CanPause", true },
+                        { "CanGoNext", true },
+                        { "CanGoPrevious", true },
+                        { "CanSeek", true }
+                    };
+                }
+
+                return new Dictionary<string, object>();
+            }
+
+            public Task SetAsync(string interfaceName, string propertyName, object value) => Task.CompletedTask;
 
             public Task<IDisposable> WatchPropertiesAsync(Action<PropertyChanges> handler)
-                => SignalWatcher.AddAsync(this, nameof(OnPropertiesChanged), handler);
+            {
+                return Task.FromResult<IDisposable>(new ActionDisposable(() => { }));
+            }
 
+            private class ActionDisposable : IDisposable
+            {
+                private readonly Action action;
+                public ActionDisposable(Action action) => this.action = action;
+                public void Dispose() => action?.Invoke();
+            }
+
+            // --- IMediaPlayer2 ---
+            public Task RaiseAsync() => Task.CompletedTask;
+            public Task QuitAsync() => Task.CompletedTask;
+            public Task<bool> GetCanQuitAsync() => Task.FromResult(false);
+            public Task<bool> GetCanRaiseAsync() => Task.FromResult(false);
+            public Task<string> GetIdentityAsync() => Task.FromResult("NekoPlayer");
+            public Task<string> GetDesktopEntryAsync() => Task.FromResult("");
+
+            // --- IPlayer Controls ---
             public Task PlayAsync()
             {
-                owner.controls?.PlayButtonPressed?.Invoke();
+                handler.controls?.PlayButtonPressed?.Invoke();
                 return Task.CompletedTask;
             }
 
             public Task PauseAsync()
             {
-                owner.controls?.PauseButtonPressed?.Invoke();
+                handler.controls?.PauseButtonPressed?.Invoke();
                 return Task.CompletedTask;
             }
 
             public Task PlayPauseAsync()
             {
-                if (owner.playbackStatus == "Playing")
-                    owner.controls?.PauseButtonPressed?.Invoke();
+                if (PlaybackStatus == "Playing")
+                    handler.controls?.PauseButtonPressed?.Invoke();
                 else
-                    owner.controls?.PlayButtonPressed?.Invoke();
+                    handler.controls?.PlayButtonPressed?.Invoke();
 
                 return Task.CompletedTask;
             }
 
             public Task StopAsync()
             {
-                owner.controls?.PauseButtonPressed?.Invoke();
+                handler.controls?.PauseButtonPressed?.Invoke();
                 return Task.CompletedTask;
             }
 
             public Task NextAsync()
             {
-                owner.controls?.NextButtonPressed?.Invoke();
+                handler.controls?.NextButtonPressed?.Invoke();
                 return Task.CompletedTask;
             }
 
             public Task PreviousAsync()
             {
-                owner.controls?.PrevButtonPressed?.Invoke();
+                handler.controls?.PrevButtonPressed?.Invoke();
                 return Task.CompletedTask;
             }
 
-            public Task SeekAsync(long offsetMicroseconds)
+            public Task SeekAsync(long offset)
             {
-                double newPositionMs = (owner.positionSeconds * 1000d) + (offsetMicroseconds / 1000d);
-                owner.controls?.OnSeek?.Invoke(newPositionMs);
+                double newPosMs = (Position + offset) / 1000.0;
+                handler.controls?.OnSeek?.Invoke(newPosMs);
                 return Task.CompletedTask;
             }
 
-            public Task SetPositionAsync(ObjectPath trackId, long positionMicroseconds)
+            public Task SetPositionAsync(ObjectPath trackId, long position)
             {
-                owner.controls?.OnSeek?.Invoke(positionMicroseconds / 1000d);
+                double posMs = position / 1000.0;
+                handler.controls?.OnSeek?.Invoke(posMs);
                 return Task.CompletedTask;
             }
 
             public Task OpenUriAsync(string uri) => Task.CompletedTask;
 
-            // ---- change notification plumbing ----
+            // --- Getters ---
+            public Task<string> GetPlaybackStatusAsync() => Task.FromResult(PlaybackStatus);
+            public Task<IDictionary<string, object>> GetMetadataAsync() => Task.FromResult<IDictionary<string, object>>(metadata);
+            public Task<double> GetVolumeAsync() => Task.FromResult(1.0);
+            public Task SetVolumeAsync(double volume) => Task.CompletedTask;
+            public Task<long> GetPositionAsync() => Task.FromResult(Position);
+            public Task<double> GetRateAsync() => Task.FromResult(Rate);
 
-            public Task<IDisposable> WatchSeekedAsync(Action<long> handler)
-                => SignalWatcher.AddAsync(this, nameof(Seeked), handler);
-
-            public event Action<long> Seeked;
-
-            public void EmitSeeked(long positionMicroseconds) => Seeked?.Invoke(positionMicroseconds);
-
-            public Task NotifyPlaybackStatusChangedAsync()
-            {
-                OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("PlaybackStatus", owner.playbackStatus));
-                return Task.CompletedTask;
-            }
-
-            public async Task NotifyMetadataChangedAsync()
-            {
-                var metadata = await GetMetadataAsync();
-                OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("Metadata", metadata));
-            }
-
-            public Task NotifyPlaybackRateChangedAsync()
-            {
-                OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("Rate", owner.playbackRate));
-                return Task.CompletedTask;
-            }
-
-            public void Dispose()
-            {
-            }
+            public Task<bool> GetCanControlAsync() => Task.FromResult(true);
+            public Task<bool> GetCanPlayAsync() => Task.FromResult(true);
+            public Task<bool> GetCanPauseAsync() => Task.FromResult(true);
+            public Task<bool> GetCanGoNextAsync() => Task.FromResult(true);
+            public Task<bool> GetCanGoPreviousAsync() => Task.FromResult(true);
+            public Task<bool> GetCanSeekAsync() => Task.FromResult(true);
         }
 
-        // NOTE: IMediaPlayer2 / IMediaPlayer2Player interface declarations
-        // (with [DBusInterface] attributes) go in a separate file, e.g.
-        // IMediaPlayer2.cs, same as in the earlier example.
+        #endregion
     }
 }
