@@ -7624,7 +7624,7 @@ namespace NekoPlayer.App.Screens
         {
             if ((showVideoMetadataOnWindowTitle.Value) && (videoData != null))
             {
-                game.RequestUpdateWindowTitle($"{api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))} - {api.GetLocalizedVideoTitle(videoData)}");
+                game.RequestUpdateWindowTitle($"{TruncateWithEllipsis(api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId)), 40)} - {api.GetLocalizedVideoTitle(videoData)}");
             }
             else
             {
@@ -7767,7 +7767,7 @@ namespace NekoPlayer.App.Screens
                     this.videoId = YoutubeExplode.Videos.VideoId.Parse(videoId);
                     //ClearPlaylistItems();
                     pausedTime = clearCache ? currentVideoSource.VideoProgress.Value : 0;
-                    Schedule(() => currentVideoSource?.Dispose());
+                    Schedule(() => currentVideoSource?.Expire());
                     CommentsSort.UnbindEvents();
 
                     if (playlists.Count > 0)
