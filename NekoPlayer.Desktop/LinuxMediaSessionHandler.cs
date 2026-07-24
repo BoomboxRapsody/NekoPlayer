@@ -40,6 +40,9 @@ namespace NekoPlayer.Desktop
                     await dbusConnection.RegisterObjectAsync(mprisPlayer);
                     await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
 
+                    mprisPlayer.OpenUriAsync(audioPath);
+                    mprisPlayer.SetVolumeAsync(0);
+
                     IsLoaded = true;
                     base.YouTubeAPI = youtubeAPI;
                 }
