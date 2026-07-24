@@ -308,15 +308,6 @@ namespace NekoPlayer.App
         {
             try
             {
-                if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux || RuntimeInfo.OS == RuntimeInfo.Platform.macOS)
-                {
-                    Process.Start("chmod", $"-x {GetFFmpegPath()}"); //fix Win32Exception on linux or macos
-                }
-
-                DirectoryInfo directoryInfo = new DirectoryInfo(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath(string.Empty));
-
-                RecursiveDelete(directoryInfo);
-
                 Logger.Log($"------------------------------------------------\nNekoPlayer by BoomboxRapsody\n------------------------------------------------\nApp version is: {Version}\nApp version hash is: {VersionHash}\nCultureInfo.CurrentCulture name is {CultureInfo.CurrentCulture.Name}\n------------------------------------------------\ngood luck ^^\n------------------------------------------------");
                 RestartRequired.Value = false;
                 UpdateManagerVersionText.Value = Version;
