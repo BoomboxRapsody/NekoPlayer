@@ -25,7 +25,7 @@ namespace NekoPlayer.App.Config
 
         protected override void InitialiseDefaults()
         {
-            SetDefault(NekoPlayerSetting.UsernameDisplayMode, UsernameDisplayMode.Handle);
+            SetDefault(NekoPlayerSetting.UsernameDisplayMode, UsernameDisplayMode.DisplayName);
             SetDefault(NekoPlayerSetting.ClosedCaptionLanguage, ClosedCaptionLanguage.Disabled);
             SetDefault(NekoPlayerSetting.ClosedCaptionLanguageNew, 0);
             SetDefault(NekoPlayerSetting.CaptionEnabled, false);
@@ -60,7 +60,7 @@ namespace NekoPlayer.App.Config
 
             SetDefault(NekoPlayerSetting.FinalLoginState, false);
 
-            SetDefault(NekoPlayerSetting.AlwaysUseOriginalAudio, false);
+            SetDefault(NekoPlayerSetting.AlwaysUseOriginalAudio, true);
 
             SetDefault(NekoPlayerSetting.UseSystemCursor, true);
 
