@@ -23,8 +23,7 @@ The new era of YouTube Video Player written in [custom osu-framework](https://gi
 
 Please make sure you have the following prerequisites:
 
-- A desktop platform with the [.NET 8.0 SDK](https://dotnet.microsoft.com/download) installed.
-- Windows 10 version 2004 or higher installed.
+- A desktop platform with the Windows 10 version 2004 or higher and [.NET 8.0 SDK](https://dotnet.microsoft.com/download) installed.
 
 When working with the codebase, we recommend using an IDE with intelligent code completion and syntax highlighting, such as the latest version of [Visual Studio](https://visualstudio.microsoft.com/vs/), [Visual Studio Code](https://code.visualstudio.com/) with the [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) and [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) plugin installed.
 
