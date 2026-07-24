@@ -26,34 +26,34 @@ namespace NekoPlayer.Desktop.Linux
 #nullable disable
 
         public override void CreateMediaSession(YouTubeAPI youtubeAPI, string audioPath)
-{
-    Task.Run(async () =>
-    {
-        try
         {
-            mprisPlayer = new MprisPlayer(this);
+            Task.Run(async () =>
+            {
+                try
+                {
+                    mprisPlayer = new MprisPlayer(this);
 
-            // [기존 코드 - 오류 발생]
-            // dbusConnection = Connection.Session;
+                    // [기존 코드 - 오류 발생]
+                    // dbusConnection = Connection.Session;
 
-            // [수정 코드]
-            // Address.Session 주소로 인스턴스를 직접 생성하고 explicit하게 ConnectAsync()를 호출합니다.
-            dbusConnection = new Connection(Address.Session);
-            await dbusConnection.ConnectAsync();
+                    // [수정 코드]
+                    // Address.Session 주소로 인스턴스를 직접 생성하고 explicit하게 ConnectAsync()를 호출합니다.
+                    dbusConnection = new Connection(Address.Session);
+                    await dbusConnection.ConnectAsync();
 
-            // 연결이 성공적으로 맺어진 후 D-Bus 객체 및 서비스 등록
-            await dbusConnection.RegisterObjectAsync(mprisPlayer);
-            await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
+                    // 연결이 성공적으로 맺어진 후 D-Bus 객체 및 서비스 등록
+                    await dbusConnection.RegisterObjectAsync(mprisPlayer);
+                    await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
 
-            IsLoaded = true;
-            base.YouTubeAPI = youtubeAPI;
+                    IsLoaded = true;
+                    base.YouTubeAPI = youtubeAPI;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, ex.GetDescription());
+                }
+            });
         }
-        catch (Exception ex)
-        {
-            Logger.Error(ex, ex.GetDescription());
-        }
-    });
-}
 
         public override void UpdateMediaSession(Video video)
         {
