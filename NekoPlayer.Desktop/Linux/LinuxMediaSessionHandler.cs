@@ -26,29 +26,34 @@ namespace NekoPlayer.Desktop.Linux
 #nullable disable
 
         public override void CreateMediaSession(YouTubeAPI youtubeAPI, string audioPath)
+{
+    Task.Run(async () =>
+    {
+        try
         {
-            Task.Run(async () =>
-            {
-                try
-                {
-                    mprisPlayer = new MprisPlayer(this);
+            mprisPlayer = new MprisPlayer(this);
 
-                    // Direct Connection으로 D-Bus 연결
-                    dbusConnection = new Connection(Address.Session);
-                    await dbusConnection.ConnectAsync();
+            // [기존 코드 - 오류 발생]
+            // dbusConnection = Connection.Session;
 
-                    await dbusConnection.RegisterObjectAsync(mprisPlayer);
-                    await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
+            // [수정 코드]
+            // Address.Session 주소로 인스턴스를 직접 생성하고 explicit하게 ConnectAsync()를 호출합니다.
+            dbusConnection = new Connection(Address.Session);
+            await dbusConnection.ConnectAsync();
 
-                    IsLoaded = true;
-                    base.YouTubeAPI = youtubeAPI;
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, ex.GetDescription());
-                }
-            });
+            // 연결이 성공적으로 맺어진 후 D-Bus 객체 및 서비스 등록
+            await dbusConnection.RegisterObjectAsync(mprisPlayer);
+            await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
+
+            IsLoaded = true;
+            base.YouTubeAPI = youtubeAPI;
         }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, ex.GetDescription());
+        }
+    });
+}
 
         public override void UpdateMediaSession(Video video)
         {
@@ -77,7 +82,7 @@ namespace NekoPlayer.Desktop.Linux
             Task.Run(async () =>
             {
                 if (!IsLoaded || mprisPlayer == null) return;
-                mprisPlayer.SetPlaybackStatus(playing ? "Playing" : "Paused");
+                mprisPlayer.PlaybackStatus = playing ? "Playing" : "Paused";
             });
         }
 
@@ -87,6 +92,7 @@ namespace NekoPlayer.Desktop.Linux
             {
                 if (IsLoaded && mprisPlayer != null)
                 {
+                    // pos는 ms 단위 -> MPRIS는 마이크로초(microseconds) 단위 사용
                     mprisPlayer.Position = (long)(pos * 1000);
                 }
             }
@@ -120,17 +126,7 @@ namespace NekoPlayer.Desktop.Linux
             controls = null;
         }
 
-        #region MPRIS D-Bus Interfaces & Implementation
-
-        // GNOME / KDE 등 데스크톱 환경 필수 속성 조회 인터페이스
-        [DBusInterface("org.freedesktop.DBus.Properties")]
-        public interface IProperties : IDBusObject
-        {
-            Task<object> GetAsync(string interfaceName, string propertyName);
-            Task<IDictionary<string, object>> GetAllAsync(string interfaceName);
-            Task SetAsync(string interfaceName, string propertyName, object value);
-            Task<IDisposable> WatchPropertiesAsync(Action<PropertyChanges> handler);
-        }
+        #region MPRIS D-Bus Implementation
 
         [DBusInterface("org.mpris.MediaPlayer2")]
         public interface IMediaPlayer2 : IDBusObject
@@ -170,128 +166,40 @@ namespace NekoPlayer.Desktop.Linux
             Task<bool> GetCanSeekAsync();
         }
 
-        public class MprisPlayer : IMediaPlayer2, IPlayer, IProperties
+        public class MprisPlayer : IMediaPlayer2, IPlayer
         {
             private readonly LinuxMediaSessionHandler handler;
             private readonly Dictionary<string, object> metadata = new();
 
             public ObjectPath ObjectPath => new ObjectPath("/org/mpris/MediaPlayer2");
 
-            public event Action<PropertyChanges> OnPropertiesChanged;
-
-            public string PlaybackStatus { get; private set; } = "Paused";
+            public string PlaybackStatus { get; set; } = "Paused";
             public long Position { get; set; }
             public double Rate { get; set; } = 1.0;
 
             public MprisPlayer(LinuxMediaSessionHandler handler)
             {
                 this.handler = handler;
-
-                // GNOME/KDE 상단 패널 인식용 초기 메타데이터 세팅
-                metadata["mpris:trackid"] = new ObjectPath("/org/mpris/MediaPlayer2/Track/1");
-                metadata["xesam:title"] = "NekoPlayer";
-                metadata["xesam:artist"] = new string[] { "NekoPlayer" };
-            }
-
-            public void SetPlaybackStatus(string status)
-            {
-                if (PlaybackStatus != status)
-                {
-                    PlaybackStatus = status;
-                    OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("PlaybackStatus", PlaybackStatus));
-                }
             }
 
             public void SetMetadata(string title, string artist, string artUrl, long lengthMicroseconds)
             {
                 metadata["mpris:trackid"] = new ObjectPath("/org/mpris/MediaPlayer2/Track/1");
                 metadata["mpris:length"] = lengthMicroseconds;
-                metadata["xesam:title"] = string.IsNullOrEmpty(title) ? "Unknown Title" : title;
-                metadata["xesam:artist"] = new string[] { string.IsNullOrEmpty(artist) ? "Unknown Artist" : artist };
-
-                if (!string.IsNullOrEmpty(artUrl))
-                    metadata["mpris:artUrl"] = artUrl;
-
-                OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("Metadata", metadata));
+                metadata["xesam:title"] = title;
+                metadata["xesam:artist"] = new string[] { artist };
+                metadata["mpris:artUrl"] = artUrl;
             }
 
-            // --- IProperties 구현 (리눅스 OS 상단 제어바 연동의 핵심) ---
-            public Task<object> GetAsync(string interfaceName, string propertyName)
-            {
-                var props = GetAllInternal(interfaceName);
-                if (props.TryGetValue(propertyName, out var value))
-                    return Task.FromResult(value);
-
-                throw new DBusException("org.freedesktop.DBus.Error.UnknownProperty", $"Property '{propertyName}' not found.");
-            }
-
-            public Task<IDictionary<string, object>> GetAllAsync(string interfaceName)
-            {
-                return Task.FromResult(GetAllInternal(interfaceName));
-            }
-
-            private IDictionary<string, object> GetAllInternal(string interfaceName)
-            {
-                if (interfaceName == "org.mpris.MediaPlayer2")
-                {
-                    return new Dictionary<string, object>
-                    {
-                        { "CanQuit", false },
-                        { "CanRaise", false },
-                        { "HasTrackList", false },
-                        { "Identity", "NekoPlayer" },
-                        { "DesktopEntry", "" }, // 빈 문자열이어야 OS가 존재하지 않는 .desktop 파일 탐색을 안 함
-                        { "SupportedUriSchemes", new string[0] },
-                        { "SupportedMimeTypes", new string[0] }
-                    };
-                }
-
-                if (interfaceName == "org.mpris.MediaPlayer2.Player")
-                {
-                    return new Dictionary<string, object>
-                    {
-                        { "PlaybackStatus", PlaybackStatus },
-                        { "Rate", Rate },
-                        { "Metadata", metadata },
-                        { "Volume", 1.0 },
-                        { "Position", Position },
-                        { "MinimumRate", 1.0 },
-                        { "MaximumRate", 1.0 },
-                        { "CanControl", true },
-                        { "CanPlay", true },
-                        { "CanPause", true },
-                        { "CanGoNext", true },
-                        { "CanGoPrevious", true },
-                        { "CanSeek", true }
-                    };
-                }
-
-                return new Dictionary<string, object>();
-            }
-
-            public Task SetAsync(string interfaceName, string propertyName, object value) => Task.CompletedTask;
-
-            public Task<IDisposable> WatchPropertiesAsync(Action<PropertyChanges> handler)
-            {
-                return Task.FromResult<IDisposable>(new ActionDisposable(() => { }));
-            }
-
-            private class ActionDisposable : IDisposable
-            {
-                private readonly Action action;
-                public ActionDisposable(Action action) => this.action = action;
-                public void Dispose() => action?.Invoke();
-            }
-
-            // --- IMediaPlayer2 ---
+            // IMediaPlayer2
             public Task RaiseAsync() => Task.CompletedTask;
             public Task QuitAsync() => Task.CompletedTask;
             public Task<bool> GetCanQuitAsync() => Task.FromResult(false);
             public Task<bool> GetCanRaiseAsync() => Task.FromResult(false);
             public Task<string> GetIdentityAsync() => Task.FromResult("NekoPlayer");
-            public Task<string> GetDesktopEntryAsync() => Task.FromResult("");
+            public Task<string> GetDesktopEntryAsync() => Task.FromResult("nekoplayer");
 
-            // --- IPlayer Controls ---
+            // IPlayer - Event Handlers
             public Task PlayAsync()
             {
                 handler.controls?.PlayButtonPressed?.Invoke();
@@ -334,6 +242,7 @@ namespace NekoPlayer.Desktop.Linux
 
             public Task SeekAsync(long offset)
             {
+                // offset: microseconds -> ms
                 double newPosMs = (Position + offset) / 1000.0;
                 handler.controls?.OnSeek?.Invoke(newPosMs);
                 return Task.CompletedTask;
@@ -341,6 +250,7 @@ namespace NekoPlayer.Desktop.Linux
 
             public Task SetPositionAsync(ObjectPath trackId, long position)
             {
+                // position: microseconds -> ms
                 double posMs = position / 1000.0;
                 handler.controls?.OnSeek?.Invoke(posMs);
                 return Task.CompletedTask;
@@ -348,7 +258,7 @@ namespace NekoPlayer.Desktop.Linux
 
             public Task OpenUriAsync(string uri) => Task.CompletedTask;
 
-            // --- Getters ---
+            // Property Getters
             public Task<string> GetPlaybackStatusAsync() => Task.FromResult(PlaybackStatus);
             public Task<IDictionary<string, object>> GetMetadataAsync() => Task.FromResult<IDictionary<string, object>>(metadata);
             public Task<double> GetVolumeAsync() => Task.FromResult(1.0);
