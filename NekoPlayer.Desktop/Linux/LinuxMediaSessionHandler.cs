@@ -214,10 +214,12 @@ namespace NekoPlayer.Desktop.Linux
 
             public Task PlayPauseAsync()
             {
+                /*
                 if (PlaybackStatus == "Playing")
                     handler.controls?.PauseButtonPressed?.Invoke();
                 else
                     handler.controls?.PlayButtonPressed?.Invoke();
+                */
 
                 return Task.CompletedTask;
             }
