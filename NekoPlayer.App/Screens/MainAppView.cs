@@ -87,7 +87,7 @@ namespace NekoPlayer.App.Screens
     public partial class MainAppView : NekoPlayerScreen, IKeyBindingHandler<GlobalAction>, INekoPlayerAppMessageHandler
     {
         private BufferedContainer videoContainer;
-        private AdaptiveButton loadBtn, commentSendButton, searchButton, loadPlaylistBtn, loadPlaylistOpenButton, declineButton, acceptButton, logoutButton, viewChannelButton, updatePlaylistButton, downloadBtn;
+        private AdaptiveButton loadBtn, commentSendButton, searchButton, loadPlaylistBtn, declineButton, acceptButton, logoutButton, viewChannelButton, updatePlaylistButton, downloadBtn;
         private ControlBarIconButton prevVideoButton, nextVideoButton;
         private EnhancedFocusedTextBox videoIdBox, playlistIdBox, searchTextBox;
         private EnhancedFocusedTextBoxWithProfileImage commentTextBox;
@@ -733,7 +733,7 @@ namespace NekoPlayer.App.Screens
 
                                                                                             Schedule(async () =>
                                                                                             {
-                                                                                                await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                                SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId).FireAndForget();
                                                                                             });
                                                                                         }
                                                                                     }
@@ -776,7 +776,7 @@ namespace NekoPlayer.App.Screens
 
                                                                                             Schedule(async () =>
                                                                                             {
-                                                                                                await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                                SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId).FireAndForget();
                                                                                             });
                                                                                         }
                                                                                     }
@@ -1128,10 +1128,10 @@ namespace NekoPlayer.App.Screens
                                 loadBtn = new AdaptiveButton
                                 {
                                     Enabled = { Value = true },
-                                    Origin = Anchor.BottomRight,
-                                    Anchor = Anchor.BottomRight,
+                                    Origin = Anchor.BottomCentre,
+                                    Anchor = Anchor.BottomCentre,
                                     Text = NekoPlayerStrings.LoadVideo,
-                                    Size = new Vector2(200, 60),
+                                    Size = new Vector2(450, 60),
                                     Margin = new MarginPadding(8),
                                 },
                                 videoIdBox = new EnhancedFocusedTextBox
@@ -1157,7 +1157,16 @@ namespace NekoPlayer.App.Screens
                                                     ClearPlaylistItems();
                                                     Schedule(async () =>
                                                     {
-                                                        await SetVideoSource(videoIdBox.Text);
+                                                        YoutubeExplode.Playlists.PlaylistId? playlistId = YoutubeExplode.Playlists.PlaylistId.TryParse(videoIdBox.Text);
+                                                        YoutubeExplode.Videos.VideoId? videoId = YoutubeExplode.Videos.VideoId.TryParse(videoIdBox.Text);
+
+                                                        if (videoId != null && !string.IsNullOrEmpty(videoId.Value))
+                                                        {
+                                                            SetVideoSource(videoIdBox.Text).FireAndForget();
+                                                        } else
+                                                        {
+                                                            SetPlaylist(videoIdBox.Text).FireAndForget();
+                                                        }
                                                     });
                                                 });
                                             }
@@ -2779,17 +2788,6 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                loadPlaylistOpenButton = new IconButton
-                                {
-                                    Enabled = { Value = true },
-                                    Origin = Anchor.TopRight,
-                                    Anchor = Anchor.TopRight,
-                                    Size = new Vector2(40, 40),
-                                    Icon = FontAwesome.Regular.FolderOpen,
-                                    Margin = new MarginPadding(16),
-                                    IconScale = new Vector2(1.2f),
-                                    TooltipText = NekoPlayerStrings.LoadFromPlaylistId,
-                                },
                             }
                         },
                         myPlaylistsOverlay = new SideOverlayContainer
@@ -4315,7 +4313,7 @@ namespace NekoPlayer.App.Screens
             videoSettingsButton.SetEnabledValue2(true);
             playlistButton.SetEnabledValue2(true);
 
-            searchButton.BackgroundColour = commentSendButton.BackgroundColour = loadPlaylistOpenButton.BackgroundColour = overlayColourProvider.Background3;
+            searchButton.BackgroundColour = commentSendButton.BackgroundColour = overlayColourProvider.Background3;
 
             hwAccelCheckbox.Current.Default = hardwareVideoDecoder.Default != HardwareVideoDecoder.None;
             hwAccelCheckbox.Current.Value = hardwareVideoDecoder.Value != HardwareVideoDecoder.None;
@@ -4347,7 +4345,7 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(async () =>
                         {
-                            await SetVideoSource(videoId, true, LoadType.VideoOnly);
+                            SetVideoSource(videoId, true, LoadType.VideoOnly).FireAndForget();
                         });
                     });
                 }
@@ -4361,7 +4359,7 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(async () =>
                         {
-                            await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                            SetVideoSource(videoId, true, LoadType.AudioOnly).FireAndForget();
                         });
                     });
                 }
@@ -4415,7 +4413,7 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(async () =>
                         {
-                            await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                            SetVideoSource(videoId, true, LoadType.AudioOnly).FireAndForget();
                         });
                     });
                 }
@@ -4438,7 +4436,7 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(async () =>
                         {
-                            await SetVideoSource(videoId, true, LoadType.AudioOnly);
+                            SetVideoSource(videoId, true, LoadType.AudioOnly).FireAndForget();
                         });
                     });
                 }
@@ -4491,7 +4489,7 @@ namespace NekoPlayer.App.Screens
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
                             string preferedLang = string.Empty;
-                            
+
                             if (captionLangDropdown.Current.Value != null)
                             {
                                 preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
@@ -5682,7 +5680,7 @@ namespace NekoPlayer.App.Screens
                         ClearPlaylistItems();
                         Schedule(async () =>
                         {
-                            await SetVideoSource(item.Id.VideoId);
+                            SetVideoSource(item.Id.VideoId).FireAndForget();
                         });
                     };
 
@@ -5905,7 +5903,17 @@ namespace NekoPlayer.App.Screens
                 ClearPlaylistItems();
                 Schedule(async () =>
                 {
-                    await SetVideoSource(videoIdBox.Text);
+                    YoutubeExplode.Playlists.PlaylistId? playlistId = YoutubeExplode.Playlists.PlaylistId.TryParse(videoIdBox.Text);
+                    YoutubeExplode.Videos.VideoId? videoId = YoutubeExplode.Videos.VideoId.TryParse(videoIdBox.Text);
+
+                    if (videoId != null && !string.IsNullOrEmpty(videoId.Value))
+                    {
+                        SetVideoSource(videoIdBox.Text).FireAndForget();
+                    }
+                    else
+                    {
+                        SetPlaylist(videoIdBox.Text).FireAndForget();
+                    }
                 });
             };
 
@@ -5948,13 +5956,6 @@ namespace NekoPlayer.App.Screens
             {
                 hideOverlays();
                 showOverlayContainer(videoSaveLocationOverlay);
-            };
-
-            loadPlaylistOpenButton.ClickAction = _ =>
-            {
-                hideOverlays();
-                showOverlayContainer(loadPlaylistContainer);
-                playlistIdBox.TakeFocus();
             };
 
             commentOpenButton.Action = () =>
@@ -6306,22 +6307,22 @@ namespace NekoPlayer.App.Screens
 
                     return true;
 
-                    /*
-                case GlobalAction.DownloadVideo:
-                    if (videoData == null)
-                        return true;
-
-                    if (!downloadReadyContainer.IsVisible)
-                    {
-                        currentVideoSource?.Pause();
-                        hideOverlays();
-                        showOverlayContainer(downloadReadyContainer);
-                    }
-                    else
-                        hideOverlayContainer(downloadReadyContainer);
-
+                /*
+            case GlobalAction.DownloadVideo:
+                if (videoData == null)
                     return true;
-                    */
+
+                if (!downloadReadyContainer.IsVisible)
+                {
+                    currentVideoSource?.Pause();
+                    hideOverlays();
+                    showOverlayContainer(downloadReadyContainer);
+                }
+                else
+                    hideOverlayContainer(downloadReadyContainer);
+
+                return true;
+                */
 
                 case GlobalAction.OpenComments:
                     if (videoData == null)
@@ -6381,7 +6382,7 @@ namespace NekoPlayer.App.Screens
                             Task.Run(async () => {
                                 Schedule(async () =>
                                 {
-                                    await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                    SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId).FireAndForget();
                                 });
                             });
                         }
@@ -6400,7 +6401,7 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(async () =>
                                 {
-                                    await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                    SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId).FireAndForget();
                                 });
                             });
                         }
@@ -6528,7 +6529,7 @@ namespace NekoPlayer.App.Screens
                             playlistItemIndex = playlistItemView.Index;
                             Schedule(async () =>
                             {
-                                await SetVideoSource(item.Snippet.ResourceId.VideoId);
+                                SetVideoSource(item.Snippet.ResourceId.VideoId).FireAndForget();
                             });
                         });
                     };
@@ -6552,7 +6553,7 @@ namespace NekoPlayer.App.Screens
 
             Schedule(async () =>
             {
-                await SetVideoSource(playlists[0].Snippet.ResourceId.VideoId);
+                SetVideoSource(playlists[0].Snippet.ResourceId.VideoId).FireAndForget();
             });
         }
 
@@ -6604,7 +6605,7 @@ namespace NekoPlayer.App.Screens
         {
             base.Update();
 
-            seekbar.PlaybackSpeed.Value = playbackSpeed.Value;
+            //seekbar.PlaybackSpeed.Value = playbackSpeed.Value;
 
             if (game.UseSystemCursor.Value == true)
             {
@@ -7457,7 +7458,7 @@ namespace NekoPlayer.App.Screens
 
                     Schedule(async () =>
                     {
-                        await SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                        SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId).FireAndForget();
                     });
                 };
             }
@@ -8474,7 +8475,7 @@ namespace NekoPlayer.App.Screens
             {
                 Schedule(async () =>
                 {
-                    SetVideoSource(id);
+                    SetVideoSource(id).FireAndForget();
                 });
             });
         }

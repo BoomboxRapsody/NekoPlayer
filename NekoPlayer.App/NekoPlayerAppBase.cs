@@ -4,6 +4,7 @@
 #nullable disable
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -307,10 +308,6 @@ namespace NekoPlayer.App
         {
             try
             {
-                DirectoryInfo directoryInfo = new DirectoryInfo(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath(string.Empty));
-
-                RecursiveDelete(directoryInfo);
-
                 Logger.Log($"------------------------------------------------\nNekoPlayer by BoomboxRapsody\n------------------------------------------------\nApp version is: {Version}\nApp version hash is: {VersionHash}\nCultureInfo.CurrentCulture name is {CultureInfo.CurrentCulture.Name}\n------------------------------------------------\ngood luck ^^\n------------------------------------------------");
                 RestartRequired.Value = false;
                 UpdateManagerVersionText.Value = Version;

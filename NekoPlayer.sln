@@ -28,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysi
 		CodeAnalysis\NekoPlayer.globalconfig = CodeAnalysis\NekoPlayer.globalconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NekoPlayer.Desktop.Windows", "NekoPlayer.Desktop.Windows\NekoPlayer.Desktop.Windows.csproj", "{3CC84560-5BD7-FD04-160A-41E2025DA698}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

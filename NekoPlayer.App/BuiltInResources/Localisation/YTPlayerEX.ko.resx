@@ -113,10 +113,10 @@
     <value>레터박스</value>
   </data>
   <data name="load_from_video_id" xml:space="preserve">
-    <value>동영상 ID 또는 URL로 불러오기</value>
+    <value>동영상/재생목록의 ID 또는 URL로 불러오기</value>
   </data>
   <data name="load_video" xml:space="preserve">
-    <value>동영상 불러오기</value>
+    <value>동영상/재생목록 불러오기</value>
   </data>
   <data name="master_volume" xml:space="preserve">
     <value>마스터 음량</value>

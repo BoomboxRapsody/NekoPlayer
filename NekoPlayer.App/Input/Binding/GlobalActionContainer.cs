@@ -46,7 +46,7 @@ namespace NekoPlayer.App.Input.Binding
 
             new KeyBinding(InputKey.Space, GlobalAction.PlayPause),
             new KeyBinding(InputKey.K, GlobalAction.PlayPause),
-            new KeyBinding(InputKey.PlayPause, GlobalAction.PlayPause),
+            //new KeyBinding(InputKey.PlayPause, GlobalAction.PlayPause),
 
             new KeyBinding(InputKey.Right, GlobalAction.FastForward_10sec),
             new KeyBinding(InputKey.Left, GlobalAction.FastRewind_10sec),

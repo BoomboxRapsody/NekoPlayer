@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Project">
-    <TargetFramework>net8.0</TargetFramework>
-    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputType>WinExe</OutputType>
     <AssemblyName>NekoPlayer</AssemblyName>
     <ApplicationIcon>nekoplayer_app.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -21,15 +21,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="bassloud.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\bin\linux-x64\ffmpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\bin\osx-arm64\ffmpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\bin\osx-x64\ffmpeg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="FFmpeg\bin\win-x64\ffmpeg.exe">
@@ -83,12 +74,6 @@
     <None Update="FFmpeg\windows-x64-fix\swscale-8.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="libbassloud.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libbassloud.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="material3expressive_loadingindicator.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -97,12 +82,6 @@
     </None>
     <None Update="nekoplayer_app.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="runtimes\linux-x64\native\libbassloud.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runtimes\osx\native\libbassloud.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="runtimes\win-x64\native\bassloud.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

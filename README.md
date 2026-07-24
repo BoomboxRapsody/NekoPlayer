@@ -17,15 +17,13 @@ The new era of YouTube Video Player written in [custom osu-framework](https://gi
 | [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
 |--------------------------------------------------------------------------------------|
 
-If your platform is unsupported or not listed above, there is still a chance you can run the release or manually build it by following the instructions below.
-
 ## Developing NekoPlayer
 
 ### Prerequisites
 
 Please make sure you have the following prerequisites:
 
-- A desktop platform with the [.NET 8.0 SDK](https://dotnet.microsoft.com/download) installed.
+- A desktop platform with the Windows 10 version 2004 or higher and [.NET 8.0 SDK](https://dotnet.microsoft.com/download) installed.
 
 When working with the codebase, we recommend using an IDE with intelligent code completion and syntax highlighting, such as the latest version of [Visual Studio](https://visualstudio.microsoft.com/vs/), [Visual Studio Code](https://code.visualstudio.com/) with the [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) and [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) plugin installed.
 
@@ -50,8 +48,7 @@ git pull --recurse-submodules
 
 You should load the solution via one of the platform-specific `.slnf` files, rather than the main `.sln`. This will reduce dependencies and hide platforms that you don't care about. Valid `.slnf` files are:
 
-- `NekoPlayer.Desktop.Windows.slnf` (Windows platform with WinRT extensions, most common)
-- `NekoPlayer.Desktop.slnf` (Linux and other platform)
+- `NekoPlayer.Desktop.slnf`
 
 Run configurations for the recommended IDEs (listed above) are included. You should use the provided Build/Run functionality of your IDE to get things going. When testing or building new components, it's highly encouraged you use the `NekoPlayer (Tests)` project/configuration. More information on this is provided [below](#contributing).
 
@@ -62,8 +59,7 @@ To build for mobile platforms, you will likely need to run `sudo dotnet workload
 You can also build and run *NekoPlayer* from the command-line with a single command:
 
 ```shell
-dotnet run --project NekoPlayer.Desktop.Windows (for Windows)
-dotnet run --project NekoPlayer.Desktop (for Linux and other platform)
+dotnet run --project NekoPlayer.Desktop
 ```
 
 When running locally to do any kind of performance testing, make sure to add `-c Release` to the build command, as the overhead of running with the default `Debug` configuration can be large (especially when testing with local framework modifications as below).
