@@ -4401,7 +4401,7 @@ namespace NekoPlayer.App.Screens
                     {
                         Schedule(async () =>
                         {
-                            SetVideoSource(videoId, true, LoadType.AudioOnly); ;
+                            SetVideoSource(videoId, true, LoadType.AudioOnly);
                         });
                     });
                 }
