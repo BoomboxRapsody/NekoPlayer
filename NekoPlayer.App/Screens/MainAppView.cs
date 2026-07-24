@@ -8670,12 +8670,12 @@ namespace NekoPlayer.App.Screens
                     {
                         videoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
-                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
                                     .ToList();
 
                         maxVideoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
-                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
                                     .GetWithHighestVideoQuality();
                     }
                     catch (Exception e)
@@ -8683,10 +8683,12 @@ namespace NekoPlayer.App.Screens
                         Logger.Error(e, e.GetDescription());
                         videoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
                                     .ToList();
 
                         maxVideoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
+                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.Mp4)
                                     .GetWithHighestVideoQuality();
                     }
 
