@@ -145,7 +145,7 @@ namespace NekoPlayer.Desktop
             Task StopAsync();
             Task PlayAsync();
             Task SeekAsync(long offset);
-            Task SetPositionAsync(ObjectPath trackId, long position);
+            Task SetPositionAsync(Tmds.DBus.ObjectPath trackId, long position);
             Task OpenUriAsync(string uri);
 
             Task<string> GetPlaybackStatusAsync();
@@ -167,7 +167,7 @@ namespace NekoPlayer.Desktop
             private readonly LinuxMediaSessionHandler handler;
             private readonly Dictionary<string, object> metadata = new();
 
-            public ObjectPath ObjectPath => new ObjectPath("/org/mpris/MediaPlayer2");
+            public Tmds.DBus.ObjectPath ObjectPath => new Tmds.DBus.ObjectPath("/org/mpris/MediaPlayer2");
 
             public string PlaybackStatus { get; set; } = "Paused";
             public long Position { get; set; }
@@ -180,7 +180,7 @@ namespace NekoPlayer.Desktop
 
             public void SetMetadata(string title, string artist, string artUrl, long lengthMicroseconds)
             {
-                metadata["mpris:trackid"] = new ObjectPath("/org/mpris/MediaPlayer2/Track/1");
+                metadata["mpris:trackid"] = new Tmds.DBus.ObjectPath("/org/mpris/MediaPlayer2/Track/1");
                 metadata["mpris:length"] = lengthMicroseconds;
                 metadata["xesam:title"] = title;
                 metadata["xesam:artist"] = new string[] { artist };
@@ -244,7 +244,7 @@ namespace NekoPlayer.Desktop
                 return Task.CompletedTask;
             }
 
-            public Task SetPositionAsync(ObjectPath trackId, long position)
+            public Task SetPositionAsync(Tmds.DBus.ObjectPath trackId, long position)
             {
                 // position: microseconds -> ms
                 double posMs = position / 1000.0;
