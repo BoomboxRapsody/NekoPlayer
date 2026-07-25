@@ -6262,6 +6262,9 @@ namespace NekoPlayer.App.Screens
                     return true;
 
                 case GlobalAction.OpenLoadVideo:
+                    if (!loadBtnOverlayShow.Enabled)
+                        return;
+
                     if (!loadVideoContainer.IsVisible)
                     {
                         hideOverlays();
