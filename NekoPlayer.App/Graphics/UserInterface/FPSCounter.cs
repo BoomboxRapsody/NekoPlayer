@@ -261,7 +261,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private void updateFpsDisplay()
         {
-            //counterDrawFPS.Colour = getColour(displayedFpsCount / aimDrawFPS);
+            counterDrawFPS.Colour = getColour(displayedFpsCount / aimDrawFPS);
             counterDrawFPS.Text = $"{displayedFpsCount:#,0} fps";
         }
 
@@ -271,7 +271,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 ? $"{displayedFrameTime:N1} ms"
                 : $"{displayedFrameTime:N0} ms";
 
-            //counterUpdateFrameTime.Colour = getColour((1000 / displayedFrameTime) / aimUpdateFPS);
+            counterUpdateFrameTime.Colour = getColour((1000 / displayedFrameTime) / aimUpdateFPS);
         }
 
         private bool updateAimFPS()
