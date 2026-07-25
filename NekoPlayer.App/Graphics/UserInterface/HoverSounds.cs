@@ -3,6 +3,7 @@
 
 #nullable disable
 
+using NekoPlayer.App.Config;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -38,13 +39,18 @@ namespace NekoPlayer.App.Graphics.UserInterface
                           ?? audio.Samples.Get($@"UI/{HoverSampleSet.Default.GetDescription()}-hover");
         }
 
+        [Resolved]
+        private NekoPlayerConfigManager config { get; set; }
+
         public override void PlayHoverSample()
         {
             if (!Enabled.Value)
                 return;
 
             sampleHover.Frequency.Value = 0.98 + RNG.NextDouble(0.04);
-            //sampleHover.Play();
+
+            if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                sampleHover.Play();
         }
     }
 }

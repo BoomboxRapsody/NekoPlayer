@@ -83,9 +83,9 @@ namespace NekoPlayer.App.Graphics.Containers
 
         #endregion
 
-        protected override ScrollbarContainer CreateScrollbar(Direction direction) => new OsuScrollbar(direction);
+        protected override ScrollbarContainer CreateScrollbar(Direction direction) => new AdaptiveScrollbar(direction);
 
-        protected partial class OsuScrollbar : ScrollbarContainer
+        protected partial class AdaptiveScrollbar : ScrollbarContainer
         {
             private Color4 hoverColour;
             private Color4 defaultColour;
@@ -95,7 +95,7 @@ namespace NekoPlayer.App.Graphics.Containers
 
             protected override float MinimumDimSize => SCROLL_BAR_WIDTH * 3;
 
-            public OsuScrollbar(Direction scrollDir)
+            public AdaptiveScrollbar(Direction scrollDir)
                 : base(scrollDir)
             {
                 Blending = BlendingParameters.Additive;

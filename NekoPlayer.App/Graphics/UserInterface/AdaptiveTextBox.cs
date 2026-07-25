@@ -6,21 +6,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NekoPlayer.App.Config;
+using NekoPlayer.App.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
-using osuTK.Graphics;
-using osu.Framework.Extensions.Color4Extensions;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
+using osu.Framework.Text;
 using osu.Framework.Utils;
 using osuTK;
-using NekoPlayer.App.Graphics.Sprites;
-using osu.Framework.Text;
-using osu.Framework.Graphics.Containers;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -312,10 +313,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 pitch += ((double)SelectedText.Length / Math.Max(1, Text.Length)) * 0.15f;
 
             channel.Frequency.Value = pitch;
-            //channel.Play();
+
+            if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                channel.Play();
 
             sampleLastPlaybackTime = Time.Current;
         });
+
+        [Resolved]
+        private NekoPlayerConfigManager config { get; set; }
 
         private partial class AdaptiveCaret : Caret
         {

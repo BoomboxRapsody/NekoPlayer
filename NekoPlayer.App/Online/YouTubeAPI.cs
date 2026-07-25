@@ -339,25 +339,26 @@ namespace NekoPlayer.App.Online
             return result;
         }
 
-        public IList<CommentThread> GetCommentThread(string videoId, CommentThreadsResource.ListRequest.OrderEnum orderEnum = CommentThreadsResource.ListRequest.OrderEnum.Time)
+        public CommentThreadListResponse GetCommentThread(string videoId, string pageToken, CommentThreadsResource.ListRequest.OrderEnum orderEnum = CommentThreadsResource.ListRequest.OrderEnum.Time)
         {
             Logger.Log($"[NekoPlayer] GetCommentThread called with params ({videoId}, {orderEnum.ToString()})");
 
             var part = "snippet,replies";
             var request = youtubeService.CommentThreads.List(part);
 
-            request.MaxResults = 100; // <------ why 100? dues to quota limits
+            request.MaxResults = 10;
             request.VideoId = videoId;
             request.Order = orderEnum;
+
+            if (!string.IsNullOrEmpty(pageToken))
+                request.PageToken = pageToken;
 
             if (googleOAuth2.SignedIn.Value == true)
                 request.AccessToken = googleOAuth2.GetAccessToken();
 
             var response = request.Execute();
 
-            var result = response.Items;
-
-            return result;
+            return response;
         }
 
         public IList<SearchResult> GetSearchResult(string query, SearchResource.ListRequest.OrderEnum orderEnum)

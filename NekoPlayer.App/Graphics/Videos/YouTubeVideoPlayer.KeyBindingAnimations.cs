@@ -233,7 +233,7 @@ namespace NekoPlayer.App.Graphics.Videos
                         using (BeginDelayedSequence(250))
                         {
                             seekArrow.ScaleTo(new osuTK.Vector2(0.8f, 1));
-                            //count = 0;
+                            RepeatCount = 0;
                             if (trackAction == SeekAction.FastRewind10sec)
                             {
                                 seekArrow.MoveTo(new osuTK.Vector2(20, 0));
@@ -251,6 +251,7 @@ namespace NekoPlayer.App.Graphics.Videos
                     seekArrow.Icon = icon;
                     if (trackAction != SeekAction.PlayPause)
                     {
+                        RepeatCount += 5;
                         content.FadeInFromZero(250, Easing.Out);
                         seekArrow.ScaleTo(new osuTK.Vector2(0.7f, 1));
                         if (trackAction == SeekAction.FastRewind10sec)

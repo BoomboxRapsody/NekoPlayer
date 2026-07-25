@@ -320,10 +320,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         commentText.AddArbitraryDrawable(new UrlRedirectDisplay(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Mention:
-                        commentText.AddLink(item.Value, $"https://www.youtube.com/{item.Value}");
+                        commentText.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Hashtag:
-                        commentText.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}");
+                        commentText.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Timestamp:
                         commentText.AddArbitraryDrawable(new TimestampButton(item.Value)

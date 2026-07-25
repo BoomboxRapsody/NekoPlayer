@@ -86,16 +86,17 @@ namespace NekoPlayer.App.Overlays.OSD
         [Resolved]
         private SessionStatics statics { get; set; }
 
+        [Resolved]
+        private NekoPlayerConfigManager config { get; set; }
+
         private bool canPlaySound;
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
 
-            /*
-            if (canPlaySound)
+            if (canPlaySound && config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
                 playSound();
-            */
         }
 
         private void playSound()

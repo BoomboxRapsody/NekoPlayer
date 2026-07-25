@@ -86,7 +86,7 @@
     <value>켜짐</value>
   </data>
   <data name="error_noVideoId" xml:space="preserve">
-    <value>비디오 ID는 비어있지 않아야 해요.</value>
+    <value>동영상 ID는 비어있지 않아야 해요.</value>
   </data>
   <data name="fill" xml:space="preserve">
     <value>채우기</value>
@@ -846,5 +846,20 @@
   </data>
   <data name="dislike_button" xml:space="preserve">
     <value>이 동영상이 마음에 들지 않습니다.</value>
+  </data>
+  <data name="app_info" xml:space="preserve">
+    <value>NekoPlayer 앱 정보</value>
+  </data>
+  <data name="yt_handle_view_profile" xml:space="preserve">
+    <value>{0}의 프로필 보기</value>
+  </data>
+  <data name="hashtag" xml:space="preserve">
+    <value>해시태그 {0}</value>
+  </data>
+  <data name="view_github_profile" xml:space="preserve">
+    <value>GitHub 프로필 보기</value>
+  </data>
+  <data name="view_more_comments" xml:space="preserve">
+    <value>댓글 더 불러오기</value>
   </data>
 </root>

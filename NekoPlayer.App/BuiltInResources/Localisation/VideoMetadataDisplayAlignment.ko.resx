@@ -68,6 +68,6 @@
     <value>오른쪽</value>
   </data>
   <data name="videoMetadataDisplayAlignmentSetting" xml:space="preserve">
-    <value>비디오 메타데이터 표시기 정렬</value>
+    <value>동영상 메타데이터 표시기 정렬</value>
   </data>
 </root>

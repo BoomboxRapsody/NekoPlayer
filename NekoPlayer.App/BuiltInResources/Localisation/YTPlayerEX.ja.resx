@@ -847,4 +847,19 @@
   <data name="dislike_button" xml:space="preserve">
     <value>私はこれが嫌いです</value>
   </data>
+  <data name="app_info" xml:space="preserve">
+    <value>NekoPlayerについて</value>
+  </data>
+  <data name="yt_handle_view_profile" xml:space="preserve">
+    <value>{0}のプロファイルを表示します</value>
+  </data>
+  <data name="hashtag" xml:space="preserve">
+    <value>ハッシュタグ{0}</value>
+  </data>
+  <data name="view_github_profile" xml:space="preserve">
+    <value>GitHubプロファイルを表示します</value>
+  </data>
+  <data name="view_more_comments" xml:space="preserve">
+    <value>追加コメントを表示します</value>
+  </data>
 </root>
