@@ -32,9 +32,9 @@ When working with the codebase, we recommend using an IDE with intelligent code 
 Clone the repository and get FFmpeg libraries with Git LFS:
 
 ```shell
+git lfs install
 git clone --recurse-submodules https://github.com/BoomboxRapsody/NekoPlayer
 cd NekoPlayer
-git lfs install
 git lfs pull
 ```
 
