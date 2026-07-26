@@ -87,7 +87,8 @@ namespace NekoPlayer.App.Screens
     public partial class MainAppView : NekoPlayerScreen, IKeyBindingHandler<GlobalAction>, INekoPlayerAppMessageHandler
     {
         private BufferedContainer videoContainer;
-        private AdaptiveButton loadBtn, commentSendButton, searchButton, loadPlaylistBtn, declineButton, acceptButton, logoutButton, viewChannelButton, updatePlaylistButton, downloadBtn;
+        private AdaptiveButton commentSendButton, searchButton, loadPlaylistBtn, downloadBtn;
+        private RoundedButton declineButton, acceptButton, updatePlaylistButton, loadBtn, viewChannelButton, logoutButton;
         private ControlBarIconButton prevVideoButton, nextVideoButton;
         private EnhancedFocusedTextBox videoIdBox, playlistIdBox, searchTextBox;
         private EnhancedFocusedTextBoxWithProfileImage commentTextBox;
@@ -1163,14 +1164,14 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                loadBtn = new AdaptiveButton
+                                loadBtn = new RoundedButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomCentre,
                                     Anchor = Anchor.BottomCentre,
                                     Text = NekoPlayerStrings.LoadVideo,
-                                    Size = new Vector2(450, 60),
-                                    Margin = new MarginPadding(8),
+                                    Size = new Vector2(450, 40),
+                                    Margin = new MarginPadding(16),
                                 },
                                 videoIdBox = new EnhancedFocusedTextBox
                                 {
@@ -3250,22 +3251,22 @@ namespace NekoPlayer.App.Screens
                                     Text = NekoPlayerStrings.UnsubscribeDesc,
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                declineButton = new AdaptiveButton
+                                declineButton = new RoundedButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomLeft,
                                     Anchor = Anchor.BottomLeft,
                                     Text = NekoPlayerStrings.Cancel,
-                                    Size = new Vector2(200, 60),
+                                    Size = new Vector2(200, 40),
                                     Margin = new MarginPadding(8),
                                 },
-                                acceptButton = new AdaptiveButton
+                                acceptButton = new RoundedButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomRight,
                                     Anchor = Anchor.BottomRight,
                                     Text = NekoPlayerStrings.Yes,
-                                    Size = new Vector2(200, 60),
+                                    Size = new Vector2(200, 40),
                                     BackgroundColour = colours.RedDark,
                                     Margin = new MarginPadding(8),
                                 },
@@ -3275,7 +3276,7 @@ namespace NekoPlayer.App.Screens
                         {
                             Size = new Vector2(1f, 1f),
                             Width = 450,
-                            Height = 250,
+                            Height = 220,
                             CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
                             Origin = Anchor.BottomCentre,
@@ -3319,13 +3320,12 @@ namespace NekoPlayer.App.Screens
                                                             Height = 50,
                                                             Caption = NekoPlayerStrings.Playlists,
                                                         },
-                                                        new AdaptiveButton
+                                                        new RoundedButton
                                                         {
                                                             Enabled = { Value = true },
                                                             Text = NekoPlayerStrings.AddNewPlaylist,
                                                             RelativeSizeAxes = Axes.X,
                                                             Size = new Vector2(1, 40),
-                                                            Margin = new MarginPadding(4),
                                                             Action = () =>
                                                             {
                                                                 hideOverlays();
@@ -3339,22 +3339,22 @@ namespace NekoPlayer.App.Screens
                                                             Direction = FillDirection.Horizontal,
                                                             Children = new Drawable[]
                                                             {
-                                                                new AdaptiveButton
+                                                                new RoundedButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Cancel,
-                                                                    Size = new Vector2(200, 60),
+                                                                    Size = new Vector2(200, 40),
                                                                     Margin = new MarginPadding(4),
                                                                     Action = () =>
                                                                     {
                                                                         hideOverlayContainer(videoSaveLocationOverlay);
                                                                     }
                                                                 },
-                                                                new AdaptiveButton
+                                                                new RoundedButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.SaveOrRemove,
-                                                                    Size = new Vector2(200, 60),
+                                                                    Size = new Vector2(200, 40),
                                                                     Margin = new MarginPadding(4),
                                                                     Action = async () =>
                                                                     {
@@ -3400,7 +3400,7 @@ namespace NekoPlayer.App.Screens
                         {
                             Size = new Vector2(1f, 1f),
                             Width = 450,
-                            Height = 250,
+                            Height = 220,
                             CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
                             Origin = Anchor.BottomCentre,
@@ -3459,22 +3459,22 @@ namespace NekoPlayer.App.Screens
                                                             Direction = FillDirection.Horizontal,
                                                             Children = new Drawable[]
                                                             {
-                                                                new AdaptiveButton
+                                                                new RoundedButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Cancel,
-                                                                    Size = new Vector2(200, 60),
+                                                                    Size = new Vector2(200, 40),
                                                                     Margin = new MarginPadding(4),
                                                                     Action = () =>
                                                                     {
                                                                         hideOverlayContainer(editPlaylistOverlay);
                                                                     }
                                                                 },
-                                                                updatePlaylistButton = new AdaptiveButton
+                                                                updatePlaylistButton = new RoundedButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Apply,
-                                                                    Size = new Vector2(200, 60),
+                                                                    Size = new Vector2(200, 40),
                                                                     Margin = new MarginPadding(4),
                                                                 },
                                                             },
@@ -3507,7 +3507,7 @@ namespace NekoPlayer.App.Screens
                         {
                             Size = new Vector2(1f, 1f),
                             Width = 450,
-                            Height = 250,
+                            Height = 220,
                             CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
                             Origin = Anchor.BottomCentre,
@@ -3565,22 +3565,22 @@ namespace NekoPlayer.App.Screens
                                                             Direction = FillDirection.Horizontal,
                                                             Children = new Drawable[]
                                                             {
-                                                                new AdaptiveButton
+                                                                new RoundedButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Cancel,
-                                                                    Size = new Vector2(200, 60),
+                                                                    Size = new Vector2(200, 40),
                                                                     Margin = new MarginPadding(4),
                                                                     Action = () =>
                                                                     {
                                                                         hideOverlayContainer(addPlaylistOverlay);
                                                                     }
                                                                 },
-                                                                new AdaptiveButton
+                                                                new RoundedButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Create,
-                                                                    Size = new Vector2(200, 60),
+                                                                    Size = new Vector2(200, 40),
                                                                     Margin = new MarginPadding(4),
                                                                     Action = async () =>
                                                                     {
@@ -3948,15 +3948,15 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.Centre,
                                     AlwaysPresent = true,
                                 },
-                                logoutButton = new AdaptiveButton
+                                logoutButton = new RoundedButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomLeft,
                                     Anchor = Anchor.BottomLeft,
                                     Text = NekoPlayerStrings.Logout,
-                                    Size = new Vector2(200, 45),
+                                    Size = new Vector2(200, 40),
                                     Margin = new MarginPadding(8),
-                                    ClickAction = _ =>
+                                    Action = () =>
                                     {
                                         if (googleOAuth2.SignedIn.Value)
                                         {
@@ -3965,13 +3965,13 @@ namespace NekoPlayer.App.Screens
                                         }
                                     },
                                 },
-                                viewChannelButton = new AdaptiveButton
+                                viewChannelButton = new RoundedButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomRight,
                                     Anchor = Anchor.BottomRight,
                                     Text = NekoPlayerStrings.ViewChannel,
-                                    Size = new Vector2(200, 45),
+                                    Size = new Vector2(200, 40),
                                     BackgroundColour = colours.RedDark,
                                     Margin = new MarginPadding(8),
                                 },
@@ -4276,7 +4276,7 @@ namespace NekoPlayer.App.Screens
 
                     youtubeChannelMetadataDisplay2.UpdateUser(wth);
 
-                    viewChannelButton.ClickAction = _ =>
+                    viewChannelButton.Action = () =>
                     {
                         if (googleOAuth2.SignedIn.Value)
                         {
@@ -5966,7 +5966,7 @@ namespace NekoPlayer.App.Screens
                 }
             });
 
-            loadBtn.ClickAction = async _ =>
+            loadBtn.Action = async () =>
             {
                 ClearPlaylistItems();
                 Schedule(async () =>
@@ -6909,7 +6909,7 @@ namespace NekoPlayer.App.Screens
                             Text = NekoPlayerStrings.ViewMoreComments,
                             Action = () =>
                             {
-                                viewMoreComments.Expire();
+                                viewMoreCommentsContainer.Expire();
                                 updateComments(videoId, currentCommentsNextPageToken);
                             }
                         };
@@ -7565,11 +7565,11 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(() => youtubeChannelMetadataDisplay.UpdateUser(api.GetChannel(videoData.Snippet.ChannelId)));
 
-                                declineButton.ClickAction = async _ =>
+                                declineButton.Action = async () =>
                                 {
                                     hideOverlayContainer(unsubscribeDialog);
                                 };
-                                acceptButton.ClickAction = async _ =>
+                                acceptButton.Action = async () =>
                                 {
                                     hideOverlayContainer(unsubscribeDialog);
                                     await api.UnsubscribeChannel(subscriptionId);
@@ -7618,11 +7618,11 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(() => youtubeChannelMetadataDisplay.UpdateUser(api.GetChannel(videoData.Snippet.ChannelId)));
 
-                                declineButton.ClickAction = async _ =>
+                                declineButton.Action = async () =>
                                 {
                                     hideOverlayContainer(unsubscribeDialog);
                                 };
-                                acceptButton.ClickAction = async _ =>
+                                acceptButton.Action = async () =>
                                 {
                                     hideOverlayContainer(unsubscribeDialog);
                                     await api.UnsubscribeChannel(subscriptionId);
