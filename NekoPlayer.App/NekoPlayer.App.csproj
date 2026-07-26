@@ -6,7 +6,7 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NekoPlayer-framework\osu.Framework/osu.Framework.csproj" />
+    <ProjectReference Include="..\osu-framework\osu.Framework/osu.Framework.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Crypto.AES" Version="1.0.4" />
