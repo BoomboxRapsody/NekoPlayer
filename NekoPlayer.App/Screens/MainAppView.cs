@@ -6244,7 +6244,8 @@ namespace NekoPlayer.App.Screens
 
         protected override bool OnKeyDown(KeyDownEvent e)
         {
-            if (currentVideoSource == null && ((e.Target.GetType() != typeof(AdaptiveTextBox)) || (e.Target.GetType() != typeof(FormTextBox)) || (e.Target.GetType() != typeof(FormNumberBox))))
+            // ignore seek shortcuts on focused to text box
+            if (currentVideoSource == null && ((e.Target.GetType() == typeof(AdaptiveTextBox)) || (e.Target.GetType() == typeof(FormTextBox)) || (e.Target.GetType() == typeof(FormNumberBox))))
                 return true;
 
             if (e.Key >= Key.Number0 && e.Key <= Key.Number9)
