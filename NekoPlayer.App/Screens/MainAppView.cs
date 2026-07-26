@@ -3955,7 +3955,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.BottomLeft,
                                     Text = NekoPlayerStrings.Logout,
                                     Size = new Vector2(200, 40),
-                                    Margin = new MarginPadding(8),
+                                    Margin = new MarginPadding(16),
                                     Action = () =>
                                     {
                                         if (googleOAuth2.SignedIn.Value)
@@ -3972,8 +3972,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.BottomRight,
                                     Text = NekoPlayerStrings.ViewChannel,
                                     Size = new Vector2(200, 40),
-                                    BackgroundColour = colours.RedDark,
-                                    Margin = new MarginPadding(8),
+                                    Margin = new MarginPadding(16),
                                 },
                             }
                         },
