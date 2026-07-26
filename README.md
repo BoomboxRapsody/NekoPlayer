@@ -1,16 +1,14 @@
-<p align="center">
-  <img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Remake.png">
-</p>
-
 <h1 align="center">NekoPlayer</h1>
+<p align="center"><img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Remake.png"></p>
+<p align="center">A new era of YouTube Video Player with a focus on design and creativity.</p>
 
-[![Build status](https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push)](https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml)
-[![GitHub release](https://img.shields.io/github/release/BoomboxRapsody/NekoPlayer.svg)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest)
-[![Licence](https://img.shields.io/github/license/BoomboxRapsody/NekoPlayer.svg)](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/LICENSE.md)
-[![dev chat](https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield)](https://discord.gg/UZWDqQ29ch)
-[![CodeFactor](https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge)](https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer)
-
-A new era of YouTube Video Player written in C\#.
+<p align="center">
+<a href="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="Build status"></a>
+<a href="https://github.com/BoomboxRapsody/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/BoomboxRapsody/NekoPlayer.svg" alt="GitHub release"></a>
+<a href="https://github.com/BoomboxRapsody/NekoPlayer/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/BoomboxRapsody/NekoPlayer.svg" alt="Licence"></a>
+<a href="https://discord.gg/UZWDqQ29ch"><img src="https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield" alt="dev chat"></a>
+<a href="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer"><img src="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge" alt="CodeFactor"></a>
+</p>
 
 ### Latest release:
 
