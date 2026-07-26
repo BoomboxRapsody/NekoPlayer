@@ -79,7 +79,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 samples,
                 contents = new Container
                 {
-                    Padding = new MarginPadding() { Left = commentData2 != null ? 24 : 0 },
+                    Padding = new MarginPadding() { Left = commentData2 != null ? 48 : 0 },
                     RelativeSizeAxes = Axes.X,
                     AutoSizeAxes = Axes.Y,
                     Children = new Drawable[]
