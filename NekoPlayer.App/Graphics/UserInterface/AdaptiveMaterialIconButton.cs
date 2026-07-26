@@ -138,7 +138,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             base.LoadComplete();
 
-            if (icon.IsNotNull())
+            if (icon.Icon != 0)
             {
                 SpriteText.Text = "";
                 SpriteText.AddIcon(icon, f => f.Margin = new MarginPadding { Right = 5 });

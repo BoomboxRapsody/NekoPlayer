@@ -1267,14 +1267,14 @@ namespace NekoPlayer.App.Screens
                                                             Padding = new MarginPadding { Horizontal = 30, Bottom = 12 },
                                                             Colour = overlayColourProvider.Content2,
                                                         },
-                                                        new SettingsIconButtonV2(FontAwesome.Solid.Bug)
+                                                        new SettingsButtonV2
                                                         {
                                                             Padding = new MarginPadding { Horizontal = 30 },
                                                             Text = NekoPlayerStrings.ExportLogs,
                                                             BackgroundColour = colours.YellowDarker.Darken(0.5f),
                                                             Action = () => Task.Run(exportLogs),
                                                         },
-                                                        new SettingsIconButtonV2(FontAwesome.Solid.List)
+                                                        new SettingsButtonV2
                                                         {
                                                             Padding = new MarginPadding { Horizontal = 30 },
                                                             Text = NekoPlayerStrings.ReportBugs,
