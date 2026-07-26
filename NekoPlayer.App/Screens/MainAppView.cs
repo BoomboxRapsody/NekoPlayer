@@ -1800,14 +1800,14 @@ namespace NekoPlayer.App.Screens
                                                                     DisplayAsPercentage = true,
                                                                 }),
                                                                 */
-                                                                new SettingsItemV2(new FormVolumeSliderBar<double>
+                                                                new SettingsItemV2(new FormSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.VideoVolume,
                                                                     Icon = FontAwesome.Solid.VolumeUp,
                                                                     Current = videoVolume,
                                                                     DisplayAsPercentage = true,
                                                                 }),
-                                                                new SettingsItemV2(new FormVolumeSliderBar<double>
+                                                                new SettingsItemV2(new FormSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.SFXVolume,
                                                                     Icon = FontAwesome.Solid.VolumeUp,

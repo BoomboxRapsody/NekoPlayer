@@ -142,7 +142,9 @@ namespace NekoPlayer.App
         {
             if (Interlocked.Decrement(ref allowableExceptions) < 0)
             {
-                Logger.Log("Too many unhandled exceptions, crashing out.");
+                Logger.Log("oops nekoplayer crashed");
+                Logger.Log("i lost my hope but i had an logs");
+                //Logger.Log("Too many unhandled exceptions, crashing out.");
                 return false;
             }
 
