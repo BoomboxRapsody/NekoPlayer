@@ -55,6 +55,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private Bindable<Localisation.Language> uiLanguage = null!;
         private Bindable<UsernameDisplayMode> usernameDisplayMode = null!;
 
+        private Container contents;
+
         public CommentDisplay(CommentThread comment, Comment replyToComments = null)
         {
             commentData = comment;
@@ -72,190 +74,207 @@ namespace NekoPlayer.App.Graphics.UserInterface
             uiLanguage = app.CurrentLanguage.GetBoundCopy();
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
 
-            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS;
-            Masking = true;
             InternalChildren = new Drawable[]
             {
                 samples,
-                new Box
+                contents = new Container
                 {
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = overlayColourProvider.Background4,
-                    Alpha = 0.7f,
-                },
-                new Container {
+                    Padding = new MarginPadding() { Left = commentData2 != null ? 24 : 0 },
                     RelativeSizeAxes = Axes.X,
                     AutoSizeAxes = Axes.Y,
-                    Padding = new MarginPadding(7),
                     Children = new Drawable[]
                     {
-                        profileImage = new ProfileImage(35),
-                        new FillFlowContainer
+                        new Container
                         {
+                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                            Masking = true,
                             RelativeSizeAxes = Axes.X,
-                            Padding = new MarginPadding
-                            {
-                                Top = 5,
-                                Left = 42,
-                                Right = 5,
-                            },
                             AutoSizeAxes = Axes.Y,
-                            Direction = FillDirection.Vertical,
-                            Spacing = new Vector2(0, 2),
                             Children = new Drawable[]
                             {
-                                channelName = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Bold"))
+                                new Box
                                 {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Colour = overlayColourProvider.Background4,
+                                    Alpha = 0.7f,
+                                },
+                                new Container {
                                     RelativeSizeAxes = Axes.X,
                                     AutoSizeAxes = Axes.Y,
-                                    Colour = overlayColourProvider.Background1,
-                                },
-                                commentText = new LinkFlowContainer(font => font.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"))
-                                {
-                                    RelativeSizeAxes = Axes.X,
-                                    AutoSizeAxes = Axes.Y,
-                                    Colour = overlayColourProvider.Content2,
-                                },
-                                translateButton = new RoundedButtonContainer
-                                {
-                                    AutoSizeAxes = Axes.X,
-                                    Height = 27,
-                                    CornerRadius = 12,
-                                    Masking = true,
-                                    AlwaysPresent = true,
-                                    Position = new Vector2(0, 35),
-                                    ClickAction = f => translateComment(),
+                                    Padding = new MarginPadding(7),
                                     Children = new Drawable[]
                                     {
-                                        new Container
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            CornerRadius = 12,
-                                            Child = new Box
-                                            {
-                                                RelativeSizeAxes = Axes.Both,
-                                                Colour = overlayColourProvider.Background3,
-                                                Alpha = 0.7f,
-                                            },
-                                        },
+                                        profileImage = new ProfileImage(35),
                                         new FillFlowContainer
                                         {
-                                            AutoSizeAxes = Axes.X,
-                                            RelativeSizeAxes = Axes.Y,
-                                            Direction = FillDirection.Horizontal,
-                                            Spacing = new Vector2(4, 0),
-                                            Padding = new MarginPadding(8),
+                                            RelativeSizeAxes = Axes.X,
+                                            Padding = new MarginPadding
+                                            {
+                                                Top = 5,
+                                                Left = 42,
+                                                Right = 5,
+                                            },
+                                            AutoSizeAxes = Axes.Y,
+                                            Direction = FillDirection.Vertical,
+                                            Spacing = new Vector2(0, 2),
                                             Children = new Drawable[]
                                             {
-                                                translateToText = new AdaptiveSpriteText
+                                                channelName = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Bold"))
                                                 {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    AutoSizeAxes = Axes.Y,
+                                                    Colour = overlayColourProvider.Background1,
+                                                },
+                                                commentText = new LinkFlowContainer(font => font.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"))
+                                                {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    AutoSizeAxes = Axes.Y,
                                                     Colour = overlayColourProvider.Content2,
-                                                    Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Regular"),
+                                                },
+                                                translateButton = new RoundedButtonContainer
+                                                {
+                                                    AutoSizeAxes = Axes.X,
+                                                    Height = 27,
+                                                    CornerRadius = 12,
+                                                    Masking = true,
+                                                    AlwaysPresent = true,
+                                                    Position = new Vector2(0, 35),
+                                                    ClickAction = f => translateComment(),
+                                                    Children = new Drawable[]
+                                                    {
+                                                        new Container
+                                                        {
+                                                            RelativeSizeAxes = Axes.Both,
+                                                            CornerRadius = 12,
+                                                            Child = new Box
+                                                            {
+                                                                RelativeSizeAxes = Axes.Both,
+                                                                Colour = overlayColourProvider.Background3,
+                                                                Alpha = 0.7f,
+                                                            },
+                                                        },
+                                                        new FillFlowContainer
+                                                        {
+                                                            AutoSizeAxes = Axes.X,
+                                                            RelativeSizeAxes = Axes.Y,
+                                                            Direction = FillDirection.Horizontal,
+                                                            Spacing = new Vector2(4, 0),
+                                                            Padding = new MarginPadding(8),
+                                                            Children = new Drawable[]
+                                                            {
+                                                                translateToText = new AdaptiveSpriteText
+                                                                {
+                                                                    Colour = overlayColourProvider.Content2,
+                                                                    Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Regular"),
+                                                                },
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                new FillFlowContainer
+                                                {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    AutoSizeAxes = Axes.Y,
+                                                    Direction = FillDirection.Horizontal,
+                                                    Spacing = new Vector2(4, 0),
+                                                    Children = new Drawable[]
+                                                    {
+                                                        new Container
+                                                        {
+                                                            AutoSizeAxes = Axes.X,
+                                                            Height = 27,
+                                                            CornerRadius = 27 / 2,
+                                                            Masking = true,
+                                                            AlwaysPresent = true,
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new Container
+                                                                {
+                                                                    RelativeSizeAxes = Axes.Both,
+                                                                    CornerRadius = 27 / 2,
+                                                                    Child = new Box
+                                                                    {
+                                                                        RelativeSizeAxes = Axes.Both,
+                                                                        Colour = overlayColourProvider.Background3,
+                                                                        Alpha = 0.7f,
+                                                                    },
+                                                                },
+                                                                new FillFlowContainer
+                                                                {
+                                                                    AutoSizeAxes = Axes.X,
+                                                                    RelativeSizeAxes = Axes.Y,
+                                                                    Direction = FillDirection.Horizontal,
+                                                                    Spacing = new Vector2(4, 0),
+                                                                    Padding = new MarginPadding(8),
+                                                                    Children = new Drawable[]
+                                                                    {
+                                                                        new SpriteIcon
+                                                                        {
+                                                                            Width = 12,
+                                                                            Height = 12,
+                                                                            Icon = FontAwesome.Solid.ThumbsUp,
+                                                                            Colour = overlayColourProvider.Content2,
+                                                                        },
+                                                                        likeCount = new AdaptiveSpriteText
+                                                                        {
+                                                                            Colour = overlayColourProvider.Content2,
+                                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),
+                                                                        },
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        replyCountBox = new Container
+                                                        {
+                                                            AutoSizeAxes = Axes.X,
+                                                            Height = 27,
+                                                            CornerRadius = 27 / 2,
+                                                            Masking = true,
+                                                            AlwaysPresent = true,
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new Container
+                                                                {
+                                                                    RelativeSizeAxes = Axes.Both,
+                                                                    CornerRadius = 27 / 2,
+                                                                    Child = new Box
+                                                                    {
+                                                                        RelativeSizeAxes = Axes.Both,
+                                                                        Colour = overlayColourProvider.Background3,
+                                                                        Alpha = 0.7f,
+                                                                    },
+                                                                },
+                                                                new FillFlowContainer
+                                                                {
+                                                                    AutoSizeAxes = Axes.X,
+                                                                    RelativeSizeAxes = Axes.Y,
+                                                                    Direction = FillDirection.Horizontal,
+                                                                    Spacing = new Vector2(4, 0),
+                                                                    Padding = new MarginPadding(8),
+                                                                    Children = new Drawable[]
+                                                                    {
+                                                                        new SpriteIcon
+                                                                        {
+                                                                            Width = 12,
+                                                                            Height = 12,
+                                                                            Icon = FontAwesome.Solid.CommentAlt,
+                                                                            Colour = overlayColourProvider.Content2,
+                                                                        },
+                                                                        replyCount = new AdaptiveSpriteText
+                                                                        {
+                                                                            Colour = overlayColourProvider.Content2,
+                                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),
+                                                                        },
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                    }
                                                 },
                                             }
                                         }
                                     }
-                                },
-                                new FillFlowContainer
-                                {
-                                    RelativeSizeAxes = Axes.X,
-                                    AutoSizeAxes = Axes.Y,
-                                    Direction = FillDirection.Horizontal,
-                                    Spacing = new Vector2(4, 0),
-                                    Children = new Drawable[]
-                                    {
-                                        new Container
-                                        {
-                                            AutoSizeAxes = Axes.X,
-                                            Height = 27,
-                                            CornerRadius = 27 / 2,
-                                            Masking = true,
-                                            AlwaysPresent = true,
-                                            Children = new Drawable[]
-                                            {
-                                                new Container
-                                                {
-                                                    RelativeSizeAxes = Axes.Both,
-                                                    CornerRadius = 27 / 2,
-                                                    Child = new Box
-                                                    {
-                                                        RelativeSizeAxes = Axes.Both,
-                                                        Colour = overlayColourProvider.Background3,
-                                                        Alpha = 0.7f,
-                                                    },
-                                                },
-                                                new FillFlowContainer
-                                                {
-                                                    AutoSizeAxes = Axes.X,
-                                                    RelativeSizeAxes = Axes.Y,
-                                                    Direction = FillDirection.Horizontal,
-                                                    Spacing = new Vector2(4, 0),
-                                                    Padding = new MarginPadding(8),
-                                                    Children = new Drawable[]
-                                                    {
-                                                        new SpriteIcon
-                                                        {
-                                                            Width = 12,
-                                                            Height = 12,
-                                                            Icon = FontAwesome.Solid.ThumbsUp,
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        likeCount = new AdaptiveSpriteText
-                                                        {
-                                                            Colour = overlayColourProvider.Content2,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),
-                                                        },
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        replyCountBox = new Container
-                                        {
-                                            AutoSizeAxes = Axes.X,
-                                            Height = 27,
-                                            CornerRadius = 27 / 2,
-                                            Masking = true,
-                                            AlwaysPresent = true,
-                                            Children = new Drawable[]
-                                            {
-                                                new Container
-                                                {
-                                                    RelativeSizeAxes = Axes.Both,
-                                                    CornerRadius = 27 / 2,
-                                                    Child = new Box
-                                                    {
-                                                        RelativeSizeAxes = Axes.Both,
-                                                        Colour = overlayColourProvider.Background3,
-                                                        Alpha = 0.7f,
-                                                    },
-                                                },
-                                                new FillFlowContainer
-                                                {
-                                                    AutoSizeAxes = Axes.X,
-                                                    RelativeSizeAxes = Axes.Y,
-                                                    Direction = FillDirection.Horizontal,
-                                                    Spacing = new Vector2(4, 0),
-                                                    Padding = new MarginPadding(8),
-                                                    Children = new Drawable[]
-                                                    {
-                                                        new SpriteIcon
-                                                        {
-                                                            Width = 12,
-                                                            Height = 12,
-                                                            Icon = FontAwesome.Solid.CommentAlt,
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        replyCount = new AdaptiveSpriteText
-                                                        {
-                                                            Colour = overlayColourProvider.Content2,
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),
-                                                        },
-                                                    }
-                                                }
-                                            }
-                                        },
-                                    }
-                                },
+                                }
                             }
                         }
                     }
