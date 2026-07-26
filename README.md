@@ -42,6 +42,7 @@ To update the source code to the latest commit, run the following command inside
 
 ```shell
 git pull --recurse-submodules
+git lfs pull
 ```
 
 ### Building
