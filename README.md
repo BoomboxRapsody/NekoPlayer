@@ -29,7 +29,7 @@ When working with the codebase, we recommend using an IDE with intelligent code 
 
 ### Downloading the source code
 
-Clone the repository and get FFmpeg libraries with Git LFS:
+Clone the repository and get required libraries with Git LFS:
 
 ```shell
 git lfs install
