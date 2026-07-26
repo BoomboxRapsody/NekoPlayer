@@ -17,6 +17,8 @@
 | [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
 |--------------------------------------------------------------------------------------|
 
+The YouTube API fills up very fast (Google has a hard limit of 10,000 units). Please do not ask about this. Follow [Mayo_0x0](https://x.com/Mayo_0x0) on twitter for announcements.
+
 ## Developing NekoPlayer
 
 ### Prerequisites
