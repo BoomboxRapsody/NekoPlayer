@@ -216,7 +216,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 }
                 else if (NekoPlayerDescriptionParser.IsTwitter(url))
                 {
-                    icon.Icon = FontAwesome.Brands.TwitterX;
+                    icon.Icon = FontAwesome.Brands.Twitter;
                     displayName.Text = title;
                 }
                 else

@@ -6938,6 +6938,24 @@ namespace NekoPlayer.App.Screens
                                         seekTo((second / 60) * 1000);
                                     }
                                 });
+
+                                if (item.Replies != null && item.Replies.Comments != null && item.Replies.Comments.Count > 0)
+                                {
+                                    for (int i2 = 0; i2 < item.Replies.Comments.Count; i2++)
+                                    {
+                                        Comment item2 = item.Replies.Comments[i2];
+                                        commentContainer.Add(new CommentDisplay(item, item2)
+                                        {
+                                            RelativeSizeAxes = Axes.X,
+                                            TimestampClicked = second =>
+                                            {
+                                                Logger.Log(second.ToString());
+                                                hideOverlays();
+                                                seekTo((second / 60) * 1000);
+                                            }
+                                        });
+                                    }
+                                }
                             });
                         }).ContinueWith(_ =>
                         {
