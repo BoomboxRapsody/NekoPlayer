@@ -18,6 +18,7 @@
 |--------------------------------------------------------------------------------------|
 
 The YouTube API Daily Quota fills up very fast (Google has a hard limit of 10,000 units). Please do not ask about this.
+The Google OAuth Unverified apps quota fills up very fast (Google has a hard limit of 100 new users). Please do not ask about this.
 
 ## Developing NekoPlayer
 
