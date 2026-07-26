@@ -6868,7 +6868,7 @@ namespace NekoPlayer.App.Screens
             public override LocalisableString TooltipText => NekoPlayerStrings.PlaybackSpeed(Current.Value);
         }
 
-        private AdaptiveButtonV2 viewMoreComments;
+        private RoundedButton viewMoreComments;
 
         private void updateComments(string videoId, string pageToken = "")
         {
@@ -6900,7 +6900,7 @@ namespace NekoPlayer.App.Screens
 
                     if (!string.IsNullOrEmpty(commentThreadListResponse.NextPageToken))
                     {
-                        viewMoreComments = new AdaptiveButtonV2
+                        viewMoreComments = new RoundedButton
                         {
                             RelativeSizeAxes = Axes.X,
                             Text = NekoPlayerStrings.ViewMoreComments,
