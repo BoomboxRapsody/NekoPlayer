@@ -1267,14 +1267,14 @@ namespace NekoPlayer.App.Screens
                                                             Padding = new MarginPadding { Horizontal = 30, Bottom = 12 },
                                                             Colour = overlayColourProvider.Content2,
                                                         },
-                                                        new SettingsButtonV2
+                                                        new SettingsIconButtonV2(FontAwesome.Solid.ListAlt)
                                                         {
                                                             Padding = new MarginPadding { Horizontal = 30 },
                                                             Text = NekoPlayerStrings.ExportLogs,
                                                             BackgroundColour = colours.YellowDarker.Darken(0.5f),
                                                             Action = () => Task.Run(exportLogs),
                                                         },
-                                                        new SettingsButtonV2
+                                                        new SettingsIconButtonV2(FontAwesome.Solid.Bug)
                                                         {
                                                             Padding = new MarginPadding { Horizontal = 30 },
                                                             Text = NekoPlayerStrings.ReportBugs,
@@ -6868,7 +6868,8 @@ namespace NekoPlayer.App.Screens
             public override LocalisableString TooltipText => NekoPlayerStrings.PlaybackSpeed(Current.Value);
         }
 
-        private RoundedButton viewMoreComments;
+        private RoundedIconButton viewMoreComments;
+        private Container viewMoreCommentsContainer;
 
         private void updateComments(string videoId, string pageToken = "")
         {
@@ -6900,14 +6901,26 @@ namespace NekoPlayer.App.Screens
 
                     if (!string.IsNullOrEmpty(commentThreadListResponse.NextPageToken))
                     {
-                        viewMoreComments = new RoundedButton
+                        viewMoreComments = new RoundedIconButton(FontAwesome.Solid.ArrowDown)
                         {
-                            RelativeSizeAxes = Axes.X,
+                            Width = 250,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
                             Text = NekoPlayerStrings.ViewMoreComments,
                             Action = () =>
                             {
                                 viewMoreComments.Expire();
                                 updateComments(videoId, currentCommentsNextPageToken);
+                            }
+                        };
+
+                        viewMoreCommentsContainer = new Container
+                        {
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                            Children = new Drawable[]
+                            {
+                                viewMoreComments,
                             }
                         };
                     }
@@ -6955,8 +6968,8 @@ namespace NekoPlayer.App.Screens
                             {
                                 Schedule(() =>
                                 {
-                                    commentContainer.Remove(viewMoreComments, false);
-                                    commentContainer.Add(viewMoreComments);
+                                    commentContainer.Remove(viewMoreCommentsContainer, false);
+                                    commentContainer.Add(viewMoreCommentsContainer);
                                 });
                             }
                         });
