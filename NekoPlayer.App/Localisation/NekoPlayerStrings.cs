@@ -1285,9 +1285,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString SFXNew => new TranslatableString(getKey(@"sfx_new"), "New SFX");
 
         /// <summary>
-        /// "Legacy (YouTube Player EX)"
+        /// "Legacy"
         /// </summary>
-        public static LocalisableString SFXLegacy => new TranslatableString(getKey(@"sfx_legacy"), "Legacy (YouTube Player EX)");
+        public static LocalisableString SFXLegacy => new TranslatableString(getKey(@"sfx_legacy"), "Legacy");
 
         /// <summary>
         /// "Play Overlay SFX"

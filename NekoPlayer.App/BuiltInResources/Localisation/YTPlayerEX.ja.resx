@@ -830,7 +830,7 @@
     <value>新効果音</value>
   </data>
   <data name="sfx_legacy" xml:space="preserve">
-    <value>レガシー (YouTube Player EX)</value>
+    <value>レガシー</value>
   </data>
   <data name="play_overlay_sfx" xml:space="preserve">
     <value>再生オーバーレイ効果音</value>
