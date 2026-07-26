@@ -3276,7 +3276,7 @@ namespace NekoPlayer.App.Screens
                         {
                             Size = new Vector2(1f, 1f),
                             Width = 450,
-                            Height = 220,
+                            Height = 210,
                             CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
                             Masking = true,
                             Origin = Anchor.BottomCentre,
