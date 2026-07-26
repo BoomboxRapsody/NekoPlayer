@@ -26,55 +26,25 @@
     <None Update="FFmpeg\bin\win-x64\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\linux-x64\libavcodec.so.61">
+    <None Update="FFmpeg\windows-x64-fix\avcodec-62.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\linux-x64\libavdevice.so.61">
+    <None Update="FFmpeg\windows-x64-fix\avdevice-62.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\linux-x64\libavfilter.so.10">
+    <None Update="FFmpeg\windows-x64-fix\avfilter-11.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\linux-x64\libavformat.so.61">
+    <None Update="FFmpeg\windows-x64-fix\avformat-62.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\linux-x64\libavutil.so.59">
+    <None Update="FFmpeg\windows-x64-fix\avutil-60.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\linux-x64\libpostproc.so.58">
+    <None Update="FFmpeg\windows-x64-fix\swresample-6.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\linux-x64\libswresample.so.5">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\linux-x64\libswscale.so.8">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avcodec-61.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avdevice-61.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avfilter-10.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avformat-61.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avutil-59.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\postproc-58.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\swresample-5.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\swscale-8.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="material3expressive_loadingindicator.mp4">
+    <None Update="FFmpeg\windows-x64-fix\swscale-9.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="nekoplayer_app.bmp">
