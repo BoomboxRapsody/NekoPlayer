@@ -1314,6 +1314,31 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString DislikeButton => new TranslatableString(getKey(@"dislike_button"), "I dislike this");
 
+        /// <summary>
+        /// "About NekoPlayer"
+        /// </summary>
+        public static LocalisableString AppInfo => new TranslatableString(getKey(@"app_info"), "About NekoPlayer");
+
+        /// <summary>
+        /// "View profile for {0}"
+        /// </summary>
+        public static LocalisableString YouTubeHandleViewProfile(string handle) => new TranslatableString(getKey(@"yt_handle_view_profile"), "View profile for {0}", handle);
+
+        /// <summary>
+        /// "Hashtag {0}"
+        /// </summary>
+        public static LocalisableString Hashtag(string handle) => new TranslatableString(getKey(@"hashtag"), "Hashtag {0}", handle);
+
+        /// <summary>
+        /// "View GitHub Profile"
+        /// </summary>
+        public static LocalisableString ViewGitHubProfile => new TranslatableString(getKey(@"view_github_profile"), "View GitHub Profile");
+
+        /// <summary>
+        /// "View more comments"
+        /// </summary>
+        public static LocalisableString ViewMoreComments => new TranslatableString(getKey(@"view_more_comments"), "View more comments");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

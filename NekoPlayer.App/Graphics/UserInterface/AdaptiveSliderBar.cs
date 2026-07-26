@@ -2,6 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System.Numerics;
+using NekoPlayer.App.Config;
+using NekoPlayer.App.Extensions;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -9,7 +11,6 @@ using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Localisation;
 using osu.Framework.Utils;
-using NekoPlayer.App.Extensions;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -49,11 +50,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
             CurrentNumber.BindValueChanged(current => TooltipText = GetTooltipText(current.NewValue), true);
         }
 
+        [Resolved]
+        private NekoPlayerConfigManager config { get; set; }
+
         protected override void OnUserChange(T value)
         {
             base.OnUserChange(value);
 
-            //playSample(value);
+            if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                playSample(value);
 
             TooltipText = GetTooltipText(value);
         }

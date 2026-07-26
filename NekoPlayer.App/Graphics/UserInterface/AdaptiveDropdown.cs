@@ -5,6 +5,10 @@
 
 using System.Diagnostics;
 using System.Linq;
+using NekoPlayer.App.Config;
+using NekoPlayer.App.Graphics.Containers;
+using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Input.Binding;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -18,9 +22,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osuTK;
 using osuTK.Graphics;
-using NekoPlayer.App.Graphics.Containers;
-using NekoPlayer.App.Graphics.Sprites;
-using NekoPlayer.App.Input.Binding;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -61,6 +62,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             private Sample? sampleOpen;
             private Sample? sampleClose;
 
+            [Resolved]
+            private NekoPlayerConfigManager config { get; set; }
+
             // todo: this uses the same styling as OsuMenu. hopefully we can just use OsuMenu in the future with some refactoring
             public AdaptiveDropdownMenu()
             {
@@ -92,7 +96,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 wasOpened = true;
                 this.FadeIn(300, Easing.OutQuint);
-                //sampleOpen?.Play();
+
+                if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                    sampleOpen?.Play();
             }
 
             protected override void AnimateClose()
@@ -100,7 +106,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 if (wasOpened)
                 {
                     this.FadeOut(300, Easing.OutQuint);
-                    //sampleClose?.Play();
+
+                    if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                        sampleClose?.Play();
                 }
             }
 

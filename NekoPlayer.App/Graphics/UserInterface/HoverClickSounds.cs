@@ -4,6 +4,7 @@
 #nullable enable
 
 using System.Linq;
+using NekoPlayer.App.Config;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -68,6 +69,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.PlayHoverSample();
         }
 
+        [Resolved]
+        private NekoPlayerConfigManager config { get; set; }
+
         public void PlayClickSample()
         {
             var channel = Enabled.Value ? sampleClick?.GetChannel() : sampleClickDisabled?.GetChannel();
@@ -75,7 +79,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             if (channel != null)
             {
                 channel.Frequency.Value = 0.99 + RNG.NextDouble(0.02);
-                //channel.Play();
+
+                if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                    channel.Play();
             }
         }
     }

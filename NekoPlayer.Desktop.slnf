@@ -4,8 +4,8 @@
     "projects": [
       "NekoPlayer.Desktop\\NekoPlayer.Desktop.csproj",
       "NekoPlayer.App\\NekoPlayer.App.csproj",
-	  "NekoPlayer-framework\\osu.Framework\\osu.Framework.csproj",
-	  "NekoPlayer-framework\\osu.Framework.NativeLibs\\osu.Framework.NativeLibs.csproj",
+	  "osu-framework\\osu.Framework\\osu.Framework.csproj",
+	  "osu-framework\\osu.Framework.NativeLibs\\osu.Framework.NativeLibs.csproj",
       "NekoPlayer.App.Tests\\NekoPlayer.App.Tests.csproj",
     ]
   }

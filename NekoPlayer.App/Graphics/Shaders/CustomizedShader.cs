@@ -23,9 +23,6 @@ namespace NekoPlayer.App.Graphics.Shaders
 
         public void Unbind() => shader.Unbind();
 
-        public Uniform<T> GetUniform<T>(string name) where T : unmanaged, IEquatable<T>
-            => shader.GetUniform<T>(name);
-
         public void BindUniformBlock(string blockName, IUniformBuffer buffer)
             => shader.BindUniformBlock(blockName, buffer);
 

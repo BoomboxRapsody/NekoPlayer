@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using NekoPlayer.App.Config;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -106,16 +107,20 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             base.OnHoverLost(e);
         }
 
+        [Resolved]
+        private NekoPlayerConfigManager config { get; set; }
+
         protected override void OnUserChange(bool value)
         {
             base.OnUserChange(value);
 
-            /*
-            if (value)
-                sampleChecked?.Play();
-            else
-                sampleUnchecked?.Play();
-            */
+            if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+            {
+                if (value)
+                    sampleChecked?.Play();
+                else
+                    sampleUnchecked?.Play();
+            }
         }
 
         private void updateColours()

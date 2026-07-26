@@ -55,9 +55,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private Bindable<Localisation.Language> uiLanguage = null!;
         private Bindable<UsernameDisplayMode> usernameDisplayMode = null!;
 
-        public CommentDisplay(CommentThread comment)
+        public CommentDisplay(CommentThread comment, Comment replyToComments = null)
         {
             commentData = comment;
+            commentData2 = replyToComments;
             AutoSizeAxes = Axes.Y;
             Task.Run(async () =>
             {
@@ -208,7 +209,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                 }
                                             }
                                         },
-                                        new Container
+                                        replyCountBox = new Container
                                         {
                                             AutoSizeAxes = Axes.X,
                                             Height = 27,
@@ -266,6 +267,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private bool translated;
 
         private CommentThread commentData;
+        private Comment commentData2;
 
         private HoverSounds samples = new HoverClickSounds(HoverSampleSet.Default);
 
@@ -304,6 +306,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 hoverClickSounds.Enabled.Value = (ClickEvent != null);
         }
 
+        private Container replyCountBox;
+
         private void setText(string text)
         {
             commentText.Text = "";
@@ -320,10 +324,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         commentText.AddArbitraryDrawable(new UrlRedirectDisplay(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Mention:
-                        commentText.AddLink(item.Value, $"https://www.youtube.com/{item.Value}");
+                        commentText.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Hashtag:
-                        commentText.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}");
+                        commentText.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Timestamp:
                         commentText.AddArbitraryDrawable(new TimestampButton(item.Value)
@@ -342,7 +346,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 try
                 {
                     Schedule(() => loading.Show());
-                    DateTimeOffset? dateTime = commentData.Snippet.TopLevelComment.Snippet.PublishedAtDateTimeOffset;
+                    DateTimeOffset? dateTime = commentData2 != null ? commentData2.Snippet.PublishedAtDateTimeOffset : commentData.Snippet.TopLevelComment.Snippet.PublishedAtDateTimeOffset;
                     DateTimeOffset now = DateTime.Now;
 
                     try
@@ -352,17 +356,26 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Schedule(() =>
                         {
                             //channelName.Text = channelData != null ? api.GetLocalizedChannelTitle(channelData) : commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName;
-                            channelName.Text = commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName;
+                            if (commentData2 != null)
+                            {
+                                replyCountBox.Hide();
+                                channelName.Text = NekoPlayerStrings.CommentReply(commentData2.Snippet.AuthorDisplayName, commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName);
+                            }
+                            else
+                            {
+                                channelName.Text = commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName;
+                            }
                             channelName.AddText(" • ", f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"));
 #pragma warning disable CS8629 // Nullable 값 형식이 null일 수 있습니다.
                             channelName.AddText(dateTime.Value.Humanize(dateToCompareAgainst: now), f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"));
 #pragma warning restore CS8629 // Nullable 값 형식이 null일 수 있습니다.
-                            setText(commentData.Snippet.TopLevelComment.Snippet.TextOriginal);
-                            likeCount.Text = Convert.ToInt32(commentData.Snippet.TopLevelComment.Snippet.LikeCount).ToStandardFormattedString(0);
+                            setText(commentData2 != null ? commentData2.Snippet.TextOriginal : commentData.Snippet.TopLevelComment.Snippet.TextOriginal);
+                            likeCount.Text = Convert.ToInt32(commentData2 != null ? commentData2.Snippet.LikeCount : commentData.Snippet.TopLevelComment.Snippet.LikeCount).ToStandardFormattedString(0);
                             translateToText.Text = NekoPlayerStrings.TranslateTo(app.CurrentLanguage.Value.GetLocalisableDescription());
-                            profileImage.UpdateProfileImage(commentData.Snippet.TopLevelComment.Snippet.AuthorChannelId.Value);
-                            replyCount.Text = Convert.ToInt32(commentData.Snippet.TotalReplyCount).ToStandardFormattedString(0);
+                            profileImage.UpdateProfileImage(commentData2 != null ? commentData2.Snippet.AuthorChannelId.Value : commentData.Snippet.TopLevelComment.Snippet.AuthorChannelId.Value);
+                            replyCount.Text = Convert.ToInt32(commentData2 != null ? 0 : commentData.Snippet.TotalReplyCount).ToStandardFormattedString(0);
 
+                            /*
                             usernameDisplayMode.BindValueChanged(locale =>
                             {
                                 Schedule(() =>
@@ -374,13 +387,21 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     channelName.AddText(dateTime.Value.Humanize(dateToCompareAgainst: now), f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"));
                                 });
                             }, true);
+                            */
 
                             uiLanguage.BindValueChanged(locale =>
                             {
                                 Schedule(() =>
                                 {
                                     channelName.Text = string.Empty;
-                                    channelName.Text = commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName;
+                                    if (commentData2 != null)
+                                    {
+                                        channelName.Text = NekoPlayerStrings.CommentReply(commentData2.Snippet.AuthorDisplayName, commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName);
+                                    }
+                                    else
+                                    {
+                                        channelName.Text = commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName;
+                                    }
                                     //channelName.Text = channelData != null ? api.GetLocalizedChannelTitle(channelData) : commentData.Snippet.TopLevelComment.Snippet.AuthorDisplayName;
                                     channelName.AddText(" • ", f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"));
                                     channelName.AddText(dateTime.Value.Humanize(dateToCompareAgainst: now), f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Regular"));

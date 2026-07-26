@@ -65,7 +65,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             InternalChildren = new Drawable[]
             {
-                //samples,
+                samples,
                 bgLayer = new Box
                 {
                     RelativeSizeAxes = Axes.Both,

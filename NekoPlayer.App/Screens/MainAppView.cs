@@ -96,7 +96,7 @@ namespace NekoPlayer.App.Screens
         private AdaptiveAlertContainer alert;
         private IdleTracker idleTracker;
         private Container uiContainer;
-        private Container uiGradientContainer;
+        private DrawSizePreservingFillContainer uiGradientContainer;
         private OverlayContainer loadVideoContainer, settingsContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
         private IconButton menuOverlayShow;
@@ -368,6 +368,8 @@ namespace NekoPlayer.App.Screens
 
         private CancellationTokenSource videoLoadProcess;
 
+        private NekoPlayerSettingsTabBar settingsTabBar;
+
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
         {
@@ -564,7 +566,7 @@ namespace NekoPlayer.App.Screens
                                 Bottom = 110,
                             },
                         },
-                        uiGradientContainer = new Container
+                        uiGradientContainer = new DrawSizePreservingFillContainer
                         {
                             RelativeSizeAxes = Axes.Both,
                             Children = new Drawable[]
@@ -1241,7 +1243,10 @@ namespace NekoPlayer.App.Screens
                                         settingsSections = new AdaptiveScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
-                                            ScrollbarVisible = false,
+                                            Padding = new MarginPadding
+                                            {
+                                                Left = 48,
+                                            },
                                             Children = new Drawable[]
                                             {
                                                 new FillFlowContainer {
@@ -1256,6 +1261,7 @@ namespace NekoPlayer.App.Screens
                                                     Children = new Drawable[] {
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "Quick Actions",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.QuickAction,
                                                             Padding = new MarginPadding { Horizontal = 30, Bottom = 12 },
@@ -1277,6 +1283,7 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "General Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.General,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1336,6 +1343,7 @@ namespace NekoPlayer.App.Screens
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "UI Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.UserInterface,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1413,6 +1421,7 @@ namespace NekoPlayer.App.Screens
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "Graphics Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.Graphics,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1573,6 +1582,7 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "Screenshot Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.Screenshot,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1657,6 +1667,7 @@ namespace NekoPlayer.App.Screens
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "VFX Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.VisualEffects,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1693,6 +1704,7 @@ namespace NekoPlayer.App.Screens
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "CC Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.ClosedCaptions,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1734,6 +1746,7 @@ namespace NekoPlayer.App.Screens
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "Audio Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.Audio,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1793,7 +1806,6 @@ namespace NekoPlayer.App.Screens
                                                                     Current = videoVolume,
                                                                     DisplayAsPercentage = true,
                                                                 }),
-                                                                /*
                                                                 new SettingsItemV2(new FormVolumeSliderBar<double>
                                                                 {
                                                                     Caption = NekoPlayerStrings.SFXVolume,
@@ -1801,7 +1813,6 @@ namespace NekoPlayer.App.Screens
                                                                     Current = config.GetBindable<double>(FrameworkSetting.VolumeEffect),
                                                                     DisplayAsPercentage = true,
                                                                 }),
-                                                                */
                                                             }
                                                         },
                                                         new SettingsItemV2(new FormCheckBox
@@ -1812,6 +1823,7 @@ namespace NekoPlayer.App.Screens
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {
+                                                            Name = "Debug Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.Debug,
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
@@ -1849,6 +1861,7 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                         new Container
                                                         {
+                                                            Name = "App Info",
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
                                                             Margin = new MarginPadding { Top = 12 },
@@ -1936,6 +1949,12 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
+                                settingsTabBar = new NekoPlayerSettingsTabBar
+                                {
+                                    Origin = Anchor.CentreLeft,
+                                    Anchor = Anchor.CentreLeft,
+                                    Margin = new MarginPadding(16),
+                                }
                             }
                         },
                         videoDescriptionContainer = new BottomOverlayContainer
@@ -4209,7 +4228,7 @@ namespace NekoPlayer.App.Screens
             };
 
             madeByText.AddText("made by ");
-            madeByText.AddLink("BoomboxRapsody", "https://github.com/BoomboxRapsody/");
+            madeByText.AddLink("Mayo_0x0 (BoomboxRapsody)", "https://github.com/BoomboxRapsody/", NekoPlayerStrings.ViewGitHubProfile);
 
             videoMetadataDisplayAlignment.BindValueChanged(v =>
             {
@@ -4589,6 +4608,8 @@ namespace NekoPlayer.App.Screens
                     showControls();
                 }
             }, true);
+
+            PrepareSettingsTabs();
 
             if (window?.SupportedWindowModes.Count() > 1)
             {
@@ -6123,6 +6144,81 @@ namespace NekoPlayer.App.Screens
             }
         }
 
+        private void PrepareSettingsTabs()
+        {
+            Drawable[] drawables = new Drawable[]
+            {
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.Star,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Quick Actions")),
+                    TooltipText = NekoPlayerStrings.QuickAction,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.Cog,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("General Settings")),
+                    TooltipText = NekoPlayerStrings.General,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.WindowMaximize,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("UI Settings")),
+                    TooltipText = NekoPlayerStrings.UserInterface,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.Bolt,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Graphics Settings")),
+                    TooltipText = NekoPlayerStrings.Graphics,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.Camera,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Screenshot Settings")),
+                    TooltipText = NekoPlayerStrings.Screenshot,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.Video,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Video Settings")),
+                    TooltipText = NekoPlayerStrings.Video,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.Sun,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("VFX Settings")),
+                    TooltipText = NekoPlayerStrings.VisualEffects,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.ClosedCaptioning,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("CC Settings")),
+                    TooltipText = NekoPlayerStrings.ClosedCaptions,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.VolumeUp,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Audio Settings")),
+                    TooltipText = NekoPlayerStrings.Audio,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.Bug,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Debug Settings")),
+                    TooltipText = NekoPlayerStrings.Debug,
+                },
+                new NekoPlayerSettingsTabBar.Button
+                {
+                    Icon = FontAwesome.Solid.InfoCircle,
+                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("App Info")),
+                    TooltipText = NekoPlayerStrings.AppInfo,
+                },
+            };
+
+            settingsTabBar.SetItems(drawables);
+        }
+
         public async Task SetPlaylist(string playlistId)
         {
             playlistId = YoutubeExplode.Playlists.PlaylistId.Parse(playlistId);
@@ -6755,10 +6851,10 @@ namespace NekoPlayer.App.Screens
                         videoDescription.AddArbitraryDrawable(new UrlRedirectDisplay(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Mention:
-                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/{item.Value}");
+                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Hashtag:
-                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}");
+                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Timestamp:
                         videoDescription.AddArbitraryDrawable(new TimestampButton(item.Value)
@@ -6780,7 +6876,9 @@ namespace NekoPlayer.App.Screens
             public override LocalisableString TooltipText => NekoPlayerStrings.PlaybackSpeed(Current.Value);
         }
 
-        private void updateComments(string videoId)
+        private AdaptiveButtonV2 viewMoreComments;
+
+        private void updateComments(string videoId, string pageToken = "")
         {
             if (commentsDisabled)
                 return;
@@ -6789,7 +6887,8 @@ namespace NekoPlayer.App.Screens
             {
                 foreach (var item in commentContainer.Children)
                 {
-                    Schedule(() => item.Expire());
+                    if (string.IsNullOrEmpty(pageToken))
+                        Schedule(() => item.Expire());
                 }
 
                 quickCommentOpenButton.TooltipText = NekoPlayerStrings.Comments(videoData.Statistics.CommentCount != null ? Convert.ToInt32(videoData.Statistics.CommentCount).ToStandardFormattedString(0) : NekoPlayerStrings.Disabled);
@@ -6798,14 +6897,32 @@ namespace NekoPlayer.App.Screens
 
                 OrderEnum orderEnum = CommentsSort.Value == CommentsSortCriteria.Top ? OrderEnum.Relevance : OrderEnum.Time;
 
-                IList<CommentThread> commentThreadData;
+                CommentThreadListResponse commentThreadListResponse;
 
                 try
                 {
                     // comments area
-                    commentThreadData = api.GetCommentThread(videoId, orderEnum);
-                    foreach (CommentThread item in commentThreadData)
+                    commentThreadListResponse = api.GetCommentThread(videoId, pageToken, orderEnum);
+
+                    currentCommentsNextPageToken = commentThreadListResponse.NextPageToken;
+
+                    if (!string.IsNullOrEmpty(commentThreadListResponse.NextPageToken))
                     {
+                        viewMoreComments = new AdaptiveButtonV2
+                        {
+                            RelativeSizeAxes = Axes.X,
+                            Text = NekoPlayerStrings.ViewMoreComments,
+                            Action = () =>
+                            {
+                                viewMoreComments.Expire();
+                                updateComments(videoId, currentCommentsNextPageToken);
+                            }
+                        };
+                    }
+
+                    for (int i = 0; i < commentThreadListResponse.Items.Count; i++)
+                    {
+                        CommentThread item = commentThreadListResponse.Items[i];
 #pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                         Task.Run(async () =>
                         {
@@ -6821,12 +6938,40 @@ namespace NekoPlayer.App.Screens
                                         seekTo((second / 60) * 1000);
                                     }
                                 });
+
+                                if (item.Replies != null && item.Replies.Comments != null && item.Replies.Comments.Count > 0)
+                                {
+                                    for (int i2 = 0; i2 < item.Replies.Comments.Count; i2++)
+                                    {
+                                        Comment item2 = item.Replies.Comments[i2];
+                                        commentContainer.Add(new CommentDisplay(item, item2)
+                                        {
+                                            RelativeSizeAxes = Axes.X,
+                                            TimestampClicked = second =>
+                                            {
+                                                Logger.Log(second.ToString());
+                                                hideOverlays();
+                                                seekTo((second / 60) * 1000);
+                                            }
+                                        });
+                                    }
+                                }
                             });
+                        }).ContinueWith(_ =>
+                        {
+                            if (!string.IsNullOrEmpty(commentThreadListResponse.NextPageToken))
+                            {
+                                Schedule(() =>
+                                {
+                                    commentContainer.Remove(viewMoreComments, false);
+                                    commentContainer.Add(viewMoreComments);
+                                });
+                            }
                         });
 #pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                     }
 
-                    if (commentThreadData.Count > 0)
+                    if (commentThreadListResponse.Items.Count > 0)
                         commentsEmpty.Hide();
                     else
                         commentsEmpty.Show();
@@ -7310,6 +7455,8 @@ namespace NekoPlayer.App.Screens
 
         private Color4 accentColor;
         private Color4 bgColor;
+
+        private string currentCommentsNextPageToken;
 
         private void updateVideoMetadata(string videoId)
         {
@@ -8642,7 +8789,8 @@ namespace NekoPlayer.App.Screens
 
         public void ShowSettingsOverlayAtName(string name)
         {
-            showOverlayContainer(settingsContainer);
+            if (!settingsContainer.IsVisible)
+                showOverlayContainer(settingsContainer);
 
             // wait for load of sections
             if (!settingsSections.Any())
@@ -8651,7 +8799,7 @@ namespace NekoPlayer.App.Screens
                 return;
             }
 
-            settingsSections.ScrollTo(settingsSections.ChildrenOfType<Drawable>().Where(child => child.Name == name).Single(), false);
+            settingsSections.ScrollTo(settingsSections.ChildrenOfType<Drawable>().Where(child => child.Name == name).Single());
         }
 
         private enum GCLatencyMode
