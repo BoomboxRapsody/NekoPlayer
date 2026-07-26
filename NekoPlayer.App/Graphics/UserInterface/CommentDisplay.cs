@@ -298,7 +298,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Schedule(async () =>
                     {
                         translateToText.Text = NekoPlayerStrings.Translating;
-                        setText(await translate.TranslateAsync(commentData.Snippet.TopLevelComment.Snippet.TextOriginal, GoogleTranslateLanguage.auto));
+                        setText(await translate.TranslateAsync(commentData2 != null ? commentData2.Snippet.TextOriginal : commentData.Snippet.TopLevelComment.Snippet.TextOriginal, GoogleTranslateLanguage.auto));
                         translateToText.Text = NekoPlayerStrings.TranslateViewOriginal;
                     });
                 });
@@ -308,7 +308,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 Schedule(() =>
                 {
-                    setText(commentData.Snippet.TopLevelComment.Snippet.TextOriginal);
+                    setText(commentData2 != null ? commentData2.Snippet.TextOriginal : commentData.Snippet.TopLevelComment.Snippet.TextOriginal);
                     translateToText.Text = NekoPlayerStrings.TranslateTo(app.CurrentLanguage.Value.GetLocalisableDescription());
                 });
                 translated = false;
