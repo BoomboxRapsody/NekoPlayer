@@ -10,6 +10,8 @@
 <a href="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer"><img src="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge" alt="CodeFactor"></a>
 </p>
 
+## Downloading and installing the app
+
 ### Latest release:
 
 | [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
