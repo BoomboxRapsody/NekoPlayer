@@ -3942,7 +3942,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Margin = new MarginPadding(8),
-                                    Size = new Vector2(0.965f, 1f),
+                                    Size = new Vector2(0.95f, 1f),
                                     Height = 60,
                                     Origin = Anchor.Centre,
                                     Anchor = Anchor.Centre,
