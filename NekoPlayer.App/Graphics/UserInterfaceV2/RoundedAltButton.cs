@@ -18,7 +18,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class RoundedOutlineButton : AdaptiveMaterialOutlineButton, IFilterable, IHasTooltip
+    public partial class RoundedAltButton : AdaptiveMaterialAltButton, IFilterable, IHasTooltip
     {
         protected override float HoverLayerFinalAlpha => 0;
 

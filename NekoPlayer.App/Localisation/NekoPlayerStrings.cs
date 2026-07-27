@@ -910,14 +910,14 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString Create => new TranslatableString(getKey(@"create"), @"Create");
 
         /// <summary>
-        /// "Added video {0} to playlist {1}."
+        /// "Added current video to playlist {0}."
         /// </summary>
-        public static LocalisableString VideoSavedToPlaylist(string videoName, string playlistName) => new TranslatableString(getKey(@"video_saved_to_playlist"), @"Added video {0} to playlist {1}.", videoName, playlistName);
+        public static LocalisableString VideoSavedToPlaylist(string playlistName) => new TranslatableString(getKey(@"video_saved_to_playlist"), @"Added current video to playlist {0}.", playlistName);
 
         /// <summary>
-        /// "Removed video {0} from playlist {1}."
+        /// "Removed current video from playlist {0}."
         /// </summary>
-        public static LocalisableString VideoRemovedFromPlaylist(string videoName, string playlistName) => new TranslatableString(getKey(@"video_removed_from_playlist"), @"Removed video {0} from playlist {1}.", videoName, playlistName);
+        public static LocalisableString VideoRemovedFromPlaylist(string playlistName) => new TranslatableString(getKey(@"video_removed_from_playlist"), @"Removed current video from playlist {0}.", playlistName);
 
         /// <summary>
         /// "Menu"

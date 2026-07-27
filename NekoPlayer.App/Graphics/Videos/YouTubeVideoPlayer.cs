@@ -58,7 +58,7 @@ namespace NekoPlayer.App.Graphics.Videos
         private YouTubeAPI api { get; set; }
 
 #nullable enable
-        [Resolved(canBeNull: true)]
+        [Resolved]
         private MediaSession? mediaSession { get; set; }
 #nullable disable
 
