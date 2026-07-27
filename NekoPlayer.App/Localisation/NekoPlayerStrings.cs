@@ -1339,6 +1339,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ViewMoreComments => new TranslatableString(getKey(@"view_more_comments"), "View more comments");
 
+        /// <summary>
+        /// "Updates"
+        /// </summary>
+        public static LocalisableString Updates => new TranslatableString(getKey(@"updates"), "Updates");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

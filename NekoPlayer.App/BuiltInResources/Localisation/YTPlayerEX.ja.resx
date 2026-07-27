@@ -862,4 +862,7 @@
   <data name="view_more_comments" xml:space="preserve">
     <value>追加コメントを表示します</value>
   </data>
+  <data name="updates" xml:space="preserve">
+    <value>アップデート</value>
+  </data>
 </root>

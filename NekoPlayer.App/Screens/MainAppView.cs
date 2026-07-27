@@ -3851,7 +3851,7 @@ namespace NekoPlayer.App.Screens
                     */
                     if (settingsContainer.IsVisible)
                     {
-                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.RunningLatestRelease(game.Version), FontAwesome.Solid.CheckCircle);
+                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Updates, NekoPlayerStrings.RunningLatestRelease(game.Version), FontAwesome.Solid.CheckCircle);
 
                         onScreenDisplay.Display(toast);
                     }
