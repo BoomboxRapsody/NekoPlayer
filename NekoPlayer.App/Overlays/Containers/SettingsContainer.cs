@@ -51,7 +51,7 @@ using SharpCompress.Writers.Zip;
 
 namespace NekoPlayer.App.Overlays.Containers
 {
-    public partial class SettingsContainer : BottomOverlayContainer
+    public partial class SettingsContainer : SideOverlayContainer
     {
         private AdaptiveScrollContainer settingsSections;
 
@@ -196,6 +196,8 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<Config.AudioQuality> audioQuality;
         private Bindable<bool> alwaysUseOriginalAudio, captionEnabled;
         private Bindable<float> captionBGOpacity;
+
+        public Action CloseOverlayAction;
 
         public YouTubeI18nLangDropdown CaptionLangDropdown;
 
@@ -385,12 +387,12 @@ namespace NekoPlayer.App.Overlays.Containers
 
             discordRichPresence = appConfig.GetBindable<DiscordRichPresenceMode>(NekoPlayerSetting.DiscordRichPresence);
 
-            Size = new Vector2(0.7f, 1f);
+            Size = new Vector2(0.45f, 1f);
             RelativeSizeAxes = Axes.Both;
-            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0);
+            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0);
             Masking = true;
-            Origin = Anchor.BottomCentre;
-            Anchor = Anchor.BottomCentre;
+            Origin = Anchor.CentreRight;
+            Anchor = Anchor.CentreRight;
             Children = new Drawable[]
             {
                                 new Box
@@ -411,7 +413,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                             RelativeSizeAxes = Axes.Both,
                                             Padding = new MarginPadding
                                             {
-                                                Left = 48,
+                                                Right = 48,
                                             },
                                             Children = new Drawable[]
                                             {
@@ -423,6 +425,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                     Padding = new MarginPadding
                                                     {
                                                         Top = 56,
+                                                        Bottom = 8,
                                                     },
                                                     Children = new Drawable[] {
                                                         new AdaptiveSpriteText
@@ -1082,10 +1085,25 @@ namespace NekoPlayer.App.Overlays.Containers
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        CloseOverlayAction.Invoke();
+                                    }
+                                },
                                 settingsTabBar = new NekoPlayerSettingsTabBar
                                 {
-                                    Origin = Anchor.CentreLeft,
-                                    Anchor = Anchor.CentreLeft,
+                                    Origin = Anchor.CentreRight,
+                                    Anchor = Anchor.CentreRight,
                                     Margin = new MarginPadding(16),
                                 }
             };

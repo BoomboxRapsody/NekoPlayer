@@ -502,6 +502,7 @@ namespace NekoPlayer.App.Screens
                                             Icon = FontAwesome.Solid.Bars,
                                             IconScale = new Vector2(1.2f),
                                             TooltipText = NekoPlayerStrings.Menu,
+                                            BackgroundColour = overlayColourProvider.Background5,
                                         },
                                     }
                                 },
@@ -1112,6 +1113,10 @@ namespace NekoPlayer.App.Screens
                                     else
                                         game.RestartAction.Invoke();
                                 }
+                           },
+                           CloseOverlayAction = () =>
+                           {
+                               hideOverlayContainer(settingsContainer);
                            }
                         },
                         videoDescriptionContainer = new BottomOverlayContainer
@@ -1934,6 +1939,21 @@ namespace NekoPlayer.App.Screens
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(playlistOverlay);
+                                    }
+                                },
                                 new AdaptiveSpriteText
                                 {
                                     Origin = Anchor.TopLeft,
@@ -2008,6 +2028,21 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
+                                },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Margin = new MarginPadding(14),
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(myPlaylistsOverlay);
+                                    }
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -2310,6 +2345,21 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
+                                },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Margin = new MarginPadding(14),
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(audioEffectsOverlay);
+                                    }
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -2936,6 +2986,21 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
+                                },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(menuOverlay);
+                                    }
                                 },
                                 new AdaptiveSpriteText
                                 {
