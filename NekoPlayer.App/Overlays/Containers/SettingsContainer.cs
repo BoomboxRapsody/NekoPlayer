@@ -411,6 +411,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                         settingsSections = new AdaptiveScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
+                                            ScrollbarVisible = false,
                                             Padding = new MarginPadding
                                             {
                                                 Right = 48,
