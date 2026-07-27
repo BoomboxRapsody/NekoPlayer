@@ -3943,17 +3943,17 @@ namespace NekoPlayer.App.Screens
 
             if (overlayContent.Name == "Menu Overlay")
             {
-                menuOverlayCharacter.FadeIn(500, Easing.OutQuint);
+                //menuOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
             if (overlayContent == settingsContainer)
             {
-                settingsOverlayCharacter.FadeIn(500, Easing.OutQuint);
+                //settingsOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
             if (overlayContent.Name == "Audio Effects Overlay")
             {
-                audioEffectsOverlayCharacter.FadeIn(500, Easing.OutQuint);
+                //audioEffectsOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
             if (playOverlaySFX.Value)
@@ -4029,17 +4029,17 @@ namespace NekoPlayer.App.Screens
 
             if (overlayContent.Name == "Menu Overlay")
             {
-                menuOverlayCharacter.FadeOut(250, Easing.OutQuint);
+                //menuOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
 
             if (overlayContent == settingsContainer)
             {
-                settingsOverlayCharacter.FadeOut(250, Easing.OutQuint);
+                //settingsOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
 
             if (overlayContent.Name == "Audio Effects Overlay")
             {
-                audioEffectsOverlayCharacter.FadeOut(250, Easing.OutQuint);
+                //audioEffectsOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
 
             if (playOverlaySFX.Value)
