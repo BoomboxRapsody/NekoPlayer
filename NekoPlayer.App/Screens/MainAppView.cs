@@ -218,7 +218,7 @@ namespace NekoPlayer.App.Screens
         private PlaybackSpeedSliderBar speedBarSlider;
         private RoundedSliderBar<double> volumeBarSlider;
 
-        private SpineSprite menuOverlayCharacter, audioEffectsOverlayCharacter, playlistOverlayCharacter;
+        private SpineSprite menuOverlayCharacter, audioEffectsOverlayCharacter, settingsOverlayCharacter;
 
         private LinkFlowContainer playlistAuthor;
 
@@ -996,11 +996,11 @@ namespace NekoPlayer.App.Screens
                             Origin = Anchor.BottomRight,
                             Anchor = Anchor.BottomRight,
                         },
-                        playlistOverlayCharacter = new KishyaSprite
+                        settingsOverlayCharacter = new ButterSprite
                         {
                             Margin = new MarginPadding
                             {
-                                Right = 650,
+                                Right = 1100,
                             },
                             Y = 100,
                             Scale = new Vector2(0.4f),
@@ -3946,9 +3946,9 @@ namespace NekoPlayer.App.Screens
                 menuOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
-            if (overlayContent.Name == "Playlist Overlay")
+            if (overlayContent == settingsContainer)
             {
-                //playlistOverlayCharacter.FadeIn(500, Easing.OutQuint);
+                settingsOverlayCharacter.FadeIn(500, Easing.OutQuint);
             }
 
             if (overlayContent.Name == "Audio Effects Overlay")
@@ -4032,9 +4032,9 @@ namespace NekoPlayer.App.Screens
                 menuOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
 
-            if (overlayContent.Name == "Playlist Overlay")
+            if (overlayContent == settingsContainer)
             {
-                //playlistOverlayCharacter.FadeOut(250, Easing.OutQuint);
+                settingsOverlayCharacter.FadeOut(250, Easing.OutQuint);
             }
 
             if (overlayContent.Name == "Audio Effects Overlay")
@@ -4321,7 +4321,7 @@ namespace NekoPlayer.App.Screens
 
             menuOverlayCharacter.FadeOut();
             audioEffectsOverlayCharacter.FadeOut();
-            playlistOverlayCharacter.FadeOut();
+            settingsOverlayCharacter.FadeOut();
 
             ghostIcon.Loop(t =>
                 t.MoveToY(-10, 2000, Easing.InOutSine)
