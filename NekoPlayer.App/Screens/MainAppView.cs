@@ -456,7 +456,7 @@ namespace NekoPlayer.App.Screens
 
             overlaySFXType.BindValueChanged(sfx =>
             {
-                RefreshSFX();
+                refreshSFX();
             }, true);
 
             if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
@@ -5593,7 +5593,7 @@ namespace NekoPlayer.App.Screens
             }
         }
 
-        private void RefreshSFX()
+        private void refreshSFX()
         {
             if (appGlobalConfig.Get<SFXType>(NekoPlayerSetting.OverlaySFXType) == SFXType.Legacy)
             {
