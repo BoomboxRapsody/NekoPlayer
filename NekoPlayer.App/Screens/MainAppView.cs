@@ -1103,7 +1103,7 @@ namespace NekoPlayer.App.Screens
                            {
                                 if (game.UpdateManager is NoActionUpdateManager)
                                 {
-                                    host.OpenUrlExternally(@"https://github.com/BoomboxRapsody/YouTubePlayerEX/releases");
+                                    host.OpenUrlExternally(@"https://github.com/BoomboxRapsody/NekoPlayer/releases");
                                 }
                                 else
                                 {
