@@ -5231,6 +5231,13 @@ namespace NekoPlayer.App.Screens
                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoSavedToPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
+
+                await Task.Delay(1000);
+
+                Schedule(async () =>
+                {
+                    fetchMyPlaylists();
+                });
             });
         }
 
@@ -5248,6 +5255,13 @@ namespace NekoPlayer.App.Screens
                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoRemovedFromPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
+
+                await Task.Delay(1000);
+
+                Schedule(async () =>
+                {
+                    fetchMyPlaylists();
+                });
             });
         }
 
