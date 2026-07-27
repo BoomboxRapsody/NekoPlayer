@@ -2164,6 +2164,9 @@ namespace NekoPlayer.App.Screens
                                                     AlwaysPresent = true,
                                                     ClickAction = f =>
                                                     {
+                                                        if (commentsDisabled)
+                                                            return;
+
                                                         hideOverlays();
                                                         showOverlayContainer(commentsContainer);
                                                     },
@@ -6479,6 +6482,9 @@ namespace NekoPlayer.App.Screens
                     if (videoData == null)
                         return true;
 
+                    if (commentsDisabled)
+                        return true;
+
                     if (!commentsContainer.IsVisible)
                     {
                         hideOverlays();
@@ -6873,7 +6879,16 @@ namespace NekoPlayer.App.Screens
         private void updateComments(string videoId, string pageToken = "")
         {
             if (commentsDisabled)
+            {
+                Schedule(() =>
+                {
+                    quickCommentOpenButton.TooltipText = NekoPlayerStrings.Comments(NekoPlayerStrings.DisabledByUploader);
+                    commentCount.Text = NekoPlayerStrings.DisabledByUploader;
+                    commentsContainerTitle.Text = NekoPlayerStrings.Comments(NekoPlayerStrings.DisabledByUploader);
+                    commentsEmpty.Show();
+                });
                 return;
+            }
 
             Schedule(() =>
             {
@@ -6883,9 +6898,9 @@ namespace NekoPlayer.App.Screens
                         Schedule(() => item.Expire());
                 }
 
-                quickCommentOpenButton.TooltipText = NekoPlayerStrings.Comments(videoData.Statistics.CommentCount != null ? Convert.ToInt32(videoData.Statistics.CommentCount).ToStandardFormattedString(0) : NekoPlayerStrings.Disabled);
+                quickCommentOpenButton.TooltipText = NekoPlayerStrings.Comments(videoData.Statistics.CommentCount != null ? Convert.ToInt32(videoData.Statistics.CommentCount).ToStandardFormattedString(0) : NekoPlayerStrings.DisabledByUploader);
                 commentCount.Text = videoData.Statistics.CommentCount != null ? Convert.ToDouble(videoData.Statistics.CommentCount).ToMetric(decimals: 2) : NekoPlayerStrings.DisabledByUploader;
-                commentsContainerTitle.Text = NekoPlayerStrings.Comments(videoData.Statistics.CommentCount != null ? Convert.ToInt32(videoData.Statistics.CommentCount).ToStandardFormattedString(0) : NekoPlayerStrings.Disabled);
+                commentsContainerTitle.Text = NekoPlayerStrings.Comments(videoData.Statistics.CommentCount != null ? Convert.ToInt32(videoData.Statistics.CommentCount).ToStandardFormattedString(0) : NekoPlayerStrings.DisabledByUploader);
 
                 OrderEnum orderEnum = CommentsSort.Value == CommentsSortCriteria.Top ? OrderEnum.Relevance : OrderEnum.Time;
 
@@ -7490,12 +7505,10 @@ namespace NekoPlayer.App.Screens
 
                 if (videoData.Statistics.CommentCount != null)
                 {
-                    Schedule(() => commentOpenButtonDetails.Show());
                     Schedule(() => quickCommentOpenButton.Enabled.Value = true);
                 }
                 else
                 {
-                    Schedule(() => commentOpenButtonDetails.Hide());
                     Schedule(() => quickCommentOpenButton.Enabled.Value = false);
                 }
 
