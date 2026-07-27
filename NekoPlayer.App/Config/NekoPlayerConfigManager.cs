@@ -48,10 +48,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.ScalingPositionX, 0.5f, 0f, 1f, 0.01f);
             SetDefault(NekoPlayerSetting.ScalingPositionY, 0.5f, 0f, 1f, 0.01f);
 
-            if (RuntimeInfo.IsMobile)
-                SetDefault(NekoPlayerSetting.UIScale, 1f, 0.8f, 1.1f, 0.01f);
-            else
-                SetDefault(NekoPlayerSetting.UIScale, 1f, 0.8f, 1.6f, 0.01f);
+            SetDefault(NekoPlayerSetting.UIScale, 1f, 0.8f, 1.4f, 0.01f);
 
             SetDefault(NekoPlayerSetting.ScreenshotFormat, ScreenshotFormat.Jpg);
             SetDefault(NekoPlayerSetting.ScreenshotCaptureMenuCursor, true);

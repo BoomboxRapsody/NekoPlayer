@@ -105,28 +105,6 @@ namespace NekoPlayer.App
                 {
                     return Directory.GetCurrentDirectory() + "/FFmpeg/bin/win-x64/ffmpeg.exe";
                 }
-                case RuntimeInfo.Platform.Linux:
-                {
-                    return Directory.GetCurrentDirectory() + "/FFmpeg/bin/linux-x64/ffmpeg";
-                }
-                case RuntimeInfo.Platform.macOS:
-                {
-                    switch (RuntimeInformation.ProcessArchitecture)
-                    {
-                        case Architecture.X64: //Intel Processor
-                        {
-                            return Directory.GetCurrentDirectory() + "/FFmpeg/bin/osx-x64/ffmpeg";
-                        }
-                        case Architecture.Arm64: //Apple Silicon Processor
-                        {
-                            return Directory.GetCurrentDirectory() + "/FFmpeg/bin/osx-arm64/ffmpeg";
-                        }
-                        default:
-                        {
-                            throw new PlatformNotSupportedException();
-                        }
-                    }
-                }
                 default:
                 {
                     throw new PlatformNotSupportedException();
