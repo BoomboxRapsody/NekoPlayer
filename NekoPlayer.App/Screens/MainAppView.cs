@@ -5228,7 +5228,7 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Solid.Bookmark;
 
-                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoSavedToPlaylist(videoId, myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoSavedToPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
             });
@@ -5245,7 +5245,7 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Regular.Bookmark;
 
-                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoRemovedFromPlaylist(videoId, myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
+                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoRemovedFromPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
             });

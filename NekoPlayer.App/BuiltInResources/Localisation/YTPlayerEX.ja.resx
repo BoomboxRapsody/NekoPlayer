@@ -605,10 +605,10 @@
     <value>作成</value>
   </data>
   <data name="video_saved_to_playlist" xml:space="preserve">
-    <value>再生リスト{1}にビデオ{0}が追加されました。</value>
+    <value>現在の動画をプレイリスト{0}に追加しました。</value>
   </data>
   <data name="video_removed_from_playlist" xml:space="preserve">
-    <value>再生リスト{1}からビデオ{0}を削除しました。</value>
+    <value>プレイリスト{0}から現在の動画を削除しました。</value>
   </data>
   <data name="menu" xml:space="preserve">
     <value>メニュー</value>
