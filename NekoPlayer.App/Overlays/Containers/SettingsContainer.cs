@@ -649,12 +649,6 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Current = fpsDisplay,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleFPSDisplay),
                                                         }),
-                                                        safeAreaConsiderationsCanBeShown = new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.ShrinkGameToSafeArea,
-                                                            Icon = FontAwesome.Solid.WindowMaximize,
-                                                            Current = appConfig.GetBindable<bool>(NekoPlayerSetting.SafeAreaConsiderations),
-                                                        }),
                                                         new SettingsItemV2(new FormEnumDropdown<ScalingMode>
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenScaling,
