@@ -9,7 +9,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -22,7 +21,6 @@ using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics;
-using NekoPlayer.App.Graphics.Caption;
 using NekoPlayer.App.Graphics.Characters;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Graphics.Shaders;
@@ -30,12 +28,14 @@ using NekoPlayer.App.Graphics.Spine;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Graphics.UserInterface;
 using NekoPlayer.App.Graphics.UserInterfaceV2;
+using NekoPlayer.App.Graphics.UserInterfaceV3;
 using NekoPlayer.App.Graphics.Videos;
 using NekoPlayer.App.Input;
 using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Overlays;
+using NekoPlayer.App.Overlays.Containers;
 using NekoPlayer.App.Overlays.OSD;
 using NekoPlayer.App.Overlays.Volume;
 using NekoPlayer.App.Updater;
@@ -64,16 +64,11 @@ using osu.Framework.Localisation;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Platform.Windows;
-using osu.Framework.Statistics;
-using osu.Framework.Testing;
 using osu.Framework.Threading;
 using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using PaletteNet;
-using SharpCompress.Archives.Zip;
-using SharpCompress.Common;
-using SharpCompress.Writers.Zip;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Videos.ClosedCaptions;
 using YoutubeExplode.Videos.Streams;
@@ -98,7 +93,8 @@ namespace NekoPlayer.App.Screens
         private IdleTracker idleTracker;
         private Container uiContainer;
         private DrawSizePreservingFillContainer uiGradientContainer;
-        private OverlayContainer loadVideoContainer, settingsContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
+        private SettingsContainer settingsContainer;
+        private OverlayContainer loadVideoContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
         private IconButton menuOverlayShow;
         private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
@@ -106,7 +102,7 @@ namespace NekoPlayer.App.Screens
         private VideoMetadataDisplay videoMetadataDisplayDetails, videoMetadataDisplayDetails2;
         private RoundedButtonContainer commentOpenButtonDetails, likeButton;
 
-        private AdaptiveScrollContainer settingsSections;
+
 
         private string[] broWhat = new[]
         {
@@ -121,11 +117,9 @@ namespace NekoPlayer.App.Screens
 
         private FormEnumDropdown<PrivacyStatus> playlistPrivacyStatusDropdown, editPlaylistPrivacyStatusDropdown;
 
-        private LinkFlowContainer madeByText;
-
         private YouTubeChannelMetadataDisplay youtubeChannelMetadataDisplay, youtubeChannelMetadataDisplay2;
 
-        private SettingsItemV2 audioLanguageItem, audioLanguageItem2, captionLangOptions;
+        private SettingsItemV2 audioLanguageItem, audioLanguageItem2;
 
         private Sample overlayShowSample, overlayHideSample;
         private AdaptiveMaterialButton reportButton;
@@ -146,68 +140,14 @@ namespace NekoPlayer.App.Screens
             overlayShowSample.Dispose();
             overlayHideSample.Dispose();
             currentVideoSource?.Expire();
-
-            if (audio.IsNotNull())
-            {
-                audio.OnNewDevice -= onAudioDeviceChanged;
-                audio.OnLostDevice -= onAudioDeviceChanged;
-            }
-        }
-
-        // An example driver name of an ALSA device will look like this: "hw:4,0".
-        // For contrast, Pipewire Server and Default devices will have driver names called respectively "pipewire" and "default".
-        public const string LINUX_ALSA_DEVICE_DRIVER_PREFIX = "hw:";
-
-        private readonly Bindable<SettingsNote.Data?> alsaExclusiveDeviceNote = new Bindable<SettingsNote.Data?>();
-
-        private void onDeviceSelected(string selectedDevice)
-        {
-            string? currentDriver = audio.AudioDeviceNames.Where(d => d.Name == selectedDevice).Select(d => d.Driver).FirstOrDefault();
-            if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux && currentDriver.IsNotNull() && currentDriver.StartsWith(LINUX_ALSA_DEVICE_DRIVER_PREFIX, System.StringComparison.Ordinal))
-            {
-                alsaExclusiveDeviceNote.Value = new SettingsNote.Data(NekoPlayerStrings.AlsaExclusiveNotice, SettingsNote.Type.Warning);
-            }
-            else
-            {
-                alsaExclusiveDeviceNote.Value = null;
-            }
-        }
-
-        private void onAudioDeviceChanged(string _)
-        {
-            updateAudioDeviceItems();
-        }
-
-        private void updateAudioDeviceItems()
-        {
-            var deviceItems = new List<string> { string.Empty };
-            deviceItems.AddRange(audio.AudioDeviceNames.Select(d => d.Name));
-
-            string preferredDeviceName = audio.AudioDevice.Value;
-            if (deviceItems.All(kv => kv != preferredDeviceName))
-                deviceItems.Add(preferredDeviceName);
-
-            // The option dropdown for audio device selection lists all audio
-            // device names. Dropdowns, however, may not have multiple identical
-            // keys. Thus, we remove duplicate audio device names from
-            // the dropdown. BASS does not give us a simple mechanism to select
-            // specific audio devices in such a case anyways. Such
-            // functionality would require involved OS-specific code.
-            audioDeviceDropdown.Items = deviceItems
-                             // Dropdown doesn't like null items. Somehow we are seeing some arrive here (see https://github.com/ppy/osu/issues/21271)
-                             .Where(i => i.IsNotNull())
-                             .Distinct()
-                             .ToList();
         }
 
         [Resolved]
         private AudioManager audio { get; set; } = null!;
 
-        private AudioDeviceDropdown audioDeviceDropdown = null!;
-
         private AdaptiveSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, volumeText;
         private AdaptiveSpriteText speedText;
-        private LinkFlowContainer videoDescription, gameVersion;
+        private LinkFlowContainer videoDescription;
         private FillFlowContainer commentContainer, searchResultContainer, playlistItemsView, myPlaylistItemsView;
 
         [Resolved]
@@ -229,24 +169,12 @@ namespace NekoPlayer.App.Screens
         private Bindable<ClosedCaptionLanguage> captionLanguage = null!;
         private bool isControlVisible = true;
 
-        private void onDisplaysChanged(IEnumerable<Display> displays)
-        {
-            Scheduler.AddOnce(d =>
-            {
-                if (!displayDropdown.Items.SequenceEqual(d, DisplayListComparer.DEFAULT))
-                    displayDropdown.Items = d;
-                updateDisplaySettingsVisibility();
-            }, displays);
-        }
-
         private Bindable<Config.AudioQuality> audioQuality;
         private Bindable<Config.VideoQuality> videoQuality;
         private Bindable<HardwareVideoDecoder> hardwareVideoDecoder;
         private Bindable<Localisation.Language> audioLanguage;
         private Bindable<bool> adjustPitch;
         private Bindable<string> localeBindable = new Bindable<string>();
-        private FormButton checkForUpdatesButton;
-        private FormGoogleOAuthButton login;
         private ThumbnailContainerBackground thumbnailContainer;
         private NekoPlayerSeekBar<double> seekbar;
         private Bindable<LocalisableString> updateInfomationText;
@@ -258,8 +186,6 @@ namespace NekoPlayer.App.Screens
         private AudioEffectsConfigManager audioEffectsConfig { get; set; } = null!;
 
         private AdaptiveTextFlowContainer debugInfo;
-
-        private FormEnumDropdown<GCLatencyMode> latencyModeDropdown;
 
         private BufferedContainer videoScalingContainer;
 
@@ -277,7 +203,6 @@ namespace NekoPlayer.App.Screens
         private Bindable<SettingsNote.Data> videoQualityWarning = new Bindable<SettingsNote.Data>();
         private Bindable<SettingsNote.Data> oauth_note = new Bindable<SettingsNote.Data>();
         private Bindable<SettingsNote.Data> hwAccelNote = new Bindable<SettingsNote.Data>();
-        private Bindable<SettingsNote.Data> discordNotInstalledNote = new Bindable<SettingsNote.Data>();
 
         private Bindable<OverlayColourScheme> colourSchemeBindable;
         private Bindable<ProfileImageShape> profileImageShape;
@@ -300,7 +225,7 @@ namespace NekoPlayer.App.Screens
 
         private SpineSprite menuOverlayCharacter, audioEffectsOverlayCharacter, playlistOverlayCharacter;
 
-        private LinkFlowContainer dislikeCounterCredits, playlistAuthor;
+        private LinkFlowContainer playlistAuthor;
 
         private Bindable<bool> signedIn;
 
@@ -311,11 +236,7 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<double> videoVolume;
 
-        private YouTubeI18nLangDropdown captionLangDropdown;
-
         private GhostIcon ghostIcon;
-
-        private Bindable<bool> systemSoundMute = new Bindable<bool>();
 
 #nullable enable
         [Resolved(canBeNull: true)]
@@ -324,7 +245,7 @@ namespace NekoPlayer.App.Screens
 
         //effects
         private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled, karaokeEnabled, chorusEnabled;
-        private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings, chorusSettings, volumeOptions;
+        private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings, chorusSettings;
 
         private YouTubeQualityDropdown videoQualitySettings;
         private FormEnumDropdown<Config.AudioQuality> audioQualitySettings;
@@ -341,20 +262,8 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<bool> trayIconVisible;
 
-        private FormEnumDropdownWithDiscordProfileImage<DiscordRichPresenceMode> discordRichPresenceDropdown;
-
-        private BindableDouble systemVolume = new BindableDouble
-        {
-            MaxValue = 1,
-            MinValue = 0,
-            Precision = 0.01,
-            Default = 1,
-        };
-
         private Bindable<CommentsSortCriteria> CommentsSort;
         private Bindable<SearchSortCriteria> SearchSort;
-
-        private SettingsItemV2 systemMuteSwitchBase;
 
         protected Bindable<ReleaseStream> ReleaseStream;
 
@@ -364,8 +273,6 @@ namespace NekoPlayer.App.Screens
         private Bindable<float> captionBGOpacity;
 
         private CancellationTokenSource videoLoadProcess;
-
-        private NekoPlayerSettingsTabBar settingsTabBar;
 
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
@@ -398,9 +305,6 @@ namespace NekoPlayer.App.Screens
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
             SearchSort = appConfig.GetBindable<SearchSortCriteria>(NekoPlayerSetting.SearchSortCriteria);
 
-            var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
-            automaticRendererInUse = renderer.Value == RendererType.Automatic;
-
             reverbEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.ReverbEnabled);
             rotateEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.RotateEnabled);
             echoEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.EchoEnabled);
@@ -424,8 +328,6 @@ namespace NekoPlayer.App.Screens
 
             captionEnabled = appConfig.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
 
-            exportStorage = storage.GetStorageForDirectory(@"exports");
-
             localeBindable = config.GetBindable<string>(FrameworkSetting.Locale);
             fpsDisplay = appConfig.GetBindable<bool>(NekoPlayerSetting.ShowFpsDisplay);
             use_sdl3 = config.GetBindable<bool>(FrameworkSetting.UseExperimentalSDL3);
@@ -437,8 +339,6 @@ namespace NekoPlayer.App.Screens
             cursorInWindow = host.Window?.CursorInWindow.GetBoundCopy();
             windowMode = config.GetBindable<WindowMode>(FrameworkSetting.WindowMode);
             captionLanguage = appConfig.GetBindable<ClosedCaptionLanguage>(NekoPlayerSetting.ClosedCaptionLanguage);
-            sizeFullscreen = config.GetBindable<Size>(FrameworkSetting.SizeFullscreen);
-            sizeWindowed = config.GetBindable<Size>(FrameworkSetting.WindowedSize);
             windowedPositionX = config.GetBindable<double>(FrameworkSetting.WindowedPositionX);
             windowedPositionY = config.GetBindable<double>(FrameworkSetting.WindowedPositionY);
             updateInfomationText = game.UpdateManagerVersionText.GetBoundCopy();
@@ -452,22 +352,10 @@ namespace NekoPlayer.App.Screens
             accentColor = overlayColourProvider1.Content2;
             bgColor = overlayColourProvider1.Background3;
 
-            windowedResolution.Value = sizeWindowed.Value;
-
             overlaySFXType.BindValueChanged(sfx =>
             {
                 refreshSFX();
             }, true);
-
-            if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
-            {
-                discordRichPresence.Disabled = !DiscordInstallationChecker.IsDiscordInstalled();
-
-                if (!DiscordInstallationChecker.IsDiscordInstalled())
-                {
-                    discordNotInstalledNote.Value = new SettingsNote.Data(NekoPlayerStrings.DiscordNotInstalled, SettingsNote.Type.Informational);
-                }
-            }
 
             use_sdl3.BindValueChanged(_ =>
             {
@@ -492,15 +380,6 @@ namespace NekoPlayer.App.Screens
                     game.AttemptExit();
                 }
             });
-
-            if (window != null)
-            {
-                currentDisplay.BindTo(window.CurrentDisplayBindable);
-                window.DisplaysChanged += onDisplaysChanged;
-            }
-
-            if (host.Renderer is IWindowsRenderer windowsRenderer)
-                fullscreenCapability.BindTo(windowsRenderer.FullscreenCapability);
 
             #region The UI Components
             InternalChildren = new Drawable[]
@@ -1214,737 +1093,34 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        settingsContainer = new BottomOverlayContainer
+                        settingsContainer = new SettingsContainer
                         {
-                            Size = new Vector2(0.7f, 1f),
-                            RelativeSizeAxes = Axes.Both,
-                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
-                            Masking = true,
-                            Origin = Anchor.BottomCentre,
-                            Anchor = Anchor.BottomCentre,
-                            Children = new Drawable[]
-                            {
-                                new Box
+                           OAuthSignInAction = () =>
+                           {
+                                if (!googleOAuth2.SignedIn.Value)
                                 {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
-                                },
-                                new Container
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 16,
-                                    },
-                                    Children = new Drawable[] {
-                                        settingsSections = new AdaptiveScrollContainer
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            Padding = new MarginPadding
-                                            {
-                                                Left = 48,
-                                            },
-                                            Children = new Drawable[]
-                                            {
-                                                new FillFlowContainer {
-                                                    RelativeSizeAxes = Axes.X,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Spacing = new Vector2(0, 2),
-                                                    Direction = FillDirection.Vertical,
-                                                    Padding = new MarginPadding
-                                                    {
-                                                        Top = 56,
-                                                    },
-                                                    Children = new Drawable[] {
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "Quick Actions",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.QuickAction,
-                                                            Padding = new MarginPadding { Horizontal = 30, Bottom = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsButtonV2
-                                                        {
-                                                            Padding = new MarginPadding { Horizontal = 30 },
-                                                            Text = NekoPlayerStrings.ExportLogs,
-                                                            BackgroundColour = colours.YellowDarker.Darken(0.5f),
-                                                            Action = () => Task.Run(exportLogs),
-                                                        },
-                                                        new SettingsButtonV2
-                                                        {
-                                                            Padding = new MarginPadding { Horizontal = 30 },
-                                                            Text = NekoPlayerStrings.ReportBugs,
-                                                            TooltipText = NekoPlayerStrings.ReportBugsDesc,
-                                                            Action = () => host.OpenUrlExternally("https://boomboxrapsody.featurebase.app/en"),
-                                                        },
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "General Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.General,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(new FormEnumDropdown<CloseButtonAction>
-                                                        {
-                                                            Caption = NekoPlayerStrings.CloseButtonAction,
-                                                            Current = closeButtonAction,
-                                                            Icon = FontAwesome.Regular.WindowClose,
-                                                        }),
-                                                        new SettingsItemV2(discordRichPresenceDropdown = new FormEnumDropdownWithDiscordProfileImage<DiscordRichPresenceMode>
-                                                        {
-                                                            Caption = NekoPlayerStrings.DiscordRichPresence,
-                                                            Current = discordRichPresence,
-                                                            Icon = FontAwesome.Brands.Discord,
-                                                        })
-                                                        {
-                                                            Note = { BindTarget = discordNotInstalledNote },
-                                                        },
-                                                        new SettingsItemV2(login = new FormGoogleOAuthButton
-                                                        {
-                                                            Caption = NekoPlayerStrings.GoogleAccount,
-                                                            Text = NekoPlayerStrings.SignedOut,
-                                                            Icon = FontAwesome.Brands.Google,
-                                                            Action = () => {
-                                                                if (!googleOAuth2.SignedIn.Value)
-                                                                {
-                                                                    Task.Run(() => googleOAuth2.SignIn());
-                                                                }
-                                                                else
-                                                                {
-                                                                    hideOverlays();
-                                                                    showOverlayContainer(myChannelDialog);
-                                                                }
-                                                            },
-                                                        }),
-                                                        checkForUpdatesButtonCore = new SettingsItemV2(checkForUpdatesButton = new FormButton
-                                                        {
-                                                            Caption = NekoPlayerStrings.CheckUpdate,
-                                                            Text = app.Version,
-                                                            ButtonIcon = FontAwesome.Solid.Sync,
-                                                            Icon = FontAwesome.Solid.Sync,
-                                                            Action = () => {
-                                                                if (game.UpdateManager is NoActionUpdateManager)
-                                                                {
-                                                                    host.OpenUrlExternally(@"https://github.com/BoomboxRapsody/YouTubePlayerEX/releases");
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (game.RestartRequired.Value != true)
-                                                                        checkForUpdates().FireAndForget();
-                                                                    else
-                                                                        game.RestartAction.Invoke();
-                                                                }
-                                                            },
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "UI Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.UserInterface,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(new FormEnumDropdown<Language>
-                                                        {
-                                                            Caption = NekoPlayerStrings.Language,
-                                                            Current = game.CurrentLanguage,
-                                                            Icon = FontAwesome.Solid.Language,
-                                                            AlwaysShowSearchBar = true,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                            CanBeShown = { BindTarget = displayDropdownCanBeShown }
-                                                        },
-                                                        new SettingsItemV2(new FormEnumDropdown<UsernameDisplayMode>
-                                                        {
-                                                            Caption = NekoPlayerStrings.UsernameDisplayMode,
-                                                            Current = usernameDisplayMode,
-                                                            Icon = FontAwesome.Solid.User,
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<VideoMetadataDisplayAlignment>
-                                                        {
-                                                            Caption = VideoMetadataDisplayAlignmentStrings.VideoMetadataDisplayAlignmentSetting,
-                                                            Current = videoMetadataDisplayAlignment,
-                                                            Icon = FontAwesome.Solid.List,
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<OverlayColourScheme>
-                                                        {
-                                                            Caption = NekoPlayerStrings.ColourScheme,
-                                                            Current = colourSchemeBindable,
-                                                            Icon = FontAwesome.Solid.Palette,
-                                                            HintText = NekoPlayerStrings.SettingsItem_RestartRequired,
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<UIFont>
-                                                        {
-                                                            Caption = NekoPlayerStrings.UIFont,
-                                                            Current = ui_font,
-                                                            Icon = FontAwesome.Solid.Font,
-                                                            HintText = NekoPlayerStrings.SettingsItem_RestartRequired,
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<ProfileImageShape>
-                                                        {
-                                                            Caption = NekoPlayerStrings.ProfileImageShape,
-                                                            Current = profileImageShape,
-                                                            Icon = FontAwesome.Solid.Shapes,
-                                                        }),
-                                                        new SettingsItemV2(new FormSliderBar<float>
-                                                        {
-                                                            Caption = NekoPlayerStrings.UIScaling,
-                                                            Icon = FontAwesome.Solid.SlidersH,
-                                                            TransferValueOnCommit = true,
-                                                            Current = appConfig.GetBindable<float>(NekoPlayerSetting.UIScale),
-                                                            KeyboardStep = 0.01f,
-                                                            LabelFormat = v => $@"{v:0.##}x",
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.UseSystemCursor,
-                                                            Icon = FontAwesome.Solid.MousePointer,
-                                                            Current = appConfig.GetBindable<bool>(NekoPlayerSetting.UseSystemCursor),
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.PlayOverlaySFX,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                            Current = playOverlaySFX,
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<SFXType>
-                                                        {
-                                                            Caption = NekoPlayerStrings.SFXType,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                            Current = overlaySFXType,
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "Graphics Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.Graphics,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(new FrameSyncDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.FrameLimiter,
-                                                            Icon = FontAwesome.Solid.SlidersH,
-                                                            Current = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync),
-                                                            Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.Control, InputKey.F7 }))
-                                                        }),
-                                                        windowModeDropdownSettings = new SettingsItemV2(windowModeDropdown = new WindowModeDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.ScreenMode,
-                                                            Icon = FontAwesome.Regular.WindowMaximize,
-                                                            Items = window?.SupportedWindowModes,
-                                                            Current = windowMode,
-                                                            Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.F11 }))
-                                                        })
-                                                        {
-                                                            CanBeShown = { Value = window?.SupportedWindowModes.Count() > 1 },
-                                                        },
-                                                        displayDropdownCore = new SettingsItemV2(displayDropdown = new DisplaySettingsDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.Display,
-                                                            Icon = FontAwesome.Regular.WindowMaximize,
-                                                            Items = window?.Displays,
-                                                            Current = currentDisplay,
-                                                        })
-                                                        {
-                                                            CanBeShown = { BindTarget = displayDropdownCanBeShown }
-                                                        },
-                                                        resolutionFullscreenDropdownCore = new SettingsItemV2(resolutionFullscreenDropdown = new ResolutionSettingsDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.ScreenResolution,
-                                                            Icon = FontAwesome.Regular.WindowMaximize,
-                                                            ItemSource = resolutionsFullscreen,
-                                                            Current = sizeFullscreen
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                            CanBeShown = { BindTarget = resolutionFullscreenCanBeShown }
-                                                        },
-                                                        resolutionWindowedDropdownCore = new SettingsItemV2(resolutionWindowedDropdown = new ResolutionSettingsDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.ScreenResolution,
-                                                            Icon = FontAwesome.Regular.WindowMaximize,
-                                                            ItemSource = resolutionsWindowed,
-                                                            Current = windowedResolution
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                            CanBeShown = { BindTarget = resolutionWindowedCanBeShown }
-                                                        },
-                                                        minimiseOnFocusLossCheckboxCore = new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.MinimiseOnFocusLoss,
-                                                            Icon = FontAwesome.Regular.WindowMinimize,
-                                                            Current = config.GetBindable<bool>(FrameworkSetting.MinimiseOnFocusLossInFullscreen),
-                                                        }),
-                                                        new SettingsItemV2(new RendererSettingsDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.Renderer,
-                                                            Icon = FontAwesome.Solid.Bolt,
-                                                            Current = renderer,
-                                                            Items = host.GetPreferredRenderersForCurrentPlatform().Order()
-                                                            #pragma warning disable CS0612 // Type or member is obsolete
-                                                            .Where(t => t != RendererType.Vulkan && t != RendererType.OpenGLLegacy),
-                                                            #pragma warning restore CS0612 // Type or member is obsolete
-                                                            HintText = NekoPlayerStrings.SettingsItem_RestartRequired,
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.ShowFPS,
-                                                            Icon = FontAwesome.Solid.Bolt,
-                                                            Current = fpsDisplay,
-                                                            Hotkey = new Hotkey(GlobalAction.ToggleFPSDisplay),
-                                                        }),
-                                                        safeAreaConsiderationsCanBeShown = new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.ShrinkGameToSafeArea,
-                                                            Icon = FontAwesome.Solid.WindowMaximize,
-                                                            Current = appConfig.GetBindable<bool>(NekoPlayerSetting.SafeAreaConsiderations),
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<ScalingMode>
-                                                        {
-                                                            Caption = NekoPlayerStrings.ScreenScaling,
-                                                            Icon = FontAwesome.Solid.WindowMaximize,
-                                                            Current = appConfig.GetBindable<ScalingMode>(NekoPlayerSetting.Scaling),
-                                                            Hotkey = new Hotkey(GlobalAction.CycleScalingMode),
-                                                        })
-                                                        {
-                                                            Keywords = new[] { "scale", "letterbox" },
-                                                        },
-                                                        scalingSettings = new FillFlowContainer<SettingsItemV2>
-                                                        {
-                                                            Direction = FillDirection.Vertical,
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            Masking = true,
-                                                            Spacing = new Vector2(0, 2),
-                                                            Children = new[]
-                                                            {
-                                                                new SettingsItemV2(new FormSliderBar<float>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.HorizontalPosition,
-                                                                    Current = scalingPositionX,
-                                                                    Icon = FontAwesome.Solid.RulerHorizontal,
-                                                                    KeyboardStep = 0.01f,
-                                                                    DisplayAsPercentage = true,
-                                                                })
-                                                                {
-                                                                    Keywords = new[] { "screen", "scaling" },
-                                                                },
-                                                                new SettingsItemV2(new FormSliderBar<float>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.VerticalPosition,
-                                                                    Current = scalingPositionY,
-                                                                    Icon = FontAwesome.Solid.RulerVertical,
-                                                                    KeyboardStep = 0.01f,
-                                                                    DisplayAsPercentage = true,
-                                                                })
-                                                                {
-                                                                    Keywords = new[] { "screen", "scaling" },
-                                                                },
-                                                                new SettingsItemV2(new FormSliderBar<float>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.HorizontalScale,
-                                                                    Icon = FontAwesome.Solid.RulerHorizontal,
-                                                                    Current = scalingSizeX,
-                                                                    KeyboardStep = 0.01f,
-                                                                    DisplayAsPercentage = true,
-                                                                })
-                                                                {
-                                                                    Keywords = new[] { "screen", "scaling" },
-                                                                },
-                                                                new SettingsItemV2(new FormSliderBar<float>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.VerticalScale,
-                                                                    Icon = FontAwesome.Solid.RulerVertical,
-                                                                    Current = scalingSizeY,
-                                                                    KeyboardStep = 0.01f,
-                                                                    DisplayAsPercentage = true,
-                                                                })
-                                                                {
-                                                                    Keywords = new[] { "screen", "scaling" },
-                                                                },
-                                                                new SettingsItemV2(dimSlider = new FormSliderBar<float>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.ThumbnailDim,
-                                                                    Icon = FontAwesome.Regular.Sun,
-                                                                    Current = scalingBackgroundDim,
-                                                                    KeyboardStep = 0.01f,
-                                                                    DisplayAsPercentage = true,
-                                                                })
-                                                            }
-                                                        },
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "Screenshot Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.Screenshot,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(new FormEnumDropdown<Config.ScreenshotFormat>
-                                                        {
-                                                            Caption = NekoPlayerStrings.ScreenshotFormat,
-                                                            Icon = FontAwesome.Solid.WindowMaximize,
-                                                            Current = appConfig.GetBindable<ScreenshotFormat>(NekoPlayerSetting.ScreenshotFormat)
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.ShowCursorInScreenshots,
-                                                            Icon = FontAwesome.Solid.MousePointer,
-                                                            Current = appConfig.GetBindable<bool>(NekoPlayerSetting.ScreenshotCaptureMenuCursor)
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "Video Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.Video,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(new FormEnumDropdown<AspectRatioMethod>
-                                                        {
-                                                            Caption = NekoPlayerStrings.AspectRatioMethod,
-                                                            Icon = FontAwesome.Solid.WindowMaximize,
-                                                            Current = aspectRatioMethod,
-                                                            Hotkey = new Hotkey(GlobalAction.CycleAspectRatio),
-                                                        }),
-                                                        new SettingsItemV2(new FormSliderBar<double>
-                                                        {
-                                                            Caption = NekoPlayerStrings.VideoDimLevel,
-                                                            Icon = FontAwesome.Regular.Sun,
-                                                            Current = appConfig.GetBindable<double>(NekoPlayerSetting.VideoDimLevel),
-                                                            DisplayAsPercentage = true,
-                                                        }),
-                                                        new SettingsItemV2(hwAccelCheckbox = new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.UseHardwareAcceleration,
-                                                            Icon = FontAwesome.Solid.Bolt,
-                                                        })
-                                                        {
-                                                            Note = { BindTarget = hwAccelNote },
-                                                        },
-                                                        new SettingsItemV2(videoQualitySettings = new YouTubeQualityDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.VideoQuality,
-                                                            Icon = FontAwesome.Solid.Video,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                        },
-                                                        new SettingsItemV2(audioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
-                                                        {
-                                                            Caption = NekoPlayerStrings.AudioQuality,
-                                                            Icon = FontAwesome.Solid.FileAudio,
-                                                            Current = audioQuality,
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.AlwaysUseOriginalAudio,
-                                                            Icon = FontAwesome.Solid.FileAudio,
-                                                            Current = alwaysUseOriginalAudio,
-                                                        }),
-                                                        audioLanguageItem = new SettingsItemV2(new FormEnumDropdown<Localisation.Language>
-                                                        {
-                                                            Caption = NekoPlayerStrings.AudioLanguage,
-                                                            Icon = FontAwesome.Solid.Language,
-                                                            Current = audioLanguage,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                        },
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,
-                                                            Icon = FontAwesome.Solid.Font,
-                                                            Current = showVideoMetadataOnWindowTitle,
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "VFX Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.VisualEffects,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(new FormSliderBar<float>
-                                                        {
-                                                            Caption = NekoPlayerStrings.VideoBloomLevel,
-                                                            Icon = FontAwesome.Solid.Sun,
-                                                            Current = appConfig.GetBindable<float>(NekoPlayerSetting.VideoBloomLevel),
-                                                            DisplayAsPercentage = true,
-                                                        }),
-                                                        new SettingsItemV2(new FormSliderBar<float>
-                                                        {
-                                                            Caption = NekoPlayerStrings.ChromaticAberration,
-                                                            Icon = FontAwesome.Solid.Sun,
-                                                            Current = appConfig.GetBindable<float>(NekoPlayerSetting.ChromaticAberrationStrength),
-                                                            DisplayAsPercentage = true,
-                                                        }),
-                                                        new SettingsItemV2(new FormSliderBar<float>
-                                                        {
-                                                            Caption = NekoPlayerStrings.VideoGrayscaleLevel,
-                                                            Icon = FontAwesome.Solid.Sun,
-                                                            Current = appConfig.GetBindable<float>(NekoPlayerSetting.VideoGrayscaleLevel),
-                                                            DisplayAsPercentage = true,
-                                                        }),
-                                                        new SettingsItemV2(new FormSliderBar<float>
-                                                        {
-                                                            Caption = NekoPlayerStrings.VideoHueShift,
-                                                            Icon = FontAwesome.Solid.Sun,
-                                                            Current = appConfig.GetBindable<float>(NekoPlayerSetting.VideoHueShift),
-                                                            KeyboardStep = 1,
-                                                            LabelFormat = value => $"{value:N0}°"
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "CC Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.ClosedCaptions,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new ClosedCaptionPreview
-                                                        {
-                                                            Padding = new MarginPadding { Horizontal = 30 },
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Height = 150,
-                                                        },
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.ClosedCaptions,
-                                                            Icon = FontAwesome.Solid.ClosedCaptioning,
-                                                            Current = captionEnabled,
-                                                            Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
-                                                        }),
-                                                        captionLangOptions = new SettingsItemV2(captionLangDropdown = new YouTubeI18nLangDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.CaptionLanguage,
-                                                            Icon = FontAwesome.Solid.Language,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                        },
-                                                        new SettingsItemV2(new FormEnumFontDropdown<CaptionFonts>
-                                                        {
-                                                            Caption = NekoPlayerStrings.CaptionFont,
-                                                            Current = caption_font,
-                                                            Icon = FontAwesome.Solid.Font,
-                                                        }),
-                                                        new SettingsItemV2(new FormSliderBar<float>
-                                                        {
-                                                            Caption = NekoPlayerStrings.CaptionBGOpacity,
-                                                            Icon = FontAwesome.Solid.Sun,
-                                                            Current = captionBGOpacity,
-                                                            DisplayAsPercentage = true,
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "Audio Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.Audio,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(audioDeviceDropdown = new AudioDeviceDropdown
-                                                        {
-                                                            Caption = NekoPlayerStrings.OutputDevice,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                        })
-                                                        {
-                                                            Note = { BindTarget = alsaExclusiveDeviceNote },
-                                                        },
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.AdjustPitchOnSpeedChange,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                            Current = adjustPitch,
-                                                            Hotkey = new Hotkey(GlobalAction.ToggleAdjustPitchOnSpeedChange),
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.Volume,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        systemMuteSwitchBase = new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.SystemMute,
-                                                            Icon = FontAwesome.Solid.VolumeMute,
-                                                            HintText = NekoPlayerStrings.SystemMuteDesc,
-                                                            Current = systemSoundMute,
-                                                        }),
-                                                        volumeOptions = new FillFlowContainer
-                                                        {
-                                                            Direction = FillDirection.Vertical,
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            Masking = true,
-                                                            Spacing = new Vector2(0, 2),
-                                                            Children = new Drawable[]
-                                                            {
-                                                                /*
-                                                                new SettingsItemV2(new FormVolumeSliderBar<double>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.MasterVolume,
-                                                                    Icon = FontAwesome.Solid.VolumeUp,
-                                                                    Current = config.GetBindable<double>(FrameworkSetting.VolumeUniversal),
-                                                                    DisplayAsPercentage = true,
-                                                                }),
-                                                                */
-                                                                new SettingsItemV2(new FormSliderBar<double>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.VideoVolume,
-                                                                    Icon = FontAwesome.Solid.VolumeUp,
-                                                                    Current = videoVolume,
-                                                                    DisplayAsPercentage = true,
-                                                                }),
-                                                                new SettingsItemV2(new FormSliderBar<double>
-                                                                {
-                                                                    Caption = NekoPlayerStrings.SFXVolume,
-                                                                    Icon = FontAwesome.Solid.VolumeUp,
-                                                                    Current = config.GetBindable<double>(FrameworkSetting.VolumeEffect),
-                                                                    DisplayAsPercentage = true,
-                                                                }),
-                                                            }
-                                                        },
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.AudioNormalization,
-                                                            Icon = FontAwesome.Solid.VolumeUp,
-                                                            Current = appConfig.GetBindable<bool>(NekoPlayerSetting.AudioNormalization)
-                                                        }),
-                                                        new AdaptiveSpriteText
-                                                        {
-                                                            Name = "Debug Settings",
-                                                            Font = NekoPlayerApp.DefaultFont.With(size: 30),
-                                                            Text = NekoPlayerStrings.Debug,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.ShowLogOverlay,
-                                                            Icon = FontAwesome.Solid.Bug,
-                                                            Current = config.GetBindable<bool>(FrameworkSetting.ShowLogOverlay),
-                                                            Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.Control, InputKey.F10 }))
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.BypassFTBRenderPass,
-                                                            Icon = FontAwesome.Solid.Bug,
-                                                            Current = debugConfig.GetBindable<bool>(DebugSetting.BypassFrontToBackPass)
-                                                        }),
-                                                        new SettingsItemV2(latencyModeDropdown = new FormEnumDropdown<GCLatencyMode>
-                                                        {
-                                                            Caption = NekoPlayerStrings.GC_Mode,
-                                                            Icon = FontAwesome.Solid.Bug,
-                                                        }),
-                                                        new SettingsButtonV2
-                                                        {
-                                                            Text = NekoPlayerStrings.ClearAllCaches,
-                                                            Padding = new MarginPadding { Horizontal = 30 },
-                                                            Action = () =>
-                                                            {
-                                                                host.Collect();
-
-                                                                // host.Collect() uses GCCollectionMode.Optimized, but we should be as aggressive as possible here.
-                                                                GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive, true, true);
-                                                            }
-                                                        },
-                                                        new Container
-                                                        {
-                                                            Name = "App Info",
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            Margin = new MarginPadding { Top = 12 },
-                                                            Child = new Container
-                                                            {
-                                                                AutoSizeAxes = Axes.Both,
-                                                                Anchor = Anchor.Centre,
-                                                                Origin = Anchor.Centre,
-                                                                Child = new Sprite
-                                                                {
-                                                                    Width = 100,
-                                                                    Height = 100,
-                                                                    Texture = textures.Get(@"NekoPlayer_LiquidGlass_Remake"),
-                                                                    FillMode = FillMode.Fit,
-                                                                }
-                                                            },
-                                                        },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"))
-                                                        {
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            Text = "NekoPlayer",
-                                                            TextAnchor = Anchor.Centre,
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                        gameVersion = new LinkFlowContainer(f =>
-                                                        {
-                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 15);
-                                                            f.Colour = overlayColourProvider.Content2;
-                                                        })
-                                                        {
-                                                            Margin = new MarginPadding { Top = 4 },
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            TextAnchor = Anchor.Centre,
-                                                        },
-                                                        madeByText = new LinkFlowContainer(f =>
-                                                        {
-                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 15);
-                                                            f.Colour = overlayColourProvider.Content2;
-                                                        })
-                                                        {
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            TextAnchor = Anchor.Centre,
-                                                        },
-                                                        dislikeCounterCredits = new LinkFlowContainer(f =>
-                                                        {
-                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 15);
-                                                            f.Colour = overlayColourProvider.Content2;
-                                                        })
-                                                        {
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
-                                                            TextAnchor = Anchor.Centre,
-                                                        },
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                new Box
-                                {
-                                    Name = "masking of overlay",
-                                    RelativeSizeAxes = Axes.X,
-                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
-                                    Height = 76,
-                                },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopCentre,
-                                    Anchor = Anchor.TopCentre,
-                                    Text = NekoPlayerStrings.Settings,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
-                                settingsTabBar = new NekoPlayerSettingsTabBar
-                                {
-                                    Origin = Anchor.CentreLeft,
-                                    Anchor = Anchor.CentreLeft,
-                                    Margin = new MarginPadding(16),
+                                    Task.Run(() => googleOAuth2.SignIn());
                                 }
-                            }
+                                else
+                                {
+                                    hideOverlays();
+                                    showOverlayContainer(myChannelDialog);
+                                }
+                           },
+                           CheckUpdateAction = () =>
+                           {
+                                if (game.UpdateManager is NoActionUpdateManager)
+                                {
+                                    host.OpenUrlExternally(@"https://github.com/BoomboxRapsody/YouTubePlayerEX/releases");
+                                }
+                                else
+                                {
+                                    if (game.RestartRequired.Value != true)
+                                        checkForUpdates().FireAndForget();
+                                    else
+                                        game.RestartAction.Invoke();
+                                }
+                           }
                         },
                         videoDescriptionContainer = new BottomOverlayContainer
                         {
@@ -3975,199 +3151,6 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        downloadReadyContainer = new BottomOverlayContainer
-                        {
-                            Size = new Vector2(0.7f),
-                            RelativeSizeAxes = Axes.Both,
-                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS, 0),
-                            Masking = true,
-                            Origin = Anchor.BottomCentre,
-                            Anchor = Anchor.BottomCentre,
-                            Children = new Drawable[]
-                            {
-                                new Box
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
-                                },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopCentre,
-                                    Anchor = Anchor.TopCentre,
-                                    Text = NekoPlayerStrings.DownloadVideo,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
-                                new Container
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 16,
-                                        Bottom = 16,
-                                        Top = 56,
-                                    },
-                                    Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            ScrollbarVisible = false,
-                                            Children = new Drawable[]
-                                            {
-                                                new FillFlowContainer {
-                                                    RelativeSizeAxes = Axes.X,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Spacing = new Vector2(0, 4),
-                                                    Direction = FillDirection.Vertical,
-                                                    Children = new Drawable[] {
-                                                        videoMetadataDisplayDetails2 = new VideoMetadataDisplay
-                                                        {
-                                                            RelativeSizeAxes = Axes.X,
-                                                            Height = 60,
-                                                            Origin = Anchor.TopLeft,
-                                                            Anchor = Anchor.TopLeft,
-                                                            AlwaysPresent = true,
-                                                        },
-                                                        new SettingsItemV2(new FormEnumDropdown<Config.VideoQuality>
-                                                        {
-                                                            Caption = NekoPlayerStrings.VideoQuality,
-                                                            Current = videoQuality,
-                                                        }),
-                                                        new SettingsItemV2(new FormEnumDropdown<Config.AudioQuality>
-                                                        {
-                                                            Caption = NekoPlayerStrings.AudioQuality,
-                                                            Current = audioQuality,
-                                                        }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.AlwaysUseOriginalAudio,
-                                                            Current = alwaysUseOriginalAudio,
-                                                        }),
-                                                        audioLanguageItem2 = new SettingsItemV2(new FormEnumDropdown<Localisation.Language>
-                                                        {
-                                                            Caption = NekoPlayerStrings.AudioLanguage,
-                                                            Current = audioLanguage,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                        },
-                                                    },
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                                downloadBtn = new AdaptiveButton
-                                {
-                                    Enabled = { Value = true },
-                                    Origin = Anchor.BottomRight,
-                                    Anchor = Anchor.BottomRight,
-                                    Text = NekoPlayerStrings.Download,
-                                    Size = new Vector2(200, 60),
-                                    Margin = new MarginPadding(8),
-                                    Action = () =>
-                                    {
-                                        DownloadVideo(videoUrl);
-                                    }
-                                },
-                            }
-                        },
-                        downloadOverlay = new OverlayContainer
-                        {
-                            Width = 400,
-                            Height = 200,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
-                            Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
-                            Children = new Drawable[]
-                            {
-                                new Box
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
-                                },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    Text = NekoPlayerStrings.DownloadVideo,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
-                                downloadingText = new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.Centre,
-                                    Anchor = Anchor.Centre,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont,
-                                    Colour = overlayColourProvider.Content2,
-                                }
-                            }
-                        },
-                        downloadCompletedOverlay = new OverlayContainer
-                        {
-                            Width = 400,
-                            Height = 200,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
-                            Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
-                            Children = new Drawable[]
-                            {
-                                new Box
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
-                                },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    Text = NekoPlayerStrings.DownloadVideo,
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
-                                new AdaptiveButton
-                                {
-                                    Enabled = { Value = true },
-                                    Origin = Anchor.BottomRight,
-                                    Anchor = Anchor.BottomRight,
-                                    Text = NekoPlayerStrings.Cancel,
-                                    Size = new Vector2(200, 60),
-                                    Margin = new MarginPadding(8),
-                                    Action = () =>
-                                    {
-                                        hideOverlayContainer(downloadCompletedOverlay);
-                                    }
-                                },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.Centre,
-                                    Anchor = Anchor.Centre,
-                                    Text = NekoPlayerStrings.DownloadCompleted,
-                                    Font = NekoPlayerApp.DefaultFont,
-                                    Colour = overlayColourProvider.Content2,
-                                }
-                            }
-                        },
                     }
                 }
             };
@@ -4194,9 +3177,6 @@ namespace NekoPlayer.App.Screens
             RegisterOverlayContainer(myPlaylistsOverlay);
             RegisterOverlayContainer(exitOptions);
             RegisterOverlayContainer(editPlaylistOverlay);
-            RegisterOverlayContainer(downloadReadyContainer);
-            RegisterOverlayContainer(downloadOverlay);
-            RegisterOverlayContainer(downloadCompletedOverlay);
 
             ReleaseStream.BindValueChanged(async _ => await checkForUpdates());
 
@@ -4207,30 +3187,10 @@ namespace NekoPlayer.App.Screens
                 showOverlayContainer(menuOverlay);
             };
 
-            madeByText.AddText("made by ");
-            madeByText.AddLink("Mayo_0x0 (BoomboxRapsody)", "https://github.com/BoomboxRapsody/", NekoPlayerStrings.ViewGitHubProfile);
-
             videoMetadataDisplayAlignment.BindValueChanged(v =>
             {
                 SetVideoMetadataDisplayAlignment(v.NewValue);
             }, true);
-
-            latencyModeDropdown.Current.BindValueChanged(mode =>
-            {
-                Logger.Log($"Changing latency mode: {mode.NewValue}");
-
-                switch (mode.NewValue)
-                {
-                    case GCLatencyMode.Default:
-                        // https://github.com/ppy/osu-framework/blob/1d5301018dfed1a28702be56e1d53c4835b199f2/osu.Framework/Platform/GameHost.cs#L703
-                        GCSettings.LatencyMode = System.Runtime.GCLatencyMode.SustainedLowLatency;
-                        break;
-
-                    case GCLatencyMode.Interactive:
-                        GCSettings.LatencyMode = System.Runtime.GCLatencyMode.Interactive;
-                        break;
-                }
-            });
 
             signedIn.BindValueChanged(loginBool =>
             {
@@ -4260,7 +3220,8 @@ namespace NekoPlayer.App.Screens
                     Schedule(() => newPlaylistOpenButton.Enabled.Value = true);
                     Channel wth = api.GetMineChannel();
 
-                    login.Text = NekoPlayerStrings.SignedIn(api.GetLocalizedChannelTitle(wth, true));
+                    //login.Text = NekoPlayerStrings.SignedIn(api.GetLocalizedChannelTitle(wth, true));
+                    settingsContainer.UpdateLoginStateText(NekoPlayerStrings.SignedIn(api.GetLocalizedChannelTitle(wth, true)));
 
                     youtubeChannelMetadataDisplay2.UpdateUser(wth);
 
@@ -4281,7 +3242,7 @@ namespace NekoPlayer.App.Screens
                         commentTextBox.RefreshChannelProfile(api.GetMineChannel());
                     }
 
-                    Schedule(() => login.UpdateLoginState());
+                    Schedule(() => settingsContainer.UpdateLoginState());
                 }
                 else
                 {
@@ -4289,7 +3250,7 @@ namespace NekoPlayer.App.Screens
                         Task.Run(async () => updateVideoMetadata(videoId));
 
                     Schedule(() => commentSendButton.Enabled.Value = false);
-                    login.Text = NekoPlayerStrings.SignedOut;
+                    settingsContainer.UpdateLoginStateText(NekoPlayerStrings.SignedOut);
                     Schedule(() => saveVideoOpenButton.Enabled.Value = false);
                     Schedule(() => reportOpenButton.Enabled.Value = false);
                     Schedule(() => newPlaylistOpenButton.Enabled.Value = false);
@@ -4303,7 +3264,7 @@ namespace NekoPlayer.App.Screens
                     }
 
                     commentTextBox.PlaceholderText = NekoPlayerStrings.LoginToComment;
-                    Schedule(() => login.UpdateLoginState());
+                    Schedule(() => settingsContainer.UpdateLoginState());
                 }
             }, true);
             /*
@@ -4356,29 +3317,12 @@ namespace NekoPlayer.App.Screens
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = overlayColourProvider.Background3;
 
-            hwAccelCheckbox.Current.Default = hardwareVideoDecoder.Default != HardwareVideoDecoder.None;
-            hwAccelCheckbox.Current.Value = hardwareVideoDecoder.Value != HardwareVideoDecoder.None;
-
-            hwAccelCheckbox.Current.BindValueChanged(val =>
-            {
-                hwAccelNote.Value = val.NewValue ? new SettingsNote.Data(NekoPlayerStrings.HardwareAccelerationEnabledNote, SettingsNote.Type.Informational) : null;
-                hardwareVideoDecoder.Value = val.NewValue ? HardwareVideoDecoder.Any : HardwareVideoDecoder.None;
-            }, true);
-
             oauth_note.Value = new SettingsNote.Data(NekoPlayerStrings.OAuthNote, SettingsNote.Type.Informational);
 
             playlistName.Text = NekoPlayerStrings.PlaylistNotLoaded;
             playlistAuthor.Text = NekoPlayerStrings.PlaylistNotLoadedDesc;
 
-            audio.OnNewDevice += onAudioDeviceChanged;
-            audio.OnLostDevice += onAudioDeviceChanged;
-            audioDeviceDropdown.Current = audio.AudioDevice;
-
-            audioDeviceDropdown.Current.ValueChanged += d => onDeviceSelected(d.NewValue);
-
-            onAudioDeviceChanged(string.Empty);
-
-            videoQualitySettings.Current.BindValueChanged(quality =>
+            settingsContainer.VideoQualitySettings.Current.BindValueChanged(quality =>
             {
                 if (currentVideoSource != null && isVideoLoading == false)
                 {
@@ -4428,26 +3372,10 @@ namespace NekoPlayer.App.Screens
                 captionButton.SetEnabledValue2(!enabled.NewValue);
                 captionButton.IconObject.FadeColour(enabled.NewValue ? bgColor : accentColor, 250, Easing.OutQuint);
                 captionButton.Icon = enabled.NewValue ? FontAwesome.Solid.ClosedCaptioning : FontAwesome.Regular.ClosedCaptioning;
-
-                if (enabled.NewValue)
-                    captionLangOptions.Show();
-                else
-                    captionLangOptions.Hide();
             }, true);
 
             alwaysUseOriginalAudio.BindValueChanged(enabled =>
             {
-                if (enabled.NewValue)
-                {
-                    audioLanguageItem.Hide();
-                    audioLanguageItem2.Hide();
-                }
-                else
-                {
-                    audioLanguageItem.Show();
-                    audioLanguageItem2.Show();
-                }
-
                 if (currentVideoSource != null && isVideoLoading == false)
                 {
                     Task.Run(async () =>
@@ -4465,10 +3393,6 @@ namespace NekoPlayer.App.Screens
                 currentVideoSource?.UpdatePreservePitch(value.NewValue);
             });
 
-            dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_1);
-            dislikeCounterCredits.AddLink("Return YouTube Dislike API", "https://returnyoutubedislike.com/");
-            dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_2);
-
             audioLanguage.BindValueChanged(_ =>
             {
                 if (currentVideoSource != null && isVideoLoading == false)
@@ -4483,7 +3407,7 @@ namespace NekoPlayer.App.Screens
                 }
             });
 
-            captionLangDropdown.Current.BindValueChanged(lang =>
+            settingsContainer.CaptionLangDropdown.Current.BindValueChanged(lang =>
             {
                 if (currentVideoSource != null)
                 {
@@ -4531,16 +3455,16 @@ namespace NekoPlayer.App.Screens
 
                             string preferedLang = string.Empty;
 
-                            if (captionLangDropdown.Current.Value != null)
+                            if (settingsContainer.CaptionLangDropdown.Current.Value != null)
                             {
-                                preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                                preferedLang = settingsContainer.CaptionLangDropdown.Current.Value.Hl.ToString();
                             }
                             else
                             {
                                 preferedLang = CultureInfo.CurrentCulture.Name;
                             }
 
-                            captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+                            settingsContainer.CaptionLangDropdown.Current.Value = settingsContainer.CaptionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
 
                             var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
@@ -4552,7 +3476,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     try
                                     {
-                                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
+                                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, settingsContainer.CaptionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                         onScreenDisplay.Display(toast);
                                     }
                                     catch (Exception e)
@@ -4589,17 +3513,6 @@ namespace NekoPlayer.App.Screens
                 }
             }, true);
 
-            PrepareSettingsTabs();
-
-            if (window?.SupportedWindowModes.Count() > 1)
-            {
-                windowModeDropdownSettings.Show();
-            }
-            else
-            {
-                windowModeDropdownSettings.Hide();
-            }
-
             playbackSpeed.BindValueChanged(speed =>
             {
                 this.TransformBindableTo(speedTextRolling, speed.NewValue, 400, Easing.OutQuint);
@@ -4617,16 +3530,6 @@ namespace NekoPlayer.App.Screens
                 volumeText.Text = $"{intValue}%";
             }, true);
 
-            scalingMode.BindValueChanged(_ =>
-            {
-                scalingSettings.ClearTransforms();
-                scalingSettings.AutoSizeDuration = 400;
-                scalingSettings.AutoSizeEasing = Easing.OutQuint;
-
-                updateScalingModeVisibility();
-            });
-            updateScalingModeVisibility();
-
             reverbEnabled.BindValueChanged(_ =>
             {
                 reverbSettings.ClearTransforms();
@@ -4635,16 +3538,6 @@ namespace NekoPlayer.App.Screens
 
                 updateAudioEffectsVisibility();
             });
-
-            systemSoundMute.BindValueChanged(_ =>
-            {
-                volumeOptions.ClearTransforms();
-                volumeOptions.AutoSizeDuration = 400;
-                volumeOptions.AutoSizeEasing = Easing.OutQuint;
-
-                updateVolumeSettingsVisibility();
-            });
-            updateVolumeSettingsVisibility();
 
             rotateEnabled.BindValueChanged(_ =>
             {
@@ -4706,101 +3599,6 @@ namespace NekoPlayer.App.Screens
                 });
             }, true);
 
-            if (game.IsDeployedBuild)
-            {
-                gameVersion.AddLink(game.Version + $" ({NekoPlayerApp.KnownCodename})", $"https://github.com/BoomboxRapsody/NekoPlayer/releases/{game.Version}", tooltipText: NekoPlayerStrings.ViewChangelog(game.Version));
-            }
-            else
-            {
-                gameVersion.AddText(game.Version);
-            }
-
-            updateInfomationText.BindValueChanged(text =>
-            {
-                Schedule(() => checkForUpdatesButton.Text = text.NewValue);
-            });
-
-            updateButtonEnabled.BindValueChanged(enabled =>
-            {
-                Schedule(() => checkForUpdatesButton.Enabled.Value = enabled.NewValue);
-            });
-
-            #region System Volume
-            if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
-            {
-                MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
-                MMDevice defaultPlaybackDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-
-                if (defaultPlaybackDevice == null)
-                {
-                    systemSoundMute.Value = true;
-                    systemSoundMute.Disabled = true;
-                }
-                else
-                {
-                    systemVolume.Value = defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
-
-                    systemVolume.BindValueChanged(value =>
-                    {
-                        defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar = Convert.ToSingle(value.NewValue);
-                    });
-
-                    systemSoundMute.Value = defaultPlaybackDevice.AudioEndpointVolume.Mute;
-
-                    systemSoundMute.BindValueChanged(value =>
-                    {
-                        defaultPlaybackDevice.AudioEndpointVolume.Mute = value.NewValue;
-                    });
-                }
-            }
-            else
-            {
-                systemMuteSwitchBase.Hide();
-            }
-            #endregion
-
-            renderer.BindValueChanged(r =>
-            {
-                if (r.NewValue == host.ResolvedRenderer)
-                    return;
-
-                // Need to check startup renderer for the "automatic" case, as ResolvedRenderer above will track the final resolved renderer instead.
-                if (r.NewValue == RendererType.Automatic && automaticRendererInUse)
-                    return;
-
-                if (game?.RestartAppWhenExited() == true)
-                {
-                    game.AttemptExit();
-                }
-            });
-
-            void updateScalingModeVisibility()
-            {
-                try
-                {
-                    if (scalingMode.Value == ScalingMode.Off)
-                        scalingSettings.ResizeHeightTo(0, 400, Easing.OutQuint);
-
-                    scalingSettings.AutoSizeAxes = scalingMode.Value != ScalingMode.Off ? Axes.Y : Axes.None;
-
-                    foreach (SettingsItemV2 item in scalingSettings)
-                    {
-                        FormSliderBar<float> slider = (FormSliderBar<float>)item.Control;
-
-                        if (slider == dimSlider)
-                            item.CanBeShown.Value = scalingMode.Value == ScalingMode.Everything || scalingMode.Value == ScalingMode.Video;
-                        else
-                        {
-                            slider.TransferValueOnCommit = scalingMode.Value == ScalingMode.Everything;
-                            item.CanBeShown.Value = scalingMode.Value != ScalingMode.Off;
-                        }
-                    }
-                }
-                catch
-                {
-                }
-            }
-
             void updateAudioEffectsVisibility()
             {
                 try
@@ -4839,293 +3637,7 @@ namespace NekoPlayer.App.Screens
                 {
                 }
             }
-
-            void updateVolumeSettingsVisibility()
-            {
-                try
-                {
-                    //reverb
-                    if (systemSoundMute.Value == true)
-                        volumeOptions.ResizeHeightTo(0, 400, Easing.OutQuint);
-
-                    volumeOptions.AutoSizeAxes = systemSoundMute.Value != true ? Axes.Y : Axes.None;
-                }
-                catch
-                {
-                }
-            }
         }
-
-        private void DownloadVideo(string videoUrl)
-        {
-            hideOverlays();
-            showOverlayContainer(downloadOverlay);
-
-            Task.Run(async () =>
-            {
-                isDownloading = true;
-                Schedule(() => videoQuality.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = true);
-
-                IProgress<double> audioDownloadProgress = new Progress<double>((percent) => Schedule(() => downloadingText.Text = NekoPlayerStrings.DownloadingAudioStream($"{(percent * 100):N0}%")));
-                IProgress<double> videoDownloadProgress = new Progress<double>((percent) => Schedule(() => downloadingText.Text = NekoPlayerStrings.DownloadingVideoStream($"{(percent * 100):N0}%")));
-
-                Directory.CreateDirectory(app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}"));
-
-                var streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoUrl);
-
-                IAudioStreamInfo audioStreamInfo;
-
-                try
-                {
-                    if (audioQuality.Value == Config.AudioQuality.PreferHighQuality)
-                    {
-                        if (alwaysUseOriginalAudio.Value == true)
-                        {
-                            Logger.Log($"Preferred audio language is: {videoData.Snippet.DefaultLanguage}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else
-                        {
-                            Logger.Log($"Preferred audio language is: {appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
-                                .TryGetWithHighestBitrate();
-                        }
-                    }
-                    else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
-                    {
-                        if (alwaysUseOriginalAudio.Value == true)
-                        {
-                            Logger.Log($"Preferred audio language is: {videoData.Snippet.DefaultLanguage}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .Where(s => s.AudioCodec.Contains("mp4a"))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else
-                        {
-                            Logger.Log($"Preferred audio language is: {appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
-                                .Where(s => s.AudioCodec.Contains("mp4a"))
-                                .TryGetWithHighestBitrate();
-                        }
-                    }
-                    else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
-                    {
-                        if (alwaysUseOriginalAudio.Value == true)
-                        {
-                            Logger.Log($"Preferred audio language is: {videoData.Snippet.DefaultLanguage}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .Where(s => s.AudioCodec.Contains("opus"))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else
-                        {
-                            Logger.Log($"Preferred audio language is: {appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
-                                .Where(s => s.AudioCodec.Contains("opus"))
-                                .TryGetWithHighestBitrate();
-                        }
-                    }
-                    else
-                    {
-                        if (alwaysUseOriginalAudio.Value == true)
-                        {
-                            Logger.Log($"Preferred audio language is: {videoData.Snippet.DefaultLanguage}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .First();
-                        }
-                        else
-                        {
-                            Logger.Log($"Preferred audio language is: {appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()}");
-                            // Select best audio stream (highest bitrate)
-                            audioStreamInfo = streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
-                                .First();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    try
-                    {
-                        /*
-                        // Select best audio stream (highest bitrate)
-                        audioStreamInfo = streamManifest
-                            .GetAudioOnlyStreams()
-                            .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                            .TryGetWithHighestBitrate();
-                        */
-
-                        if (audioQuality.Value == Config.AudioQuality.PreferHighQuality)
-                        {
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
-                        {
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .Where(s => s.AudioCodec.Contains("mp4a"))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
-                        {
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .Where(s => s.AudioCodec.Contains("opus"))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else
-                        {
-                            audioStreamInfo = streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
-                                .First();
-                        }
-
-                        Logger.Error(e, e.GetDescription());
-                        Logger.Log($"Prefer default audio language: {videoData.Snippet.DefaultLanguage}");
-                    }
-                    catch
-                    {
-                        Logger.Log($"Prefer default audio language failed.\nFalling back to default audio language.");
-                        // Select best audio stream (highest bitrate)
-                        /*
-                        audioStreamInfo = streamManifest
-                            .GetAudioOnlyStreams()
-                            .TryGetWithHighestBitrate();
-                        */
-
-                        if (audioQuality.Value == Config.AudioQuality.PreferHighQuality)
-                        {
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .TryGetWithHighestBitrate();
-                        }
-                        else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
-                        {
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioCodec.Contains("mp4a"))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
-                        {
-                            audioStreamInfo = (IAudioStreamInfo)streamManifest
-                                .GetAudioOnlyStreams()
-                                .Where(s => s.AudioCodec.Contains("opus"))
-                                .TryGetWithHighestBitrate();
-                        }
-                        else
-                        {
-                            audioStreamInfo = streamManifest
-                                .GetAudioOnlyStreams()
-                                .First();
-                        }
-                    }
-                }
-
-                IVideoStreamInfo videoStreamInfo;
-
-                if (videoQuality.Value == Config.VideoQuality.PreferHighQuality)
-                {
-                    try
-                    {
-                        // Select best video stream (1080p60 in this example)
-                        videoStreamInfo = streamManifest
-                            .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                            .TryGetWithHighestVideoQuality();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e, e.GetDescription());
-                        // Select best video stream (1080p60 in this example)
-                        videoStreamInfo = streamManifest
-                            .GetVideoOnlyStreams()
-                            .TryGetWithHighestVideoQuality();
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        // Select best video stream (1080p60 in this example)
-                        videoStreamInfo = streamManifest
-                            .GetVideoOnlyStreams()
-                            .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                            .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
-                            .TryGetWithHighestVideoQuality();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e, e.GetDescription());
-                        // Select best video stream (1080p60 in this example)
-                        videoStreamInfo = streamManifest
-                            .GetVideoOnlyStreams()
-                            .Where(s => s.VideoQuality.Label.Contains(app.ParseVideoQuality()))
-                            .TryGetWithHighestVideoQuality();
-                    }
-                }
-
-                await app.YouTubeClient.Videos.DownloadAsync([audioStreamInfo], new ConversionRequestBuilder(app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\audio.ogg").SetFFmpegPath(app.GetFFmpegPath()).Build(), audioDownloadProgress);
-                await app.YouTubeClient.Videos.DownloadAsync([videoStreamInfo], new ConversionRequestBuilder(app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\video.webm").SetFFmpegPath(app.GetFFmpegPath()).Build(), videoDownloadProgress);
-
-                Schedule(() => downloadingText.Text = NekoPlayerStrings.MergingStreams);
-
-                Utils.FFmpeg ffmpeg = new Utils.FFmpeg(app.GetFFmpegPath(), new Dictionary<string, string?>(StringComparer.Ordinal));
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos) + "\\NekoPlayer\\Downloads\\";
-
-                Directory.CreateDirectory(path);
-
-                await ffmpeg.ExecuteAsync($"-i \"{app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\video.webm"}\" -i \"{app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\audio.ogg"}\" -c:v libx264 -c:a aac \"{app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\muxed.mp4"}\" -y", new Progress<double>((percent) => { }));
-
-                File.Delete(app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\video.webm");
-                File.Delete(app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\audio.ogg");
-
-                await ffmpeg.ExecuteAsync($"-i \"{app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\muxed.mp4"}\" -c copy -metadata title=\"{videoData.Snippet.Title}\" -metadata artist=\"{videoData.Snippet.ChannelTitle}\" -metadata comment=\"Downloaded via NekoPlayer\" \"{path + $"{this.videoId}.mp4"}\" -y", new Progress<double>((percent) => { }));
-
-                File.Delete(app.Host.CacheStorage.GetStorageForDirectory("downloadCache").GetFullPath($"{this.videoId}") + @"\muxed.mp4");
-
-                Schedule(() =>
-                {
-                    isDownloading = false;
-
-                    Schedule(() => videoQuality.Disabled = audioLanguage.Disabled = audioQuality.Disabled = alwaysUseOriginalAudio.Disabled = false);
-
-                    hideOverlayContainer(downloadOverlay);
-                    showOverlayContainer(downloadCompletedOverlay);
-                });
-            });
-        }
-
-        private AdaptiveSpriteText downloadingText;
 
         private void fetchMyPlaylists()
         {
@@ -5329,7 +3841,7 @@ namespace NekoPlayer.App.Screens
 
             game.UpdateManagerVersionText.Value = NekoPlayerStrings.CheckingUpdate;
 
-            checkForUpdatesButton.Enabled.Value = false;
+            settingsContainer.CheckForUpdatesButton.Enabled.Value = false;
 
             try
             {
@@ -5349,13 +3861,13 @@ namespace NekoPlayer.App.Screens
                     }
 
                     game.UpdateManagerVersionText.Value = game.Version;
-                    checkForUpdatesButton.Enabled.Value = true;
+                    settingsContainer.CheckForUpdatesButton.Enabled.Value = true;
                 }
             }
             catch
             {
                 game.UpdateManagerVersionText.Value = game.Version;
-                checkForUpdatesButton.Enabled.Value = true;
+                settingsContainer.CheckForUpdatesButton.Enabled.Value = true;
             }
             finally
             {
@@ -5363,10 +3875,6 @@ namespace NekoPlayer.App.Screens
         }
 
         public override bool CursorVisible => (isControlVisible || isAnyOverlayOpen.Value);
-
-        private SettingsItemV2 resolutionFullscreenDropdownCore, resolutionWindowedDropdownCore, displayDropdownCore, minimiseOnFocusLossCheckboxCore, checkForUpdatesButtonCore, releaseStreamSelectorButtonCore;
-
-        private FormCheckBox hwAccelCheckbox;
 
         private void showControls()
         {
@@ -5384,65 +3892,9 @@ namespace NekoPlayer.App.Screens
         private IWindow? window;
 #nullable disable
 
-        private SettingsItemV2 windowModeDropdownSettings;
-
         private partial class RoundedSeekBar : NekoPlayerSeekBar<double>
         {
             public override LocalisableString TooltipText => "";
-        }
-
-        private void updateDisplaySettingsVisibility()
-        {
-            if (windowModeDropdown.Current.Value == WindowMode.Fullscreen && resolutionsFullscreen.Count > 1)
-            {
-                resolutionFullscreenDropdownCore.Show();
-            }
-            else
-            {
-                resolutionFullscreenDropdownCore.Hide();
-            }
-
-            if (windowModeDropdown.Current.Value == WindowMode.Windowed && resolutionsFullscreen.Count > 1)
-            {
-                resolutionWindowedDropdownCore.Show();
-            }
-            else
-            {
-                resolutionWindowedDropdownCore.Hide();
-            }
-
-            if (displayDropdown.Items.Count() > 1)
-            {
-                displayDropdownCore.Show();
-            }
-            else
-            {
-                displayDropdownCore.Hide();
-            }
-
-            if (RuntimeInfo.IsDesktop && windowModeDropdown.Current.Value == WindowMode.Fullscreen)
-            {
-                minimiseOnFocusLossCheckboxCore.Show();
-            }
-            else
-            {
-                minimiseOnFocusLossCheckboxCore.Hide();
-            }
-
-            if (host.Window?.SafeAreaPadding.Value.Total != Vector2.Zero)
-            {
-                safeAreaConsiderationsCanBeShown.Show();
-            }
-            else
-            {
-                safeAreaConsiderationsCanBeShown.Hide();
-            }
-
-            /*
-        resolutionFullscreenCanBeShown.Value = windowModeDropdown.Current.Value == WindowMode.Fullscreen && resolutionsFullscreen.Count > 1;
-        displayDropdownCanBeShown.Value = windowModeDropdown.Current.Value == WindowMode.Windowed && resolutionsWindowed.Count > 1;
-        minimiseOnFocusLossCanBeShown.Value = RuntimeInfo.IsDesktop && windowModeDropdown.Current.Value == WindowMode.Fullscreen;
-            */
         }
 
         private void updateRepeatState()
@@ -5461,25 +3913,6 @@ namespace NekoPlayer.App.Screens
             //pinButton.TransformTo(nameof(Width), alwaysShowControl.Value ? 50f : 40f, 1000, Easing.OutElastic);
         }
 
-        private readonly BindableList<Size> resolutionsFullscreen = new BindableList<Size>(new[] { new Size(9999, 9999) });
-        private readonly BindableList<Size> resolutionsWindowed = new BindableList<Size>();
-        private readonly Bindable<Size> windowedResolution = new Bindable<Size>();
-        private readonly IBindable<FullscreenCapability> fullscreenCapability = new Bindable<FullscreenCapability>(FullscreenCapability.Capable);
-
-        private Bindable<Size> sizeFullscreen = null!;
-        private Bindable<Size> sizeWindowed = null!;
-
-        private readonly BindableBool resolutionFullscreenCanBeShown = new BindableBool(true);
-        private readonly BindableBool resolutionWindowedCanBeShown = new BindableBool(true);
-        private readonly BindableBool displayDropdownCanBeShown = new BindableBool(true);
-        private readonly BindableBool minimiseOnFocusLossCanBeShown = new BindableBool(true);
-        private SettingsItemV2 safeAreaConsiderationsCanBeShown;
-
-        private FormDropdown<Size> resolutionFullscreenDropdown = null!;
-        private FormDropdown<Size> resolutionWindowedDropdown = null!;
-        private FormDropdown<Display> displayDropdown = null!;
-        private FormDropdown<WindowMode> windowModeDropdown = null!;
-
 #nullable enable
         private readonly Bindable<SettingsNote.Data?> windowModeDropdownNote = new Bindable<SettingsNote.Data?>();
 #nullable disable
@@ -5490,25 +3923,6 @@ namespace NekoPlayer.App.Screens
             MaxValue = 4,
             Precision = 0.01,
         };
-
-        private partial class DisplaySettingsDropdown : FormDropdown<Display>
-        {
-            protected override LocalisableString GenerateItemText(Display item)
-            {
-                return $"{item.Index}: {item.Name} ({item.Bounds.Width}x{item.Bounds.Height})";
-            }
-        }
-
-        private partial class ResolutionSettingsDropdown : FormDropdown<Size>
-        {
-            protected override LocalisableString GenerateItemText(Size item)
-            {
-                if (item == new Size(9999, 9999))
-                    return NekoPlayerStrings.Default;
-
-                return $"{item.Width}x{item.Height}";
-            }
-        }
 
 #nullable enable
         private IDisposable? duckOperation;
@@ -5674,8 +4088,6 @@ namespace NekoPlayer.App.Screens
         }
 
         private Bindable<bool> isAnyOverlayOpen;
-
-        private readonly Bindable<Display> currentDisplay = new Bindable<Display>();
 
         [Resolved]
         private NekoPlayerAppBase app { get; set; }
@@ -5915,18 +4327,6 @@ namespace NekoPlayer.App.Screens
             audioEffectsOverlayCharacter.FadeOut();
             playlistOverlayCharacter.FadeOut();
 
-            if (discordRPC != null)
-            {
-                try
-                {
-                    discordRichPresenceDropdown.HintText = $"{discordRPC.GetCurrentUser().DisplayName} ({discordRPC.GetCurrentUser().Username})";
-                }
-                catch (Exception e)
-                {
-                    Logger.Error(e, e.GetDescription());
-                }
-            }
-
             ghostIcon.Loop(t =>
                 t.MoveToY(-10, 2000, Easing.InOutSine)
                  .Then()
@@ -5945,12 +4345,6 @@ namespace NekoPlayer.App.Screens
             if (appGlobalConfig.Get<string>(NekoPlayerSetting.AccessToken) != string.Empty)
             {
                 Task.Run(async () => await googleOAuth2.SignIn());
-            }
-
-            if (!game.IsDeployedBuild)
-            {
-                //releaseStreamSelectorButtonCore.Hide();
-                checkForUpdatesButtonCore.Hide();
             }
 
             sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = true;
@@ -6048,77 +4442,6 @@ namespace NekoPlayer.App.Screens
                 hideOverlays();
                 showOverlayContainer(settingsContainer);
             };
-
-            windowModeDropdown.Current.BindValueChanged(_ =>
-            {
-                updateDisplaySettingsVisibility();
-            }, true);
-
-            currentDisplay.BindValueChanged(display => Schedule(() =>
-            {
-                if (display.NewValue == null)
-                {
-                    resolutionsFullscreen.Clear();
-                    resolutionsWindowed.Clear();
-                    return;
-                }
-
-                var buffer = new Bindable<Size>(windowedResolution.Value);
-                resolutionWindowedDropdown.Current = buffer;
-
-                var fullscreenResolutions = display.NewValue.DisplayModes
-                                                   .Where(m => m.Size.Width >= 800 && m.Size.Height >= 600)
-                                                   .OrderByDescending(m => Math.Max(m.Size.Height, m.Size.Width))
-                                                   .Select(m => m.Size)
-                                                   .Distinct()
-                                                   .ToList();
-                var windowedResolutions = fullscreenResolutions
-                                          .Where(res => res.Width <= display.NewValue.UsableBounds.Width && res.Height <= display.NewValue.UsableBounds.Height)
-                                          .ToList();
-
-                resolutionsFullscreen.ReplaceRange(1, resolutionsFullscreen.Count - 1, fullscreenResolutions);
-                resolutionsWindowed.ReplaceRange(0, resolutionsWindowed.Count, windowedResolutions);
-
-                resolutionWindowedDropdown.Current = windowedResolution;
-
-                updateDisplaySettingsVisibility();
-            }), true);
-
-            windowedResolution.BindValueChanged(size =>
-            {
-                if (size.NewValue == sizeWindowed.Value || windowModeDropdown.Current.Value != WindowMode.Windowed)
-                    return;
-
-                if (window?.WindowState == osu.Framework.Platform.WindowState.Maximised)
-                {
-                    window.WindowState = osu.Framework.Platform.WindowState.Normal;
-                }
-
-                // Adjust only for top decorations (assuming system titlebar).
-                // Bottom/left/right borders are ignored as invisible padding, which don't align with the screen.
-                var dBounds = currentDisplay.Value.Bounds;
-                var dUsable = currentDisplay.Value.UsableBounds;
-                float topBar = host.Window?.BorderSize.Value.Top ?? 0;
-
-                int w = Math.Min(size.NewValue.Width, dUsable.Width);
-                int h = (int)Math.Min(size.NewValue.Height, dUsable.Height - topBar);
-
-                windowedResolution.Value = new Size(w, h);
-                sizeWindowed.Value = windowedResolution.Value;
-
-                float adjustedY = Math.Max(
-                    dUsable.Y + ((dUsable.Height - h) / 2f),
-                    dUsable.Y + topBar // titlebar adjustment
-                );
-                windowedPositionY.Value = dBounds.Height - h != 0 ? (adjustedY - dBounds.Y) / (dBounds.Height - h) : 0;
-                windowedPositionX.Value = dBounds.Width - w != 0 ? (dUsable.X - dBounds.X + ((dUsable.Width - w) / 2f)) / (dBounds.Width - w) : 0;
-            });
-
-            sizeWindowed.BindValueChanged(size =>
-            {
-                if (size.NewValue != windowedResolution.Value)
-                    windowedResolution.Value = size.NewValue;
-            });
         }
 
         private bool isDownloading;
@@ -6135,81 +4458,6 @@ namespace NekoPlayer.App.Screens
                     hideOverlayContainer(item);
                 }
             }
-        }
-
-        private void PrepareSettingsTabs()
-        {
-            Drawable[] drawables = new Drawable[]
-            {
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.Star,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Quick Actions")),
-                    TooltipText = NekoPlayerStrings.QuickAction,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.Cog,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("General Settings")),
-                    TooltipText = NekoPlayerStrings.General,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.WindowMaximize,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("UI Settings")),
-                    TooltipText = NekoPlayerStrings.UserInterface,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.Bolt,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Graphics Settings")),
-                    TooltipText = NekoPlayerStrings.Graphics,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.Camera,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Screenshot Settings")),
-                    TooltipText = NekoPlayerStrings.Screenshot,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.Video,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Video Settings")),
-                    TooltipText = NekoPlayerStrings.Video,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.Sun,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("VFX Settings")),
-                    TooltipText = NekoPlayerStrings.VisualEffects,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.ClosedCaptioning,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("CC Settings")),
-                    TooltipText = NekoPlayerStrings.ClosedCaptions,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.VolumeUp,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Audio Settings")),
-                    TooltipText = NekoPlayerStrings.Audio,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.Bug,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("Debug Settings")),
-                    TooltipText = NekoPlayerStrings.Debug,
-                },
-                new NekoPlayerSettingsTabBar.Button
-                {
-                    Icon = FontAwesome.Solid.InfoCircle,
-                    ClickAction = _ => Schedule(() => ShowSettingsOverlayAtName("App Info")),
-                    TooltipText = NekoPlayerStrings.AppInfo,
-                },
-            };
-
-            settingsTabBar.SetItems(drawables);
         }
 
         public async Task SetPlaylist(string playlistId)
@@ -6536,7 +4784,8 @@ namespace NekoPlayer.App.Screens
                             if (playlistItemIndex != 0)
                                 playlistItemIndex--;
 
-                            Task.Run(async () => {
+                            Task.Run(async () =>
+                            {
                                 Schedule(async () =>
                                 {
                                     SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
@@ -7014,7 +5263,8 @@ namespace NekoPlayer.App.Screens
                 if (googleOAuth2.SignedIn.Value)
                 {
                     things = await api.GetVideoRating(videoId);
-                } else
+                }
+                else
                 {
                     things = VideosResource.RateRequest.RatingEnum.None;
                 }
@@ -8305,7 +6555,7 @@ namespace NekoPlayer.App.Screens
 
                             try
                             {
-                                await captionLangDropdown.RefreshCaptionLanguages(videoUrl);
+                                await settingsContainer.CaptionLangDropdown.RefreshCaptionLanguages(videoUrl);
                                 captionEnabled.Disabled = false;
                             }
                             catch (Exception e)
@@ -8329,16 +6579,16 @@ namespace NekoPlayer.App.Screens
 
                                     string preferedLang = string.Empty;
 
-                                    if (captionLangDropdown.Current.Value != null)
+                                    if (settingsContainer.CaptionLangDropdown.Current.Value != null)
                                     {
-                                        preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                                        preferedLang = settingsContainer.CaptionLangDropdown.Current.Value.Hl.ToString();
                                     }
                                     else
                                     {
                                         preferedLang = CultureInfo.CurrentCulture.Name;
                                     }
 
-                                    captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+                                    settingsContainer.CaptionLangDropdown.Current.Value = settingsContainer.CaptionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
 
                                     var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
@@ -8356,7 +6606,7 @@ namespace NekoPlayer.App.Screens
 
                                                 try
                                                 {
-                                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
+                                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, settingsContainer.CaptionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                                     onScreenDisplay.Display(toast);
                                                 }
                                                 catch (Exception e)
@@ -8415,7 +6665,7 @@ namespace NekoPlayer.App.Screens
                         }
                         else
                         {
-                            await captionLangDropdown.RefreshCaptionLanguages(videoUrl);
+                            await settingsContainer.CaptionLangDropdown.RefreshCaptionLanguages(videoUrl);
                             captionEnabled.Disabled = false;
 
                             var streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoUrl);
@@ -8678,16 +6928,16 @@ namespace NekoPlayer.App.Screens
 
                                     string preferedLang = string.Empty;
 
-                                    if (captionLangDropdown.Current.Value != null)
+                                    if (settingsContainer.CaptionLangDropdown.Current.Value != null)
                                     {
-                                        preferedLang = captionLangDropdown.Current.Value.Hl.ToString();
+                                        preferedLang = settingsContainer.CaptionLangDropdown.Current.Value.Hl.ToString();
                                     }
                                     else
                                     {
                                         preferedLang = CultureInfo.CurrentCulture.Name;
                                     }
 
-                                    captionLangDropdown.Current.Value = captionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+                                    settingsContainer.CaptionLangDropdown.Current.Value = settingsContainer.CaptionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
 
                                     var trackInfo = trackManifest.Tracks.Where(track => track.Language.Code.Contains(preferedLang)).First();
 
@@ -8699,7 +6949,7 @@ namespace NekoPlayer.App.Screens
                                             {
                                                 try
                                                 {
-                                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, captionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
+                                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, settingsContainer.CaptionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
                                                     onScreenDisplay.Display(toast);
                                                 }
                                                 catch (Exception e)
@@ -8758,48 +7008,8 @@ namespace NekoPlayer.App.Screens
             }, cancellationToken).FireAndForget();
         }
 
-        private Storage exportStorage = null!;
-
         [Resolved]
         private OnScreenDisplay onScreenDisplay { get; set; }
-
-#nullable enable
-        private void exportLogs()
-        {
-            const string archive_filename = "compressed-logs.zip";
-
-            try
-            {
-                GlobalStatistics.OutputToLog();
-                Logger.Flush();
-
-                var logStorage = Logger.Storage;
-
-                using (var outStream = exportStorage.CreateFileSafely(archive_filename))
-                using (var zip = ZipArchive.CreateArchive())
-                {
-                    foreach (string? f in logStorage.GetFiles(string.Empty, "*.log"))
-                        FileUtils.AttemptOperation(z => z.AddEntry(f, logStorage.GetStream(f), closeStream: true), zip, throwOnFailure: false);
-
-                    zip.SaveTo(outStream, new ZipWriterOptions(CompressionType.Deflate));
-                }
-            }
-            catch
-            {
-                // cleanup if export is failed or canceled.
-                exportStorage.Delete(archive_filename);
-                throw;
-            }
-
-            Schedule(() =>
-            {
-                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.LogsExportFinished, FontAwesome.Regular.ListAlt);
-
-                onScreenDisplay.Display(toast);
-                exportStorage.PresentFileExternally(archive_filename);
-            });
-        }
-#nullable disable
 
         [Resolved]
         private NekoPlayerApp game { get; set; }
@@ -8809,20 +7019,7 @@ namespace NekoPlayer.App.Screens
             if (!settingsContainer.IsVisible)
                 showOverlayContainer(settingsContainer);
 
-            // wait for load of sections
-            if (!settingsSections.Any())
-            {
-                Scheduler.Add(() => ShowSettingsOverlayAtName(name));
-                return;
-            }
-
-            settingsSections.ScrollTo(settingsSections.ChildrenOfType<Drawable>().Where(child => child.Name == name).Single());
-        }
-
-        private enum GCLatencyMode
-        {
-            Default,
-            Interactive,
+            settingsContainer.ShowSettingsOverlayAtName(name);
         }
 
         public void OnReleased(KeyBindingReleaseEvent<GlobalAction> e)
@@ -8877,310 +7074,6 @@ namespace NekoPlayer.App.Screens
                     SetVideoSource(id);
                 });
             });
-        }
-
-#nullable enable
-        /// <summary>
-        /// Contrary to <see cref="Display.Equals(osu.Framework.Platform.Display?)"/>, this comparer disregards the value of <see cref="Display.Bounds"/>.
-        /// We want to just show a list of displays, and for the purposes of settings we don't care about their bounds when it comes to the list.
-        /// However, <see cref="IWindow.DisplaysChanged"/> fires even if only the resolution of the current display was changed
-        /// (because it causes the bounds of all displays to also change).
-        /// We're not interested in those changes, so compare only the rest that we actually care about.
-        /// This helps to avoid a bindable/event feedback loop, in which a resolution change
-        /// would trigger a display "change", which would in turn reset resolution again.
-        /// </summary>
-        private class DisplayListComparer : IEqualityComparer<Display>
-        {
-            public static readonly DisplayListComparer DEFAULT = new DisplayListComparer();
-
-            public bool Equals(Display? x, Display? y)
-            {
-                if (ReferenceEquals(x, y)) return true;
-                if (ReferenceEquals(x, null)) return false;
-                if (ReferenceEquals(y, null)) return false;
-
-                return x.Index == y.Index
-                       && x.Name == y.Name
-                       && x.DisplayModes.SequenceEqual(y.DisplayModes);
-            }
-
-            public int GetHashCode(Display obj)
-            {
-                var hashCode = new HashCode();
-
-                hashCode.Add(obj.Index);
-                hashCode.Add(obj.Name);
-                hashCode.Add(obj.DisplayModes.Length);
-                foreach (var displayMode in obj.DisplayModes)
-                    hashCode.Add(displayMode);
-
-                return hashCode.ToHashCode();
-            }
-        }
-#nullable disable
-
-        private partial class RendererSettingsDropdown : FormEnumDropdown<RendererType>
-        {
-            private RendererType hostResolvedRenderer;
-            private bool automaticRendererInUse;
-
-            [BackgroundDependencyLoader]
-            private void load(FrameworkConfigManager config, GameHost host)
-            {
-                var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
-                automaticRendererInUse = renderer.Value == RendererType.Automatic;
-                hostResolvedRenderer = host.ResolvedRenderer;
-            }
-
-            protected override LocalisableString GenerateItemText(RendererType item)
-            {
-                if (item == RendererType.Automatic && automaticRendererInUse)
-                    return NekoPlayerStrings.RenderTypeAutomaticIsUse(hostResolvedRenderer.GetDescription());
-
-                if (item == RendererType.Automatic)
-                {
-                    return NekoPlayerStrings.RenderTypeAutomatic;
-                }
-
-                return base.GenerateItemText(item);
-            }
-        }
-
-        private partial class ReportDropdown : FormDropdown<VideoAbuseReportReasonItem>
-        {
-            protected override LocalisableString GenerateItemText(VideoAbuseReportReasonItem item)
-                => item.Label;
-        }
-
-        private partial class WindowModeDropdown : FormDropdown<WindowMode>
-        {
-            protected override LocalisableString GenerateItemText(WindowMode item)
-            {
-                switch (item)
-                {
-                    case WindowMode.Windowed:
-                        return NekoPlayerStrings.Windowed;
-
-                    case WindowMode.Borderless:
-                        return NekoPlayerStrings.Borderless;
-
-                    case WindowMode.Fullscreen:
-                        return NekoPlayerStrings.Fullscreen;
-                }
-                return base.GenerateItemText(item);
-            }
-        }
-
-        private partial class AudioDeviceDropdown : FormDropdown<string>
-        {
-            protected override LocalisableString GenerateItemText(string item)
-                => string.IsNullOrEmpty(item) ? NekoPlayerStrings.Default : base.GenerateItemText(item);
-        }
-
-        private partial class PlaylistDropdown : FormDropdown<Playlist>
-        {
-            protected override LocalisableString GenerateItemText(Playlist item)
-                => item.Snippet.Title;
-        }
-
-        private partial class FrameSyncDropdown : FormEnumDropdown<FrameSync>
-        {
-            protected override LocalisableString GenerateItemText(FrameSync item)
-            {
-                switch (item)
-                {
-                    case FrameSync.VSync:
-                        return NekoPlayerStrings.VSync;
-
-                    case FrameSync.Limit2x:
-                        return NekoPlayerStrings.RefreshRate2X;
-
-                    case FrameSync.Limit4x:
-                        return NekoPlayerStrings.RefreshRate4X;
-
-                    case FrameSync.Limit8x:
-                        return NekoPlayerStrings.RefreshRate8X;
-
-                    case FrameSync.Unlimited:
-                        return NekoPlayerStrings.Unlimited;
-                }
-                return base.GenerateItemText(item);
-            }
-        }
-
-        private partial class EnhancedFocusedTextBox : FocusedTextBox
-        {
-            public Action OnEnterKeyPressed;
-
-            protected override void OnTextCommitted(bool textChanged)
-            {
-                base.OnTextCommitted(textChanged);
-                OnEnterKeyPressed.Invoke();
-            }
-        }
-
-        private partial class EnhancedFocusedTextBoxWithProfileImage : FocusedTextBoxWithProfileImage
-        {
-            public Action OnEnterKeyPressed;
-
-            protected override void OnTextCommitted(bool textChanged)
-            {
-                base.OnTextCommitted(textChanged);
-                OnEnterKeyPressed.Invoke();
-            }
-        }
-
-        private partial class YouTubeQualityDropdown : FormDropdown<string>
-        {
-            [Resolved]
-            private NekoPlayerApp app { get; set; }
-
-            [Resolved]
-            private NekoPlayerConfigManager config { get; set; }
-
-            [Resolved]
-            private YoutubeExplode.YoutubeClient youtubeService { get; set; }
-
-            [Resolved]
-            private GoogleTranslate googleTranslate { get; set; }
-
-            public YoutubeExplode.Videos.Streams.VideoQuality CurrentVideoQuality;
-
-            [BackgroundDependencyLoader]
-            private void load()
-            {
-            }
-
-            public async Task RefreshQualityList(string videoId)
-            {
-                try
-                {
-                    var streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoId);
-
-                    List<string> items = new List<string>();
-
-                    List<VideoOnlyStreamInfo> videoStreamInfo;
-                    IVideoStreamInfo maxVideoStreamInfo;
-
-                    try
-                    {
-                        videoStreamInfo = streamManifest
-                                    .GetVideoOnlyStreams()
-                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                    .ToList();
-
-                        maxVideoStreamInfo = streamManifest
-                                    .GetVideoOnlyStreams()
-                                    .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                    .GetWithHighestVideoQuality();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e, e.GetDescription());
-                        videoStreamInfo = streamManifest
-                                    .GetVideoOnlyStreams()
-                                    .ToList();
-
-                        maxVideoStreamInfo = streamManifest
-                                    .GetVideoOnlyStreams()
-                                    .GetWithHighestVideoQuality();
-                    }
-
-                    foreach (var item in videoStreamInfo)
-                    {
-                        items.Add(item.VideoQuality.Label);
-                    }
-
-                    Items = items;
-
-                    if (!Current.Disabled && string.IsNullOrEmpty(Current.Value))
-                    {
-                        Current.Value = items.Where(quality => quality.Contains(maxVideoStreamInfo.VideoQuality.Label)).First();
-                        Current.Default = items.Where(quality => quality.Contains(maxVideoStreamInfo.VideoQuality.Label)).First();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Current.Disabled = false;
-                    Logger.Error(e, e.GetDescription());
-                }
-            }
-        }
-
-        private partial class YouTubeI18nLangDropdown : FormDropdown<YouTubeI18nLangItem>
-        {
-            [Resolved]
-            private NekoPlayerApp app { get; set; }
-
-            [Resolved]
-            private NekoPlayerConfigManager config { get; set; }
-
-            [Resolved]
-            private YoutubeExplode.YoutubeClient youtubeService { get; set; }
-
-            [Resolved]
-            private GoogleTranslate googleTranslate { get; set; }
-
-            private Bindable<int> closedCaptionLanguageValue;
-
-            [BackgroundDependencyLoader]
-            private void load()
-            {
-            }
-
-            public async Task RefreshCaptionLanguages(string videoId)
-            {
-                try
-                {
-                    var trackManifest = await youtubeService.Videos.ClosedCaptions.GetManifestAsync(videoId);
-
-                    List<YouTubeI18nLangItem> items = new List<YouTubeI18nLangItem>();
-
-                    foreach (var item in trackManifest.Tracks)
-                    {
-                        YouTubeI18nLangItem youTubeI18NLangItem = new YouTubeI18nLangItem
-                        {
-                            Hl = item.Language.Code,
-                            Name = item.Language.Name,
-                        };
-
-                        items.Add(youTubeI18NLangItem);
-                    }
-
-                    Items = items;
-
-                    if (!Current.Disabled)
-                    {
-                        if (items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First() == null)
-                        {
-                            Current.Value = items.First();
-                            Current.Default = items.First();
-                        }
-                        else
-                        {
-                            Current.Value = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
-                            Current.Default = items.Where(lang => lang.Hl.Contains(CultureInfo.CurrentCulture.Name)).First();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Current.Disabled = false;
-                    Logger.Error(e, e.GetDescription());
-                }
-            }
-
-            protected override LocalisableString GenerateItemText(YouTubeI18nLangItem item)
-            {
-                try
-                {
-                    return item.Name;
-                }
-                catch
-                {
-                    return base.GenerateItemText(item);
-                }
-            }
         }
 
         public enum LoadType
