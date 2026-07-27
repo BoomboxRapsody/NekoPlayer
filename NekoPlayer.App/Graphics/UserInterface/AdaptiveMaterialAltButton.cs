@@ -141,7 +141,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             if (Enabled.Value)
             {
-                Hover.FadeTo(0.1f, 800, Easing.OutQuint);
+                Hover.FadeTo(0.1f, 250, Easing.OutQuint);
             }
 
             return base.OnHover(e);
@@ -156,13 +156,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected override bool OnMouseDown(MouseDownEvent e)
         {
-            Content.ScaleTo(0.9f, 4000, Easing.OutQuint);
+            Content.ScaleTo(0.97f, 4000, Easing.OutQuint);
             return base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseUpEvent e)
         {
-            Content.ScaleTo(1, 1000, Easing.OutElastic);
+            Content.ScaleTo(1, 300, Easing.OutQuint);
             base.OnMouseUp(e);
         }
 
