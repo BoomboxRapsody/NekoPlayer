@@ -3916,7 +3916,7 @@ namespace NekoPlayer.App.Screens
         private BindableNumber<double> playbackSpeed = new BindableNumber<double>(1)
         {
             MinValue = 0.1,
-            MaxValue = 4,
+            MaxValue = 8,
             Precision = 0.01,
         };
 
