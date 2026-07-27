@@ -176,6 +176,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     Icon = FontAwesome.Regular.Edit,
                                     IconScale = new Vector2(0.7f),
                                     TooltipText = NekoPlayerStrings.EditPlaylist,
+                                    BackgroundColour = overlayColourProvider.Background5,
                                     Action = () =>
                                     {
                                         OptionsClickEvent.Invoke(playlistData);
