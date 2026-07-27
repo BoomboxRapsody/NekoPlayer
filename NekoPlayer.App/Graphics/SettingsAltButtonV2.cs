@@ -6,9 +6,9 @@ using NekoPlayer.App.Graphics.UserInterfaceV2;
 
 namespace NekoPlayer.App.Graphics
 {
-    public partial class SettingsOutlineButtonV2 : RoundedOutlineButton
+    public partial class SettingsAltButtonV2 : RoundedAltButton
     {
-        public SettingsOutlineButtonV2()
+        public SettingsAltButtonV2()
         {
             RelativeSizeAxes = Axes.X;
         }

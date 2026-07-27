@@ -88,13 +88,13 @@ namespace NekoPlayer.App.Screens
     {
         private BufferedContainer videoContainer;
         private AdaptiveButton commentSendButton, searchButton, loadPlaylistBtn, downloadBtn;
-        private RoundedButton declineButton, acceptButton, updatePlaylistButton, loadBtn, viewChannelButton, logoutButton;
+        private RoundedButton acceptButton, updatePlaylistButton, loadBtn, viewChannelButton;
+        private RoundedAltButton logoutButton, declineButton;
         private ControlBarIconButton prevVideoButton, nextVideoButton;
         private EnhancedFocusedTextBox videoIdBox, playlistIdBox, searchTextBox;
         private EnhancedFocusedTextBoxWithProfileImage commentTextBox;
         private NekoPlayerLoadingSpinner spinner;
         private ScheduledDelegate spinnerShow;
-        private AdaptiveAlertContainer alert;
         private IdleTracker idleTracker;
         private Container uiContainer;
         private DrawSizePreservingFillContainer uiGradientContainer;
@@ -145,17 +145,13 @@ namespace NekoPlayer.App.Screens
             // This is automatic for DrawableTrack.
             overlayShowSample.Dispose();
             overlayHideSample.Dispose();
+            currentVideoSource?.Expire();
 
             if (audio.IsNotNull())
             {
                 audio.OnNewDevice -= onAudioDeviceChanged;
                 audio.OnLostDevice -= onAudioDeviceChanged;
             }
-        }
-
-        public void NumKeyInput(int input)
-        {
-            currentVideoSource?.SeekTo((videoProgress.MaxValue * (input * 0.1)) * 1000);
         }
 
         // An example driver name of an ALSA device will look like this: "hw:4,0".
@@ -3251,7 +3247,7 @@ namespace NekoPlayer.App.Screens
                                     Text = NekoPlayerStrings.UnsubscribeDesc,
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                declineButton = new RoundedButton
+                                declineButton = new RoundedAltButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomLeft,
@@ -3320,7 +3316,7 @@ namespace NekoPlayer.App.Screens
                                                             Height = 50,
                                                             Caption = NekoPlayerStrings.Playlists,
                                                         },
-                                                        new RoundedButton
+                                                        new RoundedAltButton
                                                         {
                                                             Enabled = { Value = true },
                                                             Text = NekoPlayerStrings.AddNewPlaylist,
@@ -3339,7 +3335,7 @@ namespace NekoPlayer.App.Screens
                                                             Direction = FillDirection.Horizontal,
                                                             Children = new Drawable[]
                                                             {
-                                                                new RoundedButton
+                                                                new RoundedAltButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Cancel,
@@ -3459,7 +3455,7 @@ namespace NekoPlayer.App.Screens
                                                             Direction = FillDirection.Horizontal,
                                                             Children = new Drawable[]
                                                             {
-                                                                new RoundedButton
+                                                                new RoundedAltButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Cancel,
@@ -3565,7 +3561,7 @@ namespace NekoPlayer.App.Screens
                                                             Direction = FillDirection.Horizontal,
                                                             Children = new Drawable[]
                                                             {
-                                                                new RoundedButton
+                                                                new RoundedAltButton
                                                                 {
                                                                     Enabled = { Value = true },
                                                                     Text = NekoPlayerStrings.Cancel,
@@ -3948,7 +3944,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.Centre,
                                     AlwaysPresent = true,
                                 },
-                                logoutButton = new RoundedButton
+                                logoutButton = new RoundedAltButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomLeft,
@@ -4169,16 +4165,6 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
                         },
-                        new Container
-                        {
-                            RelativeSizeAxes = Axes.Both,
-                            Child = alert = new AdaptiveAlertContainer
-                            {
-                                Origin = Anchor.TopCentre,
-                                Anchor = Anchor.TopCentre,
-                                Size = new Vector2(600, 60),
-                            },
-                        }
                     }
                 }
             };
@@ -5347,7 +5333,6 @@ namespace NekoPlayer.App.Screens
 
                     game.UpdateManagerVersionText.Value = game.Version;
                     checkForUpdatesButton.Enabled.Value = true;
-                    spinnerShow = Scheduler.AddDelayed(alert.Hide, 3000);
                 }
             }
             catch

@@ -19,7 +19,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     /// <summary>
     /// A button with added default sound effects.
     /// </summary>
-    public partial class AdaptiveMaterialOutlineButton : Button
+    public partial class AdaptiveMaterialAltButton : Button
     {
         public LocalisableString Text
         {
@@ -35,11 +35,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public virtual Color4 BackgroundColour
         {
             get => backgroundColour ?? defaultBackgroundColour;
-            set
-            {
-                backgroundColour = value;
-                SpriteText.FadeColour(value);
-            }
+            set => backgroundColour = value;
         }
 
         private Color4 defaultBackgroundColour;
@@ -50,13 +46,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected Color4 DefaultBackgroundColour
         {
             get => defaultBackgroundColour;
-            set
-            {
-                defaultBackgroundColour = value;
-
-                if (backgroundColour == null)
-                    SpriteText.FadeColour(value);
-            }
+            set => defaultBackgroundColour = value;
         }
 
         protected override Container<Drawable> Content { get; }
@@ -68,11 +58,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
             && Content.ReceivePositionalInputAt(screenSpacePos);
 
         protected Box Hover;
+        protected Box Background;
         protected SpriteText SpriteText;
 
         private readonly Box flashLayer;
 
-        public AdaptiveMaterialOutlineButton(HoverSampleSet? hoverSounds = HoverSampleSet.Button)
+        public AdaptiveMaterialAltButton(HoverSampleSet? hoverSounds = HoverSampleSet.Button)
         {
             Height = 40;
 
@@ -83,10 +74,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 Masking = true,
                 CornerRadius = Height / 2,
                 RelativeSizeAxes = Axes.Both,
-                BorderColour = Color4.Gray,
-                BorderThickness = 8,
                 Children = new Drawable[]
                 {
+                    /*
+                    Background = new Box
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        Depth = float.MaxValue,
+                    },
+                    */
                     Hover = new Box
                     {
                         Alpha = 0,
@@ -95,7 +93,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4.White,
                         Blending = BlendingParameters.Additive,
-                        Depth = float.MinValue
                     },
                     SpriteText = CreateText(),
                     flashLayer = new Box
@@ -114,9 +111,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(OverlayColourProvider overlayColourProvider)
         {
             DefaultBackgroundColour = Color4Extensions.FromHex(@"44aadd");
+            //Background.Colour = overlayColourProvider.Background5;
         }
 
         protected override void LoadComplete()
@@ -143,7 +141,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             if (Enabled.Value)
             {
-                Hover.FadeTo(HoverLayerFinalAlpha, 800, Easing.OutQuint);
+                Hover.FadeTo(0.1f, 800, Easing.OutQuint);
             }
 
             return base.OnHover(e);
