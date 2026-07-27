@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -16,7 +15,6 @@ using DiscordRPC;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Humanizer;
-using NAudio.CoreAudioApi;
 using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
@@ -40,7 +38,6 @@ using NekoPlayer.App.Overlays.OSD;
 using NekoPlayer.App.Overlays.Volume;
 using NekoPlayer.App.Updater;
 using NekoPlayer.App.Utils;
-using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -48,7 +45,6 @@ using osu.Framework.Bindables;
 using osu.Framework.Configuration;
 using osu.Framework.Extensions;
 using osu.Framework.Extensions.Color4Extensions;
-using osu.Framework.Extensions.ObjectExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
@@ -63,7 +59,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
-using osu.Framework.Platform.Windows;
 using osu.Framework.Threading;
 using osuTK;
 using osuTK.Graphics;
@@ -94,7 +89,7 @@ namespace NekoPlayer.App.Screens
         private Container uiContainer;
         private DrawSizePreservingFillContainer uiGradientContainer;
         private SettingsContainer settingsContainer;
-        private OverlayContainer loadVideoContainer, videoDescriptionContainer, commentsContainer, videoInfoExpertOverlay, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
+        private OverlayContainer loadVideoContainer, videoDescriptionContainer, commentsContainer, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
         private IconButton menuOverlayShow;
         private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
@@ -1595,66 +1590,6 @@ namespace NekoPlayer.App.Screens
                                         },
                                     },
                                 },
-                            }
-                        },
-                        videoInfoExpertOverlay = new OverlayContainer
-                        {
-                            Size = new Vector2(0.7f),
-                            RelativeSizeAxes = Axes.Both,
-                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
-                            Masking = true,
-                            Origin = Anchor.Centre,
-                            Anchor = Anchor.Centre,
-                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                            {
-                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                Colour = Color4.Black.Opacity(0.25f),
-                                Offset = new Vector2(0, 2),
-                                Radius = 16,
-                            },
-                            Children = new Drawable[]
-                            {
-                                new Box
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
-                                },
-                                new AdaptiveSpriteText
-                                {
-                                    Origin = Anchor.TopLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    Text = "Video info (Expert)",
-                                    Margin = new MarginPadding(16),
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
-                                    Colour = overlayColourProvider.Content2,
-                                },
-                                new Container
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 16,
-                                        Bottom = 16,
-                                        Top = 56,
-                                    },
-                                    Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
-                                        {
-                                            RelativeSizeAxes = Axes.Both,
-                                            ScrollbarVisible = false,
-                                            Children = new Drawable[]
-                                            {
-                                                infoForNerds = new AdaptiveTextFlowContainer
-                                                {
-                                                    RelativeSizeAxes = Axes.X,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Colour = overlayColourProvider.Content2,
-                                                    AlwaysPresent = true,
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
                             }
                         },
                         searchContainer = new BottomOverlayContainer
@@ -3161,7 +3096,6 @@ namespace NekoPlayer.App.Screens
             RegisterOverlayContainer(videoDescriptionContainer);
             RegisterOverlayContainer(commentsContainer);
             RegisterOverlayContainer(searchContainer);
-            RegisterOverlayContainer(videoInfoExpertOverlay);
             RegisterOverlayContainer(reportAbuseOverlay);
             RegisterOverlayContainer(playlistOverlay);
             RegisterOverlayContainer(loadPlaylistContainer);
