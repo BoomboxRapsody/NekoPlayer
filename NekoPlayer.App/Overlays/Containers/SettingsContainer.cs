@@ -245,7 +245,7 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<float> scalingBackgroundDim = null!;
 
         public YouTubeQualityDropdown VideoQualitySettings;
-        private FormEnumDropdown<Config.AudioQuality> audioQualitySettings;
+        public FormEnumDropdown<Config.AudioQuality> AudioQualitySettings;
         private Bindable<bool> showVideoMetadataOnWindowTitle;
 
         private void PrepareSettingsTabs()
@@ -324,9 +324,10 @@ namespace NekoPlayer.App.Overlays.Containers
         }
 
         [BackgroundDependencyLoader]
-        private void load(OverlayColourProvider overlayColourProvider, ITextureStore textures, AdaptiveColour colours, FrameworkDebugConfigManager debugConfig, FrameworkConfigManager config, Storage storage, NekoPlayerConfigManager appConfig)
+        private void load(OverlayColourProvider overlayColourProvider, TextureStore textures, AdaptiveColour colours, FrameworkDebugConfigManager debugConfig, FrameworkConfigManager config, Storage storage, NekoPlayerConfigManager appConfig)
         {
             videoVolume = config.GetBindable<double>(FrameworkSetting.VolumeMusic);
+            fpsDisplay = appConfig.GetBindable<bool>(NekoPlayerSetting.ShowFpsDisplay);
             closeButtonAction = appConfig.GetBindable<CloseButtonAction>(NekoPlayerSetting.CloseButtonAction);
             colourSchemeBindable = appConfig.GetBindable<OverlayColourScheme>(NekoPlayerSetting.ColourScheme);
             profileImageShape = appConfig.GetBindable<ProfileImageShape>(NekoPlayerSetting.ProfileImageShape);
@@ -382,6 +383,8 @@ namespace NekoPlayer.App.Overlays.Containers
 
             updateInfomationText = game.UpdateManagerVersionText.GetBoundCopy();
             updateButtonEnabled = game.UpdateButtonEnabled.GetBoundCopy();
+
+            discordRichPresence = appConfig.GetBindable<DiscordRichPresenceMode>(NekoPlayerSetting.DiscordRichPresence);
 
             Size = new Vector2(0.7f, 1f);
             RelativeSizeAxes = Axes.Both;
@@ -783,7 +786,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
-                                                        new SettingsItemV2(audioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
+                                                        new SettingsItemV2(AudioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
                                                         {
                                                             Caption = NekoPlayerStrings.AudioQuality,
                                                             Icon = FontAwesome.Solid.FileAudio,

@@ -99,7 +99,7 @@ namespace NekoPlayer.App.Screens
         private IconButton menuOverlayShow;
         private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
         private VideoMetadataDisplayWithoutProfile videoMetadataDisplay;
-        private VideoMetadataDisplay videoMetadataDisplayDetails, videoMetadataDisplayDetails2;
+        private VideoMetadataDisplay videoMetadataDisplayDetails;
         private RoundedButtonContainer commentOpenButtonDetails, likeButton;
 
 
@@ -246,9 +246,6 @@ namespace NekoPlayer.App.Screens
         //effects
         private Bindable<bool> reverbEnabled, rotateEnabled, echoEnabled, distortionEnabled, karaokeEnabled, chorusEnabled;
         private FillFlowContainer reverbSettings, rotateSettings, echoSettings, distortionSettings, chorusSettings;
-
-        private YouTubeQualityDropdown videoQualitySettings;
-        private FormEnumDropdown<Config.AudioQuality> audioQualitySettings;
 
         private Bindable<bool> repeat = new Bindable<bool>();
         private Bindable<bool> alwaysShowControl = new Bindable<bool>();
@@ -5731,7 +5728,6 @@ namespace NekoPlayer.App.Screens
         {
             videoMetadataDisplay.UpdateVideo(videoId);
             videoMetadataDisplayDetails.UpdateVideo(videoId);
-            videoMetadataDisplayDetails2.UpdateVideo(videoId);
             Task.Run(async () =>
             {
                 // metadata area
@@ -5842,59 +5838,6 @@ namespace NekoPlayer.App.Screens
 
                                     Schedule(() => onScreenDisplay.Display(toast));
                                     Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
-                                };
-
-                                Schedule(() =>
-                                {
-                                    hideOverlays();
-                                    showOverlayContainer(unsubscribeDialog);
-                                });
-                            }
-                            else
-                            {
-                                await api.SubscribeChannel(videoData.Snippet.ChannelId);
-
-                                Logger.Log("SubscribeChannel()");
-
-                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionAdded, FontAwesome.Solid.SignInAlt);
-
-                                Schedule(() => onScreenDisplay.Display(toast));
-                                Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
-                            }
-                        });
-                    };
-
-                    videoMetadataDisplayDetails2.SubscribeClickAction = () =>
-                    {
-                        Task.Run(async () =>
-                        {
-                            if (!googleOAuth2.SignedIn.Value)
-                                return; //log in to more actions
-
-                            bool result = await api.IsChannelSubscribed(videoData.Snippet.ChannelId);
-                            string subscriptionId = await api.GetSubscriptionId(videoData.Snippet.ChannelId);
-
-                            Logger.Log("SubscribeClickAction clicked");
-
-                            if (result)
-                            {
-                                Schedule(() => youtubeChannelMetadataDisplay.UpdateUser(api.GetChannel(videoData.Snippet.ChannelId)));
-
-                                declineButton.Action = async () =>
-                                {
-                                    hideOverlayContainer(unsubscribeDialog);
-                                };
-                                acceptButton.Action = async () =>
-                                {
-                                    hideOverlayContainer(unsubscribeDialog);
-                                    await api.UnsubscribeChannel(subscriptionId);
-
-                                    Logger.Log("UnsubscribeChannel()");
-
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionRemoved, FontAwesome.Solid.SignOutAlt);
-
-                                    Schedule(() => onScreenDisplay.Display(toast));
-                                    Schedule(() => videoMetadataDisplayDetails2.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
                                 };
 
                                 Schedule(() =>
@@ -6287,7 +6230,7 @@ namespace NekoPlayer.App.Screens
 
                         try
                         {
-                            await videoQualitySettings.RefreshQualityList(videoUrl);
+                            await settingsContainer.VideoQualitySettings.RefreshQualityList(videoUrl);
                         }
                         catch (Exception e)
                         {
@@ -6316,7 +6259,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6326,7 +6269,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                                 else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
@@ -6340,7 +6283,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6351,7 +6294,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                                 else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
@@ -6365,7 +6308,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6376,7 +6319,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                                 else
@@ -6389,7 +6332,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6399,7 +6342,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                             }
@@ -6421,7 +6364,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
                                     {
@@ -6430,7 +6373,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
                                     {
@@ -6439,7 +6382,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6447,7 +6390,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
 
                                     Logger.Error(e, e.GetDescription());
@@ -6468,7 +6411,7 @@ namespace NekoPlayer.App.Screens
                                         audioStreamInfo = (IAudioStreamInfo)streamManifest
                                             .GetAudioOnlyStreams()
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
                                     {
@@ -6476,7 +6419,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
                                     {
@@ -6484,14 +6427,14 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
                                         audioStreamInfo = streamManifest
                                             .GetAudioOnlyStreams()
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                             }
@@ -6504,13 +6447,13 @@ namespace NekoPlayer.App.Screens
                                 videoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
                                     .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                    .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                                    .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                     .First();
 
                                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                                 onScreenDisplay.Display(toast);
-                                videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                                settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                             }
                             catch (Exception e)
                             {
@@ -6526,7 +6469,7 @@ namespace NekoPlayer.App.Screens
                                     ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                                     onScreenDisplay.Display(toast);
-                                    videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                                    settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                                 catch (Exception e2)
                                 {
@@ -6534,13 +6477,13 @@ namespace NekoPlayer.App.Screens
                                     // Select best video stream (1080p60 in this example)
                                     videoStreamInfo = streamManifest
                                         .GetVideoOnlyStreams()
-                                        .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                                        .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                         .First();
 
                                     ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                                     onScreenDisplay.Display(toast);
-                                    videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                                    settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                             }
 
@@ -6684,7 +6627,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6694,7 +6637,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                                 else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
@@ -6708,7 +6651,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6719,7 +6662,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                                 else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
@@ -6733,7 +6676,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6744,7 +6687,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                                 else
@@ -6757,7 +6700,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6767,7 +6710,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(appGlobalConfig.Get<Language>(NekoPlayerSetting.AudioLanguage).ToString()))
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                             }
@@ -6789,7 +6732,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
                                     {
@@ -6798,7 +6741,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
                                     {
@@ -6807,7 +6750,7 @@ namespace NekoPlayer.App.Screens
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
@@ -6815,7 +6758,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioLanguage.Value.Code.Contains(videoData.Snippet.DefaultLanguage))
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
 
                                     Logger.Error(e, e.GetDescription());
@@ -6836,7 +6779,7 @@ namespace NekoPlayer.App.Screens
                                         audioStreamInfo = (IAudioStreamInfo)streamManifest
                                             .GetAudioOnlyStreams()
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferMp4a)
                                     {
@@ -6844,7 +6787,7 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else if (audioQuality.Value == Config.AudioQuality.PreferOpus)
                                     {
@@ -6852,14 +6795,14 @@ namespace NekoPlayer.App.Screens
                                             .GetAudioOnlyStreams()
                                             .Where(s => s.AudioCodec.Contains("opus"))
                                             .TryGetWithHighestBitrate();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                     else
                                     {
                                         audioStreamInfo = streamManifest
                                             .GetAudioOnlyStreams()
                                             .First();
-                                        audioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
+                                        settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
                                     }
                                 }
                             }
@@ -6872,13 +6815,13 @@ namespace NekoPlayer.App.Screens
                                 videoStreamInfo = streamManifest
                                     .GetVideoOnlyStreams()
                                     .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
-                                    .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                                    .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                     .First();
 
                                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                                 onScreenDisplay.Display(toast);
-                                videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                                settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                             }
                             catch (Exception e)
                             {
@@ -6894,7 +6837,7 @@ namespace NekoPlayer.App.Screens
                                     ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                                     onScreenDisplay.Display(toast);
-                                    videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                                    settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                                 catch (Exception e2)
                                 {
@@ -6902,13 +6845,13 @@ namespace NekoPlayer.App.Screens
                                     // Select best video stream (1080p60 in this example)
                                     videoStreamInfo = streamManifest
                                         .GetVideoOnlyStreams()
-                                        .Where(s => s.VideoQuality.Label.Contains(videoQualitySettings.Current.Value))
+                                        .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                         .First();
 
                                     ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
 
                                     onScreenDisplay.Display(toast);
-                                    videoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
+                                    settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                             }
 
