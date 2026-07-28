@@ -3975,7 +3975,7 @@ namespace NekoPlayer.App.Screens
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.MoveToY(200);
-                overlayContent.MoveToY(0, 500, Easing.OutQuint);
+                overlayContent.MoveToY(0, 500, Easing.OutExpo);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 //overlayShowSample.Play();
             }
@@ -3992,7 +3992,7 @@ namespace NekoPlayer.App.Screens
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.MoveToX(200);
-                overlayContent.MoveToX(0, 500, Easing.OutQuint);
+                overlayContent.MoveToX(0, 500, Easing.OutExpo);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 //overlayShowSample.Play();
             }
@@ -4006,7 +4006,7 @@ namespace NekoPlayer.App.Screens
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.ScaleTo(0.8f);
-                overlayContent.ScaleTo(1f, 750, Easing.OutElastic);
+                overlayContent.ScaleTo(1f, 750, Easing.OutExpo);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 //overlayShowSample.Play();
             }
