@@ -76,7 +76,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             InternalChildren = new Drawable[]
             {
-                samples,
                 contents = new Container
                 {
                     Padding = new MarginPadding() { Left = commentData2 != null ? 48 : 0 },
@@ -288,8 +287,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private CommentThread commentData;
         private Comment commentData2;
 
-        private HoverSounds samples = new HoverClickSounds(HoverSampleSet.Default);
-
         private void translateComment()
         {
             if (translated == false)
@@ -317,13 +314,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         [Resolved]
         private GoogleTranslate translate { get; set; } = null!;
-
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-            if (samples is HoverClickSounds hoverClickSounds)
-                hoverClickSounds.Enabled.Value = (ClickEvent != null);
-        }
 
         private Container replyCountBox;
 

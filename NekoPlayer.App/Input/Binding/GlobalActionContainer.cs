@@ -73,7 +73,7 @@ namespace NekoPlayer.App.Input.Binding
 
             new KeyBinding(new[] { InputKey.Control, InputKey.O }, GlobalAction.OpenSettings),
             new KeyBinding(new[] { InputKey.Control, InputKey.D }, GlobalAction.OpenDescription),
-            new KeyBinding(new[] { InputKey.Control, InputKey.E }, GlobalAction.OpenComments),
+            new KeyBinding(new[] { InputKey.Alt, InputKey.C }, GlobalAction.OpenComments),
             new KeyBinding(new[] { InputKey.Alt, InputKey.A }, GlobalAction.OpenAudioEffects),
             new KeyBinding(new[] { InputKey.P }, GlobalAction.OpenPlaylist),
             new KeyBinding(new[] { InputKey.R }, GlobalAction.ReportAbuse),

@@ -1115,7 +1115,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
             if (game.IsDeployedBuild)
             {
-                gameVersion.AddLink(game.Version + $" ({NekoPlayerApp.KnownCodename})", $"https://github.com/BoomboxRapsody/NekoPlayer/releases/{game.Version}", tooltipText: NekoPlayerStrings.ViewChangelog(game.Version));
+                gameVersion.AddLink(game.Version, $"https://github.com/BoomboxRapsody/NekoPlayer/releases/{game.Version}", tooltipText: NekoPlayerStrings.ViewChangelog(game.Version));
             }
             else
             {

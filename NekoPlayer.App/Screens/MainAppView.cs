@@ -97,8 +97,6 @@ namespace NekoPlayer.App.Screens
         private VideoMetadataDisplay videoMetadataDisplayDetails;
         private RoundedButtonContainer commentOpenButtonDetails, likeButton;
 
-
-
         private string[] broWhat = new[]
         {
             @"cuayo",
@@ -265,6 +263,9 @@ namespace NekoPlayer.App.Screens
         private Bindable<float> captionBGOpacity;
 
         private CancellationTokenSource videoLoadProcess;
+
+        private bool commentTextBoxContainerFocused, searchTextBoxContainerFocused;
+        private Container commentTextBoxContainer, searchTextBoxContainer;
 
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
@@ -1526,7 +1527,7 @@ namespace NekoPlayer.App.Screens
                                         Right = 20,
                                     },
                                 },
-                                new Container
+                                commentTextBoxContainer = new Container
                                 {
                                     Margin = new MarginPadding
                                     {
@@ -1534,12 +1535,12 @@ namespace NekoPlayer.App.Screens
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 12,
+                                        Horizontal = 48,
                                     },
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Size = new Vector2(0.5f, 1f),
+                                    Size = new Vector2(0.55f, 1f),
                                     Height = 45,
                                     Children = new Drawable[]
                                     {
@@ -1678,7 +1679,7 @@ namespace NekoPlayer.App.Screens
                                         Right = 20,
                                     },
                                 },
-                                new Container
+                                searchTextBoxContainer = new Container
                                 {
                                     Margin = new MarginPadding
                                     {
@@ -1686,12 +1687,12 @@ namespace NekoPlayer.App.Screens
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 12,
+                                        Horizontal = 48,
                                     },
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Size = new Vector2(0.5f, 1f),
+                                    Size = new Vector2(0.55f, 1f),
                                     Height = 45,
                                     Children = new Drawable[]
                                     {
@@ -3972,7 +3973,7 @@ namespace NekoPlayer.App.Screens
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.MoveToY(200);
-                overlayContent.MoveToY(0, 500, Easing.OutQuint);
+                overlayContent.MoveToY(0, 500, Easing.OutExpo);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 //overlayShowSample.Play();
             }
@@ -3989,7 +3990,7 @@ namespace NekoPlayer.App.Screens
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.MoveToX(200);
-                overlayContent.MoveToX(0, 500, Easing.OutQuint);
+                overlayContent.MoveToX(0, 500, Easing.OutExpo);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 //overlayShowSample.Play();
             }
@@ -4003,7 +4004,7 @@ namespace NekoPlayer.App.Screens
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.Show();
                 overlayContent.ScaleTo(0.8f);
-                overlayContent.ScaleTo(1f, 750, Easing.OutElastic);
+                overlayContent.ScaleTo(1f, 750, Easing.OutExpo);
                 overlayContent.FadeInFromZero(250, Easing.OutQuart);
                 //overlayShowSample.Play();
             }
@@ -4906,6 +4907,11 @@ namespace NekoPlayer.App.Screens
         {
             this.playlists = playlists;
 
+            Schedule(async () =>
+            {
+                SetVideoSource(playlists[0].Snippet.ResourceId.VideoId);
+            });
+
             playlistItemViews.Clear();
 
             foreach (var item in playlistItemsView.Children)
@@ -4955,11 +4961,6 @@ namespace NekoPlayer.App.Screens
                     Logger.Error(e, e.GetDescription());
                 }
             }
-
-            Schedule(async () =>
-            {
-                SetVideoSource(playlists[0].Snippet.ResourceId.VideoId);
-            });
         }
 
         public void SetPlaylistInfo(Playlist playlist)
@@ -5015,6 +5016,20 @@ namespace NekoPlayer.App.Screens
             if (game.UseSystemCursor.Value == true)
             {
                 game.SetCursorVisibility(CursorVisible);
+            }
+
+            if (commentTextBoxContainerFocused != commentTextBox.HasFocus)
+            {
+                commentTextBoxContainerFocused = commentTextBox.HasFocus;
+                commentTextBoxContainer.TransformTo(nameof(Padding), commentTextBoxContainerFocused ? new MarginPadding { Horizontal = 32 } : new MarginPadding { Horizontal = 48 }, 1000, Easing.OutQuint);
+                commentTextBoxContainer.TransformTo(nameof(Margin), commentTextBoxContainerFocused ? new MarginPadding { Bottom = 16 } : new MarginPadding { Bottom = 12 }, 500, Easing.OutBack);
+            }
+
+            if (searchTextBoxContainerFocused != searchTextBox.HasFocus)
+            {
+                searchTextBoxContainerFocused = searchTextBox.HasFocus;
+                searchTextBoxContainer.TransformTo(nameof(Padding), searchTextBoxContainerFocused ? new MarginPadding { Horizontal = 32 } : new MarginPadding { Horizontal = 48 }, 1000, Easing.OutQuint);
+                searchTextBoxContainer.TransformTo(nameof(Margin), searchTextBoxContainerFocused ? new MarginPadding { Bottom = 16 } : new MarginPadding { Bottom = 12 }, 500, Easing.OutBack);
             }
 
             if (currentVideoSource != null)
