@@ -97,8 +97,6 @@ namespace NekoPlayer.App.Screens
         private VideoMetadataDisplay videoMetadataDisplayDetails;
         private RoundedButtonContainer commentOpenButtonDetails, likeButton;
 
-
-
         private string[] broWhat = new[]
         {
             @"cuayo",
@@ -5033,7 +5031,6 @@ namespace NekoPlayer.App.Screens
                 searchTextBoxContainer.TransformTo(nameof(Padding), searchTextBoxContainerFocused ? new MarginPadding { Horizontal = 32 } : new MarginPadding { Horizontal = 48 }, 1000, Easing.OutQuint);
                 searchTextBoxContainer.TransformTo(nameof(Margin), searchTextBoxContainerFocused ? new MarginPadding { Bottom = 16 } : new MarginPadding { Bottom = 12 }, 500, Easing.OutBack);
             }
-
 
             if (currentVideoSource != null)
             {
