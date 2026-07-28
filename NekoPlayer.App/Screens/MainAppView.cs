@@ -266,6 +266,9 @@ namespace NekoPlayer.App.Screens
 
         private CancellationTokenSource videoLoadProcess;
 
+        private bool commentTextBoxContainerFocused, searchTextBoxContainerFocused;
+        private Container commentTextBoxContainer, searchTextBoxContainer;
+
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
         {
@@ -1526,7 +1529,7 @@ namespace NekoPlayer.App.Screens
                                         Right = 20,
                                     },
                                 },
-                                new Container
+                                commentTextBoxContainer = new Container
                                 {
                                     Margin = new MarginPadding
                                     {
@@ -1534,12 +1537,12 @@ namespace NekoPlayer.App.Screens
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 12,
+                                        Horizontal = 48,
                                     },
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Size = new Vector2(0.5f, 1f),
+                                    Size = new Vector2(0.55f, 1f),
                                     Height = 45,
                                     Children = new Drawable[]
                                     {
@@ -1678,7 +1681,7 @@ namespace NekoPlayer.App.Screens
                                         Right = 20,
                                     },
                                 },
-                                new Container
+                                searchTextBoxContainer = new Container
                                 {
                                     Margin = new MarginPadding
                                     {
@@ -1686,12 +1689,12 @@ namespace NekoPlayer.App.Screens
                                     },
                                     Padding = new MarginPadding
                                     {
-                                        Horizontal = 12,
+                                        Horizontal = 48,
                                     },
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.X,
-                                    Size = new Vector2(0.5f, 1f),
+                                    Size = new Vector2(0.55f, 1f),
                                     Height = 45,
                                     Children = new Drawable[]
                                     {
@@ -5016,6 +5019,21 @@ namespace NekoPlayer.App.Screens
             {
                 game.SetCursorVisibility(CursorVisible);
             }
+
+            if (commentTextBoxContainerFocused != commentTextBox.HasFocus)
+            {
+                commentTextBoxContainerFocused = commentTextBox.HasFocus;
+                commentTextBoxContainer.TransformTo(nameof(Padding), commentTextBoxContainerFocused ? new MarginPadding { Horizontal = 32 } : new MarginPadding { Horizontal = 48 }, 1000, Easing.OutQuint);
+                commentTextBoxContainer.TransformTo(nameof(Margin), commentTextBoxContainerFocused ? new MarginPadding { Bottom = 16 } : new MarginPadding { Bottom = 12 }, 500, Easing.OutBack);
+            }
+
+            if (searchTextBoxContainerFocused != searchTextBox.HasFocus)
+            {
+                searchTextBoxContainerFocused = searchTextBox.HasFocus;
+                searchTextBoxContainer.TransformTo(nameof(Padding), searchTextBoxContainerFocused ? new MarginPadding { Horizontal = 32 } : new MarginPadding { Horizontal = 48 }, 1000, Easing.OutQuint);
+                searchTextBoxContainer.TransformTo(nameof(Margin), searchTextBoxContainerFocused ? new MarginPadding { Bottom = 16 } : new MarginPadding { Bottom = 12 }, 500, Easing.OutBack);
+            }
+
 
             if (currentVideoSource != null)
             {
