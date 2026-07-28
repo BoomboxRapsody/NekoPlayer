@@ -4907,6 +4907,11 @@ namespace NekoPlayer.App.Screens
         {
             this.playlists = playlists;
 
+            Schedule(async () =>
+            {
+                SetVideoSource(playlists[0].Snippet.ResourceId.VideoId);
+            });
+
             playlistItemViews.Clear();
 
             foreach (var item in playlistItemsView.Children)
@@ -4956,11 +4961,6 @@ namespace NekoPlayer.App.Screens
                     Logger.Error(e, e.GetDescription());
                 }
             }
-
-            Schedule(async () =>
-            {
-                SetVideoSource(playlists[0].Snippet.ResourceId.VideoId);
-            });
         }
 
         public void SetPlaylistInfo(Playlist playlist)
