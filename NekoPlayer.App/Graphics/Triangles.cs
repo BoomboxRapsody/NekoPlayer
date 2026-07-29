@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 using NekoPlayer.App.Graphics.UserInterfaceV2;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
