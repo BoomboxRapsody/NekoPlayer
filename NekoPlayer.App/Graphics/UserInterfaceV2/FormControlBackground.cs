@@ -82,7 +82,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public void Flash()
         {
-            box.FlashColour(ColourInfo.GradientVertical(colourProvider.Background5, colourProvider.Dark2), 800, Easing.OutQuint);
+            box.FlashColour(ColourInfo.GradientHorizontal(colourProvider.Background5, colourProvider.Dark2), 800, Easing.OutQuint);
         }
 
         private void updateStyle()
@@ -107,13 +107,13 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                     break;
 
                 case VisualStyle.Hovered:
-                    colour = ColourInfo.GradientVertical(colourProvider.Background5, colourProvider.Dark4);
+                    colour = ColourInfo.GradientHorizontal(colourProvider.Background5, colourProvider.Dark4);
                     borderColour = colourProvider.Light4;
                     border = true;
                     break;
 
                 case VisualStyle.Focused:
-                    colour = ColourInfo.GradientVertical(colourProvider.Background5, colourProvider.Dark3);
+                    colour = ColourInfo.GradientHorizontal(colourProvider.Background5, colourProvider.Dark3);
                     border = true;
                     borderColour = colourProvider.Highlight1;
                     break;
