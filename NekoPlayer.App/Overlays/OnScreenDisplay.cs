@@ -137,7 +137,7 @@ namespace NekoPlayer.App.Overlays
             if (fadeIn == null)
             {
                 fadeIn = toDisplay.Animate(
-                    b => b.BlurTo(new Vector2(0), 500, Easing.OutQuint),
+                    b => b.BlurTo(new Vector2(0), 250, Easing.OutExpo),
                     b => b.FadeIn(500, Easing.OutQuint),
                     b => b.ScaleTo(1f, 500, Easing.OutQuint)
                 );
