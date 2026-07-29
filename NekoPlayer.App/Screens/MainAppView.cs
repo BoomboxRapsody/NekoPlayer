@@ -5164,7 +5164,7 @@ namespace NekoPlayer.App.Screens
                         videoDescription.AddArbitraryDrawable(new UrlRedirectDisplay(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Mention:
-                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value));
+                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value), s => s.Font = s.Font.With(weight: "Bold"));
                         break;
                     case YouTubeDescriptionTokenType.Hashtag:
                         videoDescription.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value), s => s.Font = s.Font.With(weight: "Bold"));
