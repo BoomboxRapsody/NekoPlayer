@@ -6054,7 +6054,7 @@ namespace NekoPlayer.App.Screens
         {
             if ((showVideoMetadataOnWindowTitle.Value) && (videoData != null))
             {
-                game.RequestUpdateWindowTitle($"{TruncateWithEllipsis(api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId)), 40)} - {api.GetLocalizedVideoTitle(videoData)}");
+                game.RequestUpdateWindowTitle($"{TruncateWithEllipsis(api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId)), 40)} - {TruncateWithEllipsis(api.GetLocalizedVideoTitle(videoData), 50)}");
             }
             else
             {
