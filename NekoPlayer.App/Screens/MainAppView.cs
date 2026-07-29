@@ -458,7 +458,7 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        uiContainer = new BufferedContainer(pixelSnapping: true)
+                        uiContainer = new BufferedContainer
                         {
                             RelativeSizeAxes = Axes.Both,
                             Padding = new MarginPadding(8),
