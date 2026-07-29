@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 using osu.Framework.Extensions;
 using osu.Framework.IO.Stores;
 using SharpCompress.Archives;

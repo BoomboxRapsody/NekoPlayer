@@ -253,7 +253,7 @@ namespace NekoPlayer.App.Graphics.Spine
                         var vertex = new TexturedVertex2D(renderer)
                         {
                             Position = new Vector2(vertices[v], vertices[v + 1]),
-                            Colour = color,
+                            Colour = color.ToPremultiplied(),
                             //DarkColour = darkColor,
                             TexturePosition = new Vector2(uvs[v], uvs[v + 1]),
                             TextureRect = new Vector4(0, 0, 1, 1),

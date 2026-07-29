@@ -9,7 +9,6 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime;
 using System.Threading.Tasks;
-using NAudio.CoreAudioApi;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics;
 using NekoPlayer.App.Graphics.Caption;
@@ -919,13 +918,6 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Padding = new MarginPadding { Horizontal = 30, Vertical = 12 },
                                                             Colour = overlayColourProvider.Content2,
                                                         },
-                                                        systemMuteSwitchBase = new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.SystemMute,
-                                                            Icon = FontAwesome.Solid.VolumeMute,
-                                                            HintText = NekoPlayerStrings.SystemMuteDesc,
-                                                            Current = systemSoundMute,
-                                                        }),
                                                         volumeOptions = new FillFlowContainer
                                                         {
                                                             Direction = FillDirection.Vertical,
@@ -1216,66 +1208,6 @@ namespace NekoPlayer.App.Overlays.Containers
                 }
             }
 
-
-            systemSoundMute.BindValueChanged(_ =>
-            {
-                volumeOptions.ClearTransforms();
-                volumeOptions.AutoSizeDuration = 400;
-                volumeOptions.AutoSizeEasing = Easing.OutQuint;
-
-                updateVolumeSettingsVisibility();
-            });
-            updateVolumeSettingsVisibility();
-
-            #region System Volume
-            if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
-            {
-                MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
-                MMDevice defaultPlaybackDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-
-                if (defaultPlaybackDevice == null)
-                {
-                    systemSoundMute.Value = true;
-                    systemSoundMute.Disabled = true;
-                }
-                else
-                {
-                    systemVolume.Value = defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
-
-                    systemVolume.BindValueChanged(value =>
-                    {
-                        defaultPlaybackDevice.AudioEndpointVolume.MasterVolumeLevelScalar = Convert.ToSingle(value.NewValue);
-                    });
-
-                    systemSoundMute.Value = defaultPlaybackDevice.AudioEndpointVolume.Mute;
-
-                    systemSoundMute.BindValueChanged(value =>
-                    {
-                        defaultPlaybackDevice.AudioEndpointVolume.Mute = value.NewValue;
-                    });
-                }
-            }
-            else
-            {
-                systemMuteSwitchBase.Hide();
-            }
-            #endregion
-
-            void updateVolumeSettingsVisibility()
-            {
-                try
-                {
-                    //reverb
-                    if (systemSoundMute.Value == true)
-                        volumeOptions.ResizeHeightTo(0, 400, Easing.OutQuint);
-
-                    volumeOptions.AutoSizeAxes = systemSoundMute.Value != true ? Axes.Y : Axes.None;
-                }
-                catch
-                {
-                }
-            }
-
             audio.OnNewDevice += onAudioDeviceChanged;
             audio.OnLostDevice += onAudioDeviceChanged;
             audioDeviceDropdown.Current = audio.AudioDevice;
@@ -1497,16 +1429,6 @@ namespace NekoPlayer.App.Overlays.Containers
 
         [Resolved]
         private NekoPlayerApp game { get; set; }
-
-        private BindableDouble systemVolume = new BindableDouble
-        {
-            MaxValue = 1,
-            MinValue = 0,
-            Precision = 0.01,
-            Default = 1,
-        };
-
-        private Bindable<bool> systemSoundMute = new Bindable<bool>();
         private NekoPlayerSettingsTabBar settingsTabBar;
         private Bindable<SettingsNote.Data> discordNotInstalledNote = new Bindable<SettingsNote.Data>();
         private LinkFlowContainer dislikeCounterCredits, madeByText, gameVersion;

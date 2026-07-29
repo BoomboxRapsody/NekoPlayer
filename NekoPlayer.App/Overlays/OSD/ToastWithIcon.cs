@@ -110,7 +110,7 @@ namespace NekoPlayer.App.Overlays.OSD
             descriptionText.Origin = descriptionText.Anchor = (string.IsNullOrEmpty(extraText.Text.ToString())) ? Anchor.CentreLeft : Anchor.TopLeft;
             spriteIcon.Origin = spriteIcon.Anchor = (string.IsNullOrEmpty(extraText.Text.ToString())) ? Anchor.CentreLeft : Anchor.TopLeft;
             descriptionText.Colour = ValueSpriteText.Colour = spriteIcon.Colour = overlayColourProvider.Content2;
-            background.Colour = overlayColourProvider.Background5;
+            background.Colour = overlayColourProvider.Background4;
             extraText.Colour = overlayColourProvider.Background1;
         }
     }

@@ -88,7 +88,6 @@ namespace NekoPlayer.App.Screens
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.BLUR));
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_3, FragmentShaderDescriptor.TEXTURE));
 
-                loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, @"TriangleBorder"));
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, @"ChromaticAberration"));
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, @"Greyscale"));
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, @"HueShift"));

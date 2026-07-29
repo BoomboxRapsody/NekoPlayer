@@ -58,7 +58,7 @@ namespace NekoPlayer.App.Overlays.OSD
         [BackgroundDependencyLoader]
         private void load()
         {
-            background.Colour = overlayColourProvider.Background5;
+            background.Colour = overlayColourProvider.Background4;
         }
     }
 }

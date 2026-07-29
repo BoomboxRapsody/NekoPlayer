@@ -140,6 +140,14 @@ namespace NekoPlayer.App.Config
             notoSansOriya.AddInstance(@"NotoSansOriya-SemiBold");
             notoSansOriya.AddInstance(@"NotoSansOriya-Light");
 
+            var notoSansLao = game.AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansLao");
+            notoSansLao.AddInstance(@"NotoSansLao-Regular");
+            notoSansLao.AddInstance(@"NotoSansLao-Black");
+            notoSansLao.AddInstance(@"NotoSansLao-ExtraBold");
+            notoSansLao.AddInstance(@"NotoSansLao-Bold");
+            notoSansLao.AddInstance(@"NotoSansLao-SemiBold");
+            notoSansLao.AddInstance(@"NotoSansLao-Light");
+
             var notoSansKR = game.AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansKR");
             notoSansKR.AddInstance(@"NotoSansKR-Regular");
             notoSansKR.AddInstance(@"NotoSansKR-Black");
@@ -195,7 +203,20 @@ namespace NekoPlayer.App.Config
             NotoSansThai.AddInstance(@"NotoSansThai-Bold");
             NotoSansThai.AddInstance(@"NotoSansThai-SemiBold");
             NotoSansThai.AddInstance(@"NotoSansThai-Light");
+
+            var NotoSansBengali = game.AddVariableFont(Resources, @"Fonts/UIFonts/NotoSansBengali");
+            NotoSansBengali.AddInstance(@"NotoSansBengali-Regular");
+            NotoSansBengali.AddInstance(@"NotoSansBengali-Black");
+            NotoSansBengali.AddInstance(@"NotoSansBengali-ExtraBold");
+            NotoSansBengali.AddInstance(@"NotoSansBengali-Bold");
+            NotoSansBengali.AddInstance(@"NotoSansBengali-SemiBold");
+            NotoSansBengali.AddInstance(@"NotoSansBengali-Light");
+
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/NotoSansYi");
             #endregion
+
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/DejaVuSans-Regular");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/DejaVuSans-Bold");
 
             var clockFont = game.AddVariableFont(Resources, @"Fonts/UIFonts/InflateVF");
             clockFont.AddInstance(

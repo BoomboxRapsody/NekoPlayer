@@ -29,7 +29,7 @@ namespace NekoPlayer.App.Overlays
     /// </summary>
     public partial class OnScreenDisplay : Container
     {
-        private readonly Container box;
+        private readonly BufferedContainer box;
 
         private const float height = 65;
 
@@ -43,7 +43,7 @@ namespace NekoPlayer.App.Overlays
 
             Children = new Drawable[]
             {
-                box = new Container
+                box = new BufferedContainer
                 {
                     Origin = Anchor.Centre,
                     RelativePositionAxes = Axes.Both,
@@ -54,13 +54,7 @@ namespace NekoPlayer.App.Overlays
                     Alpha = 0,
                     CornerRadius = height / 2,
                     Scale = new Vector2(0.9f),
-                    EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                    {
-                        Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                        Colour = Color4.Black.Opacity(0.25f),
-                        Offset = new Vector2(0, 2),
-                        Radius = 16,
-                    }
+                    BlurSigma = new Vector2(15),
                 },
             };
         }
@@ -134,15 +128,16 @@ namespace NekoPlayer.App.Overlays
 
         private void displayTrackedSettingChange(SettingDescription description) => Scheduler.AddOnce(Display, new TrackedSettingToast(description));
 
-        private TransformSequence<Drawable> fadeIn;
+        private TransformSequence<BufferedContainer> fadeIn;
         private ScheduledDelegate fadeOut;
 
-        protected virtual void DisplayTemporarily(Drawable toDisplay)
+        protected virtual void DisplayTemporarily(BufferedContainer toDisplay)
         {
             // avoid starting a new fade-in if one is already active.
             if (fadeIn == null)
             {
                 fadeIn = toDisplay.Animate(
+                    b => b.BlurTo(new Vector2(0), 500, Easing.OutQuint),
                     b => b.FadeIn(500, Easing.OutQuint),
                     b => b.ScaleTo(1f, 500, Easing.OutQuint)
                 );
@@ -154,6 +149,7 @@ namespace NekoPlayer.App.Overlays
             fadeOut = Scheduler.AddDelayed(() =>
             {
                 toDisplay.Animate(
+                    b => b.BlurTo(new Vector2(15), 250, Easing.OutQuint),
                     b => b.FadeOutFromOne(250, Easing.OutQuint),
                     b => b.ScaleTo(.9f, 250, Easing.OutQuint)
                 );

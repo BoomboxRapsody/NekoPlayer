@@ -4,6 +4,7 @@
 using System;
 using System.Runtime.InteropServices;
 using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Rendering;
@@ -98,7 +99,7 @@ namespace NekoPlayer.App.Graphics
                     TexturePosition = new Vector2(0, 1),
                     TextureRect = drawRectangle,
                     BlendRange = blend,
-                    Colour = DrawColourInfo.Colour.BottomLeft.SRGB,
+                    Colour = DrawColourInfo.Colour.BottomLeft.SRGB.ToPremultiplied(),
                 });
                 vertexAction(new TexturedVertex2D(renderer)
                 {
@@ -106,7 +107,7 @@ namespace NekoPlayer.App.Graphics
                     TexturePosition = new Vector2(1, 1),
                     TextureRect = drawRectangle,
                     BlendRange = blend,
-                    Colour = DrawColourInfo.Colour.BottomRight.SRGB,
+                    Colour = DrawColourInfo.Colour.BottomRight.SRGB.ToPremultiplied(),
                 });
                 vertexAction(new TexturedVertex2D(renderer)
                 {
@@ -114,7 +115,7 @@ namespace NekoPlayer.App.Graphics
                     TexturePosition = new Vector2(1, 0),
                     TextureRect = drawRectangle,
                     BlendRange = blend,
-                    Colour = DrawColourInfo.Colour.TopRight.SRGB,
+                    Colour = DrawColourInfo.Colour.TopRight.SRGB.ToPremultiplied(),
                 });
                 vertexAction(new TexturedVertex2D(renderer)
                 {
@@ -122,7 +123,7 @@ namespace NekoPlayer.App.Graphics
                     TexturePosition = Vector2.Zero,
                     TextureRect = drawRectangle,
                     BlendRange = blend,
-                    Colour = DrawColourInfo.Colour.TopLeft.SRGB,
+                    Colour = DrawColourInfo.Colour.TopLeft.SRGB.ToPremultiplied(),
                 });
 
                 shader.Unbind();

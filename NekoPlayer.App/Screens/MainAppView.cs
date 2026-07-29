@@ -86,7 +86,7 @@ namespace NekoPlayer.App.Screens
         private NekoPlayerLoadingSpinner spinner;
         private ScheduledDelegate spinnerShow;
         private IdleTracker idleTracker;
-        private Container uiContainer;
+        private BufferedContainer uiContainer;
         private DrawSizePreservingFillContainer uiGradientContainer;
         private SettingsContainer settingsContainer;
         private OverlayContainer loadVideoContainer, videoDescriptionContainer, commentsContainer, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
@@ -458,7 +458,7 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        uiContainer = new Container
+                        uiContainer = new BufferedContainer
                         {
                             RelativeSizeAxes = Axes.Both,
                             Padding = new MarginPadding(8),
@@ -1033,6 +1033,21 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(loadVideoContainer);
+                                    }
+                                },
                                 loadBtn = new RoundedButton
                                 {
                                     Enabled = { Value = true },
@@ -1507,6 +1522,21 @@ namespace NekoPlayer.App.Screens
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
                                     Height = 56 + 20,
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(commentsContainer);
+                                    }
+                                },
                                 commentsContainerTitle = new AdaptiveSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
@@ -1524,7 +1554,7 @@ namespace NekoPlayer.App.Screens
                                     Margin = new MarginPadding()
                                     {
                                         Top = 15,
-                                        Right = 20,
+                                        Right = 20 + 35,
                                     },
                                 },
                                 commentTextBoxContainer = new Container
@@ -1668,6 +1698,21 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(searchContainer);
+                                    }
+                                },
                                 new OverlaySortTabControl<SearchSortCriteria>
                                 {
                                     Origin = Anchor.TopRight,
@@ -1676,7 +1721,7 @@ namespace NekoPlayer.App.Screens
                                     Margin = new MarginPadding()
                                     {
                                         Top = 15,
-                                        Right = 20,
+                                        Right = 20 + 35,
                                     },
                                 },
                                 searchTextBoxContainer = new Container
@@ -1837,6 +1882,21 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
+                                },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(reportAbuseOverlay);
+                                    }
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -3818,6 +3878,7 @@ namespace NekoPlayer.App.Screens
                     isControlVisible = false;
                     uiContainer.FadeOutFromOne(250);
                     uiGradientContainer.FadeOutFromOne(250);
+                    uiContainer.BlurTo(new Vector2(4), 250);
                     sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
                 }
             }
@@ -3880,6 +3941,7 @@ namespace NekoPlayer.App.Screens
                 isControlVisible = true;
                 uiContainer.FadeInFromZero(125);
                 uiGradientContainer.FadeInFromZero(125);
+                uiContainer.BlurTo(new Vector2(0), 125);
                 sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = true;
             }
         }
@@ -3964,13 +4026,10 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                if (overlayContent.DrawHeight >= 450)
-                {
-                    videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                    videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                }
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
+                overlayContent.BlurTo(new Vector2(15));
+                overlayContent.BlurTo(Vector2.Zero, 500, Easing.OutExpo);
                 overlayContent.Show();
                 overlayContent.MoveToY(200);
                 overlayContent.MoveToY(0, 500, Easing.OutExpo);
@@ -3981,13 +4040,10 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                if (overlayContent.DrawWidth >= 600)
-                {
-                    videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                    videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                }
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
+                overlayContent.BlurTo(new Vector2(15));
+                overlayContent.BlurTo(Vector2.Zero, 500, Easing.OutExpo);
                 overlayContent.Show();
                 overlayContent.MoveToX(200);
                 overlayContent.MoveToX(0, 500, Easing.OutExpo);
@@ -4054,10 +4110,9 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
+                overlayContent.BlurTo(new Vector2(15), 500, Easing.OutExpo);
                 overlayContent.MoveToY(200, 500, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
             }
@@ -4066,10 +4121,9 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
+                overlayContent.BlurTo(new Vector2(15), 500, Easing.OutExpo);
                 overlayContent.MoveToX(200, 500, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
             }
@@ -4078,10 +4132,9 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
+                overlayContent.BlurTo(new Vector2(15), 500, Easing.OutExpo);
                 overlayContent.ScaleTo(0.8f, 250, Easing.OutQuart);
                 overlayContent.FadeOutFromOne(250, Easing.OutQuart);
             }
@@ -5111,10 +5164,10 @@ namespace NekoPlayer.App.Screens
                         videoDescription.AddArbitraryDrawable(new UrlRedirectDisplay(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Mention:
-                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value));
+                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value), s => s.Font = s.Font.With(weight: "Bold"));
                         break;
                     case YouTubeDescriptionTokenType.Hashtag:
-                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value));
+                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value), s => s.Font = s.Font.With(weight: "Bold"));
                         break;
                     case YouTubeDescriptionTokenType.Timestamp:
                         videoDescription.AddArbitraryDrawable(new TimestampButton(item.Value)
@@ -6001,7 +6054,7 @@ namespace NekoPlayer.App.Screens
         {
             if ((showVideoMetadataOnWindowTitle.Value) && (videoData != null))
             {
-                game.RequestUpdateWindowTitle($"{TruncateWithEllipsis(api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId)), 40)} - {api.GetLocalizedVideoTitle(videoData)}");
+                game.RequestUpdateWindowTitle($"{TruncateWithEllipsis(api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId)), 40)} - {TruncateWithEllipsis(api.GetLocalizedVideoTitle(videoData), 50)}");
             }
             else
             {
