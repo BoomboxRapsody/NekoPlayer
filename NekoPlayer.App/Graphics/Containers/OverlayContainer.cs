@@ -12,7 +12,7 @@ namespace NekoPlayer.App.Graphics.Containers
     /// <summary>
     /// An element which starts hidden and can be toggled to visible.
     /// </summary>
-    public partial class OverlayContainer : Container
+    public partial class OverlayContainer : BufferedContainer
     {
         /// <summary>
         /// Whether we should block any positional input from interacting with things behind us.
@@ -32,6 +32,12 @@ namespace NekoPlayer.App.Graphics.Containers
         /// Whether we should block any non-positional input from interacting with things behind us.
         /// </summary>
         protected virtual bool BlockNonPositionalInput => false;
+
+        public OverlayContainer()
+            : base(pixelSnapping: true)
+        {
+
+        }
 
         public override bool BuildNonPositionalInputQueue(List<Drawable> queue, bool allowBlocking = true)
         {

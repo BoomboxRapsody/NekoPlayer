@@ -73,7 +73,11 @@ namespace NekoPlayer.App.Graphics
 
                     stream.ReadExactly(memory.Memory.Span);
 
-                    return new TextureUpload(Image.WrapMemory<Rgba32>(memory, 50, 50));
+                    var image = Image.LoadPixelData<Rgba32>(memory.Memory.Span, 50, 50);
+
+                    memory.Dispose();
+
+                    return new TextureUpload(PremultipliedImage.FromStraight(image));
                 }
 
                 return null!;
