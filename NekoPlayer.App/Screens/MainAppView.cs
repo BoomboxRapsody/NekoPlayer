@@ -4026,11 +4026,6 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                if (overlayContent.DrawHeight >= 450)
-                {
-                    videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                    videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                }
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.BlurTo(new Vector2(15));
@@ -4045,11 +4040,6 @@ namespace NekoPlayer.App.Screens
             {
                 isAnyOverlayOpen.Value = true;
                 overlayContent.IsVisible = true;
-                if (overlayContent.DrawWidth >= 600)
-                {
-                    videoScalingContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                    videoContainer?.BlurTo(new Vector2(4), 250, Easing.OutQuart);
-                }
                 //videoContainer.ScaleTo(1.03f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
                 overlayContent.BlurTo(new Vector2(15));
@@ -4120,8 +4110,6 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.BlurTo(new Vector2(15), 500, Easing.OutExpo);
@@ -4133,8 +4121,6 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.BlurTo(new Vector2(15), 500, Easing.OutExpo);
@@ -4146,8 +4132,6 @@ namespace NekoPlayer.App.Screens
                 overlayContent.IsVisible = false;
                 isAnyOverlayOpen.Value = false;
                 //overlayHideSample.Play();
-                videoScalingContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
-                videoContainer?.BlurTo(new Vector2(0), 250, Easing.OutQuart);
                 //videoContainer.ScaleTo(1f, 250, Easing.OutQuart);
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
                 overlayContent.BlurTo(new Vector2(15), 500, Easing.OutExpo);
@@ -5183,7 +5167,7 @@ namespace NekoPlayer.App.Screens
                         videoDescription.AddLink(item.Value, $"https://www.youtube.com/{item.Value}", NekoPlayerStrings.YouTubeHandleViewProfile(item.Value));
                         break;
                     case YouTubeDescriptionTokenType.Hashtag:
-                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value));
+                        videoDescription.AddLink(item.Value, $"https://www.youtube.com/hashtag/{item.Value.Replace("#", string.Empty)}", NekoPlayerStrings.Hashtag(item.Value), s => s.Font = s.Font.With(weight: "Bold"));
                         break;
                     case YouTubeDescriptionTokenType.Timestamp:
                         videoDescription.AddArbitraryDrawable(new TimestampButton(item.Value)
