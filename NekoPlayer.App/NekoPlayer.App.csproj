@@ -9,14 +9,12 @@
     <ProjectReference Include="..\osu-framework\osu.Framework/osu.Framework.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.2" />
     <PackageReference Include="Crypto.AES" Version="1.0.4" />
     <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
     <PackageReference Include="Google.Apis.Auth" Version="1.75.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.74.0.1869" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
-    <PackageReference Include="NAudio" Version="2.3.0" />
-    <PackageReference Include="NReco.VideoInfo" Version="1.2.1" />
     <PackageReference Include="Selenium.WebDriver" Version="4.46.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="150.0.7871.12400" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.10" />
@@ -27,7 +25,6 @@
     <PackageReference Include="McEndu.FreeTypeSharp" Version="4.1.5" />
     <PackageReference Include="YoutubeExplode" Version="6.6.0" />
     <PackageReference Include="YoutubeExplode.Converter" Version="6.6.0" />
-    <PackageReference Include="OSVersionExt" Version="4.1.0" />
     <PackageReference Include="Sentry" Version="6.7.0" />
     <PackageReference Include="Lazy.Fody" PrivateAssets="all" Version="1.11.0" />
     <PackageReference Include="ppy.LocalisationAnalyser" Version="2026.611.0">
