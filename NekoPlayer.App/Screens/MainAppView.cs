@@ -1033,6 +1033,21 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(loadVideoContainer);
+                                    }
+                                },
                                 loadBtn = new RoundedButton
                                 {
                                     Enabled = { Value = true },
@@ -1507,6 +1522,21 @@ namespace NekoPlayer.App.Screens
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
                                     Height = 56 + 20,
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(commentsContainer);
+                                    }
+                                },
                                 commentsContainerTitle = new AdaptiveSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
@@ -1524,7 +1554,7 @@ namespace NekoPlayer.App.Screens
                                     Margin = new MarginPadding()
                                     {
                                         Top = 15,
-                                        Right = 20,
+                                        Right = 20 + 35,
                                     },
                                 },
                                 commentTextBoxContainer = new Container
@@ -1668,6 +1698,21 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(searchContainer);
+                                    }
+                                },
                                 new OverlaySortTabControl<SearchSortCriteria>
                                 {
                                     Origin = Anchor.TopRight,
@@ -1676,7 +1721,7 @@ namespace NekoPlayer.App.Screens
                                     Margin = new MarginPadding()
                                     {
                                         Top = 15,
-                                        Right = 20,
+                                        Right = 20 + 35,
                                     },
                                 },
                                 searchTextBoxContainer = new Container
@@ -1837,6 +1882,21 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
+                                },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background4,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(reportAbuseOverlay);
+                                    }
                                 },
                                 new AdaptiveSpriteText
                                 {
