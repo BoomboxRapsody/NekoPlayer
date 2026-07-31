@@ -99,7 +99,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 icon = new SpriteIcon
                                 {
                                     Size = new osuTK.Vector2(12),
-                                    Margin = new MarginPadding(4),
+                                    Margin = new MarginPadding(6),
                                 },
                                 new FillFlowContainer
                                 {
