@@ -12,8 +12,6 @@ using HtmlAgilityPack;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Online;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
