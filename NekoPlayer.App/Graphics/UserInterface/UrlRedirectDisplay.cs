@@ -23,9 +23,6 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Framework.Platform;
 using osuTK.Graphics;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using Vortice.Win32;
 using YoutubeExplode.Playlists;
 using YoutubeExplode.Videos;
 
