@@ -73,7 +73,7 @@ void main(void)
 
     highp float alpha = blendRange.x == 0.0 ? float(dst < 0.0) : (clamp(-dst, 0.0, blendRange.x) / blendRange.x);
 
-    o_Colour = getRoundedColor(vec4(vec3(1.0), alpha), vec2(0.0));
+    o_Colour = getRoundedColor(vec4(alpha), vec2(0.0));
 }
 
 #endif
