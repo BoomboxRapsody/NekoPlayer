@@ -839,7 +839,7 @@
     <value>자막 배경의 투명도</value>
   </data>
   <data name="closed_captions_preview" xml:space="preserve">
-    <value>자막이 이렇게 표시됩니다.</value>
+    <value>자막은 지금 보이는 것처럼 표시됩니다.</value>
   </data>
   <data name="like_button" xml:space="preserve">
     <value>이 동영상이 마음에 듭니다.</value>
