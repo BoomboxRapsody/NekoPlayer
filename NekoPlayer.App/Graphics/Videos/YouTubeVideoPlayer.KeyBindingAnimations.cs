@@ -80,6 +80,7 @@ namespace NekoPlayer.App.Graphics.Videos
                 private SeekAction trackAction;
                 private SpriteIcon seekArrow;
                 private AdaptiveSpriteText seekValue;
+                private BufferedContainer seekArrowContainer;
 
                 private Container content;
                 public int RepeatCount = 0;
@@ -104,7 +105,7 @@ namespace NekoPlayer.App.Graphics.Videos
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = ColourInfo.GradientHorizontal(Color4.Black.Opacity(0.5f), Color4.Black.Opacity(0f)),
                                 },
-                                new Container
+                                seekArrowContainer = new BufferedContainer
                                 {
                                     AutoSizeAxes = Axes.Both,
                                     Anchor = Anchor.Centre,
@@ -147,7 +148,7 @@ namespace NekoPlayer.App.Graphics.Videos
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = ColourInfo.GradientHorizontal(Color4.Black.Opacity(0f), Color4.Black.Opacity(0.5f)),
                                 },
-                                new Container
+                                seekArrowContainer = new BufferedContainer
                                 {
                                     AutoSizeAxes = Axes.Both,
                                     Anchor = Anchor.Centre,
@@ -230,7 +231,7 @@ namespace NekoPlayer.App.Graphics.Videos
                     if (trackAction != SeekAction.PlayPause)
                     {
                         content.FadeOut(250, Easing.In);
-                        this.BlurTo(new osuTK.Vector2(2), 250, Easing.In);
+                        seekArrowContainer.BlurTo(new osuTK.Vector2(2), 250, Easing.In);
                         using (BeginDelayedSequence(250))
                         {
                             seekArrow.ScaleTo(new osuTK.Vector2(0.8f, 1));
@@ -253,8 +254,8 @@ namespace NekoPlayer.App.Graphics.Videos
                     if (trackAction != SeekAction.PlayPause)
                     {
                         RepeatCount += 5;
-                        this.BlurTo(new osuTK.Vector2(2));
-                        this.BlurTo(new osuTK.Vector2(0), 250, Easing.Out);
+                        seekArrowContainer.BlurTo(new osuTK.Vector2(2));
+                        seekArrowContainer.BlurTo(new osuTK.Vector2(0), 250, Easing.Out);
                         content.FadeInFromZero(250, Easing.Out);
                         seekArrow.ScaleTo(new osuTK.Vector2(0.7f, 1));
                         if (trackAction == SeekAction.FastRewind10sec)

@@ -42,6 +42,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 new CircularContainer
                 {
                     AutoSizeAxes = Axes.Both,
+                    Masking = true,
                     Children = new Drawable[]
                     {
                         new Box

@@ -14,7 +14,6 @@
     <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
     <PackageReference Include="Google.Apis.Auth" Version="1.75.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.74.0.1869" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.10" />
     <PackageReference Include="SharpCompress" Version="0.50.1" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.75.0.4207" />
