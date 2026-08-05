@@ -1019,10 +1019,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -1145,10 +1144,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -1413,10 +1411,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -1638,10 +1635,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -1792,10 +1788,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -1921,10 +1916,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.CentreRight,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -2037,10 +2031,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.CentreRight,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -2127,10 +2120,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -2181,10 +2173,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.CentreRight,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -2443,10 +2434,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 youtubeChannelMetadataDisplay = new YouTubeChannelMetadataDisplay
                                 {
@@ -2501,10 +2491,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -2625,10 +2614,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -2732,10 +2720,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -2844,10 +2831,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.CentreRight,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -3085,10 +3071,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.CentreRight,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new AdaptiveSpriteText
                                 {
@@ -3157,10 +3142,9 @@ namespace NekoPlayer.App.Screens
                             Anchor = Anchor.BottomCentre,
                             Children = new Drawable[]
                             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new AdaptiveSpriteText
                                 {

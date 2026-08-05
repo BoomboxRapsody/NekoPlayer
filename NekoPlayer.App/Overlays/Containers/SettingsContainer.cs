@@ -32,6 +32,7 @@ using osu.Framework.Extensions.ObjectExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Rendering.LowLatency;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
@@ -125,6 +126,7 @@ namespace NekoPlayer.App.Overlays.Containers
         public Action CheckUpdateAction;
         private readonly BindableBool displayDropdownCanBeShown = new BindableBool(true);
         private FillFlowContainer<SettingsItemV2> scalingSettings = null!;
+        private FormEnumDropdown<LatencyMode>? reflexSetting;
 
         private void onAudioDeviceChanged(string _)
         {
@@ -183,7 +185,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
         public FormButton CheckForUpdatesButton;
 
-        private SettingsItemV2 checkForUpdatesButtonCore, captionLangOptions;
+        private SettingsItemV2 checkForUpdatesButtonCore, captionLangOptions, reflexSettingBase;
         private Bindable<UsernameDisplayMode> usernameDisplayMode;
 
         private Bindable<UIFont> ui_font;
@@ -349,6 +351,9 @@ namespace NekoPlayer.App.Overlays.Containers
             sizeWindowed = config.GetBindable<Size>(FrameworkSetting.WindowedSize);
             window = host.Window;
 
+            var reflexMode = config.GetBindable<LatencyMode>(FrameworkSetting.LatencyMode);
+            var frameSyncMode = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync);
+
             captionEnabled = appConfig.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
 
             audioLanguage = appConfig.GetBindable<Localisation.Language>(NekoPlayerSetting.AudioLanguage);
@@ -394,10 +399,9 @@ namespace NekoPlayer.App.Overlays.Containers
             Anchor = Anchor.CentreRight;
             Children = new Drawable[]
             {
-                                new Box
+                                new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = overlayColourProvider.Background5,
                                 },
                                 new Container
                                 {
@@ -581,7 +585,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             Caption = NekoPlayerStrings.FrameLimiter,
                                                             Icon = FontAwesome.Solid.SlidersH,
-                                                            Current = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync),
+                                                            Current = frameSyncMode,
                                                             Hotkey = new Hotkey(new KeyCombination(new [] { InputKey.Control, InputKey.F7 }))
                                                         }),
                                                         windowModeDropdownSettings = new SettingsItemV2(windowModeDropdown = new WindowModeDropdown
@@ -644,6 +648,16 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             #pragma warning restore CS0612 // Type or member is obsolete
                                                             HintText = NekoPlayerStrings.SettingsItem_RestartRequired,
                                                         }),
+                                                        reflexSettingBase = new SettingsItemV2(reflexSetting = new ReflexDropdown
+                                                        {
+                                                            Caption = "NVIDIA Reflex",
+                                                            Icon = FontAwesome.Solid.Bolt,
+                                                            Current = reflexMode,
+                                                            HintText = NekoPlayerStrings.ReflexHint,
+                                                        })
+                                                        {
+                                                            Note = { BindTarget = reflexNotice }
+                                                        },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowFPS,
@@ -1158,6 +1172,25 @@ namespace NekoPlayer.App.Overlays.Containers
             });
             updateScalingModeVisibility();
 
+            // Ensure NVIDIA reflex is turned off and hidden if the resolved renderer isn't Direct3D 11
+            if (host.ResolvedRenderer is not (RendererType.Deferred_Direct3D11 or RendererType.Direct3D11))
+            {
+                reflexMode.Value = LatencyMode.Off;
+                reflexSettingBase.Hide();
+            }
+
+            // Disable frame limiter if reflex is enabled and add notice when reflex boost is enabled
+            reflexMode.BindValueChanged(r =>
+            {
+                frameSyncMode.Disabled = r.NewValue != LatencyMode.Off;
+
+                //reflexSetting.ClearNoticeText();
+                reflexNotice.Value = null;
+
+                if (r.NewValue == LatencyMode.Boost)
+                    setReflexBoostNotice();
+            }, true);
+
             captionEnabled.BindValueChanged(enabled =>
             {
                 if (enabled.NewValue)
@@ -1344,6 +1377,8 @@ namespace NekoPlayer.App.Overlays.Containers
             }
         }
 
+        private void setReflexBoostNotice() => reflexNotice.Value = new SettingsNote.Data(NekoPlayerStrings.ReflexNotice, SettingsNote.Type.Informational);
+
         private Bindable<double> windowedPositionX = null!;
         private Bindable<double> windowedPositionY = null!;
         private Bindable<ScalingMode> scalingMode = null!;
@@ -1353,6 +1388,7 @@ namespace NekoPlayer.App.Overlays.Containers
         private bool automaticRendererInUse;
         private FormCheckBox hwAccelCheckbox;
         private Bindable<SettingsNote.Data> hwAccelNote = new Bindable<SettingsNote.Data>();
+        private Bindable<SettingsNote.Data> reflexNotice = new Bindable<SettingsNote.Data>();
 
         private void updateDisplaySettingsVisibility()
         {

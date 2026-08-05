@@ -24,8 +24,8 @@ namespace NekoPlayer.App.Graphics
     {
         public const string FONT_NAME = @"Emoji";
 
-        public EmojiStore(IRenderer renderer, ResourceStore<byte[]> resourceStore)
-            : base(renderer, new EmojiTextureLoaderStore(resourceStore))
+        public EmojiStore(IRenderer renderer, TextureAtlas textureAtlas, ResourceStore<byte[]> resourceStore)
+            : base(renderer, textureAtlas, new EmojiTextureLoaderStore(resourceStore))
         {
         }
 

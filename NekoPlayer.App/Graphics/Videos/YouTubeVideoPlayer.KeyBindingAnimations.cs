@@ -75,7 +75,7 @@ namespace NekoPlayer.App.Graphics.Videos
                 }
             }
 
-            private partial class SeekAnimation : Container
+            private partial class SeekAnimation : BufferedContainer
             {
                 private SeekAction trackAction;
                 private SpriteIcon seekArrow;
@@ -230,6 +230,7 @@ namespace NekoPlayer.App.Graphics.Videos
                     if (trackAction != SeekAction.PlayPause)
                     {
                         content.FadeOut(250, Easing.In);
+                        this.BlurTo(new osuTK.Vector2(2), 250, Easing.In);
                         using (BeginDelayedSequence(250))
                         {
                             seekArrow.ScaleTo(new osuTK.Vector2(0.8f, 1));
@@ -252,6 +253,8 @@ namespace NekoPlayer.App.Graphics.Videos
                     if (trackAction != SeekAction.PlayPause)
                     {
                         RepeatCount += 5;
+                        this.BlurTo(new osuTK.Vector2(2));
+                        this.BlurTo(new osuTK.Vector2(0), 250, Easing.Out);
                         content.FadeInFromZero(250, Easing.Out);
                         seekArrow.ScaleTo(new osuTK.Vector2(0.7f, 1));
                         if (trackAction == SeekAction.FastRewind10sec)
@@ -278,12 +281,15 @@ namespace NekoPlayer.App.Graphics.Videos
                     }
                     else
                     {
+                        this.BlurTo(new osuTK.Vector2(2));
+                        this.BlurTo(new osuTK.Vector2(0), 500, Easing.OutQuint);
                         content.FadeInFromZero(500, Easing.OutQuint);
                         content.ScaleTo(new osuTK.Vector2(.9f)).ScaleTo(new osuTK.Vector2(1.5f), 250, Easing.OutQuint);
                         using (BeginDelayedSequence(750))
                         {
                             content.FadeOut(500, Easing.OutQuint);
                             content.ScaleTo(new osuTK.Vector2(.9f), 250, Easing.OutQuint);
+                            this.BlurTo(new osuTK.Vector2(2), 250, Easing.OutQuint);
                         }
                     }
                 }

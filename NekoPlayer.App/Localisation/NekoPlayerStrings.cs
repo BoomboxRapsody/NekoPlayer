@@ -1344,6 +1344,33 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString Updates => new TranslatableString(getKey(@"updates"), "Updates");
 
+        /// <summary>
+        /// "Reduces latency by leveraging the NVIDIA Reflex API on NVIDIA GPUs.\nRecommended to have On, turn Off only if experiencing issues."
+        /// </summary>
+        public static LocalisableString ReflexHint => new TranslatableString(getKey(@"reflex_hint"),
+            "Reduces latency by leveraging the NVIDIA Reflex API on NVIDIA GPUs." +
+            "Recommended to have On, turn Off only if experiencing issues.");
+
+        /// <summary>
+        /// "Boost increases GPU power consumption and may increase latency in some cases. Disable Boost if experiencing issues."
+        /// </summary>
+        public static LocalisableString ReflexNotice => new TranslatableString(getKey(@"reflex_notice"), "Boost increases GPU power consumption and may increase latency in some cases. Disable Boost if experiencing issues.");
+
+        /// <summary>
+        /// "Off"
+        /// </summary>
+        public static LocalisableString ReflexOff => new TranslatableString(getKey(@"reflex_off"), "Off");
+
+        /// <summary>
+        /// "On"
+        /// </summary>
+        public static LocalisableString ReflexOn => new TranslatableString(getKey(@"reflex_on"), "On");
+
+        /// <summary>
+        /// "Boost"
+        /// </summary>
+        public static LocalisableString ReflexBoost => new TranslatableString(getKey(@"reflex_boost"), "Boost");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
