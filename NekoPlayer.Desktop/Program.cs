@@ -1,10 +1,12 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using System;
 using NekoPlayer.Desktop.LowLatency;
 using osu.Framework;
 using osu.Framework.Development;
 using osu.Framework.Platform;
+using SDL;
 using Velopack;
 
 namespace NekoPlayer.Desktop
@@ -16,6 +18,14 @@ namespace NekoPlayer.Desktop
             string gameName = @"NekoPlayer";
 
             VelopackApp.Build().Run();
+
+            // NVIDIA profiles are based on the executable name of a process.
+            // Stable sets this setting to "Off", which may not be what we want, so let's force it back to the default "Auto" on startup.
+            if (OperatingSystem.IsWindows())
+                NVAPI.ThreadedOptimisations = NvThreadControlSetting.OGL_THREAD_CONTROL_DEFAULT;
+
+            // This is a safe default. Localised usages should specify lower values as required.
+            AppDomain.CurrentDomain.SetData("REGEX_DEFAULT_MATCH_TIMEOUT", TimeSpan.FromMilliseconds(1000));
 
             HostOptions hostOptions = new HostOptions
             {

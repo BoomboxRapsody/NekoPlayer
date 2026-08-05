@@ -16,6 +16,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Platform;
 using osuTK;
+using osuTK.Graphics;
 using YoutubeExplode.Playlists;
 using YoutubeExplode.Videos;
 
@@ -46,6 +47,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         [Resolved]
         private NekoPlayerConfigManager appConfig { get; set; } = null!;
+        protected Box Hover;
 
         [BackgroundDependencyLoader]
         private async Task load(OverlayColourProvider overlayColourProvider)
@@ -74,7 +76,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         {
                             AutoSizeAxes = Axes.Both,
                             Margin = new MarginPadding(4),
-                        }
+                        },
+                        Hover = new Box
+                        {
+                            Alpha = 0,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.White,
+                            Blending = BlendingParameters.Additive,
+                            Depth = float.MinValue
+                        },
                     }
                 }
             });
@@ -173,6 +185,25 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private NekoPlayerAppBase app { get; set; }
 
         protected virtual float HoverLayerFinalAlpha => 0.1f;
+
+        protected override bool OnHover(HoverEvent e)
+        {
+            if (Enabled.Value)
+            {
+                Hover.FadeTo(0.2f, 40, Easing.OutQuint)
+                     .Then()
+                     .FadeTo(HoverLayerFinalAlpha, 800, Easing.OutQuint);
+            }
+
+            return base.OnHover(e);
+        }
+
+        protected override void OnHoverLost(HoverLostEvent e)
+        {
+            base.OnHoverLost(e);
+
+            Hover.FadeOut(800, Easing.OutQuint);
+        }
 
         private void RefreshTextFlow()
         {

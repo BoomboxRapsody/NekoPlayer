@@ -13,6 +13,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Logging;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -31,6 +32,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         private AdaptiveTextFlowContainer textFlow;
+        protected Box Hover;
 
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
@@ -57,7 +59,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         {
                             AutoSizeAxes = Axes.Both,
                             Margin = new MarginPadding(4),
-                        }
+                        },
+                        Hover = new Box
+                        {
+                            Alpha = 0,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.White,
+                            Blending = BlendingParameters.Additive,
+                            Depth = float.MinValue
+                        },
                     }
                 }
             });
@@ -68,6 +80,27 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.LoadComplete();
             textFlow.AddIcon(FontAwesome.Solid.Stopwatch, o => o.Margin = new MarginPadding() { Right = 4 });
             textFlow.AddText(text);
+        }
+
+        protected virtual float HoverLayerFinalAlpha => 0.1f;
+
+        protected override bool OnHover(HoverEvent e)
+        {
+            if (Enabled.Value)
+            {
+                Hover.FadeTo(0.2f, 40, Easing.OutQuint)
+                     .Then()
+                     .FadeTo(HoverLayerFinalAlpha, 800, Easing.OutQuint);
+            }
+
+            return base.OnHover(e);
+        }
+
+        protected override void OnHoverLost(HoverLostEvent e)
+        {
+            base.OnHoverLost(e);
+
+            Hover.FadeOut(800, Easing.OutQuint);
         }
 
         protected override bool OnClick(ClickEvent e)
