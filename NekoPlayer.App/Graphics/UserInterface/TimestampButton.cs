@@ -56,7 +56,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         })
                         {
                             AutoSizeAxes = Axes.Both,
-                            Margin = new MarginPadding(2),
+                            Margin = new MarginPadding(4),
                         }
                     }
                 }

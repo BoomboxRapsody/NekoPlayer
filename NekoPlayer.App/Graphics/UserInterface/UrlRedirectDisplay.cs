@@ -4,15 +4,20 @@
 #nullable disable
 
 using System.Threading.Tasks;
+using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Online;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Platform;
+using osuTK;
+using YoutubeExplode.Playlists;
+using YoutubeExplode.Videos;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -22,18 +27,31 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private AdaptiveTextFlowContainer textFlow;
 
+        private string displayName;
+        private IconUsage icon;
+
         public UrlRedirectDisplay(string url)
             : base(HoverSampleSet.Button)
         {
             this.url = url;
+            displayName = url;
+            icon = FontAwesome.Solid.Globe;
             Enabled.Value = true;
             Masking = true;
             TooltipText = url;
         }
 
+        private Bindable<Localisation.Language> uiLanguage = null!;
+        private Bindable<UsernameDisplayMode> usernameDisplayMode = null!;
+
+        [Resolved]
+        private NekoPlayerConfigManager appConfig { get; set; } = null!;
+
         [BackgroundDependencyLoader]
         private async Task load(OverlayColourProvider overlayColourProvider)
         {
+            uiLanguage = app.CurrentLanguage.GetBoundCopy();
+            usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             AutoSizeAxes = Axes.Both;
 
             AddRangeInternal(new Drawable[]
@@ -55,26 +73,112 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         })
                         {
                             AutoSizeAxes = Axes.Both,
-                            Margin = new MarginPadding(2),
+                            Margin = new MarginPadding(4),
                         }
                     }
                 }
             });
+
+#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
+            Task.Run(async () =>
+            {
+                if (NekoPlayerDescriptionParser.IsYouTubeVideo(url))
+                {
+                    icon = FontAwesome.Brands.Youtube;
+
+                    string videoId = VideoId.Parse(url);
+                    Google.Apis.YouTube.v3.Data.Video video = api.GetVideo(videoId);
+
+                    displayName = api.GetLocalizedVideoTitle(video);
+                    Schedule(() => RefreshTextFlow());
+
+                    uiLanguage.BindValueChanged(locale =>
+                    {
+                        Schedule(() =>
+                        {
+                            displayName = api.GetLocalizedVideoTitle(video);
+                            RefreshTextFlow();
+                        });
+                    });
+                }
+                else if (NekoPlayerDescriptionParser.IsYouTubePlaylist(url))
+                {
+                    icon = FontAwesome.Brands.Youtube;
+
+                    string playlistId = PlaylistId.Parse(url);
+                    Google.Apis.YouTube.v3.Data.Playlist video = api.GetPlaylistInfo(playlistId);
+
+                    displayName = video.Snippet.Title;
+                    Schedule(() => RefreshTextFlow());
+                }
+                else if (NekoPlayerDescriptionParser.IsYouTubeChannel(url))
+                {
+                    icon = FontAwesome.Brands.Youtube;
+
+                    string channelId = url.Replace("https://www.youtube.com/channel/", string.Empty);
+                    Google.Apis.YouTube.v3.Data.Channel channel = api.GetChannel(channelId);
+
+                    displayName = api.GetLocalizedChannelTitle(channel);
+                    Schedule(() => RefreshTextFlow());
+
+                    uiLanguage.BindValueChanged(locale =>
+                    {
+                        Schedule(() =>
+                        {
+                            displayName = api.GetLocalizedChannelTitle(channel);
+                            RefreshTextFlow();
+                        });
+                    });
+
+                    usernameDisplayMode.BindValueChanged(locale =>
+                    {
+                        Schedule(() =>
+                        {
+                            displayName = api.GetLocalizedChannelTitle(channel);
+                            RefreshTextFlow();
+                        });
+                    });
+                }
+                else if (NekoPlayerDescriptionParser.IsDiscord(url))
+                {
+                    icon = FontAwesome.Brands.Discord;
+                    Schedule(() => RefreshTextFlow());
+                }
+                else if (NekoPlayerDescriptionParser.IsTwitch(url))
+                {
+                    icon = FontAwesome.Brands.Twitch;
+                    Schedule(() => RefreshTextFlow());
+                }
+                else if (NekoPlayerDescriptionParser.IsTwitter(url))
+                {
+                    icon = FontAwesome.Brands.Twitter;
+                    Schedule(() => RefreshTextFlow());
+                }
+                else
+                {
+                    icon = FontAwesome.Solid.Globe;
+                    Schedule(() => RefreshTextFlow());
+                }
+            });
+#pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
         }
 
         [Resolved]
         private GameHost host { get; set; }
 
         [Resolved]
+        private YouTubeAPI api { get; set; }
+
+        [Resolved]
         private NekoPlayerAppBase app { get; set; }
 
         protected virtual float HoverLayerFinalAlpha => 0.1f;
 
-        protected override void LoadComplete()
+        private void RefreshTextFlow()
         {
             base.LoadComplete();
-            textFlow.AddIcon(FontAwesome.Solid.Globe, o => o.Margin = new MarginPadding() { Right = 4 });
-            textFlow.AddText(url);
+            textFlow.AddIcon(icon, o => o.Margin = new MarginPadding() { Right = 4 });
+            textFlow.AddText(displayName);
         }
 
         protected override bool OnClick(ClickEvent e)
