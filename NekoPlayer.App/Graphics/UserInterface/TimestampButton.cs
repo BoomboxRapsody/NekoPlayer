@@ -25,6 +25,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public TimestampButton(string text)
             : base(HoverSampleSet.Button)
         {
+            Anchor = Anchor.CentreLeft;
+            Origin = Anchor.CentreLeft;
             this.text = text;
             Enabled.Value = true;
             Masking = true;

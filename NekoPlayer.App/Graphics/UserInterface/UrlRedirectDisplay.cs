@@ -34,6 +34,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public UrlRedirectDisplay(string url)
             : base(HoverSampleSet.Button)
         {
+            Anchor = Anchor.CentreLeft;
+            Origin = Anchor.CentreLeft;
             this.url = url;
             displayName = url;
             icon = FontAwesome.Solid.Globe;
@@ -209,7 +211,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             base.LoadComplete();
             textFlow.AddIcon(icon, o => o.Margin = new MarginPadding() { Right = 4 });
-            textFlow.AddText(displayName);
+            textFlow.AddText("/  " + displayName);
         }
 
         protected override bool OnClick(ClickEvent e)
