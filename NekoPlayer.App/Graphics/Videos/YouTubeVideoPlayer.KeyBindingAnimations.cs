@@ -231,7 +231,7 @@ namespace NekoPlayer.App.Graphics.Videos
                     if (trackAction != SeekAction.PlayPause)
                     {
                         content.FadeOut(250, Easing.In);
-                        seekArrowContainer.BlurTo(new osuTK.Vector2(2), 250, Easing.In);
+                        seekArrowContainer.BlurTo(new osuTK.Vector2(4), 250, Easing.In);
                         using (BeginDelayedSequence(250))
                         {
                             seekArrow.ScaleTo(new osuTK.Vector2(0.8f, 1));
@@ -254,7 +254,7 @@ namespace NekoPlayer.App.Graphics.Videos
                     if (trackAction != SeekAction.PlayPause)
                     {
                         RepeatCount += 5;
-                        seekArrowContainer.BlurTo(new osuTK.Vector2(2));
+                        seekArrowContainer.BlurTo(new osuTK.Vector2(4));
                         seekArrowContainer.BlurTo(new osuTK.Vector2(0), 250, Easing.Out);
                         content.FadeInFromZero(250, Easing.Out);
                         seekArrow.ScaleTo(new osuTK.Vector2(0.7f, 1));
@@ -282,7 +282,7 @@ namespace NekoPlayer.App.Graphics.Videos
                     }
                     else
                     {
-                        this.BlurTo(new osuTK.Vector2(2));
+                        this.BlurTo(new osuTK.Vector2(4));
                         this.BlurTo(new osuTK.Vector2(0), 500, Easing.OutQuint);
                         content.FadeInFromZero(500, Easing.OutQuint);
                         content.ScaleTo(new osuTK.Vector2(.9f)).ScaleTo(new osuTK.Vector2(1.5f), 250, Easing.OutQuint);
@@ -290,7 +290,7 @@ namespace NekoPlayer.App.Graphics.Videos
                         {
                             content.FadeOut(500, Easing.OutQuint);
                             content.ScaleTo(new osuTK.Vector2(.9f), 250, Easing.OutQuint);
-                            this.BlurTo(new osuTK.Vector2(2), 250, Easing.OutQuint);
+                            this.BlurTo(new osuTK.Vector2(4), 250, Easing.OutQuint);
                         }
                     }
                 }
