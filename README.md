@@ -5,6 +5,7 @@
 <p align="center">
 <a href="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="Build status"></a>
 <a href="https://github.com/BoomboxRapsody/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/BoomboxRapsody/NekoPlayer.svg" alt="GitHub release"></a>
+<img src="https://img.shields.io/badge/made_in-korea-0F64CD.svg?labelColor=CD2E3A" alt="Made In Korea">
 <a href="https://github.com/BoomboxRapsody/NekoPlayer/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/BoomboxRapsody/NekoPlayer.svg" alt="Licence"></a>
 <a href="https://discord.gg/UZWDqQ29ch"><img src="https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield" alt="dev chat"></a>
 <a href="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer"><img src="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge" alt="CodeFactor"></a>
