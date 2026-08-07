@@ -1,3 +1,6 @@
 [submodule "osu-framework"]
 	path = osu-framework
 	url = https://github.com/BoomboxRapsody/osu-framework
+[submodule "YoutubeExplode"]
+	path = YoutubeExplode
+	url = https://github.com/BoomboxRapsody/YoutubeExplode
