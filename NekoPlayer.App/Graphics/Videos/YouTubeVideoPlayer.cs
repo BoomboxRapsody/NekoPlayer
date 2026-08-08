@@ -222,6 +222,7 @@ namespace NekoPlayer.App.Graphics.Videos
                 closedCaption = new ClosedCaptionContainer(this, srv3Contents),
                 new TweakedClickableContainer
                 {
+                    Enabled = { Value = true },
                     Action = () =>
                     {
                         if (IsPlaying())
