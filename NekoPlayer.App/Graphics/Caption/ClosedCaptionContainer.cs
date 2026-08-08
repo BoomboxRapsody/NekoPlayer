@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
+// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 //
 // SRV3 support:
@@ -395,7 +395,7 @@ namespace NekoPlayer.App.Graphics.Caption
 
             while (low <= high)
             {
-                int middle = low + (high - low) / 2;
+                int middle = low + ((high - low) / 2);
                 Srv3Caption caption = captions[middle];
 
                 if (time < caption.Start)
