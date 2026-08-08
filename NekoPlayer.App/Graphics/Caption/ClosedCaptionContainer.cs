@@ -235,6 +235,12 @@ namespace NekoPlayer.App.Graphics.Caption
 
                 if (captionTrack != null)
                 {
+                    //fallback to bottom centere
+                    captionContainer.Anchor = Anchor.BottomCentre;
+                    captionContainer.Origin = Anchor.BottomCentre;
+                    //also fallback text anchor to centere
+                    spriteText.TextAnchor = Anchor.Centre;
+
                     var caption = captionTrack.TryGetByTime(TimeSpan.FromSeconds(time));
 
                     if (caption != null)
