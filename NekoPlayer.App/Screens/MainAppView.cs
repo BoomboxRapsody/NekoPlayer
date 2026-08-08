@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -6059,15 +6060,11 @@ namespace NekoPlayer.App.Screens
 
         private int parseTimestampFromURL(string url)
         {
-            string? timestamp = new Uri(url).Query
-                .TrimStart('?')
-                .Split('&')
-                .Select(x => x.Split('='))
-                .FirstOrDefault(x => x.Length == 2 && x[0] == "t")?[1];
+            Match match = Regex.Match(url, @"[?&]t=(\d+)s?");
 
-            if (!string.IsNullOrEmpty(timestamp))
+            if (match.Success)
             {
-                int calculated = Convert.ToInt32(timestamp) * 1000;
+                int calculated = int.Parse(match.Groups[1].Value) * 1000;
 
                 return calculated;
             }
@@ -6077,13 +6074,9 @@ namespace NekoPlayer.App.Screens
 
         private bool timestampInURL(string url)
         {
-            string? timestamp = new Uri(url).Query
-                .TrimStart('?')
-                .Split('&')
-                .Select(x => x.Split('='))
-                .FirstOrDefault(x => x.Length == 2 && x[0] == "t")?[1];
+            Match match = Regex.Match(url, @"[?&]t=(\d+)s?");
 
-            if (!string.IsNullOrEmpty(timestamp))
+            if (match.Success)
             {
                 return true;
             }
