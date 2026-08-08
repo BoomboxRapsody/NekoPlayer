@@ -14,6 +14,9 @@ namespace NekoPlayer.App.Localisation
         [Description(@"English")]
         en,
 
+        [Description(@"Español")]
+        es,
+
         [Description(@"日本語")]
         ja,
 
