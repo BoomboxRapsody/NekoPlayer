@@ -708,9 +708,6 @@ namespace NekoPlayer.App
         }
         #endregion
 
-        private float _lpL, _lpR;
-        private const float LpAlpha = 0.08f;
-
         private unsafe void KaraokeDsp(int handle, int channel, IntPtr buffer, int length, IntPtr user)
         {
             // 16비트(short) 오디오 샘플 배열로 변환

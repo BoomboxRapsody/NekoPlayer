@@ -75,7 +75,7 @@ namespace NekoPlayer.App.Graphics.Caption
             AlwaysPresent = true;
         }
 
-        public void UpdateCaptionTrack(ClosedCaptionLanguage captionLanguage, ClosedCaptionTrack captionTrack)
+        public void UpdateCaptionTrack(ClosedCaptionTrack captionTrack)
         {
             srv3Track = null;
             this.captionTrack = captionTrack;

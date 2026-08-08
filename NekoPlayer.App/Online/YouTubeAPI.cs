@@ -68,9 +68,15 @@ namespace NekoPlayer.App.Online
         public Channel? TryGetChannel(string channelId)
             => GetChannel(channelId) ?? null;
 
+        //OAC -> Official Artist Channel
+        public bool CheckOAC(Channel channel)
+        {
+            return channel.TopicDetails.TopicIds.Contains("/m/04rlf");
+        }
+
         public Channel? GetChannel(string channelId)
         {
-            var part = "statistics,snippet,brandingSettings,id,localizations";
+            var part = "statistics,snippet,brandingSettings,id,localizations,topicDetails";
             var request = youtubeService.Channels.List(part);
 
             request.Id = channelId;

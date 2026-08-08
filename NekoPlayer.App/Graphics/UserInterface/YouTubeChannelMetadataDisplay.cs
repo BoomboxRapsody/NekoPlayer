@@ -20,7 +20,9 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
+using osuTK;
 using osuTK.Graphics;
 using PaletteNet;
 using SixLabors.ImageSharp;
@@ -31,7 +33,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     public partial class YouTubeChannelMetadataDisplay : CompositeDrawable
     {
         private ProfileImage profileImage;
-        private TruncatingSpriteText videoName;
+        private AdaptiveTextFlowContainer videoName;
         private TruncatingSpriteText desc;
         public Action<YouTubeChannelMetadataDisplay> ClickEvent;
 
@@ -92,9 +94,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoName = new TruncatingSpriteText
+                                videoName = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"))
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
                                     RelativeSizeAxes = Axes.X,
                                     Text = "",
                                     Colour = overlayColourProvider.Content2,
@@ -182,6 +183,19 @@ namespace NekoPlayer.App.Graphics.UserInterface
             });
         }
 
+        public string TruncateWithEllipsis(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return string.Empty;
+
+            // If the string is already short enough, return it as-is
+            if (value.Length <= maxLength) return value;
+
+            // Ensure we don't get a negative length if maxLength is smaller than the ellipsis
+            int truncateLength = Math.Max(0, maxLength - 3);
+
+            return value.Substring(0, truncateLength) + "...";
+        }
+
         public void UpdateUser(Channel channel)
         {
             uiLanguage.UnbindEvents();
@@ -190,7 +204,18 @@ namespace NekoPlayer.App.Graphics.UserInterface
             {
                 Schedule(() =>
                 {
-                    videoName.Text = api.GetLocalizedChannelTitle(channel);
+                    videoName.Text = TruncateWithEllipsis(api.GetLocalizedChannelTitle(channel), 20);
+                    if (api.CheckOAC(channel))
+                    {
+                        videoName.AddArbitraryDrawable(new SpriteIcon
+                        {
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            Size = new Vector2(10),
+                            Icon = FontAwesome.Solid.Music,
+                            Margin = new MarginPadding { Left = 5 },
+                        });
+                    }
                     desc.Text = NekoPlayerStrings.ProfileImageTooltip(channel.Snippet.CustomUrl, Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
                     profileImage.UpdateProfileImage(channel.Id);
                     GetPalette();
@@ -203,7 +228,18 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 {
                     Schedule(() =>
                     {
-                        videoName.Text = api.GetLocalizedChannelTitle(channel);
+                        videoName.Text = TruncateWithEllipsis(api.GetLocalizedChannelTitle(channel), 20);
+                        if (api.CheckOAC(channel))
+                        {
+                            videoName.AddArbitraryDrawable(new SpriteIcon
+                            {
+                                Anchor = Anchor.CentreLeft,
+                                Origin = Anchor.CentreLeft,
+                                Size = new Vector2(10),
+                                Icon = FontAwesome.Solid.Music,
+                                Margin = new MarginPadding { Left = 5 },
+                            });
+                        }
                     });
                 });
             });

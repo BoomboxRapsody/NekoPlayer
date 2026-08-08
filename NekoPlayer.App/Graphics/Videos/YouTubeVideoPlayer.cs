@@ -39,6 +39,7 @@ namespace NekoPlayer.App.Graphics.Videos
 
         private string fileName_Video, fileName_Audio = null!;
         private string srv3Contents = null!;
+        private ClosedCaptionTrack closedCaptionTrack;
         private ClosedCaptionLanguage captionLanguage;
 
         private StopwatchClock rateAdjustClock = null!;
@@ -62,19 +63,25 @@ namespace NekoPlayer.App.Graphics.Videos
         private MediaSession? mediaSession { get; set; }
 #nullable disable
 
-        public YouTubeVideoPlayer(string fileName_Video, string fileName_Audio, string srv3Contents, Google.Apis.YouTube.v3.Data.Video videoData, double resumeFromTime)
+        public YouTubeVideoPlayer(string fileName_Video, string fileName_Audio, ClosedCaptionTrack closedCaptionTrack, string srv3Contents, Google.Apis.YouTube.v3.Data.Video videoData, double resumeFromTime)
         {
             this.fileName_Video = fileName_Video;
             this.fileName_Audio = fileName_Audio;
             this.srv3Contents = srv3Contents;
+            this.closedCaptionTrack = closedCaptionTrack;
             this.videoData = videoData;
             this.resumeFromTime = resumeFromTime;
         }
 
-        public void UpdateCaptionTrack(string srv3Contents)
+        public void UpdateCaptionTrack(ClosedCaptionTrack closedCaptionTrack, string srv3Contents)
         {
             this.srv3Contents = srv3Contents;
-            closedCaption.UpdateSrv3CaptionTrack(srv3Contents);
+            this.closedCaptionTrack = closedCaptionTrack;
+
+            if (!string.IsNullOrEmpty(srv3Contents))
+                closedCaption.UpdateSrv3CaptionTrack(srv3Contents);
+            else
+                closedCaption.UpdateCaptionTrack(closedCaptionTrack);
         }
 
         public BindableNumber<double> VideoProgress = new BindableNumber<double>()
