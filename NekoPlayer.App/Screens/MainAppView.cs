@@ -261,7 +261,7 @@ namespace NekoPlayer.App.Screens
         protected Bindable<ReleaseStream> ReleaseStream;
 
         private Bindable<SFXType> overlaySFXType;
-        private Bindable<bool> playOverlaySFX;
+        private Bindable<bool> playOverlaySFX, ResetPlaybackSpeedWhenLoadingAVideo;
 
         private Bindable<float> captionBGOpacity;
 
@@ -300,6 +300,7 @@ namespace NekoPlayer.App.Screens
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
             SearchSort = appConfig.GetBindable<SearchSortCriteria>(NekoPlayerSetting.SearchSortCriteria);
+            ResetPlaybackSpeedWhenLoadingAVideo = appConfig.GetBindable<bool>(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo);
 
             reverbEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.ReverbEnabled);
             rotateEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.RotateEnabled);
@@ -6210,6 +6211,16 @@ namespace NekoPlayer.App.Screens
         {
             srv3Contents = string.Empty;
             videoIdBox.Text = string.Empty;
+
+            if (ResetPlaybackSpeedWhenLoadingAVideo.Value)
+            {
+                Schedule(() =>
+                {
+                    playbackSpeed.Value = 1;
+                    osd.Display(new SpeedChangeToast(playbackSpeed.Value));
+                });
+            };
+
             if (loadVideoContainer.IsVisible == true)
             {
                 Schedule(() => hideOverlayContainer(loadVideoContainer));

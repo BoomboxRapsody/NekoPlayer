@@ -884,4 +884,7 @@ On にすることを推奨します。問題が発生している場合のみ O
   <data name="srv3_notice" xml:space="preserve">
     <value>SRV3形式の字幕は実験的なもので、不具合が多く、完全なものではありません。</value>
   </data>
+  <data name="reset_playback_speed_when_loading_a_video" xml:space="preserve">
+    <value>動画の読み込み時に再生速度をリセットする</value>
+  </data>
 </root>

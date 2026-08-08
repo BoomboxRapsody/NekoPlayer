@@ -826,6 +826,12 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.Font,
                                                             Current = showVideoMetadataOnWindowTitle,
                                                         }),
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.ResetPlaybackSpeedWhenLoadingAVideo,
+                                                            Icon = FontAwesome.Solid.TachometerAlt,
+                                                            Current = appConfig.GetBindable<bool>(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo)
+                                                        }),
                                                         new AdaptiveSpriteText
                                                         {
                                                             Name = "VFX Settings",

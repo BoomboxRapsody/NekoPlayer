@@ -1376,6 +1376,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString SRV3Notice => new TranslatableString(getKey(@"srv3_notice"), "The SRV3-format subtitles are experimental, have many bugs, and are not complete.");
 
+        /// <summary>
+        /// "Reset playback speed when loading a video"
+        /// </summary>
+        public static LocalisableString ResetPlaybackSpeedWhenLoadingAVideo => new TranslatableString(getKey(@"reset_playback_speed_when_loading_a_video"), "Reset playback speed when loading a video");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
