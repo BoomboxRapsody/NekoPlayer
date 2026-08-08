@@ -71,7 +71,18 @@ namespace NekoPlayer.App.Online
         //OAC -> Official Artist Channel
         public bool ChannelIsOAC(Channel channel)
         {
-            return channel.TopicDetails.TopicIds.Contains("/m/04rlf");
+            try
+            {
+                if (channel.TopicDetails != null && channel.TopicDetails.TopicIds != null)
+                    return false;
+
+                return channel.TopicDetails.TopicIds.Contains("/m/04rlf");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.GetDescription());
+                return false;
+            }
         }
 
         public Channel? GetChannel(string channelId)
