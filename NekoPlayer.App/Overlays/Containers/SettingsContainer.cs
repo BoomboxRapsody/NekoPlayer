@@ -32,6 +32,7 @@ using osu.Framework.Extensions.ObjectExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Rendering.LowLatency;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
@@ -402,6 +403,9 @@ namespace NekoPlayer.App.Overlays.Containers
             Anchor = Anchor.CentreRight;
             Children = new Drawable[]
             {
+                new PopoverContainer {
+                    RelativeSizeAxes = Axes.Both,
+                    Children = new Drawable[] {
                                 new OverlayBackground
                                 {
                                     RelativeSizeAxes = Axes.Both,
@@ -914,6 +918,12 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Current = captionBGOpacity,
                                                             DisplayAsPercentage = true,
                                                         }),
+                                                        new SettingsItemV2(new FormColourPicker
+                                                        {
+                                                            Caption = NekoPlayerStrings.CaptionBGColour,
+                                                            Current = appConfig.GetBindable<Colour4>(NekoPlayerSetting.CaptionBGColor),
+                                                            Icon = FontAwesome.Solid.Palette,
+                                                        }),
                                                         new AdaptiveSpriteText
                                                         {
                                                             Name = "Audio Settings",
@@ -1125,6 +1135,8 @@ namespace NekoPlayer.App.Overlays.Containers
                                     Anchor = Anchor.CentreRight,
                                     Margin = new MarginPadding(16),
                                 }
+                    }
+                }
             };
 
             dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_1);

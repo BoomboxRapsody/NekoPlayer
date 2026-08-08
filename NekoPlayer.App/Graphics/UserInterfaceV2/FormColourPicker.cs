@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using NekoPlayer.App.Graphics.UserInterface;
 using NekoPlayer.App.Graphics.UserInterfaceV2;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -77,6 +78,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public IconUsage Icon { get; set; }
 
+        public Hotkey Hotkey { get; init; }
+
         private FormControlBackground background = null!;
         private Box flashLayer = null!;
         private FormTextBox.InnerTextBox textBox = null!;
@@ -142,6 +145,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                         Origin = Anchor.TopLeft,
                                         Caption = Caption,
                                         TooltipText = HintText,
+                                        Hotkey = Hotkey,
                                         Icon = Icon,
                                     },
                                     textBox = new FormTextBox.InnerTextBox
@@ -151,7 +155,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                         SelectAllOnFocus = true,
                                         OnInputError = () =>
                                         {
-                                            flashLayer.Colour = ColourInfo.GradientHorizontal(colours.Red3.Opacity(0), colours.Red3);
+                                            flashLayer.Colour = ColourInfo.GradientVertical(colours.Red3.Opacity(0), colours.Red3);
                                             flashLayer.FadeOutFromOne(200, Easing.OutQuint);
                                         },
                                         TabbableContentContainer = tabbableContentContainer,
@@ -272,7 +276,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             textBox.ReadOnly = currentColourInstantaneous.Disabled;
             textBox.Colour = currentColourInstantaneous.Disabled ? colourProvider.Foreground1 : colourProvider.Content1;
 
-            caption.Colour = currentColourInstantaneous.Disabled ? colourProvider.Background1 : colourProvider.Content2;
+            caption.TextColour = currentColourInstantaneous.Disabled ? colourProvider.Background1 : colourProvider.Content2;
             textBox.Colour = currentColourInstantaneous.Disabled ? colourProvider.Background1 : colourProvider.Content2;
 
             if (Current.Disabled)
@@ -302,7 +306,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             {
                 RelativeSizeAxes = Axes.Both;
                 Masking = true;
-                CornerRadius = DrawHeight / 2;
+                CornerRadius = new CornersInfo(7);
                 InternalChild = colourDisplay = new Box
                 {
                     RelativeSizeAxes = Axes.Both,

@@ -1,9 +1,12 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using NekoPlayer.App.Config;
+using NekoPlayer.App.Input.Binding;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -12,7 +15,6 @@ using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osuTK;
-using NekoPlayer.App.Input.Binding;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
@@ -23,8 +25,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         private Sample? samplePopIn;
         private Sample? samplePopOut;
-        protected virtual string PopInSampleName => "overlay-pop-in";
-        protected virtual string PopOutSampleName => "overlay-pop-out";
 
         // required due to LoadAsyncComplete() in `VisibilityContainer` calling PopOut() during load - similar workaround to `OsuDropdownMenu`
         private bool wasOpened;
@@ -45,12 +45,39 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             };
         }
 
+        private Bindable<SFXType> overlaySFXType;
+
         [BackgroundDependencyLoader(true)]
-        private void load(OverlayColourProvider? colourProvider, AdaptiveColour colours, AudioManager audio)
+        private void load(OverlayColourProvider? colourProvider, AdaptiveColour colours, AudioManager audio, NekoPlayerConfigManager appConfig)
         {
+            overlaySFXType = appConfig.GetBindable<SFXType>(NekoPlayerSetting.OverlaySFXType);
+
+            overlaySFXType.BindValueChanged(sfx =>
+            {
+                refreshSFX();
+            }, true);
+
             Background.Colour = Arrow.Colour = colourProvider?.Background4 ?? colours.GreySeaFoamDarker;
-            samplePopIn = audio.Samples.Get(PopInSampleName);
-            samplePopOut = audio.Samples.Get(PopOutSampleName);
+        }
+
+        [Resolved]
+        private ISampleStore sampleStoreGlobal { get; set; }
+
+        [Resolved]
+        private NekoPlayerConfigManager appGlobalConfig { get; set; }
+
+        private void refreshSFX()
+        {
+            if (appGlobalConfig.Get<SFXType>(NekoPlayerSetting.OverlaySFXType) == SFXType.Legacy)
+            {
+                samplePopIn = sampleStoreGlobal.Get(@"overlay-pop-in");
+                samplePopOut = sampleStoreGlobal.Get(@"overlay-pop-out");
+            }
+            else
+            {
+                samplePopIn = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-in");
+                samplePopOut = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-out");
+            }
         }
 
         protected override Drawable CreateArrow() => Empty();
@@ -60,7 +87,9 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             this.ScaleTo(1, scale_duration, Easing.OutElasticHalf);
             this.FadeIn(fade_duration, Easing.OutQuint);
 
-            samplePopIn?.Play();
+            if (appGlobalConfig.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                samplePopIn?.Play();
+
             wasOpened = true;
         }
 
@@ -70,7 +99,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             this.FadeOut(fade_duration, Easing.OutQuint);
 
             if (wasOpened)
-                samplePopOut?.Play();
+                if (appGlobalConfig.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                    samplePopOut?.Play();
         }
 
         public virtual bool OnPressed(KeyBindingPressEvent<GlobalAction> e)

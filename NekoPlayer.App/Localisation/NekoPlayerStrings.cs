@@ -1381,6 +1381,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ResetPlaybackSpeedWhenLoadingAVideo => new TranslatableString(getKey(@"reset_playback_speed_when_loading_a_video"), "Reset playback speed when loading a video");
 
+        /// <summary>
+        /// "Closed captions background colour"
+        /// </summary>
+        public static LocalisableString CaptionBGColour => new TranslatableString(getKey(@"closed_captions_bg_colour"), @"Closed captions background colour");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

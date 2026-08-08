@@ -7,13 +7,12 @@ using System;
 using System.Collections.Generic;
 using NekoPlayer.App.Graphics;
 using NekoPlayer.App.Localisation;
-using osu.Framework;
 using osu.Framework.Configuration;
 using osu.Framework.Configuration.Tracking;
 using osu.Framework.Extensions;
 using osu.Framework.Extensions.LocalisationExtensions;
+using osu.Framework.Graphics;
 using osu.Framework.Platform;
-using static NekoPlayer.App.Screens.MainAppView;
 
 namespace NekoPlayer.App.Config
 {
@@ -88,8 +87,9 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.PlayOverlaySFX, false);
             SetDefault(NekoPlayerSetting.OverlaySFXType, SFXType.Normal);
 
-            SetDefault(NekoPlayerSetting.CaptionBGOpacity, 0.5f, 0.5f, 1f, 0.01f);
+            SetDefault(NekoPlayerSetting.CaptionBGOpacity, 0.5f, 0f, 1f, 0.01f);
             SetDefault(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo, false);
+            SetDefault(NekoPlayerSetting.CaptionBGColor, Colour4.Black);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -173,5 +173,6 @@ namespace NekoPlayer.App.Config
 
         CaptionBGOpacity,
         ResetPlaybackSpeedWhenLoadingAVideo,
+        CaptionBGColor,
     }
 }

@@ -94,7 +94,9 @@ namespace NekoPlayer.App.Graphics.Caption
 
         private Bindable<bool> controlsVisibleState = null!;
         private Action<SpriteText> textCreationParameters;
+        private Action<SpriteText> shadowOptions;
         private Bindable<float> captionBGOpacity;
+        private Bindable<Colour4> captionBGColor;
         private Box bg;
 
         [BackgroundDependencyLoader]
@@ -104,6 +106,7 @@ namespace NekoPlayer.App.Graphics.Caption
             captionEnabled = config.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
             captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
             captionBGOpacity = config.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
+            captionBGColor = config.GetBindable<Colour4>(NekoPlayerSetting.CaptionBGColor);
 
             Add(captionContainer = new Container
             {
@@ -137,6 +140,20 @@ namespace NekoPlayer.App.Graphics.Caption
             captionBGOpacity.BindValueChanged(opacity =>
             {
                 bg.Alpha = opacity.NewValue;
+
+                if (opacity.NewValue < 0.5f)
+                {
+                    shadowOptions = spriteText => spriteText.Shadow = true;
+                }
+                else
+                {
+                    shadowOptions = spriteText => spriteText.Shadow = false;
+                }
+            }, true);
+
+            captionBGColor.BindValueChanged(colour =>
+            {
+                bg.Colour = colour.NewValue;
             }, true);
 
             captionFont.BindValueChanged(v =>
@@ -246,7 +263,11 @@ namespace NekoPlayer.App.Graphics.Caption
                     if (caption != null)
                     {
                         spriteText.Text = string.Empty;
-                        spriteText.AddText(caption.Text, textCreationParameters);
+                        spriteText.AddText(caption.Text, text =>
+                        {
+                            textCreationParameters?.Invoke(text);
+                            shadowOptions?.Invoke(text);
+                        });
                         captionContainer.FadeIn(150, Easing.OutQuart);
                     }
                     else
@@ -284,6 +305,7 @@ namespace NekoPlayer.App.Graphics.Caption
                 spriteText.AddText(text, t =>
                 {
                     textCreationParameters?.Invoke(t);
+                    shadowOptions?.Invoke(t);
 
                     t.Colour = span.ForegroundColour;
 
