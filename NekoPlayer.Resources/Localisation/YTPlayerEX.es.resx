@@ -677,7 +677,7 @@
     <value>Repetir encendido/apagado</value>
   </data>
   <data name="oauth_note" xml:space="preserve">
-    <value>Al iniciar sesión, puede ver una pantalla de "Google no ha verificado esta aplicación". Por favor, no dude en iniciar sesión.value>
+    <value>Al iniciar sesión, puede ver una pantalla de "Google no ha verificado esta aplicación". Por favor, no dude en iniciar sesión.</value>
   </data>
   <data name="system_volume" xml:space="preserve">
     <value>Volumen del sistema</value>
