@@ -267,6 +267,8 @@ namespace NekoPlayer.App.Screens
 
         private CancellationTokenSource videoLoadProcess;
 
+        private Bindable<Language> uiLanguage;
+
         private bool commentTextBoxContainerFocused, searchTextBoxContainerFocused;
         private Container commentTextBoxContainer, searchTextBoxContainer;
 
@@ -297,6 +299,7 @@ namespace NekoPlayer.App.Screens
 
             captionBGOpacity = appConfig.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
 
+            uiLanguage = app.CurrentLanguage.GetBoundCopy();
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
             SearchSort = appConfig.GetBindable<SearchSortCriteria>(NekoPlayerSetting.SearchSortCriteria);
@@ -3571,6 +3574,14 @@ namespace NekoPlayer.App.Screens
             {
                 double intValue = speed.NewValue;
                 speedText.Text = $@"{intValue:0.##}x";
+            }, true);
+
+            uiLanguage.BindValueChanged(_ =>
+            {
+                if (!string.IsNullOrEmpty(videoId))
+                    updateVideoMetadata(videoId);
+
+                speedText.Text = $@"{speedTextRolling.Value:0.##}x";
             }, true);
 
             volumeTextRolling.BindValueChanged(volume =>
