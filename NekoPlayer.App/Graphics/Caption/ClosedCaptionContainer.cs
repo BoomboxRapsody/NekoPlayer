@@ -46,7 +46,7 @@ namespace NekoPlayer.App.Graphics.Caption
 
         private Bindable<bool> captionEnabled;
         private Bindable<CaptionFonts> captionFont;
-        private Container captionContainer;
+        private BufferedContainer captionContainer;
         private Bindable<float> bottomMargin = new Bindable<float>();
 
         public ClosedCaptionContainer(YouTubeVideoPlayer videoPlayer, ClosedCaptionTrack captionTrack)
@@ -105,7 +105,7 @@ namespace NekoPlayer.App.Graphics.Caption
             captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
             captionBGOpacity = config.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
 
-            Add(captionContainer = new Container
+            Add(captionContainer = new BufferedContainer
             {
                 AutoSizeAxes = Axes.Both,
                 Anchor = Anchor.BottomCentre,
@@ -224,9 +224,13 @@ namespace NekoPlayer.App.Graphics.Caption
                     {
                         renderSrv3Cue(cue);
                         captionContainer.FadeIn(150, Easing.OutQuart);
+                        captionContainer.BlurTo(new osuTK.Vector2(0), 150, Easing.OutQuart);
                     }
                     else
+                    {
                         captionContainer.FadeOut(150, Easing.OutQuart);
+                        captionContainer.BlurTo(new osuTK.Vector2(4), 150, Easing.OutQuart);
+                    }
 
                     return;
                 }
@@ -240,14 +244,19 @@ namespace NekoPlayer.App.Graphics.Caption
                         spriteText.Text = string.Empty;
                         spriteText.AddText(caption.Text, textCreationParameters);
                         captionContainer.FadeIn(150, Easing.OutQuart);
+                        //captionContainer.BlurTo(new osuTK.Vector2(0), 150, Easing.OutQuart);
                     }
                     else
+                    {
                         captionContainer.FadeOut(150, Easing.OutQuart);
+                        //captionContainer.BlurTo(new osuTK.Vector2(4), 150, Easing.OutQuart);
+                    }
                 }
             }
             catch
             {
                 captionContainer.FadeOut(150, Easing.OutQuart);
+                //captionContainer.BlurTo(new osuTK.Vector2(4), 150, Easing.OutQuart);
             }
         }
 
