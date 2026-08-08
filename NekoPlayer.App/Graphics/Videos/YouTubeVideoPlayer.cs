@@ -219,7 +219,17 @@ namespace NekoPlayer.App.Graphics.Videos
                         },
                     }
                 },
-                closedCaption = new ClosedCaptionContainer(this, srv3Contents)
+                closedCaption = new ClosedCaptionContainer(this, srv3Contents),
+                new TweakedClickableContainer
+                {
+                    Action = () =>
+                    {
+                        if (IsPlaying())
+                            Pause(true);
+                        else
+                            Play(true);
+                    }
+                }
             });
 
             UpdatePreservePitch(config.Get<bool>(NekoPlayerSetting.AdjustPitchOnSpeedChange));
@@ -394,7 +404,7 @@ namespace NekoPlayer.App.Graphics.Videos
             }
         }
 
-        public void Pause(bool isKeyboardAction = false)
+        public void Pause(bool isKeyboardOrMouseAction = false)
         {
             if (drawableTrack != null)
             {
@@ -404,12 +414,12 @@ namespace NekoPlayer.App.Graphics.Videos
                 mediaSession?.UpdatePlayingState(false);
                 mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
 
-                if (isKeyboardAction)
+                if (isKeyboardOrMouseAction)
                     keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Pause);
             }
         }
 
-        public void Play(bool isKeyboardAction = false)
+        public void Play(bool isKeyboardOrMouseAction = false)
         {
             if (drawableTrack != null)
             {
@@ -427,7 +437,7 @@ namespace NekoPlayer.App.Graphics.Videos
                 drawableTrack?.Start();
                 framedClock.Start();
 
-                if (isKeyboardAction)
+                if (isKeyboardOrMouseAction)
                     keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Play);
             }
         }
