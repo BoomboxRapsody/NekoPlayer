@@ -6214,11 +6214,14 @@ namespace NekoPlayer.App.Screens
 
             if (ResetPlaybackSpeedWhenLoadingAVideo.Value)
             {
-                Schedule(() =>
+                if (playbackSpeed.Value != 1)
                 {
-                    playbackSpeed.Value = 1;
-                    osd.Display(new SpeedChangeToast(playbackSpeed.Value));
-                });
+                    Schedule(() =>
+                    {
+                        playbackSpeed.Value = 1;
+                        osd.Display(new SpeedChangeToast(playbackSpeed.Value));
+                    });
+                }
             };
 
             if (loadVideoContainer.IsVisible == true)
