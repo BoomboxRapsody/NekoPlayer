@@ -3576,14 +3576,6 @@ namespace NekoPlayer.App.Screens
                 speedText.Text = $@"{intValue:0.##}x";
             }, true);
 
-            uiLanguage.BindValueChanged(_ =>
-            {
-                if (!string.IsNullOrEmpty(videoId))
-                    updateVideoMetadata(videoId);
-
-                speedText.Text = $@"{speedTextRolling.Value:0.##}x";
-            }, true);
-
             volumeTextRolling.BindValueChanged(volume =>
             {
                 int intValue = (int)Math.Round(volume.NewValue * 100);
