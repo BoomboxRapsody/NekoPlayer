@@ -2831,7 +2831,7 @@ namespace NekoPlayer.App.Screens
                         {
                             Name = "Menu Overlay",
                             Size = new Vector2(1f, 1f),
-                            Width = 400,
+                            Width = 500,
                             RelativeSizeAxes = Axes.Y,
                             CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0),
                             Masking = true,
@@ -6655,6 +6655,7 @@ namespace NekoPlayer.App.Screens
                             {
                                 await settingsContainer.CaptionLangDropdown.RefreshCaptionLanguages(videoUrl);
                                 captionEnabled.Disabled = false;
+                                Schedule(() => captionButton.Enabled.Value = true);
                             }
                             catch (Exception e)
                             {
@@ -6675,6 +6676,7 @@ namespace NekoPlayer.App.Screens
                                     {
                                         captionEnabled.Value = false;
                                         captionEnabled.Disabled = true;
+                                        Schedule(() => captionButton.Enabled.Value = false);
                                     }
 
                                     string preferedLang = string.Empty;
@@ -6769,6 +6771,7 @@ namespace NekoPlayer.App.Screens
                         {
                             await settingsContainer.CaptionLangDropdown.RefreshCaptionLanguages(videoUrl);
                             captionEnabled.Disabled = false;
+                            Schedule(() => captionButton.Enabled.Value = true);
 
                             var streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoUrl);
 
@@ -7028,6 +7031,7 @@ namespace NekoPlayer.App.Screens
                                     {
                                         captionEnabled.Value = false;
                                         captionEnabled.Disabled = true;
+                                        Schedule(() => captionButton.Enabled.Value = false);
                                     }
 
                                     string preferedLang = string.Empty;
