@@ -38,7 +38,8 @@ namespace NekoPlayer.App.Graphics.Videos
         private Google.Apis.YouTube.v3.Data.Video videoData = null!;
 
         private string fileName_Video, fileName_Audio = null!;
-        private ClosedCaptionTrack captionTrack = null!;
+        private string srv3Contents = null!;
+        private ClosedCaptionTrack closedCaptionTrack;
         private ClosedCaptionLanguage captionLanguage;
 
         private StopwatchClock rateAdjustClock = null!;
@@ -62,19 +63,25 @@ namespace NekoPlayer.App.Graphics.Videos
         private MediaSession? mediaSession { get; set; }
 #nullable disable
 
-        public YouTubeVideoPlayer(string fileName_Video, string fileName_Audio, ClosedCaptionTrack captionTrack, Google.Apis.YouTube.v3.Data.Video videoData, double resumeFromTime)
+        public YouTubeVideoPlayer(string fileName_Video, string fileName_Audio, ClosedCaptionTrack closedCaptionTrack, string srv3Contents, Google.Apis.YouTube.v3.Data.Video videoData, double resumeFromTime)
         {
             this.fileName_Video = fileName_Video;
             this.fileName_Audio = fileName_Audio;
-            this.captionTrack = captionTrack;
+            this.srv3Contents = srv3Contents;
+            this.closedCaptionTrack = closedCaptionTrack;
             this.videoData = videoData;
             this.resumeFromTime = resumeFromTime;
         }
 
-        public void UpdateCaptionTrack(ClosedCaptionTrack captionTrack)
+        public void UpdateCaptionTrack(ClosedCaptionTrack closedCaptionTrack, string srv3Contents)
         {
-            this.captionTrack = captionTrack;
-            closedCaption.UpdateCaptionTrack(captionLanguage, captionTrack);
+            this.srv3Contents = srv3Contents;
+            this.closedCaptionTrack = closedCaptionTrack;
+
+            if (closedCaptionTrack != null)
+                closedCaption.UpdateCaptionTrack(closedCaptionTrack);
+            else
+                closedCaption.UpdateSrv3CaptionTrack(srv3Contents);
         }
 
         public BindableNumber<double> VideoProgress = new BindableNumber<double>()
@@ -212,7 +219,19 @@ namespace NekoPlayer.App.Graphics.Videos
                         },
                     }
                 },
-                closedCaption = new ClosedCaptionContainer(this, captionTrack)
+                closedCaption = new ClosedCaptionContainer(this, srv3Contents),
+                new TweakedClickableContainer
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Enabled = { Value = false },
+                    Action = () =>
+                    {
+                        if (IsPlaying())
+                            Pause(true);
+                        else
+                            Play(true);
+                    }
+                }
             });
 
             UpdatePreservePitch(config.Get<bool>(NekoPlayerSetting.AdjustPitchOnSpeedChange));
@@ -387,7 +406,7 @@ namespace NekoPlayer.App.Graphics.Videos
             }
         }
 
-        public void Pause(bool isKeyboardAction = false)
+        public void Pause(bool isKeyboardOrMouseAction = false)
         {
             if (drawableTrack != null)
             {
@@ -397,12 +416,12 @@ namespace NekoPlayer.App.Graphics.Videos
                 mediaSession?.UpdatePlayingState(false);
                 mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
 
-                if (isKeyboardAction)
+                if (isKeyboardOrMouseAction)
                     keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Pause);
             }
         }
 
-        public void Play(bool isKeyboardAction = false)
+        public void Play(bool isKeyboardOrMouseAction = false)
         {
             if (drawableTrack != null)
             {
@@ -420,7 +439,7 @@ namespace NekoPlayer.App.Graphics.Videos
                 drawableTrack?.Start();
                 framedClock.Start();
 
-                if (isKeyboardAction)
+                if (isKeyboardOrMouseAction)
                     keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Play);
             }
         }

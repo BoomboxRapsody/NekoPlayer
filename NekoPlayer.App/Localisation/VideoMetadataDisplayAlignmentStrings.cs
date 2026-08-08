@@ -9,7 +9,7 @@ namespace NekoPlayer.App.Localisation
 {
     public static class VideoMetadataDisplayAlignmentStrings
     {
-        private const string prefix = @"NekoPlayer.App.BuiltInResources.Localisation.VideoMetadataDisplayAlignment";
+        private const string prefix = @"NekoPlayer.Resources.Localisation.VideoMetadataDisplayAlignment";
 
         /// <summary>
         /// "Left"

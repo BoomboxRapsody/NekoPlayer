@@ -28,6 +28,7 @@ using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Utils;
+using NekoPlayer.Resources;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -104,6 +105,21 @@ namespace NekoPlayer.App
                 case RuntimeInfo.Platform.Windows:
                 {
                     return Directory.GetCurrentDirectory() + "/FFmpeg/bin/win-x64/ffmpeg.exe";
+                }
+                default:
+                {
+                    throw new PlatformNotSupportedException();
+                }
+            }
+        }
+
+        public string GetYtDlpPath()
+        {
+            switch (RuntimeInfo.OS)
+            {
+                case RuntimeInfo.Platform.Windows:
+                {
+                    return Directory.GetCurrentDirectory() + "/yt-dlp.exe";
                 }
                 default:
                 {
@@ -294,8 +310,8 @@ namespace NekoPlayer.App
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
                 //Logger.Log(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath("videoId") + @"\video.mp4");
-                //Resources.AddStore(new DllResourceStore(typeof(NekoPlayerResources).Assembly));
-                Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(typeof(NekoPlayerAppBase).Assembly), "BuiltInResources"));
+                Resources.AddStore(new DllResourceStore(typeof(NekoPlayerAppResources).Assembly));
+                //Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(typeof(NekoPlayerAppBase).Assembly), "BuiltInResources"));
 
                 InitialiseFonts();
 
@@ -692,9 +708,6 @@ namespace NekoPlayer.App
             #endregion
         }
         #endregion
-
-        private float _lpL, _lpR;
-        private const float LpAlpha = 0.08f;
 
         private unsafe void KaraokeDsp(int handle, int channel, IntPtr buffer, int length, IntPtr user)
         {

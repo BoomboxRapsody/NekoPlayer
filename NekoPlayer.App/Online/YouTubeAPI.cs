@@ -68,9 +68,15 @@ namespace NekoPlayer.App.Online
         public Channel? TryGetChannel(string channelId)
             => GetChannel(channelId) ?? null;
 
+        //OAC -> Official Artist Channel
+        public bool ChannelIsOAC(Channel channel)
+        {
+            return channel.TopicDetails.TopicIds.Contains("/m/04rlf");
+        }
+
         public Channel? GetChannel(string channelId)
         {
-            var part = "statistics,snippet,brandingSettings,id,localizations";
+            var part = "statistics,snippet,brandingSettings,id,localizations,topicDetails";
             var request = youtubeService.Channels.List(part);
 
             request.Id = channelId;
@@ -520,7 +526,7 @@ namespace NekoPlayer.App.Online
             }
         }
 
-        public string GetLocalizedChannelTitle(Channel channel, bool displayBoth = false)
+        public string GetLocalizedChannelTitle(Channel channel, bool displayBoth = false, bool forceUsernameDisplay = false)
         {
             if (channel == null)
                 return string.Empty;
@@ -575,6 +581,9 @@ namespace NekoPlayer.App.Online
             }
             else
             {
+                if (forceUsernameDisplay)
+                    return GetLocalizedChannelTitleOnlyOne(channel);
+
                 if (!string.IsNullOrEmpty(channel.Snippet.CustomUrl))
                     return channel.Snippet.CustomUrl;
                 else

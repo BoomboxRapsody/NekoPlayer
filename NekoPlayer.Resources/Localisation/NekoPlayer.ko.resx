@@ -217,9 +217,6 @@
   <data name="disabled_by_uploader" xml:space="preserve">
     <value>업로더가 비활성화함</value>
   </data>
-  <data name="dislike_counter_credits" xml:space="preserve">
-    <value>싫어요 수의 데이터는 Return YouTube Dislike API에 의해 제공됩니다.</value>
-  </data>
   <data name="common_default" xml:space="preserve">
     <value>기본값</value>
   </data>
@@ -880,5 +877,11 @@
   </data>
   <data name="reflex_boost" xml:space="preserve">
     <value>부스트</value>
+  </data>
+  <data name="srv3_notice" xml:space="preserve">
+    <value>SRV3 형식의 자막은 실험 중이며 버그가 많고, 아직 완성되지 않았습니다.</value>
+  </data>
+  <data name="reset_playback_speed_when_loading_a_video" xml:space="preserve">
+    <value>동영상 불러오기 시 재생 속도 초기화</value>
   </data>
 </root>

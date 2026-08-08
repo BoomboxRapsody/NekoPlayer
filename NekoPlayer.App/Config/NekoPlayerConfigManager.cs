@@ -32,7 +32,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.AspectRatioMethod, AspectRatioMethod.Letterbox);
             SetDefault(NekoPlayerSetting.VideoMetadataTranslateSource, VideoMetadataTranslateSource.YouTube);
             SetDefault(NekoPlayerSetting.VideoQuality, VideoQuality.PreferHighQuality);
-            SetDefault(NekoPlayerSetting.AudioLanguage, Language.en_US);
+            SetDefault(NekoPlayerSetting.AudioLanguage, Language.en);
             SetDefault(NekoPlayerSetting.AdjustPitchOnSpeedChange, false);
             SetDefault(NekoPlayerSetting.VideoDimLevel, 0, 0, .3, 0.01);
             SetDefault(NekoPlayerSetting.ShowFpsDisplay, false);
@@ -89,6 +89,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.OverlaySFXType, SFXType.Normal);
 
             SetDefault(NekoPlayerSetting.CaptionBGOpacity, 0.5f, 0.5f, 1f, 0.01f);
+            SetDefault(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo, false);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -171,5 +172,6 @@ namespace NekoPlayer.App.Config
         OverlaySFXType,
 
         CaptionBGOpacity,
+        ResetPlaybackSpeedWhenLoadingAVideo,
     }
 }

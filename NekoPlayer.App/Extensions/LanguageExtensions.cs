@@ -56,7 +56,7 @@ namespace NekoPlayer.App.Extensions
                     return language;
             }
 
-            return Language.en_US;
+            return Language.en;
         }
     }
 }

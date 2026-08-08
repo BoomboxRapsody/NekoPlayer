@@ -6,6 +6,7 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NekoPlayer.Resources\NekoPlayer.Resources.csproj" />
     <ProjectReference Include="..\osu-framework\osu.Framework/osu.Framework.csproj" />
     <ProjectReference Include="..\YoutubeExplode\YoutubeExplode.Converter\YoutubeExplode.Converter.csproj" />
     <ProjectReference Include="..\YoutubeExplode\YoutubeExplode\YoutubeExplode.csproj" />
@@ -28,13 +29,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="BuiltInResources\Shaders\**\*" />
-    <EmbeddedResource Include="BuiltInResources\Fonts\**\*" />
-    <EmbeddedResource Include="BuiltInResources\Samples\**\*" />
-    <EmbeddedResource Include="BuiltInResources\Textures\**\*" />
-    <EmbeddedResource Include="BuiltInResources\Spine\**\*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Localisation\NekoPlayerExtraStrings.Designer.cs">

@@ -217,9 +217,6 @@
   <data name="disabled_by_uploader" xml:space="preserve">
     <value>アップロード者によって無効になっています</value>
   </data>
-  <data name="dislike_counter_credits" xml:space="preserve">
-    <value>低評価数データはReturn YouTube Dislike APIによって提供されています。</value>
-  </data>
   <data name="common_default" xml:space="preserve">
     <value>デフォルト</value>
   </data>
@@ -294,7 +291,7 @@
     <value>垂直方向のスケール</value>
   </data>
   <data name="thumbnail_dim" xml:space="preserve">
-    <value>Thumbnail dim</value>
+    <value>サムネイルが暗い</value>
   </data>
   <data name="shrink_game_to_safe_area" xml:space="preserve">
     <value>カメラやノッチを避けるためにアプリを縮小する</value>
@@ -387,10 +384,10 @@
     <value>VSync</value>
   </data>
   <data name="refresh_rate_2x" xml:space="preserve">
-    <value>リフレッシュレート</value>
+    <value>2倍のリフレッシュレート</value>
   </data>
   <data name="refresh_rate_4x" xml:space="preserve">
-    <value>リフレッシュレート</value>
+    <value>4x リフレッシュレート</value>
   </data>
   <data name="refresh_rate_8x" xml:space="preserve">
     <value>8x リフレッシュレート</value>
@@ -880,5 +877,11 @@ On にすることを推奨します。問題が発生している場合のみ O
   </data>
   <data name="reflex_boost" xml:space="preserve">
     <value>強化する</value>
+  </data>
+  <data name="srv3_notice" xml:space="preserve">
+    <value>SRV3形式の字幕は実験的なもので、不具合が多く、完全なものではありません。</value>
+  </data>
+  <data name="reset_playback_speed_when_loading_a_video" xml:space="preserve">
+    <value>動画の読み込み時に再生速度をリセットする</value>
   </data>
 </root>

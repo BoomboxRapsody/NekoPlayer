@@ -7,7 +7,7 @@ namespace NekoPlayer.App.Localisation
 {
     public static class NekoPlayerStrings
     {
-        private const string prefix = @"NekoPlayer.App.BuiltInResources.Localisation.YTPlayerEX";
+        private const string prefix = @"NekoPlayer.Resources.Localisation.NekoPlayer";
 
         /// <summary>
         /// "{0} • {1} views • {2}"
@@ -1110,7 +1110,7 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString SystemMuteDesc => new TranslatableString(getKey(@"system_sound_mute_desc"), @"This setting mutes NekoPlayer sounds and other apps, and system sounds.");
 
         /// <summary>
-        /// "Send feedback"
+        /// "Send a feedback"
         /// </summary>
         public static LocalisableString ReportBugs => new TranslatableString(getKey(@"report_bugs"), @"Send a feedback");
 
@@ -1370,6 +1370,16 @@ namespace NekoPlayer.App.Localisation
         /// "Boost"
         /// </summary>
         public static LocalisableString ReflexBoost => new TranslatableString(getKey(@"reflex_boost"), "Boost");
+
+        /// <summary>
+        /// "Subtitles in the SRV3 format still have many bugs and are not yet complete."
+        /// </summary>
+        public static LocalisableString SRV3Notice => new TranslatableString(getKey(@"srv3_notice"), "The SRV3-format subtitles are experimental, have many bugs, and are not complete.");
+
+        /// <summary>
+        /// "Reset playback speed when loading a video"
+        /// </summary>
+        public static LocalisableString ResetPlaybackSpeedWhenLoadingAVideo => new TranslatableString(getKey(@"reset_playback_speed_when_loading_a_video"), "Reset playback speed when loading a video");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
