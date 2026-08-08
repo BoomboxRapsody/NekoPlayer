@@ -1371,6 +1371,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ReflexBoost => new TranslatableString(getKey(@"reflex_boost"), "Boost");
 
+        /// <summary>
+        /// "Subtitles in the SRV3 format still have many bugs and are not yet complete."
+        /// </summary>
+        public static LocalisableString SRV3Notice => new TranslatableString(getKey(@"srv3_notice"), "The SRV3-format subtitles are experimental, have many bugs, and are not complete.");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

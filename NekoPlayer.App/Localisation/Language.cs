@@ -12,13 +12,13 @@ namespace NekoPlayer.App.Localisation
     public enum Language
     {
         [Description(@"English")]
-        en_US,
+        en,
 
         [Description(@"日本語")]
-        ja_JP,
+        ja,
 
         [Description(@"한국어")]
-        ko_KR,
+        ko,
 
 #if DEBUG
         [Description(@"Debug (show raw keys)")]

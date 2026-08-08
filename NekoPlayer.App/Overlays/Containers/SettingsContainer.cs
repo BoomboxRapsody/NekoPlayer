@@ -211,6 +211,7 @@ namespace NekoPlayer.App.Overlays.Containers
         public const string LINUX_ALSA_DEVICE_DRIVER_PREFIX = "hw:";
 
         private readonly Bindable<SettingsNote.Data?> alsaExclusiveDeviceNote = new Bindable<SettingsNote.Data?>();
+        private readonly Bindable<SettingsNote.Data?> srv3Notice = new Bindable<SettingsNote.Data?>();
 
         private void onDeviceSelected(string selectedDevice)
         {
@@ -350,6 +351,8 @@ namespace NekoPlayer.App.Overlays.Containers
             alwaysUseOriginalAudio = appConfig.GetBindable<bool>(NekoPlayerSetting.AlwaysUseOriginalAudio);
             sizeWindowed = config.GetBindable<Size>(FrameworkSetting.WindowedSize);
             window = host.Window;
+
+            srv3Notice.Value = new SettingsNote.Data(NekoPlayerStrings.SRV3Notice, SettingsNote.Type.Warning);
 
             var reflexMode = config.GetBindable<LatencyMode>(FrameworkSetting.LatencyMode);
             var frameSyncMode = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync);
@@ -880,7 +883,10 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.ClosedCaptioning,
                                                             Current = captionEnabled,
                                                             Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
-                                                        }),
+                                                        })
+                                                        {
+                                                            Note = { BindTarget = srv3Notice },
+                                                        },
                                                         captionLangOptions = new SettingsItemV2(CaptionLangDropdown = new YouTubeI18nLangDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.CaptionLanguage,

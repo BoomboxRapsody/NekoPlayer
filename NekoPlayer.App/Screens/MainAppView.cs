@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -41,8 +42,10 @@ using NekoPlayer.App.Utils;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Audio.Track;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
+using osu.Framework.Development;
 using osu.Framework.Extensions;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -3471,15 +3474,17 @@ namespace NekoPlayer.App.Screens
                                     onScreenDisplay.Display(toast);
                                 });
 
-                                captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
+                                srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
+                                //captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
                             }
 
-                            currentVideoSource.UpdateCaptionTrack(captionTrack);
+                            currentVideoSource.UpdateCaptionTrack(srv3Contents);
                         });
                     }
                     else
                     {
-                        currentVideoSource.UpdateCaptionTrack(null);
+                        srv3Contents = string.Empty;
+                        currentVideoSource.UpdateCaptionTrack(srv3Contents);
                     }
                 }
             });
@@ -3526,15 +3531,17 @@ namespace NekoPlayer.App.Screens
                                     }
                                 });
 
-                                captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
+                                srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
+                                //captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
                             }
 
-                            currentVideoSource.UpdateCaptionTrack(captionTrack);
+                            currentVideoSource.UpdateCaptionTrack(srv3Contents);
                         });
                     }
                     else
                     {
-                        currentVideoSource.UpdateCaptionTrack(null);
+                        srv3Contents = string.Empty;
+                        currentVideoSource.UpdateCaptionTrack(srv3Contents);
                     }
                 }
             });
@@ -6133,6 +6140,35 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private NekoPlayerConfigManager appGlobalConfig { get; set; }
 
+        private string srv3Contents;
+
+        //we need to download subtitles to preload subtitles
+        private async void downloadSubtitles()
+        {
+            if (string.IsNullOrEmpty(videoUrl))
+                return;
+
+            string args = string.Empty;
+
+            if (DebugUtils.IsDebugBuild)
+            {
+                args = $"--sub-langs all --write-subs --write-auto-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer-development\\cache\\subtitleCache\\{videoId}\\";
+            }
+            else
+            {
+                args = $"--sub-langs all --write-subs --write-auto-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer\\cache\\subtitleCache\\{videoId}\\";
+            }
+
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(app.GetYtDlpPath(), args);
+
+            processStartInfo.CreateNoWindow = true;
+
+            using (Process process = Process.Start(processStartInfo))
+            {
+                await process.WaitForExitAsync();
+            }
+        }
+
         public void SetVideoSource(string videoId, bool clearCache = false, LoadType loadType = LoadType.Full)
         {
             videoIdBox.Text = string.Empty;
@@ -6275,6 +6311,7 @@ namespace NekoPlayer.App.Screens
 
                         Schedule(() => videoProgress.MaxValue = 1);
                         videoUrl = $"https://youtube.com/watch?v={this.videoId}";
+                        downloadSubtitles();
 
                         if (loadType == LoadType.Full)
                         {
@@ -6613,12 +6650,14 @@ namespace NekoPlayer.App.Screens
                                             });
                                         }
 
-                                        captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
+                                        //captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
+                                        srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
                                     }
                                 }
                                 else
                                 {
-                                    currentVideoSource?.UpdateCaptionTrack(null);
+                                    srv3Contents = string.Empty;
+                                    currentVideoSource?.UpdateCaptionTrack(srv3Contents);
                                 }
                             }
                             catch (Exception e)
@@ -6646,7 +6685,7 @@ namespace NekoPlayer.App.Screens
                                 }
                             }
 
-                            currentVideoSource = new YouTubeVideoPlayer(videoFile, app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg", captionTrack, videoData, pausedTime)
+                            currentVideoSource = new YouTubeVideoPlayer(videoFile, app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg", srv3Contents, videoData, pausedTime)
                             {
                                 RelativeSizeAxes = Axes.Both
                             };
@@ -6956,12 +6995,14 @@ namespace NekoPlayer.App.Screens
                                             });
                                         }
 
-                                        captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
+                                        //captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
+                                        srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
                                     }
                                 }
                                 else
                                 {
-                                    currentVideoSource?.UpdateCaptionTrack(null);
+                                    srv3Contents = string.Empty;
+                                    currentVideoSource?.UpdateCaptionTrack(srv3Contents);
                                 }
                             }
                             catch (Exception e)
@@ -6978,7 +7019,7 @@ namespace NekoPlayer.App.Screens
                                 videoFile = app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm";
                             }
 
-                            currentVideoSource = new YouTubeVideoPlayer(videoFile, app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg", captionTrack, videoData, pausedTime)
+                            currentVideoSource = new YouTubeVideoPlayer(videoFile, app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg", srv3Contents, videoData, pausedTime)
                             {
                                 RelativeSizeAxes = Axes.Both
                             };

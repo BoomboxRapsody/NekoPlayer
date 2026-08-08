@@ -881,4 +881,7 @@
   <data name="reflex_boost" xml:space="preserve">
     <value>부스트</value>
   </data>
+  <data name="srv3_notice" xml:space="preserve">
+    <value>SRV3 형식의 자막은 실험 중이며 버그가 많고, 아직 완성되지 않았습니다.</value>
+  </data>
 </root>

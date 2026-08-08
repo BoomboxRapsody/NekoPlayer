@@ -112,6 +112,21 @@ namespace NekoPlayer.App
             }
         }
 
+        public string GetYtDlpPath()
+        {
+            switch (RuntimeInfo.OS)
+            {
+                case RuntimeInfo.Platform.Windows:
+                {
+                    return Directory.GetCurrentDirectory() + "/yt-dlp.exe";
+                }
+                default:
+                {
+                    throw new PlatformNotSupportedException();
+                }
+            }
+        }
+
         /// <summary>
         /// Allows a maximum of one unhandled exception, per second of execution.
         /// </summary>
