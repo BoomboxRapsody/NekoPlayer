@@ -4539,7 +4539,7 @@ namespace NekoPlayer.App.Screens
         protected override bool OnKeyDown(KeyDownEvent e)
         {
             // ignore seek shortcuts on focused to text box
-            if (currentVideoSource == null && ((e.Target.GetType() == typeof(AdaptiveTextBox)) || (e.Target.GetType() == typeof(FormTextBox)) || (e.Target.GetType() == typeof(FormNumberBox))))
+            if (currentVideoSource == null || ((e.Target.GetType() == typeof(AdaptiveTextBox)) || (e.Target.GetType() == typeof(FormTextBox)) || (e.Target.GetType() == typeof(FormNumberBox))))
                 return true;
 
             if (e.Key >= Key.Number0 && e.Key <= Key.Number9)
@@ -6053,6 +6053,40 @@ namespace NekoPlayer.App.Screens
             }
         }
 
+        private int parseTimestampFromURL(string url)
+        {
+            string? timestamp = new Uri(url).Query
+                .TrimStart('?')
+                .Split('&')
+                .Select(x => x.Split('='))
+                .FirstOrDefault(x => x.Length == 2 && x[0] == "t")?[1];
+
+            if (!string.IsNullOrEmpty(timestamp))
+            {
+                int calculated = Convert.ToInt32(timestamp) * 1000;
+
+                return calculated;
+            }
+
+            return 0;
+        }
+
+        private bool timestampInURL(string url)
+        {
+            string? timestamp = new Uri(url).Query
+                .TrimStart('?')
+                .Split('&')
+                .Select(x => x.Split('='))
+                .FirstOrDefault(x => x.Length == 2 && x[0] == "t")?[1];
+
+            if (!string.IsNullOrEmpty(timestamp))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private void addVideoToScreen()
         {
             //Task.Run(async () => await api.SendPlayerResponseAsync(videoId));
@@ -6082,6 +6116,9 @@ namespace NekoPlayer.App.Screens
             {
                 setPlaybackSpeed(speed.NewValue);
             }, true);
+
+            if (timestampInURL(videoUrl))
+                Schedule(() => seekTo(parseTimestampFromURL(videoUrl)));
 
             if (playlists.Count > 0)
             {
@@ -6311,7 +6348,19 @@ namespace NekoPlayer.App.Screens
                         spinnerShow = Scheduler.AddDelayed(spinner.Show, 0);
 
                         Schedule(() => videoProgress.MaxValue = 1);
-                        videoUrl = $"https://youtube.com/watch?v={this.videoId}";
+
+                        if (NekoPlayerDescriptionParser.IsYouTubeVideo(videoId))
+                        {
+                            if (timestampInURL(videoId))
+                                videoUrl = videoId;
+                            else
+                                videoUrl = $"https://youtube.com/watch?v={this.videoId}";
+                        }
+                        else
+                        {
+                            videoUrl = $"https://youtube.com/watch?v={this.videoId}";
+                        }
+
                         downloadSubtitles();
 
                         if (loadType == LoadType.Full)
