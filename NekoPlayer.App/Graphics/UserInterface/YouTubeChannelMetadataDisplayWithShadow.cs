@@ -213,7 +213,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 Schedule(() =>
                 {
                     videoName.Text = TruncateWithEllipsis(api.GetLocalizedChannelTitle(channel, forceUsernameDisplay: true), 20);
-                    if (api.CheckOAC(channel))
+                    if (api.ChannelIsOAC(channel))
                     {
                         videoName.AddArbitraryDrawable(new SpriteIcon
                         {
@@ -237,7 +237,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Schedule(() =>
                     {
                         videoName.Text = TruncateWithEllipsis(api.GetLocalizedChannelTitle(channel, forceUsernameDisplay: true), 20);
-                        if (api.CheckOAC(channel))
+                        if (api.ChannelIsOAC(channel))
                         {
                             videoName.AddArbitraryDrawable(new SpriteIcon
                             {

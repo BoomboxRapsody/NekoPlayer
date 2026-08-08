@@ -223,7 +223,7 @@ namespace NekoPlayer.App.Graphics.Videos
                 new TweakedClickableContainer
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Enabled = { Value = true },
+                    Enabled = { Value = false },
                     Action = () =>
                     {
                         if (IsPlaying())
