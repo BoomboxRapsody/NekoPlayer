@@ -6222,7 +6222,7 @@ namespace NekoPlayer.App.Screens
                         osd.Display(new SpeedChangeToast(playbackSpeed.Value));
                     });
                 }
-            };
+            }
 
             if (loadVideoContainer.IsVisible == true)
             {
