@@ -3464,6 +3464,7 @@ namespace NekoPlayer.App.Screens
                     {
                         Task.Run(async () =>
                         {
+                            srv3Contents = string.Empty;
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
                             var trackLists = trackManifest.Tracks;
@@ -3506,6 +3507,7 @@ namespace NekoPlayer.App.Screens
                     {
                         Task.Run(async () =>
                         {
+                            srv3Contents = string.Empty;
                             var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
 
                             string preferedLang = string.Empty;
