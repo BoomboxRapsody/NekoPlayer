@@ -135,13 +135,13 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
                                 if (!current.Disabled && !ReadOnly)
                                 {
-                                    flashLayer.Colour = ColourInfo.GradientVertical(colourProvider.Dark2.Opacity(0), colourProvider.Dark2);
+                                    flashLayer.Colour = ColourInfo.GradientHorizontal(colourProvider.Dark2.Opacity(0), colourProvider.Dark2);
                                     flashLayer.FadeOutFromOne(800, Easing.OutQuint);
                                 }
                             };
                             t.OnInputError = () =>
                             {
-                                flashLayer.Colour = ColourInfo.GradientVertical(colours.Red3.Opacity(0), colours.Red3);
+                                flashLayer.Colour = ColourInfo.GradientHorizontal(colours.Red3.Opacity(0), colours.Red3);
                                 flashLayer.FadeOutFromOne(200, Easing.OutQuint);
                             };
                             t.TabbableContentContainer = tabbableContentContainer;
