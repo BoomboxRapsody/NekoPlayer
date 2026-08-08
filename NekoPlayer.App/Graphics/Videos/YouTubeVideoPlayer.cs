@@ -78,10 +78,10 @@ namespace NekoPlayer.App.Graphics.Videos
             this.srv3Contents = srv3Contents;
             this.closedCaptionTrack = closedCaptionTrack;
 
-            if (closedCaptionTrack != null)
-                closedCaption.UpdateCaptionTrack(closedCaptionTrack);
-            else
+            if (!string.IsNullOrEmpty(srv3Contents))
                 closedCaption.UpdateSrv3CaptionTrack(srv3Contents);
+            else
+                closedCaption.UpdateCaptionTrack(closedCaptionTrack);
         }
 
         public BindableNumber<double> VideoProgress = new BindableNumber<double>()
