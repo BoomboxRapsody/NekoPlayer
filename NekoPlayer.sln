@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeExplode", "YoutubeEx
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeExplode.Converter", "YoutubeExplode\YoutubeExplode.Converter\YoutubeExplode.Converter.csproj", "{8FD18853-4FAA-4C86-092E-56CCF1EBB7AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NekoPlayer.Resources", "NekoPlayer.Resources\NekoPlayer.Resources.csproj", "{D4121EB2-258A-C29C-3909-D4DB7778B54B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -172,6 +174,22 @@ Global
 		{8FD18853-4FAA-4C86-092E-56CCF1EBB7AE}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{8FD18853-4FAA-4C86-092E-56CCF1EBB7AE}.Release|x64.ActiveCfg = Release|Any CPU
 		{8FD18853-4FAA-4C86-092E-56CCF1EBB7AE}.Release|x64.Build.0 = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Debug|x64.Build.0 = Debug|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|iPhone.Build.0 = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|x64.ActiveCfg = Release|Any CPU
+		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

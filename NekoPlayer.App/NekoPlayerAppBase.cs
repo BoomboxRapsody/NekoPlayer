@@ -28,6 +28,7 @@ using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Utils;
+using NekoPlayer.Resources;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -309,8 +310,8 @@ namespace NekoPlayer.App
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
                 //Logger.Log(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath("videoId") + @"\video.mp4");
-                //Resources.AddStore(new DllResourceStore(typeof(NekoPlayerResources).Assembly));
-                Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(typeof(NekoPlayerAppBase).Assembly), "BuiltInResources"));
+                Resources.AddStore(new DllResourceStore(typeof(NekoPlayerAppResources).Assembly));
+                //Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(typeof(NekoPlayerAppBase).Assembly), "BuiltInResources"));
 
                 InitialiseFonts();
 
