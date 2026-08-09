@@ -46,6 +46,7 @@ namespace NekoPlayer.App.Graphics.Caption
         private Srv3CaptionTrack srv3Track;
 
         private Bindable<bool> captionEnabled;
+        private Bindable<bool> captionEnabled;
         private Bindable<CaptionFonts> captionFont;
         private Container captionContainer;
         private Bindable<float> bottomMargin = new Bindable<float>();
@@ -53,7 +54,7 @@ namespace NekoPlayer.App.Graphics.Caption
         public ClosedCaptionContainer(YouTubeVideoPlayer videoPlayer, ClosedCaptionTrack captionTrack)
         {
             this.videoPlayer = videoPlayer;
-            this.captionTrack = captionTrack;
+            UpdateCaptionTrack(captionTrack);
             initialiseContainer();
         }
 
@@ -64,6 +65,18 @@ namespace NekoPlayer.App.Graphics.Caption
         {
             this.videoPlayer = videoPlayer;
             UpdateSrv3CaptionTrack(srv3Xml);
+            initialiseContainer();
+        }
+
+        public ClosedCaptionContainer(YouTubeVideoPlayer videoPlayer, ClosedCaptionTrack captionTrack, string srv3Xml, Bindable<bool> useNewCaptionFeature)
+        {
+            this.videoPlayer = videoPlayer;
+
+            if (useNewCaptionFeature.Value)
+                UpdateSrv3CaptionTrack(srv3Xml);
+            else
+                UpdateCaptionTrack(captionTrack);
+
             initialiseContainer();
         }
 
@@ -315,6 +328,10 @@ namespace NekoPlayer.App.Graphics.Caption
                 if (span.BackgroundColour.HasValue)
                 {
                     bg.Colour = span.BackgroundColour.Value;
+                }
+                else
+                {
+                    bg.Colour = captionBGColor.Value;
                 }
 
                 spriteText.AddText(text, t =>

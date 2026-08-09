@@ -227,7 +227,7 @@ namespace NekoPlayer.App.Graphics.Videos
                         },
                     }
                 },
-                closedCaption = new ClosedCaptionContainer(this, srv3Contents),
+                closedCaption = new ClosedCaptionContainer(this, closedCaptionTrack, srv3Contents, useNewSubtitlesFeature),
                 new TweakedClickableContainer
                 {
                     RelativeSizeAxes = Axes.Both,
