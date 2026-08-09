@@ -879,7 +879,7 @@
     <value>부스트</value>
   </data>
   <data name="srv3_notice" xml:space="preserve">
-    <value>SRV3 형식의 자막은 실험 중이며 버그가 많고, 아직 완성되지 않았습니다.</value>
+    <value>이 기능은 실험 중이며 버그가 많고, 아직 완성되지 않았습니다.</value>
   </data>
   <data name="reset_playback_speed_when_loading_a_video" xml:space="preserve">
     <value>동영상 불러오기 시 재생 속도 초기화</value>
@@ -889,5 +889,8 @@
   </data>
   <data name="closed_captions_radius" xml:space="preserve">
     <value>자막의 둥글기 정도</value>
+  </data>
+  <data name="advanced_subtitle_style" xml:space="preserve">
+    <value>고급 자막 스타일 사용</value>
   </data>
 </root>

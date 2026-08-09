@@ -879,7 +879,7 @@ Recomendado tener En, apagar sólo si experimenta problemas.</value>
     <value>Incrementar</value>
   </data>
   <data name="srv3_notice" xml:space="preserve">
-    <value>Los subtítulos en formato SRV3 son experimentales, tienen muchos errores y no están completos.</value>
+    <value>Estas características son experimentales, tienen muchos errores y no están completas.</value>
   </data>
   <data name="reset_playback_speed_when_loading_a_video" xml:space="preserve">
     <value>Reestablecer la velocidad de reproducción al cargar un vídeo</value>
@@ -889,5 +889,8 @@ Recomendado tener En, apagar sólo si experimenta problemas.</value>
   </data>
   <data name="closed_captions_radius" xml:space="preserve">
     <value>Rádius de esquina de las capturas cerradas</value>
+  </data>
+  <data name="advanced_subtitle_style" xml:space="preserve">
+    <value>Usa estilo avanzado de subtítulos</value>
   </data>
 </root>

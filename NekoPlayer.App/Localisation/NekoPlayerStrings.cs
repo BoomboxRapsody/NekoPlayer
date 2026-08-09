@@ -1373,9 +1373,9 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString ReflexBoost => new TranslatableString(getKey(@"reflex_boost"), "Boost");
 
         /// <summary>
-        /// "Subtitles in the SRV3 format still have many bugs and are not yet complete."
+        /// "This features are experimental, have many bugs, and are not complete."
         /// </summary>
-        public static LocalisableString SRV3Notice => new TranslatableString(getKey(@"srv3_notice"), "The SRV3-format subtitles are experimental, have many bugs, and are not complete.");
+        public static LocalisableString SRV3Notice => new TranslatableString(getKey(@"srv3_notice"), "This features are experimental, have many bugs, and are not complete.");
 
         /// <summary>
         /// "Reset playback speed when loading a video"
@@ -1391,6 +1391,11 @@ namespace NekoPlayer.App.Localisation
         /// "Closed captions corner radius"
         /// </summary>
         public static LocalisableString CaptionCornerRadius => new TranslatableString(getKey(@"closed_captions_radius"), @"Closed captions corner radius");
+
+        /// <summary>
+        /// "Use advanced subtitles style"
+        /// </summary>
+        public static LocalisableString AdvancedSubtitleStyle => new TranslatableString(getKey(@"advanced_subtitle_style"), @"Use advanced subtitles style");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
