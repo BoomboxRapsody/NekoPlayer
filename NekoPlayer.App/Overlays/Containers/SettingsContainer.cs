@@ -116,7 +116,7 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<ProfileImageShape> profileImageShape;
         private Bindable<CloseButtonAction> closeButtonAction;
         private Bindable<DiscordRichPresenceMode> discordRichPresence;
-        private Bindable<bool> adjustPitch;
+        private Bindable<bool> adjustPitch, advancedSubtitles;
         private Bindable<VideoMetadataDisplayAlignment> videoMetadataDisplayAlignment;
         private Bindable<AspectRatioMethod> aspectRatioMethod;
         private Bindable<bool> fpsDisplay;
@@ -355,8 +355,6 @@ namespace NekoPlayer.App.Overlays.Containers
             sizeWindowed = config.GetBindable<Size>(FrameworkSetting.WindowedSize);
             window = host.Window;
 
-            srv3Notice.Value = new SettingsNote.Data(NekoPlayerStrings.SRV3Notice, SettingsNote.Type.Warning);
-
             var reflexMode = config.GetBindable<LatencyMode>(FrameworkSetting.LatencyMode);
             var frameSyncMode = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync);
 
@@ -369,6 +367,16 @@ namespace NekoPlayer.App.Overlays.Containers
             windowedPositionY = config.GetBindable<double>(FrameworkSetting.WindowedPositionY);
 
             aspectRatioMethod = appConfig.GetBindable<AspectRatioMethod>(NekoPlayerSetting.AspectRatioMethod);
+
+            advancedSubtitles = appConfig.GetBindable<bool>(NekoPlayerSetting.UseNewSubtitlesFeature);
+
+            advancedSubtitles.BindValueChanged(value =>
+            {
+                if (value.NewValue)
+                    srv3Notice.Value = new SettingsNote.Data(NekoPlayerStrings.SRV3Notice, SettingsNote.Type.Warning);
+                else
+                    srv3Notice.Value = null;
+            }, true);
 
             var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
             automaticRendererInUse = renderer.Value == RendererType.Automatic;
@@ -895,6 +903,12 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.ClosedCaptioning,
                                                             Current = captionEnabled,
                                                             Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
+                                                        }),
+                                                        new SettingsItemV2(new FormCheckBox
+                                                        {
+                                                            Caption = NekoPlayerStrings.AdvancedSubtitleStyle,
+                                                            Icon = FontAwesome.Solid.ClosedCaptioning,
+                                                            Current = advancedSubtitles,
                                                         })
                                                         {
                                                             Note = { BindTarget = srv3Notice },

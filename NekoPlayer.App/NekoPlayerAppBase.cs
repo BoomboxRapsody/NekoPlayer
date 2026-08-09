@@ -28,7 +28,7 @@ using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Utils;
-using NekoPlayer.Resources;
+using NekoPlayer.App.Resources;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;

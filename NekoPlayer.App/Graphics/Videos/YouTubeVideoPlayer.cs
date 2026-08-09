@@ -79,7 +79,12 @@ namespace NekoPlayer.App.Graphics.Videos
             this.closedCaptionTrack = closedCaptionTrack;
 
             if (!string.IsNullOrEmpty(srv3Contents))
-                closedCaption.UpdateSrv3CaptionTrack(srv3Contents);
+            {
+                if (useNewSubtitlesFeature.Value)
+                    closedCaption.UpdateSrv3CaptionTrack(srv3Contents);
+                else
+                    closedCaption.UpdateCaptionTrack(closedCaptionTrack);
+            }
             else
                 closedCaption.UpdateCaptionTrack(closedCaptionTrack);
         }
@@ -96,6 +101,8 @@ namespace NekoPlayer.App.Graphics.Videos
         private Bindable<float> videoBloomLevel, chromaticAberrationStrength, videoGrayscaleLevel, videoHueShift = null!;
 
         private VideoNewShaderContainer bloom, chromatic, grayscale, hueShift = null!;
+
+        private Bindable<bool> useNewSubtitlesFeature;
 
         private Bindable<Localisation.Language> uiLanguage;
 
@@ -139,6 +146,7 @@ namespace NekoPlayer.App.Graphics.Videos
             videoGrayscaleLevel = config.GetBindable<float>(NekoPlayerSetting.VideoGrayscaleLevel);
             videoHueShift = config.GetBindable<float>(NekoPlayerSetting.VideoHueShift);
             chromaticAberrationStrength = config.GetBindable<float>(NekoPlayerSetting.ChromaticAberrationStrength);
+            useNewSubtitlesFeature = config.GetBindable<bool>(NekoPlayerSetting.UseNewSubtitlesFeature);
             track = tracks.GetFromStream(File.OpenRead(fileName_Audio), fileName_Audio);
             playbackSpeed = new Bindable<double>(1);
             uiLanguage = app.CurrentLanguage.GetBoundCopy();
@@ -219,7 +227,7 @@ namespace NekoPlayer.App.Graphics.Videos
                         },
                     }
                 },
-                closedCaption = new ClosedCaptionContainer(this, srv3Contents),
+                closedCaption = new ClosedCaptionContainer(this, closedCaptionTrack, srv3Contents, useNewSubtitlesFeature),
                 new TweakedClickableContainer
                 {
                     RelativeSizeAxes = Axes.Both,

@@ -27,6 +27,7 @@ using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Graphics.Videos;
 using NekoPlayer.App.Graphics.UserInterface;
+using osu.Framework.Extensions.Color4Extensions;
 
 namespace NekoPlayer.App.Graphics.Caption
 {
@@ -52,7 +53,7 @@ namespace NekoPlayer.App.Graphics.Caption
         public ClosedCaptionContainer(YouTubeVideoPlayer videoPlayer, ClosedCaptionTrack captionTrack)
         {
             this.videoPlayer = videoPlayer;
-            this.captionTrack = captionTrack;
+            UpdateCaptionTrack(captionTrack);
             initialiseContainer();
         }
 
@@ -63,6 +64,18 @@ namespace NekoPlayer.App.Graphics.Caption
         {
             this.videoPlayer = videoPlayer;
             UpdateSrv3CaptionTrack(srv3Xml);
+            initialiseContainer();
+        }
+
+        public ClosedCaptionContainer(YouTubeVideoPlayer videoPlayer, ClosedCaptionTrack captionTrack, string srv3Xml, Bindable<bool> useNewCaptionFeature)
+        {
+            this.videoPlayer = videoPlayer;
+
+            if (useNewCaptionFeature.Value)
+                UpdateSrv3CaptionTrack(srv3Xml);
+            else
+                UpdateCaptionTrack(captionTrack);
+
             initialiseContainer();
         }
 
@@ -265,6 +278,8 @@ namespace NekoPlayer.App.Graphics.Caption
                     //also fallback text anchor to centere
                     spriteText.TextAnchor = Anchor.Centre;
 
+                    bg.Colour = captionBGColor.Value;
+
                     var caption = captionTrack.TryGetByTime(TimeSpan.FromSeconds(time));
 
                     if (caption != null)
@@ -303,6 +318,9 @@ namespace NekoPlayer.App.Graphics.Caption
             foreach (Srv3Span span in cue.Spans)
             {
                 string text = span.Text;
+
+                if (span.BackgroundColour.HasValue)
+                    bg.Colour = span.BackgroundColour.Value;
 
                 // SRV3 uses U+200B as an explicit zero-width separator between
                 // styled spans in YouTube's generated timedtext.
@@ -536,6 +554,7 @@ namespace NekoPlayer.App.Graphics.Caption
         public int OffsetMilliseconds { get; }
 
         public Color4 ForegroundColour => Pen.ForegroundColour;
+        public Color4? BackgroundColour => Pen.BackgroundColour;
         public Color4? EdgeColour => Pen.EdgeColour;
         public int EdgeType => Pen.EdgeType;
         public float? SizeMultiplier => Pen.SizeMultiplier;
