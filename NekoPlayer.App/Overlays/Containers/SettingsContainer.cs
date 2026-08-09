@@ -909,7 +909,6 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Caption = NekoPlayerStrings.AdvancedSubtitleStyle,
                                                             Icon = FontAwesome.Solid.ClosedCaptioning,
                                                             Current = advancedSubtitles,
-                                                            Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
                                                         })
                                                         {
                                                             Note = { BindTarget = srv3Notice },
