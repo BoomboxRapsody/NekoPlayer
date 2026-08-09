@@ -179,7 +179,7 @@ namespace NekoPlayer.App.Overlays
             volumeMeters.ScaleTo(1, 500, Easing.OutQuint);
             volumeMeters.TransformTo("Spacing", new Vector2(0, offset), 500, Easing.OutQuint);
 
-            newVolumeSliderBar.MoveToY(0, 500, Easing.OutQuint);
+            newVolumeSliderBar.MoveToY(0, 500, Easing.OutBack);
             newVolumeSliderBar.FadeIn(500, Easing.OutQuint);
 
             this.FadeIn(500, Easing.OutQuint);
