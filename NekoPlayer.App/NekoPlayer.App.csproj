@@ -6,7 +6,7 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NekoPlayer.Resources\NekoPlayer.Resources.csproj" />
+    <ProjectReference Include="..\NekoPlayer.App.Resources\NekoPlayer.App.Resources.csproj" />
     <ProjectReference Include="..\osu-framework\osu.Framework/osu.Framework.csproj" />
   </ItemGroup>
   <ItemGroup>

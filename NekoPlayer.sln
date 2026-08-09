@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysi
 		CodeAnalysis\NekoPlayer.globalconfig = CodeAnalysis\NekoPlayer.globalconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NekoPlayer.Resources", "NekoPlayer.Resources\NekoPlayer.Resources.csproj", "{D4121EB2-258A-C29C-3909-D4DB7778B54B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NekoPlayer.App.Resources", "NekoPlayer.App.Resources\NekoPlayer.App.Resources.csproj", "{D4121EB2-258A-C29C-3909-D4DB7778B54B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

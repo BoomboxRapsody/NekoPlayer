@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace NekoPlayer.Resources
+namespace NekoPlayer.App.Resources
 {
     public static class NekoPlayerAppResources
     {
