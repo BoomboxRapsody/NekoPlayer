@@ -46,7 +46,6 @@ namespace NekoPlayer.App.Graphics.Caption
         private Srv3CaptionTrack srv3Track;
 
         private Bindable<bool> captionEnabled;
-        private Bindable<bool> captionEnabled;
         private Bindable<CaptionFonts> captionFont;
         private Container captionContainer;
         private Bindable<float> bottomMargin = new Bindable<float>();
