@@ -319,19 +319,13 @@ namespace NekoPlayer.App.Graphics.Caption
             {
                 string text = span.Text;
 
+                if (span.BackgroundColour.HasValue)
+                    bg.Colour = span.BackgroundColour.Value;
+
                 // SRV3 uses U+200B as an explicit zero-width separator between
                 // styled spans in YouTube's generated timedtext.
                 if (text.Length == 0)
                     continue;
-
-                if (span.BackgroundColour.HasValue)
-                {
-                    bg.Colour = span.BackgroundColour.Value;
-                }
-                else
-                {
-                    bg.Colour = captionBGColor.Value;
-                }
 
                 spriteText.AddText(text, t =>
                 {
