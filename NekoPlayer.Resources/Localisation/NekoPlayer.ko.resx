@@ -887,4 +887,7 @@
   <data name="closed_captions_bg_colour" xml:space="preserve">
     <value>자막 배경의 색상</value>
   </data>
+  <data name="closed_captions_radius" xml:space="preserve">
+    <value>자막의 둥글기 정도</value>
+  </data>
 </root>

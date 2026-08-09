@@ -887,4 +887,7 @@ On にすることを推奨します。問題が発生している場合のみ O
   <data name="closed_captions_bg_colour" xml:space="preserve">
     <value>クローズドキャプションの背景色</value>
   </data>
+  <data name="closed_captions_radius" xml:space="preserve">
+    <value>クローズドキャプションの角丸</value>
+  </data>
 </root>

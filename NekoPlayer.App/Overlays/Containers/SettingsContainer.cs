@@ -199,6 +199,8 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<bool> alwaysUseOriginalAudio, captionEnabled;
         private Bindable<float> captionBGOpacity;
 
+        private PopoverContainer popoverContainer;
+
         public Action CloseOverlayAction;
 
         public YouTubeI18nLangDropdown CaptionLangDropdown;
@@ -403,7 +405,7 @@ namespace NekoPlayer.App.Overlays.Containers
             Anchor = Anchor.CentreRight;
             Children = new Drawable[]
             {
-                new PopoverContainer {
+                popoverContainer = new PopoverContainer {
                     RelativeSizeAxes = Axes.Both,
                     Children = new Drawable[] {
                                 new OverlayBackground
@@ -923,6 +925,14 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Caption = NekoPlayerStrings.CaptionBGColour,
                                                             Current = appConfig.GetBindable<Colour4>(NekoPlayerSetting.CaptionBGColor),
                                                             Icon = FontAwesome.Solid.Palette,
+                                                        }),
+                                                        new SettingsItemV2(new FormSliderBar<int>
+                                                        {
+                                                            Caption = NekoPlayerStrings.CaptionCornerRadius,
+                                                            Icon = FontAwesome.Solid.SlidersH,
+                                                            Current = appConfig.GetBindable<int>(NekoPlayerSetting.CaptionCornerRadius),
+                                                            KeyboardStep = 1,
+                                                            LabelFormat = value => $"{value}px"
                                                         }),
                                                         new AdaptiveSpriteText
                                                         {

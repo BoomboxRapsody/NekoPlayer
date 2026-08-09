@@ -887,4 +887,7 @@ Recomendado tener En, apagar sólo si experimenta problemas.</value>
   <data name="closed_captions_bg_colour" xml:space="preserve">
     <value>Color de fondo de las captas cerradas</value>
   </data>
+  <data name="closed_captions_radius" xml:space="preserve">
+    <value>Rádius de esquina de las capturas cerradas</value>
+  </data>
 </root>

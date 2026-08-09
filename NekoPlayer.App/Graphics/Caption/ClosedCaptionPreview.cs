@@ -26,6 +26,7 @@ namespace NekoPlayer.App.Graphics.Caption
         private Box bg;
         private Action<SpriteText> textCreationParameters;
         private Action<SpriteText> shadowOptions;
+        private Bindable<int> captionBGRadius;
 
         [BackgroundDependencyLoader]
         private void load(NekoPlayerConfigManager config, SessionStatics sessionStatics, TextureStore textureStore)
@@ -33,6 +34,7 @@ namespace NekoPlayer.App.Graphics.Caption
             captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
             captionBGOpacity = config.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
             captionBGColor = config.GetBindable<Colour4>(NekoPlayerSetting.CaptionBGColor);
+            captionBGRadius = config.GetBindable<int>(NekoPlayerSetting.CaptionCornerRadius);
 
             captionContainer = new Container
             {
@@ -81,6 +83,11 @@ namespace NekoPlayer.App.Graphics.Caption
                     captionContainer,
                 }
             });
+
+            captionBGRadius.BindValueChanged(corner =>
+            {
+                captionContainer.CornerRadius = new CornersInfo(corner.NewValue);
+            }, true);
 
             captionBGOpacity.BindValueChanged(opacity =>
             {
