@@ -87,7 +87,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.PlayOverlaySFX, false);
             SetDefault(NekoPlayerSetting.OverlaySFXType, SFXType.Normal);
 
-            SetDefault(NekoPlayerSetting.CaptionBGOpacity, 0.5f, 0f, 1f, 0.01f);
+            SetDefault(NekoPlayerSetting.CaptionBGOpacity, 0.5f, 0.25f, 1f, 0.01f);
             SetDefault(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo, false);
             SetDefault(NekoPlayerSetting.CaptionBGColor, Colour4.Black);
         }
