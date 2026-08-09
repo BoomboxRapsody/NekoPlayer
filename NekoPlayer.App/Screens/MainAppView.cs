@@ -262,7 +262,7 @@ namespace NekoPlayer.App.Screens
         protected Bindable<ReleaseStream> ReleaseStream;
 
         private Bindable<SFXType> overlaySFXType;
-        private Bindable<bool> playOverlaySFX, ResetPlaybackSpeedWhenLoadingAVideo;
+        private Bindable<bool> playOverlaySFX, ResetPlaybackSpeedWhenLoadingAVideo, advancedCaptions;
 
         private Bindable<float> captionBGOpacity;
 
@@ -349,6 +349,8 @@ namespace NekoPlayer.App.Screens
             caption_font = appConfig.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
 
             aspectRatioMethod = appConfig.GetBindable<AspectRatioMethod>(NekoPlayerSetting.AspectRatioMethod);
+
+            advancedCaptions = appConfig.GetBindable<bool>(NekoPlayerSetting.UseNewSubtitlesFeature);
 
             accentColor = overlayColourProvider1.Content2;
             bgColor = overlayColourProvider1.Background3;
@@ -3480,6 +3482,68 @@ namespace NekoPlayer.App.Screens
                                     ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, lang.NewValue.Name, FontAwesome.Solid.ClosedCaptioning);
 
                                     onScreenDisplay.Display(toast);
+                                });
+
+                                captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
+
+                                if (File.Exists(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3"))
+                                    srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
+                            }
+
+                            currentVideoSource.UpdateCaptionTrack(captionTrack, srv3Contents);
+                        });
+                    }
+                    else
+                    {
+                        srv3Contents = string.Empty;
+                        currentVideoSource.UpdateCaptionTrack(null, srv3Contents);
+                    }
+                }
+            });
+
+            advancedCaptions.BindValueChanged(enabled =>
+            {
+                if (currentVideoSource != null)
+                {
+                    if (captionEnabled.Value)
+                    {
+                        Task.Run(async () =>
+                        {
+                            srv3Contents = string.Empty;
+                            var trackManifest = await game.YouTubeClient.Videos.ClosedCaptions.GetManifestAsync(videoUrl);
+
+                            string preferedLang = string.Empty;
+
+                            if (settingsContainer.CaptionLangDropdown.Current.Value != null)
+                            {
+                                preferedLang = settingsContainer.CaptionLangDropdown.Current.Value.Hl.ToString();
+                            }
+                            else
+                            {
+                                preferedLang = CultureInfo.CurrentCulture.Name;
+                            }
+
+                            settingsContainer.CaptionLangDropdown.Current.Value = settingsContainer.CaptionLangDropdown.Items.Where(lang => lang.Hl.Contains(preferedLang)).First();
+
+                            var trackLists = trackManifest.Tracks;
+
+                            var trackInfo = trackLists.Where(track => track.Language.Code.Contains(preferedLang)).First();
+
+                            ClosedCaptionTrack captionTrack = null;
+
+                            if (captionEnabled.Value)
+                            {
+                                Schedule(() =>
+                                {
+                                    try
+                                    {
+                                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.CaptionLanguage, settingsContainer.CaptionLangDropdown.Current.Value.Name, FontAwesome.Solid.ClosedCaptioning);
+                                        onScreenDisplay.Display(toast);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Logger.Error(e, e.GetDescription());
+                                    }
                                 });
 
                                 captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);

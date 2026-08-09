@@ -27,6 +27,7 @@ using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Graphics.Videos;
 using NekoPlayer.App.Graphics.UserInterface;
+using osu.Framework.Extensions.Color4Extensions;
 
 namespace NekoPlayer.App.Graphics.Caption
 {
@@ -265,6 +266,8 @@ namespace NekoPlayer.App.Graphics.Caption
                     //also fallback text anchor to centere
                     spriteText.TextAnchor = Anchor.Centre;
 
+                    bg.Colour = captionBGColor.Value;
+
                     var caption = captionTrack.TryGetByTime(TimeSpan.FromSeconds(time));
 
                     if (caption != null)
@@ -308,6 +311,11 @@ namespace NekoPlayer.App.Graphics.Caption
                 // styled spans in YouTube's generated timedtext.
                 if (text.Length == 0)
                     continue;
+
+                if (span.BackgroundColour.HasValue)
+                {
+                    bg.Colour = span.BackgroundColour.Value;
+                }
 
                 spriteText.AddText(text, t =>
                 {
@@ -536,6 +544,7 @@ namespace NekoPlayer.App.Graphics.Caption
         public int OffsetMilliseconds { get; }
 
         public Color4 ForegroundColour => Pen.ForegroundColour;
+        public Color4? BackgroundColour => Pen.BackgroundColour;
         public Color4? EdgeColour => Pen.EdgeColour;
         public int EdgeType => Pen.EdgeType;
         public float? SizeMultiplier => Pen.SizeMultiplier;
