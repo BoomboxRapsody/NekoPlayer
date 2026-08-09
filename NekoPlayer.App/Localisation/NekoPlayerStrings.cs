@@ -1345,7 +1345,8 @@ namespace NekoPlayer.App.Localisation
         public static LocalisableString Updates => new TranslatableString(getKey(@"updates"), "Updates");
 
         /// <summary>
-        /// "Reduces latency by leveraging the NVIDIA Reflex API on NVIDIA GPUs.\nRecommended to have On, turn Off only if experiencing issues."
+        /// "Reduces latency by leveraging the NVIDIA Reflex API on NVIDIA GPUs."
+        /// "Recommended to have On, turn Off only if experiencing issues."
         /// </summary>
         public static LocalisableString ReflexHint => new TranslatableString(getKey(@"reflex_hint"),
             "Reduces latency by leveraging the NVIDIA Reflex API on NVIDIA GPUs." +
@@ -1380,6 +1381,16 @@ namespace NekoPlayer.App.Localisation
         /// "Reset playback speed when loading a video"
         /// </summary>
         public static LocalisableString ResetPlaybackSpeedWhenLoadingAVideo => new TranslatableString(getKey(@"reset_playback_speed_when_loading_a_video"), "Reset playback speed when loading a video");
+
+        /// <summary>
+        /// "Closed captions background colour"
+        /// </summary>
+        public static LocalisableString CaptionBGColour => new TranslatableString(getKey(@"closed_captions_bg_colour"), @"Closed captions background colour");
+
+        /// <summary>
+        /// "Closed captions corner radius"
+        /// </summary>
+        public static LocalisableString CaptionCornerRadius => new TranslatableString(getKey(@"closed_captions_radius"), @"Closed captions corner radius");
 
         private static string getKey(string key) => $@"{prefix}:{key}";
     }

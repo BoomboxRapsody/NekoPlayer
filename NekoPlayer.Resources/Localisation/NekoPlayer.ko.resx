@@ -884,4 +884,10 @@
   <data name="reset_playback_speed_when_loading_a_video" xml:space="preserve">
     <value>동영상 불러오기 시 재생 속도 초기화</value>
   </data>
+  <data name="closed_captions_bg_colour" xml:space="preserve">
+    <value>자막 배경의 색상</value>
+  </data>
+  <data name="closed_captions_radius" xml:space="preserve">
+    <value>자막의 둥글기 정도</value>
+  </data>
 </root>

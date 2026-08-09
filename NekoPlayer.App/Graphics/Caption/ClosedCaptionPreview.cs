@@ -21,15 +21,20 @@ namespace NekoPlayer.App.Graphics.Caption
         private AdaptiveTextFlowContainer spriteText;
         private Bindable<CaptionFonts> captionFont;
         private Bindable<float> captionBGOpacity;
+        private Bindable<Colour4> captionBGColor;
         private Container captionContainer;
         private Box bg;
         private Action<SpriteText> textCreationParameters;
+        private Action<SpriteText> shadowOptions;
+        private Bindable<int> captionBGRadius;
 
         [BackgroundDependencyLoader]
         private void load(NekoPlayerConfigManager config, SessionStatics sessionStatics, TextureStore textureStore)
         {
             captionFont = config.GetBindable<CaptionFonts>(NekoPlayerSetting.CaptionFont);
             captionBGOpacity = config.GetBindable<float>(NekoPlayerSetting.CaptionBGOpacity);
+            captionBGColor = config.GetBindable<Colour4>(NekoPlayerSetting.CaptionBGColor);
+            captionBGRadius = config.GetBindable<int>(NekoPlayerSetting.CaptionCornerRadius);
 
             captionContainer = new Container
             {
@@ -79,9 +84,29 @@ namespace NekoPlayer.App.Graphics.Caption
                 }
             });
 
+            captionBGRadius.BindValueChanged(corner =>
+            {
+                captionContainer.CornerRadius = new CornersInfo(corner.NewValue);
+            }, true);
+
             captionBGOpacity.BindValueChanged(opacity =>
             {
                 bg.Alpha = opacity.NewValue;
+
+                if (opacity.NewValue < 0.5f)
+                {
+                    shadowOptions = spriteText => spriteText.Shadow = true;
+                }
+                else
+                {
+                    shadowOptions = spriteText => spriteText.Shadow = false;
+                }
+                RefreshFont();
+            }, true);
+
+            captionBGColor.BindValueChanged(colour =>
+            {
+                bg.Colour = colour.NewValue;
             }, true);
 
             captionFont.BindValueChanged(v =>
@@ -146,7 +171,11 @@ namespace NekoPlayer.App.Graphics.Caption
         private void RefreshFont()
         {
             spriteText.Text = "";
-            spriteText.AddText(NekoPlayerStrings.ClosedCaptionPreview, textCreationParameters);
+            spriteText.AddText(NekoPlayerStrings.ClosedCaptionPreview, text =>
+            {
+                textCreationParameters?.Invoke(text);
+                shadowOptions?.Invoke(text);
+            });
         }
     }
 }
