@@ -9,7 +9,7 @@ namespace NekoPlayer.App.Localisation
 {
     public static class CaptionFontStrings
     {
-        private const string prefix = @"NekoPlayer.Resources.Localisation.CaptionFonts";
+        private const string prefix = @"NekoPlayer.App.Resources.Localisation.CaptionFonts";
 
         /// <summary>
         /// "Hungeul"
