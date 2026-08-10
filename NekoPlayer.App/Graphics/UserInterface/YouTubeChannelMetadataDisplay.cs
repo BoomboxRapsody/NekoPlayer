@@ -148,41 +148,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
             (samples as HoverClickSounds).Enabled.Value = (ClickEvent != null);
         }
 
-        public void GetPalette()
-        {
-            Task.Run(async () =>
-            {
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channelData.Id}.png");
-
-                using (var httpClient = new System.Net.Http.HttpClient())
-                {
-                    var imageBytes = await httpClient.GetByteArrayAsync(channelData.Snippet.Thumbnails.High.Url);
-                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
-                }
-
-                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channelData.Id}.png"));
-
-                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
-                PaletteBuilder paletteBuilder = new PaletteBuilder();
-                Palette palette = paletteBuilder.Generate(bitmapHelper);
-                int? rgbColor = palette.MutedSwatch.Rgb;
-                int? rgbTextColor = palette.MutedSwatch.TitleTextColor;
-
-                if (rgbColor != null && rgbTextColor != null)
-                {
-                    Color4 bgColor = System.Drawing.Color.FromArgb((int)rgbColor);
-                    Color4 textColor = System.Drawing.Color.FromArgb((int)rgbTextColor);
-                    Schedule(() =>
-                    {
-                        bgLayer.Alpha = 1;
-                        bgLayer.Colour = ColourInfo.GradientHorizontal(bgColor, bgColor.Darken(1f));
-                        videoName.Colour = (textColor);
-                        desc.Colour = (textColor);
-                    });
-                }
-            });
-        }
-
         public string TruncateWithEllipsis(string value, int maxLength)
         {
             if (string.IsNullOrEmpty(value)) return string.Empty;
@@ -205,20 +170,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 Schedule(() =>
                 {
                     videoName.Text = TruncateWithEllipsis(api.GetLocalizedChannelTitle(channel, forceUsernameDisplay: true), 20);
-                    if (api.ChannelIsOAC(channel))
-                    {
-                        videoName.AddArbitraryDrawable(new SpriteIcon
-                        {
-                            Anchor = Anchor.CentreLeft,
-                            Origin = Anchor.CentreLeft,
-                            Size = new Vector2(10),
-                            Icon = FontAwesome.Solid.Music,
-                            Margin = new MarginPadding { Left = 5 },
-                        });
-                    }
                     desc.Text = NekoPlayerStrings.ProfileImageTooltip(channel.Snippet.CustomUrl, Convert.ToInt32(channel.Statistics.SubscriberCount).ToMetric(decimals: 2));
                     profileImage.UpdateProfileImage(channel.Id);
-                    GetPalette();
                 });
             });
 
@@ -229,17 +182,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Schedule(() =>
                     {
                         videoName.Text = TruncateWithEllipsis(api.GetLocalizedChannelTitle(channel, forceUsernameDisplay: true), 20);
-                        if (api.ChannelIsOAC(channel))
-                        {
-                            videoName.AddArbitraryDrawable(new SpriteIcon
-                            {
-                                Anchor = Anchor.CentreLeft,
-                                Origin = Anchor.CentreLeft,
-                                Size = new Vector2(10),
-                                Icon = FontAwesome.Solid.Music,
-                                Margin = new MarginPadding { Left = 5 },
-                            });
-                        }
                     });
                 });
             });

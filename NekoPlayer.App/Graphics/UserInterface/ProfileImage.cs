@@ -173,6 +173,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             if (Enabled.Value)
             {
+                profileImage.ScaleTo(1.1f, 350, Easing.OutQuint);
                 hover.FadeTo(0.1f, 500, Easing.OutQuint);
                 this.TransformTo(nameof(BorderThickness), 2f, 250, Easing.OutQuint);
             }
@@ -185,6 +186,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             if (Enabled.Value)
             {
+                profileImage.ScaleTo(1f, 350, Easing.OutQuint);
                 this.TransformTo(nameof(BorderThickness), 0f, 250, Easing.OutQuint);
                 hover.FadeOut(500, Easing.OutQuint);
             }

@@ -80,14 +80,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
             CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS;
             Masking = true;
 
-            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-            {
-                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                Colour = Color4.Black.Opacity(0.25f),
-                Offset = new Vector2(0, 2),
-                Radius = 16,
-            };
-
             InternalChildren = new Drawable[]
             {
                 samples,
@@ -231,7 +223,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Schedule(() =>
                     {
                         bgLayer.Alpha = 1;
-                        bgLayer.Colour = ColourInfo.GradientHorizontal(bgColor, bgColor.Darken(1f));
+                        bgLayer.Colour = bgColor;
                         videoName.Colour = (textColor);
                         desc.Colour = (textColor);
                     });
