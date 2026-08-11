@@ -273,6 +273,8 @@ namespace NekoPlayer.App.Screens
         private bool commentTextBoxContainerFocused, searchTextBoxContainerFocused;
         private Container commentTextBoxContainer, searchTextBoxContainer;
 
+        private Container topUIContainer, bottomUIContainer;
+
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
         {
@@ -474,499 +476,510 @@ namespace NekoPlayer.App.Screens
                             Padding = new MarginPadding(8),
                             Children = new Drawable[]
                             {
-                                new Container
+                                topUIContainer = new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Right = 48,
-                                    },
-                                    Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
-                                    {
-                                        Width = 520,
-                                        Height = 46,
-                                        Origin = Anchor.TopLeft,
-                                        Anchor = Anchor.TopLeft,
-                                        ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
-                                    },
-                                },
-                                new Container
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 4,
-                                    },
-                                    Children = new Drawable[]
-                                    {
-                                        menuOverlayShow = new IconButton
+                                    Children = new Drawable[] {
+                                        new Container
                                         {
-                                            Enabled = { Value = true },
-                                            Origin = Anchor.TopRight,
-                                            Anchor = Anchor.TopRight,
-                                            Size = new Vector2(40, 40),
-                                            Icon = FontAwesome.Solid.Bars,
-                                            IconScale = new Vector2(1.2f),
-                                            TooltipText = NekoPlayerStrings.Menu,
-                                            BackgroundColour = overlayColourProvider.Background5,
+                                            RelativeSizeAxes = Axes.Both,
+                                            Padding = new MarginPadding
+                                            {
+                                                Right = 48,
+                                            },
+                                            Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
+                                            {
+                                                Width = 520,
+                                                Height = 42,
+                                                Origin = Anchor.TopLeft,
+                                                Anchor = Anchor.TopLeft,
+                                                ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
+                                            },
+                                        },
+                                        new Container
+                                        {
+                                            RelativeSizeAxes = Axes.Both,
+                                            Padding = new MarginPadding
+                                            {
+                                                Horizontal = 4,
+                                            },
+                                            Children = new Drawable[]
+                                            {
+                                                menuOverlayShow = new IconButton
+                                                {
+                                                    Enabled = { Value = true },
+                                                    Origin = Anchor.TopRight,
+                                                    Anchor = Anchor.TopRight,
+                                                    Size = new Vector2(40, 40),
+                                                    Icon = FontAwesome.Solid.Bars,
+                                                    IconScale = new Vector2(1.2f),
+                                                    TooltipText = NekoPlayerStrings.Menu,
+                                                    BackgroundColour = overlayColourProvider.Background5,
+                                                },
+                                            }
                                         },
                                     }
                                 },
-                                new Container
-                                {
-                                    Anchor = Anchor.BottomCentre,
-                                    Origin = Anchor.BottomCentre,
-                                    RelativeSizeAxes = Axes.X,
-                                    Height = 84,
-                                    Masking = false,
-                                    //CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
-                                    /*
-                                    EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                                    {
-                                        Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                        Colour = Color4.Black.Opacity(0.25f),
-                                        Offset = new Vector2(0, 2),
-                                        Radius = 16,
-                                    },
-                                    */
-                                    Children = new Drawable[]
-                                    {
-                                        new Box
+                                bottomUIContainer = new Container {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Children = new Drawable[] {
+                                        new Container
                                         {
-                                            RelativeSizeAxes = Axes.Both,
-                                            Colour = overlayColourProvider.Background5,
-                                            Alpha = 0f,
-                                        },
-                                        new FillFlowContainer {
-                                            RelativeSizeAxes = Axes.Both,
-                                            Padding = new MarginPadding(16),
-                                            Spacing = new Vector2(0, 2),
-                                            Children = new Drawable[] {
-                                                seekbar = new RoundedSeekBar
+                                            Anchor = Anchor.BottomCentre,
+                                            Origin = Anchor.BottomCentre,
+                                            RelativeSizeAxes = Axes.X,
+                                            Height = 84,
+                                            Masking = false,
+                                            //CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS,
+                                            /*
+                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
+                                            {
+                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                Colour = Color4.Black.Opacity(0.25f),
+                                                Offset = new Vector2(0, 2),
+                                                Radius = 16,
+                                            },
+                                            */
+                                            Children = new Drawable[]
+                                            {
+                                                new Box
                                                 {
-                                                    RelativeSizeAxes = Axes.X,
-                                                    PlaySamplesOnAdjust = false,
-                                                    DisplayAsPercentage = true,
-                                                    AlwaysPresent = true,
-                                                    Current = { BindTarget = videoProgress },
-                                                },
-                                                new Container
-                                                {
-                                                    RelativeSizeAxes = Axes.X,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Children = new Drawable[] {
-                                                        currentTime = new ProjectYomiSpriteText
-                                                        {
-                                                            Anchor = Anchor.TopLeft,
-                                                            Origin = Anchor.TopLeft,
-                                                            Text = "0:00",
-                                                            Alpha = 0,
-                                                            Colour = overlayColourProvider.Content2,
-                                                        },
-                                                    },
-                                                },
-                                                new ProjectYomiRoundedScrollContainer(Direction.Horizontal)
-                                                {
-                                                    ScrollbarVisible = false,
-                                                    Masking = false,
                                                     RelativeSizeAxes = Axes.Both,
-                                                    Children = new Drawable[]
-                                                    {
-                                                        new FillFlowContainer
+                                                    Colour = overlayColourProvider.Background5,
+                                                    Alpha = 0f,
+                                                },
+                                                new FillFlowContainer {
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    Padding = new MarginPadding(16),
+                                                    Spacing = new Vector2(0, 2),
+                                                    Children = new Drawable[] {
+                                                        seekbar = new RoundedSeekBar
                                                         {
-                                                            RelativeSizeAxes = Axes.Y,
-                                                            AutoSizeAxes = Axes.X,
+                                                            RelativeSizeAxes = Axes.X,
+                                                            PlaySamplesOnAdjust = false,
+                                                            DisplayAsPercentage = true,
                                                             AlwaysPresent = true,
-                                                            Spacing = new Vector2(8, 0),
-                                                            Direction = FillDirection.Horizontal,
+                                                            Current = { BindTarget = videoProgress },
+                                                        },
+                                                        new Container
+                                                        {
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Children = new Drawable[] {
+                                                                currentTime = new ProjectYomiSpriteText
+                                                                {
+                                                                    Anchor = Anchor.TopLeft,
+                                                                    Origin = Anchor.TopLeft,
+                                                                    Text = "0:00",
+                                                                    Alpha = 0,
+                                                                    Colour = overlayColourProvider.Content2,
+                                                                },
+                                                            },
+                                                        },
+                                                        new ProjectYomiRoundedScrollContainer(Direction.Horizontal)
+                                                        {
+                                                            ScrollbarVisible = false,
+                                                            Masking = false,
+                                                            RelativeSizeAxes = Axes.Both,
                                                             Children = new Drawable[]
                                                             {
-                                                                new Container
+                                                                new FillFlowContainer
                                                                 {
+                                                                    RelativeSizeAxes = Axes.Y,
                                                                     AutoSizeAxes = Axes.X,
-                                                                    Height = 30,
+                                                                    AlwaysPresent = true,
+                                                                    Spacing = new Vector2(8, 0),
+                                                                    Direction = FillDirection.Horizontal,
                                                                     Children = new Drawable[]
                                                                     {
-                                                                        new FillFlowContainer
+                                                                        new Container
                                                                         {
-                                                                            AutoSizeAxes = Axes.Both,
-                                                                            Spacing = new Vector2(3, 0),
-                                                                            Direction = FillDirection.Horizontal,
+                                                                            AutoSizeAxes = Axes.X,
+                                                                            Height = 30,
                                                                             Children = new Drawable[]
                                                                             {
-                                                                                prevVideoButton = new ControlBarIconButton(false)
+                                                                                new FillFlowContainer
                                                                                 {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = false },
-                                                                                    Icon = FontAwesome.Solid.FastBackward,
-                                                                                    TooltipText = NekoPlayerStrings.PreviousVideo,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = async _ =>
+                                                                                    AutoSizeAxes = Axes.Both,
+                                                                                    Spacing = new Vector2(3, 0),
+                                                                                    Direction = FillDirection.Horizontal,
+                                                                                    Children = new Drawable[]
                                                                                     {
-                                                                                        if (playlists.Count > 0)
+                                                                                        prevVideoButton = new ControlBarIconButton(false)
                                                                                         {
-                                                                                            if (playlistItemIndex != 0)
-                                                                                                playlistItemIndex--;
-
-                                                                                            Schedule(async () =>
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = false },
+                                                                                            Icon = FontAwesome.Solid.FastBackward,
+                                                                                            TooltipText = NekoPlayerStrings.PreviousVideo,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = async _ =>
                                                                                             {
-                                                                                                SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
-                                                                                            });
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                playPause = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = true },
-                                                                                    Icon = FontAwesome.Solid.Play,
-                                                                                    TooltipText = NekoPlayerStrings.Play,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = _ =>
-                                                                                    {
-                                                                                        if (currentVideoSource != null)
-                                                                                        {
-                                                                                            if (currentVideoSource.IsPlaying())
-                                                                                                currentVideoSource.Pause();
-                                                                                            else
-                                                                                                currentVideoSource.Play();
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                nextVideoButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = false },
-                                                                                    Icon = FontAwesome.Solid.FastForward,
-                                                                                    TooltipText = NekoPlayerStrings.NextVideo,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = async _ =>
-                                                                                    {
-                                                                                        if (playlists.Count > 0)
-                                                                                        {
-                                                                                            if (playlistItemIndex != playlists.Count - 1)
-                                                                                                playlistItemIndex++;
+                                                                                                if (playlists.Count > 0)
+                                                                                                {
+                                                                                                    if (playlistItemIndex != 0)
+                                                                                                        playlistItemIndex--;
 
-                                                                                            Schedule(async () =>
+                                                                                                    Schedule(async () =>
+                                                                                                    {
+                                                                                                        SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                                    });
+                                                                                                }
+                                                                                            }
+                                                                                        },
+                                                                                        playPause = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = true },
+                                                                                            Icon = FontAwesome.Solid.Play,
+                                                                                            TooltipText = NekoPlayerStrings.Play,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = _ =>
                                                                                             {
-                                                                                                SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
-                                                                                            });
-                                                                                        }
+                                                                                                if (currentVideoSource != null)
+                                                                                                {
+                                                                                                    if (currentVideoSource.IsPlaying())
+                                                                                                        currentVideoSource.Pause();
+                                                                                                    else
+                                                                                                        currentVideoSource.Play();
+                                                                                                }
+                                                                                            }
+                                                                                        },
+                                                                                        nextVideoButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = false },
+                                                                                            Icon = FontAwesome.Solid.FastForward,
+                                                                                            TooltipText = NekoPlayerStrings.NextVideo,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = async _ =>
+                                                                                            {
+                                                                                                if (playlists.Count > 0)
+                                                                                                {
+                                                                                                    if (playlistItemIndex != playlists.Count - 1)
+                                                                                                        playlistItemIndex++;
+
+                                                                                                    Schedule(async () =>
+                                                                                                    {
+                                                                                                        SetVideoSource(playlists[playlistItemIndex].Snippet.ResourceId.VideoId);
+                                                                                                    });
+                                                                                                }
+                                                                                            }
+                                                                                        },
+                                                                                        repeatButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = true },
+                                                                                            Icon = FontAwesome.Solid.Sync,
+                                                                                            TooltipText = NekoPlayerStrings.Repeat,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = _ =>
+                                                                                            {
+                                                                                                updateRepeatState();
+                                                                                            }
+                                                                                        },
+                                                                                        captionButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = true },
+                                                                                            Icon = FontAwesome.Solid.ClosedCaptioning,
+                                                                                            TooltipText = NekoPlayerStrings.ClosedCaptions,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = _ =>
+                                                                                            {
+                                                                                                CycleCaptionLanguage();
+                                                                                            }
+                                                                                        },
+                                                                                        videoSettingsButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = true },
+                                                                                            Icon = FontAwesome.Solid.Cog,
+                                                                                            TooltipText = NekoPlayerStrings.VideoSettings,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = _ =>
+                                                                                            {
+                                                                                                ShowSettingsOverlayAtName("Video Settings");
+                                                                                            }
+                                                                                        },
+                                                                                        playlistButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = true },
+                                                                                            Icon = FontAwesome.Solid.List,
+                                                                                            TooltipText = NekoPlayerStrings.Playlists,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = _ =>
+                                                                                            {
+                                                                                                showOverlayContainer(playlistOverlay);
+                                                                                            }
+                                                                                        },
+                                                                                        quickCommentOpenButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = false },
+                                                                                            Icon = FontAwesome.Regular.CommentAlt,
+                                                                                            TooltipText = NekoPlayerStrings.Comments("0"),
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = _ =>
+                                                                                            {
+                                                                                                showOverlayContainer(commentsContainer);
+                                                                                            }
+                                                                                        },
+                                                                                        pinButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = true },
+                                                                                            Icon = FontAwesome.Solid.MapPin,
+                                                                                            TooltipText = NekoPlayerStrings.PlayerControlPin,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                            ClickAction = _ =>
+                                                                                            {
+                                                                                                updatePinState();
+                                                                                            }
+                                                                                        },
+                                                                                        quickLikeButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = false },
+                                                                                            Icon = FontAwesome.Solid.ThumbsUp,
+                                                                                            TooltipText = NekoPlayerStrings.LikeButton,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                        },
+                                                                                        quickDislikeButton = new ControlBarIconButton(false)
+                                                                                        {
+                                                                                            Width = 50,
+                                                                                            Enabled = { Value = false },
+                                                                                            Icon = FontAwesome.Solid.ThumbsDown,
+                                                                                            TooltipText = NekoPlayerStrings.DislikeButton,
+                                                                                            IconColour = overlayColourProvider.Content2,
+                                                                                            BackgroundColour = overlayColourProvider.Background3,
+                                                                                            IconScale = new Vector2(0.85f),
+                                                                                        },
                                                                                     }
-                                                                                },
-                                                                                repeatButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = true },
-                                                                                    Icon = FontAwesome.Solid.Sync,
-                                                                                    TooltipText = NekoPlayerStrings.Repeat,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = _ =>
-                                                                                    {
-                                                                                        updateRepeatState();
-                                                                                    }
-                                                                                },
-                                                                                captionButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = true },
-                                                                                    Icon = FontAwesome.Solid.ClosedCaptioning,
-                                                                                    TooltipText = NekoPlayerStrings.ClosedCaptions,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = _ =>
-                                                                                    {
-                                                                                        CycleCaptionLanguage();
-                                                                                    }
-                                                                                },
-                                                                                videoSettingsButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = true },
-                                                                                    Icon = FontAwesome.Solid.Cog,
-                                                                                    TooltipText = NekoPlayerStrings.VideoSettings,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = _ =>
-                                                                                    {
-                                                                                        ShowSettingsOverlayAtName("Video Settings");
-                                                                                    }
-                                                                                },
-                                                                                playlistButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = true },
-                                                                                    Icon = FontAwesome.Solid.List,
-                                                                                    TooltipText = NekoPlayerStrings.Playlists,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = _ =>
-                                                                                    {
-                                                                                        showOverlayContainer(playlistOverlay);
-                                                                                    }
-                                                                                },
-                                                                                quickCommentOpenButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = false },
-                                                                                    Icon = FontAwesome.Regular.CommentAlt,
-                                                                                    TooltipText = NekoPlayerStrings.Comments("0"),
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = _ =>
-                                                                                    {
-                                                                                        showOverlayContainer(commentsContainer);
-                                                                                    }
-                                                                                },
-                                                                                pinButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = true },
-                                                                                    Icon = FontAwesome.Solid.MapPin,
-                                                                                    TooltipText = NekoPlayerStrings.PlayerControlPin,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                    ClickAction = _ =>
-                                                                                    {
-                                                                                        updatePinState();
-                                                                                    }
-                                                                                },
-                                                                                quickLikeButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = false },
-                                                                                    Icon = FontAwesome.Solid.ThumbsUp,
-                                                                                    TooltipText = NekoPlayerStrings.LikeButton,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                },
-                                                                                quickDislikeButton = new ControlBarIconButton(false)
-                                                                                {
-                                                                                    Width = 50,
-                                                                                    Enabled = { Value = false },
-                                                                                    Icon = FontAwesome.Solid.ThumbsDown,
-                                                                                    TooltipText = NekoPlayerStrings.DislikeButton,
-                                                                                    IconColour = overlayColourProvider.Content2,
-                                                                                    BackgroundColour = overlayColourProvider.Background3,
-                                                                                    IconScale = new Vector2(0.85f),
-                                                                                },
+                                                                                }
                                                                             }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                new Container
-                                                                {
-                                                                    AutoSizeAxes = Axes.X,
-                                                                    Height = 30,
-                                                                    Masking = true,
-                                                                    CornerRadius = 15,
-                                                                    /*
-                                                                    EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                                                                    {
-                                                                        Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                                                        Colour = Color4.Black.Opacity(0.25f),
-                                                                        Offset = new Vector2(0, 2),
-                                                                        Radius = 16,
-                                                                    },
-                                                                    */
-                                                                    Children = new Drawable[]
-                                                                    {
-                                                                        speedBarBG = new Box
-                                                                        {
-                                                                            RelativeSizeAxes = Axes.Both,
-                                                                            Colour = overlayColourProvider.Background3,
-                                                                            Alpha = 1f,
                                                                         },
-                                                                        new FillFlowContainer
+                                                                        new Container
                                                                         {
-                                                                            AutoSizeAxes = Axes.Both,
-                                                                            Spacing = new Vector2(8, 0),
-                                                                            Direction = FillDirection.Horizontal,
-                                                                            Padding = new MarginPadding
+                                                                            AutoSizeAxes = Axes.X,
+                                                                            Height = 30,
+                                                                            Masking = true,
+                                                                            CornerRadius = 15,
+                                                                            /*
+                                                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                             {
-                                                                                Horizontal = 8
+                                                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                                                Colour = Color4.Black.Opacity(0.25f),
+                                                                                Offset = new Vector2(0, 2),
+                                                                                Radius = 16,
                                                                             },
+                                                                            */
                                                                             Children = new Drawable[]
                                                                             {
-                                                                                speedBarIcon = new SpriteIcon
+                                                                                speedBarBG = new Box
                                                                                 {
-                                                                                    Icon = FontAwesome.Solid.TachometerAlt,
-                                                                                    Width = 16,
-                                                                                    Height = 16,
-                                                                                    Margin = new MarginPadding
-                                                                                    {
-                                                                                        Top = 8,
-                                                                                    },
-                                                                                    Colour = overlayColourProvider.Content2,
+                                                                                    RelativeSizeAxes = Axes.Both,
+                                                                                    Colour = overlayColourProvider.Background3,
+                                                                                    Alpha = 1f,
                                                                                 },
-                                                                                speedBarSlider = new PlaybackSpeedSliderBar
+                                                                                new FillFlowContainer
                                                                                 {
-                                                                                    Width = 200,
-                                                                                    Margin = new MarginPadding
+                                                                                    AutoSizeAxes = Axes.Both,
+                                                                                    Spacing = new Vector2(8, 0),
+                                                                                    Direction = FillDirection.Horizontal,
+                                                                                    Padding = new MarginPadding
                                                                                     {
-                                                                                        Top = 6,
+                                                                                        Horizontal = 8
                                                                                     },
-                                                                                    KeyboardStep = 0.05f,
-                                                                                    PlaySamplesOnAdjust = true,
-                                                                                    AlwaysPresent = true,
-                                                                                    Current = { BindTarget = playbackSpeed },
-                                                                                },
-                                                                                speedText = new ProjectYomiSpriteText
-                                                                                {
-                                                                                    Margin = new MarginPadding
+                                                                                    Children = new Drawable[]
                                                                                     {
-                                                                                        Top = 7
-                                                                                    },
-                                                                                    AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
-                                                                                    Colour = overlayColourProvider.Content2,
-                                                                                },
+                                                                                        speedBarIcon = new SpriteIcon
+                                                                                        {
+                                                                                            Icon = FontAwesome.Solid.TachometerAlt,
+                                                                                            Width = 16,
+                                                                                            Height = 16,
+                                                                                            Margin = new MarginPadding
+                                                                                            {
+                                                                                                Top = 8,
+                                                                                            },
+                                                                                            Colour = overlayColourProvider.Content2,
+                                                                                        },
+                                                                                        speedBarSlider = new PlaybackSpeedSliderBar
+                                                                                        {
+                                                                                            Width = 200,
+                                                                                            Margin = new MarginPadding
+                                                                                            {
+                                                                                                Top = 6,
+                                                                                            },
+                                                                                            KeyboardStep = 0.05f,
+                                                                                            PlaySamplesOnAdjust = true,
+                                                                                            AlwaysPresent = true,
+                                                                                            Current = { BindTarget = playbackSpeed },
+                                                                                        },
+                                                                                        speedText = new ProjectYomiSpriteText
+                                                                                        {
+                                                                                            Margin = new MarginPadding
+                                                                                            {
+                                                                                                Top = 7
+                                                                                            },
+                                                                                            AlwaysPresent = true,
+                                                                                            Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
+                                                                                            Colour = overlayColourProvider.Content2,
+                                                                                        },
+                                                                                    }
+                                                                                }
                                                                             }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                new Container
-                                                                {
-                                                                    AutoSizeAxes = Axes.X,
-                                                                    Height = 30,
-                                                                    Masking = true,
-                                                                    CornerRadius = 15,
-                                                                    /*
-                                                                    EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                                                                    {
-                                                                        Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                                                        Colour = Color4.Black.Opacity(0.25f),
-                                                                        Offset = new Vector2(0, 2),
-                                                                        Radius = 16,
-                                                                    },
-                                                                    */
-                                                                    Children = new Drawable[]
-                                                                    {
-                                                                        volumeBarBG = new Box
-                                                                        {
-                                                                            RelativeSizeAxes = Axes.Both,
-                                                                            Colour = overlayColourProvider.Background3,
-                                                                            Alpha = 1f,
                                                                         },
-                                                                        new FillFlowContainer
+                                                                        new Container
                                                                         {
-                                                                            AutoSizeAxes = Axes.Both,
-                                                                            Spacing = new Vector2(8, 0),
-                                                                            Direction = FillDirection.Horizontal,
-                                                                            Padding = new MarginPadding
+                                                                            AutoSizeAxes = Axes.X,
+                                                                            Height = 30,
+                                                                            Masking = true,
+                                                                            CornerRadius = 15,
+                                                                            /*
+                                                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                             {
-                                                                                Horizontal = 8
+                                                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                                                Colour = Color4.Black.Opacity(0.25f),
+                                                                                Offset = new Vector2(0, 2),
+                                                                                Radius = 16,
                                                                             },
+                                                                            */
                                                                             Children = new Drawable[]
                                                                             {
-                                                                                volumeIcon = new SpriteIcon
+                                                                                volumeBarBG = new Box
                                                                                 {
-                                                                                    Icon = FontAwesome.Solid.VolumeUp,
-                                                                                    Width = 16,
-                                                                                    Height = 16,
-                                                                                    Margin = new MarginPadding
-                                                                                    {
-                                                                                        Top = 8,
-                                                                                    },
-                                                                                    Colour = overlayColourProvider.Content2,
+                                                                                    RelativeSizeAxes = Axes.Both,
+                                                                                    Colour = overlayColourProvider.Background3,
+                                                                                    Alpha = 1f,
                                                                                 },
-                                                                                volumeBarSlider = new RoundedSliderBar<double>
+                                                                                new FillFlowContainer
                                                                                 {
-                                                                                    Width = 200,
-                                                                                    Margin = new MarginPadding
+                                                                                    AutoSizeAxes = Axes.Both,
+                                                                                    Spacing = new Vector2(8, 0),
+                                                                                    Direction = FillDirection.Horizontal,
+                                                                                    Padding = new MarginPadding
                                                                                     {
-                                                                                        Top = 6,
+                                                                                        Horizontal = 8
                                                                                     },
-                                                                                    KeyboardStep = 0.05f,
-                                                                                    PlaySamplesOnAdjust = false,
-                                                                                    DisplayAsPercentage = true,
-                                                                                    AlwaysPresent = true,
-                                                                                    Current = videoVolume,
-                                                                                },
-                                                                                volumeText = new ProjectYomiSpriteText
-                                                                                {
-                                                                                    Margin = new MarginPadding
+                                                                                    Children = new Drawable[]
                                                                                     {
-                                                                                        Top = 7
-                                                                                    },
-                                                                                    AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
-                                                                                    Colour = overlayColourProvider.Content2,
-                                                                                },
+                                                                                        volumeIcon = new SpriteIcon
+                                                                                        {
+                                                                                            Icon = FontAwesome.Solid.VolumeUp,
+                                                                                            Width = 16,
+                                                                                            Height = 16,
+                                                                                            Margin = new MarginPadding
+                                                                                            {
+                                                                                                Top = 8,
+                                                                                            },
+                                                                                            Colour = overlayColourProvider.Content2,
+                                                                                        },
+                                                                                        volumeBarSlider = new RoundedSliderBar<double>
+                                                                                        {
+                                                                                            Width = 200,
+                                                                                            Margin = new MarginPadding
+                                                                                            {
+                                                                                                Top = 6,
+                                                                                            },
+                                                                                            KeyboardStep = 0.05f,
+                                                                                            PlaySamplesOnAdjust = false,
+                                                                                            DisplayAsPercentage = true,
+                                                                                            AlwaysPresent = true,
+                                                                                            Current = videoVolume,
+                                                                                        },
+                                                                                        volumeText = new ProjectYomiSpriteText
+                                                                                        {
+                                                                                            Margin = new MarginPadding
+                                                                                            {
+                                                                                                Top = 7
+                                                                                            },
+                                                                                            AlwaysPresent = true,
+                                                                                            Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
+                                                                                            Colour = overlayColourProvider.Content2,
+                                                                                        },
+                                                                                    }
+                                                                                }
                                                                             }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                new Container
-                                                                {
-                                                                    AutoSizeAxes = Axes.X,
-                                                                    Height = 30,
-                                                                    Masking = true,
-                                                                    CornerRadius = 15,
-                                                                    /*
-                                                                    EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                                                                    {
-                                                                        Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                                                                        Colour = Color4.Black.Opacity(0.25f),
-                                                                        Offset = new Vector2(0, 2),
-                                                                        Radius = 16,
-                                                                    },
-                                                                    */
-                                                                    Children = new Drawable[]
-                                                                    {
-                                                                        timeBG = new Box
-                                                                        {
-                                                                            RelativeSizeAxes = Axes.Both,
-                                                                            Colour = overlayColourProvider.Background3,
-                                                                            Alpha = 1f,
                                                                         },
-                                                                        new FillFlowContainer
+                                                                        new Container
                                                                         {
-                                                                            AutoSizeAxes = Axes.Both,
-                                                                            Spacing = new Vector2(8, 0),
-                                                                            Direction = FillDirection.Horizontal,
-                                                                            Padding = new MarginPadding
+                                                                            AutoSizeAxes = Axes.X,
+                                                                            Height = 30,
+                                                                            Masking = true,
+                                                                            CornerRadius = 15,
+                                                                            /*
+                                                                            EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                             {
-                                                                                Horizontal = 8
+                                                                                Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
+                                                                                Colour = Color4.Black.Opacity(0.25f),
+                                                                                Offset = new Vector2(0, 2),
+                                                                                Radius = 16,
                                                                             },
+                                                                            */
                                                                             Children = new Drawable[]
                                                                             {
-                                                                                timeText = new ProjectYomiSpriteText
+                                                                                timeBG = new Box
                                                                                 {
-                                                                                    Margin = new MarginPadding
-                                                                                    {
-                                                                                        Top = 7
-                                                                                    },
-                                                                                    AlwaysPresent = true,
-                                                                                    Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
-                                                                                    Colour = overlayColourProvider.Content2,
-                                                                                    Text = "0:00 / 0:00"
+                                                                                    RelativeSizeAxes = Axes.Both,
+                                                                                    Colour = overlayColourProvider.Background3,
+                                                                                    Alpha = 1f,
                                                                                 },
+                                                                                new FillFlowContainer
+                                                                                {
+                                                                                    AutoSizeAxes = Axes.Both,
+                                                                                    Spacing = new Vector2(8, 0),
+                                                                                    Direction = FillDirection.Horizontal,
+                                                                                    Padding = new MarginPadding
+                                                                                    {
+                                                                                        Horizontal = 8
+                                                                                    },
+                                                                                    Children = new Drawable[]
+                                                                                    {
+                                                                                        timeText = new ProjectYomiSpriteText
+                                                                                        {
+                                                                                            Margin = new MarginPadding
+                                                                                            {
+                                                                                                Top = 7
+                                                                                            },
+                                                                                            AlwaysPresent = true,
+                                                                                            Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
+                                                                                            Colour = overlayColourProvider.Content2,
+                                                                                            Text = "0:00 / 0:00"
+                                                                                        },
+                                                                                    }
+                                                                                }
                                                                             }
-                                                                        }
+                                                                        },
                                                                     }
-                                                                },
+                                                                }
                                                             }
                                                         }
                                                     }
                                                 }
-                                            }
+                                            },
                                         }
-                                    },
+                                    }
                                 }
                             }
                         },
@@ -3934,21 +3947,6 @@ namespace NekoPlayer.App.Screens
 
         private IBindable<bool> uiVisible;
 
-        private void hideControls()
-        {
-            if (!alwaysShowControl.Value)
-            {
-                if (isControlVisible == true)
-                {
-                    isControlVisible = false;
-                    uiContainer.FadeOutFromOne(250);
-                    uiGradientContainer.FadeOutFromOne(250);
-                    uiContainer.BlurTo(new Vector2(4), 250);
-                    sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
-                }
-            }
-        }
-
         [Resolved]
         private SessionStatics sessionStatics { get; set; }
 
@@ -4004,10 +4002,29 @@ namespace NekoPlayer.App.Screens
             if (isControlVisible == false)
             {
                 isControlVisible = true;
-                uiContainer.FadeInFromZero(125);
-                uiGradientContainer.FadeInFromZero(125);
-                uiContainer.BlurTo(new Vector2(0), 125);
+                uiContainer.FadeInFromZero(500, Easing.OutQuint);
+                uiGradientContainer.FadeInFromZero(500, Easing.OutQuint);
+                uiContainer.BlurTo(new Vector2(0), 500, Easing.OutQuint);
                 sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = true;
+                bottomUIContainer.MoveToY(0, 500, Easing.OutQuint);
+                topUIContainer.MoveToY(0, 500, Easing.OutQuint);
+            }
+        }
+
+        private void hideControls()
+        {
+            if (!alwaysShowControl.Value)
+            {
+                if (isControlVisible == true)
+                {
+                    isControlVisible = false;
+                    uiContainer.FadeOutFromOne(250, Easing.InQuint);
+                    uiGradientContainer.FadeOutFromOne(250, Easing.InQuint);
+                    uiContainer.BlurTo(new Vector2(4), 250, Easing.InQuint);
+                    sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
+                    bottomUIContainer.MoveToY(30, 250, Easing.InQuint);
+                    topUIContainer.MoveToY(-30, 250, Easing.InQuint);
+                }
             }
         }
 

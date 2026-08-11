@@ -1243,6 +1243,25 @@ namespace NekoPlayer.App.Overlays.Containers
                 }
             }
 
+
+            captionEnabled.BindValueChanged(_ =>
+            {
+                captionLangOptions.ClearTransforms();
+                captionLangOptions.AutoSizeDuration = 400;
+                captionLangOptions.AutoSizeEasing = Easing.OutQuint;
+
+                updateCaptionLangOptionsVisibility();
+            }, true);
+
+            screenshotFormat.BindValueChanged(_ =>
+            {
+                screenshotOptions.ClearTransforms();
+                screenshotOptions.AutoSizeDuration = 400;
+                screenshotOptions.AutoSizeEasing = Easing.OutQuint;
+
+                updateScreenshotOptionsVisibility();
+            }, true);
+
             updateInfomationText.BindValueChanged(text =>
             {
                 Schedule(() => CheckForUpdatesButton.Text = text.NewValue);

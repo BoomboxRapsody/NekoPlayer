@@ -81,7 +81,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             RelativeSizeAxes = Axes.Both,
                             Padding = new MarginPadding
                             {
-                                Vertical = 6,
+                                Vertical = 3,
                                 Horizontal = 8,
                             },
                             Children = new Drawable[]
