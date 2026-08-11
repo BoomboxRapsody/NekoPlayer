@@ -8,7 +8,7 @@ using NekoPlayer.App.Utils;
 
 namespace NekoPlayer.App.Graphics
 {
-    public class AdaptiveColour
+    public class ProjectYomiColour
     {
         public static Color4 Gray(float amt) => new Color4(amt, amt, amt, 1f);
         public static Color4 Gray(byte amt) => new Color4(amt, amt, amt, 255);

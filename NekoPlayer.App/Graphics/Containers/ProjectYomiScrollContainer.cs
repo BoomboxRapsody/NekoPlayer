@@ -14,25 +14,25 @@ using osuTK.Input;
 
 namespace NekoPlayer.App.Graphics.Containers
 {
-    public partial class AdaptiveRoundedScrollContainer : AdaptiveScrollContainer<Drawable>
+    public partial class ProjectYomiScrollContainer : AdaptiveScrollContainer<Drawable>
     {
-        public AdaptiveRoundedScrollContainer()
+        public ProjectYomiScrollContainer()
         {
         }
 
-        public AdaptiveRoundedScrollContainer(Direction direction)
+        public ProjectYomiScrollContainer(Direction direction)
             : base(direction)
         {
         }
     }
 
-    public partial class AdaptiveRoundedScrollContainer<T> : RoundedScrollContainer<T>
+    public partial class AdaptiveScrollContainer<T> : ScrollContainer<T>
         where T : Drawable
     {
         public const float SCROLL_BAR_WIDTH = 10;
         public const float SCROLL_BAR_PADDING = 3;
 
-        public AdaptiveRoundedScrollContainer(Direction scrollDirection = Direction.Vertical)
+        public AdaptiveScrollContainer(Direction scrollDirection = Direction.Vertical)
             : base(scrollDirection)
         {
         }
@@ -83,9 +83,9 @@ namespace NekoPlayer.App.Graphics.Containers
 
         #endregion
 
-        protected override ScrollbarContainer CreateScrollbar(Direction direction) => new OsuScrollbar(direction);
+        protected override ScrollbarContainer CreateScrollbar(Direction direction) => new AdaptiveScrollbar(direction);
 
-        protected partial class OsuScrollbar : ScrollbarContainer
+        protected partial class AdaptiveScrollbar : ScrollbarContainer
         {
             private Color4 hoverColour;
             private Color4 defaultColour;
@@ -95,7 +95,7 @@ namespace NekoPlayer.App.Graphics.Containers
 
             protected override float MinimumDimSize => SCROLL_BAR_WIDTH * 3;
 
-            public OsuScrollbar(Direction scrollDir)
+            public AdaptiveScrollbar(Direction scrollDir)
                 : base(scrollDir)
             {
                 Blending = BlendingParameters.Additive;

@@ -131,7 +131,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         private FormControlBackground background = null!;
         private Box flashLayer = null!;
         private FormTextBox.InnerTextBox textBox = null!;
-        private AdaptiveSpriteText valueLabel = null!;
+        private ProjectYomiSpriteText valueLabel = null!;
         private FormFieldCaption captionText = null!;
         private IFocusManager focusManager = null!;
 
@@ -199,7 +199,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         }
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours, NekoPlayerApp? game)
+        private void load(ProjectYomiColour colours, NekoPlayerApp? game)
         {
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
@@ -437,17 +437,17 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 if (currentNumberInstantaneous.Value is not int)
                     floatValue *= 100;
 
-                textBox.Text = floatValue.ToStandardFormattedString(Math.Max(0, AdaptiveSliderBar<T>.MAX_DECIMAL_DIGITS - 2));
+                textBox.Text = floatValue.ToStandardFormattedString(Math.Max(0, ProjectYomiSliderBar<T>.MAX_DECIMAL_DIGITS - 2));
             }
             else
-                textBox.Text = currentNumberInstantaneous.Value.ToStandardFormattedString(AdaptiveSliderBar<T>.MAX_DECIMAL_DIGITS);
+                textBox.Text = currentNumberInstantaneous.Value.ToStandardFormattedString(ProjectYomiSliderBar<T>.MAX_DECIMAL_DIGITS);
 
             valueLabel.Text = LabelFormat(currentNumberInstantaneous.Value);
         }
 
-        private LocalisableString defaultLabelFormat(T value) => currentNumberInstantaneous.Value.ToStandardFormattedString(AdaptiveSliderBar<T>.MAX_DECIMAL_DIGITS, DisplayAsPercentage);
+        private LocalisableString defaultLabelFormat(T value) => currentNumberInstantaneous.Value.ToStandardFormattedString(ProjectYomiSliderBar<T>.MAX_DECIMAL_DIGITS, DisplayAsPercentage);
 
-        public partial class InnerSlider : AdaptiveSliderBar<T>
+        public partial class InnerSlider : ProjectYomiSliderBar<T>
         {
             public BindableBool Focused { get; } = new BindableBool();
 

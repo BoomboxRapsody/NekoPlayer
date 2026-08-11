@@ -22,7 +22,7 @@ using osuTK;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class FormFontDropdown<T> : AdaptiveDropdown<T>, IFormControl
+    public partial class FormFontDropdown<T> : ProjectYomiDropdown<T>, IFormControl
     {
         /// <summary>
         /// Caption describing this slider bar, displayed on top of the controls.
@@ -183,7 +183,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             protected new FormDropdownSearchBar SearchBar { get; set; } = null!;
 
             private FormFieldCaption caption = null!;
-            private AdaptiveSpriteText label = null!;
+            private ProjectYomiSpriteText label = null!;
             private SpriteIcon chevron = null!;
             private FormControlBackground background = null!;
 

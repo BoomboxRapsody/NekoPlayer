@@ -10,16 +10,16 @@ using osu.Framework.Localisation;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public class AdaptiveMenuItem : MenuItem
+    public class ProjectYomiMenuItem : MenuItem
     {
         public IconUsage Icon { get; init; }
 
-        public AdaptiveMenuItem(LocalisableString text)
+        public ProjectYomiMenuItem(LocalisableString text)
             : this(text, null)
         {
         }
 
-        public AdaptiveMenuItem(LocalisableString text, Action? action)
+        public ProjectYomiMenuItem(LocalisableString text, Action? action)
             : base(text, action)
         {
         }

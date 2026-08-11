@@ -186,7 +186,7 @@ namespace NekoPlayer.App.Graphics.Containers
                     if (backgroundImage != null)
                     {
                         backgroundImage.FadeIn(TRANSITION_DURATION);
-                        backgroundImage.FadeColour(AdaptiveColour.Gray(1.0f - scalingMenuBackgroundDim.Value), TRANSITION_DURATION, Easing.OutQuint);
+                        backgroundImage.FadeColour(ProjectYomiColour.Gray(1.0f - scalingMenuBackgroundDim.Value), TRANSITION_DURATION, Easing.OutQuint);
                     }
                 }
                 else

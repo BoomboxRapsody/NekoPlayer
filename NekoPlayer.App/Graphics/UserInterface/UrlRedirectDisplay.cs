@@ -22,11 +22,11 @@ using YoutubeExplode.Videos;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class UrlRedirectDisplay : AdaptiveClickableContainer
+    public partial class UrlRedirectDisplay : ProjectYomiClickableContainer
     {
         private string url;
 
-        private AdaptiveTextFlowContainer textFlow;
+        private ProjectYomiTextFlowContainer textFlow;
 
         private string displayName;
         private IconUsage icon;
@@ -71,7 +71,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             RelativeSizeAxes = Axes.Both,
                             Colour = overlayColourProvider.Background2,
                         },
-                        textFlow = new AdaptiveTextFlowContainer(f =>
+                        textFlow = new ProjectYomiTextFlowContainer(f =>
                         {
                             f.Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Bold");
                         })

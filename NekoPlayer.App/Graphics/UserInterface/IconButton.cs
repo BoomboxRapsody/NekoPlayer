@@ -10,7 +10,7 @@ using osu.Framework.Allocation;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class IconButton : AdaptiveButton
+    public partial class IconButton : ProjectYomiButton
     {
         public const float DEFAULT_BUTTON_SIZE = 30;
 

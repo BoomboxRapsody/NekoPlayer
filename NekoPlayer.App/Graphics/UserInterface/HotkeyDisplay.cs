@@ -80,7 +80,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }
 
             [BackgroundDependencyLoader]
-            private void load(OverlayColourProvider? colourProvider, AdaptiveColour colours)
+            private void load(OverlayColourProvider? colourProvider, ProjectYomiColour colours)
             {
                 AutoSizeAxes = Axes.Both;
                 Masking = true;
@@ -93,7 +93,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         RelativeSizeAxes = Axes.Both,
                         Colour = colourProvider?.Background6 ?? Colour4.Black.Opacity(0.7f),
                     },
-                    new AdaptiveSpriteText
+                    new ProjectYomiSpriteText
                     {
                         Margin = new MarginPadding { Horizontal = 5, Bottom = 1, },
                         Text = hotkey.ToUpperInvariant(),

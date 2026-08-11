@@ -32,8 +32,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class VideoMetadataDisplayWithoutProfile : Container
     {
-        private AdaptiveSpriteText videoName;
-        private AdaptiveSpriteText desc;
+        private ProjectYomiSpriteText videoName;
+        private ProjectYomiSpriteText desc;
         public Action<VideoMetadataDisplayWithoutProfile> ClickEvent;
 
         private Box bgLayer, hover;
@@ -92,13 +92,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoName = new AdaptiveSpriteText
+                                videoName = new ProjectYomiSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                     Colour = Color4.White,
                                 },
-                                desc = new AdaptiveSpriteText
+                                desc = new ProjectYomiSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,

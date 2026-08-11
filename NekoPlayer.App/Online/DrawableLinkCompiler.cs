@@ -21,7 +21,7 @@ namespace NekoPlayer.App.Online
     /// <summary>
     /// An invisible drawable that brings multiple <see cref="Drawable"/> pieces together to form a consumable clickable link.
     /// </summary>
-    public partial class DrawableLinkCompiler : AdaptiveHoverContainer
+    public partial class DrawableLinkCompiler : ProjectYomiHoverContainer
     {
         /// <summary>
         /// Each word part of a chat link (split for word-wrap support).
@@ -55,7 +55,7 @@ namespace NekoPlayer.App.Online
         }
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours)
+        private void load(ProjectYomiColour colours)
         {
             IdleColour ??= overlayColourProvider?.Light2 ?? colours.Blue;
         }

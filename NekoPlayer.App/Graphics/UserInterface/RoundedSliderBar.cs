@@ -18,7 +18,7 @@ using Vector2 = osuTK.Vector2;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class RoundedSliderBar<T> : AdaptiveSliderBar<T>
+    public partial class RoundedSliderBar<T> : ProjectYomiSliderBar<T>
         where T : struct, INumber<T>, IMinMaxValue<T>
     {
         protected readonly SliderNubRemake Nub;

@@ -10,21 +10,21 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class AdaptiveHexColourPicker : HexColourPicker
+    public partial class ProjectYomiHexColourPicker : HexColourPicker
     {
-        public AdaptiveHexColourPicker()
+        public ProjectYomiHexColourPicker()
         {
             Padding = new MarginPadding(20);
             Spacing = 20;
         }
 
         [BackgroundDependencyLoader(true)]
-        private void load(OverlayColourProvider? overlayColourProvider, AdaptiveColour osuColour)
+        private void load(OverlayColourProvider? overlayColourProvider, ProjectYomiColour osuColour)
         {
             Background.Colour = overlayColourProvider?.Dark6 ?? osuColour.GreySeaFoamDarker;
         }
 
-        protected override TextBox CreateHexCodeTextBox() => new AdaptiveTextBox();
+        protected override TextBox CreateHexCodeTextBox() => new ProjectYomiTextBox();
         protected override ColourPreview CreateColourPreview() => new OsuColourPreview();
 
         private partial class OsuColourPreview : ColourPreview

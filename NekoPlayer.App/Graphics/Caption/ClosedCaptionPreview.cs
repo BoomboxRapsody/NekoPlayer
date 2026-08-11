@@ -18,7 +18,7 @@ namespace NekoPlayer.App.Graphics.Caption
 {
     public partial class ClosedCaptionPreview : Container
     {
-        private AdaptiveTextFlowContainer spriteText;
+        private ProjectYomiTextFlowContainer spriteText;
         private Bindable<CaptionFonts> captionFont;
         private Bindable<float> captionBGOpacity;
         private Bindable<Colour4> captionBGColor;
@@ -52,7 +52,7 @@ namespace NekoPlayer.App.Graphics.Caption
                         Colour = Color4.Black,
                         Alpha = 0.5f
                     },
-                    spriteText = new AdaptiveTextFlowContainer(t =>
+                    spriteText = new ProjectYomiTextFlowContainer(t =>
                     {
                         t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
                         t.Shadow = false;

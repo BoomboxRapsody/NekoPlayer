@@ -15,7 +15,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class ClockDisplay : Container
     {
-        private AdaptiveSpriteText timeText, dateText;
+        private ProjectYomiSpriteText timeText, dateText;
 
         public ClockDisplay()
         {
@@ -59,12 +59,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             Direction = FillDirection.Vertical,
                             Children = new Drawable[]
                             {
-                                timeText = new AdaptiveSpriteText
+                                timeText = new ProjectYomiSpriteText
                                 {
                                     Font = FontUsage.Default.With("InflateVF", 100, "ClockFont"),
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                dateText = new AdaptiveSpriteText
+                                dateText = new ProjectYomiSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 20),
                                 },

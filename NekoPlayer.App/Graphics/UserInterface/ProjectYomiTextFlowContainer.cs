@@ -12,14 +12,14 @@ using NekoPlayer.App.Graphics.Sprites;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveTextFlowContainer : TextFlowContainer
+    public partial class ProjectYomiTextFlowContainer : TextFlowContainer
     {
-        public AdaptiveTextFlowContainer(Action<SpriteText>? defaultCreationParameters = null)
+        public ProjectYomiTextFlowContainer(Action<SpriteText>? defaultCreationParameters = null)
             : base(defaultCreationParameters)
         {
         }
 
-        protected override SpriteText CreateSpriteText() => new AdaptiveSpriteText();
+        protected override SpriteText CreateSpriteText() => new ProjectYomiSpriteText();
 
         public ITextPart AddArbitraryDrawable(Drawable drawable) => AddPart(new TextPartManual(new ArbitraryDrawableWrapper(drawable).Yield()));
 

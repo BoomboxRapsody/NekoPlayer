@@ -12,7 +12,7 @@ using osuTK;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class AdaptiveHSVColourPicker : HSVColourPicker
+    public partial class ProjectYomiHSVColourPicker : HSVColourPicker
     {
         private const float spacing = 10;
         private const float corner_radius = 10;
@@ -22,7 +22,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         protected override SaturationValueSelector CreateSaturationValueSelector() => new OsuSaturationValueSelector();
 
         [BackgroundDependencyLoader(true)]
-        private void load(OverlayColourProvider? colourProvider, AdaptiveColour osuColour)
+        private void load(OverlayColourProvider? colourProvider, ProjectYomiColour osuColour)
         {
             Background.Colour = colourProvider?.Dark5 ?? osuColour.GreySeaFoamDark;
 

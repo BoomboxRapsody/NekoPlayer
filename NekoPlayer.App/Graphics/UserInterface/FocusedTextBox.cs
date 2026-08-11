@@ -15,7 +15,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     /// <summary>
     /// A textbox which holds focus eagerly.
     /// </summary>
-    public partial class FocusedTextBox : AdaptiveTextBox, IKeyBindingHandler<GlobalAction>
+    public partial class FocusedTextBox : ProjectYomiTextBox, IKeyBindingHandler<GlobalAction>
     {
         private bool focus;
 

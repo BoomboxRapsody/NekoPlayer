@@ -15,7 +15,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.Containers
 {
-    public partial class AdaptiveHoverContainer : AdaptiveClickableContainer
+    public partial class ProjectYomiHoverContainer : ProjectYomiClickableContainer
     {
         protected const float FADE_DURATION = 500;
 
@@ -27,7 +27,7 @@ namespace NekoPlayer.App.Graphics.Containers
 
         protected virtual IEnumerable<Drawable> EffectTargets => new[] { Content };
 
-        public AdaptiveHoverContainer(HoverSampleSet sampleSet = HoverSampleSet.Default)
+        public ProjectYomiHoverContainer(HoverSampleSet sampleSet = HoverSampleSet.Default)
             : base(sampleSet)
         {
             Enabled.ValueChanged += e =>
@@ -71,7 +71,7 @@ namespace NekoPlayer.App.Graphics.Containers
         }
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours)
+        private void load(ProjectYomiColour colours)
         {
             fallbackHoverColour = colours.Yellow;
             fallbackIdleColour = Color4.White;

@@ -1,18 +1,17 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Cursor;
-using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osuTK;
+using NekoPlayer.App.Graphics.UserInterface;
 
-namespace NekoPlayer.App.Graphics.UserInterface
+namespace NekoPlayer.App.Graphics.Containers
 {
-    public partial class AdaptiveClickableContainer : ClickableContainer, IHasTooltip
+    public partial class ProjectYomiTweakedClickableContainer : TweakedClickableContainer, IHasTooltip
     {
         private readonly HoverSampleSet sampleSet;
 
@@ -30,7 +29,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected virtual HoverSounds CreateHoverSounds(HoverSampleSet sampleSet) => new HoverClickSounds(sampleSet) { Enabled = { BindTarget = Enabled } };
 
-        public AdaptiveClickableContainer(HoverSampleSet sampleSet = HoverSampleSet.Default)
+        public ProjectYomiTweakedClickableContainer(HoverSampleSet sampleSet = HoverSampleSet.Default)
         {
             this.sampleSet = sampleSet;
         }

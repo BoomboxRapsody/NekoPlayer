@@ -79,7 +79,7 @@ namespace NekoPlayer.App.Graphics.Videos
             {
                 private SeekAction trackAction;
                 private SpriteIcon seekArrow;
-                private AdaptiveSpriteText seekValue;
+                private ProjectYomiSpriteText seekValue;
                 private BufferedContainer seekArrowContainer;
 
                 private Container content;
@@ -120,7 +120,7 @@ namespace NekoPlayer.App.Graphics.Videos
                                             Position = new osuTK.Vector2(20, 0),
                                             Icon = FontAwesome.Solid.ChevronLeft,
                                         },
-                                        seekValue = new AdaptiveSpriteText
+                                        seekValue = new ProjectYomiSpriteText
                                         {
                                             Text = $"- 5",
                                             Margin = new MarginPadding
@@ -163,7 +163,7 @@ namespace NekoPlayer.App.Graphics.Videos
                                             Position = new osuTK.Vector2(20, 0),
                                             Icon = FontAwesome.Solid.ChevronRight,
                                         },
-                                        seekValue = new AdaptiveSpriteText
+                                        seekValue = new ProjectYomiSpriteText
                                         {
                                             Text = $"+ 5",
                                             Margin = new MarginPadding

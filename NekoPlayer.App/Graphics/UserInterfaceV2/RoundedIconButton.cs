@@ -19,7 +19,7 @@ using osu.Framework.Graphics.Sprites;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class RoundedIconButton : AdaptiveMaterialIconButton, IFilterable, IHasTooltip
+    public partial class RoundedIconButton : ProjectYomiMaterialIconButton, IFilterable, IHasTooltip
     {
         protected override float HoverLayerFinalAlpha => 0;
 
@@ -39,7 +39,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         }
 
         [BackgroundDependencyLoader(true)]
-        private void load(OverlayColourProvider? overlayColourProvider, AdaptiveColour colours)
+        private void load(OverlayColourProvider? overlayColourProvider, ProjectYomiColour colours)
         {
             // Many buttons have local colours, but this provides a sane default for all other cases.
             DefaultBackgroundColour = overlayColourProvider?.Colour3 ?? colours.Blue3;

@@ -15,7 +15,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
     public partial class FormFieldCaption : CompositeDrawable, IHasTooltip
     {
-        private AdaptiveTextFlowContainer textFlow = null!;
+        private ProjectYomiTextFlowContainer textFlow = null!;
 
         private LocalisableString caption;
 
@@ -93,7 +93,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
 
-            InternalChild = textFlow = new AdaptiveTextFlowContainer(t => t.Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Bold"))
+            InternalChild = textFlow = new ProjectYomiTextFlowContainer(t => t.Font = NekoPlayerApp.DefaultFont.With(size: 12, weight: "Bold"))
             {
                 RelativeSizeAxes = Axes.X,
                 AutoSizeAxes = Axes.Y,

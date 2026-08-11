@@ -20,7 +20,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class FormDropdownWithDiscordProfileImage<T> : AdaptiveDropdown<T>, IFormControl
+    public partial class FormDropdownWithDiscordProfileImage<T> : ProjectYomiDropdown<T>, IFormControl
     {
         /// <summary>
         /// Caption describing this slider bar, displayed on top of the controls.
@@ -181,7 +181,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             protected new FormDropdownSearchBar SearchBar { get; set; } = null!;
 
             private FormFieldCaption caption = null!;
-            private AdaptiveSpriteText label = null!;
+            private ProjectYomiSpriteText label = null!;
             private SpriteIcon chevron = null!;
             private FormControlBackgroundWithDiscordProfileImage background = null!;
 

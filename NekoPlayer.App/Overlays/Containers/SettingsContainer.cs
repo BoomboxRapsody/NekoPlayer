@@ -54,7 +54,7 @@ namespace NekoPlayer.App.Overlays.Containers
 {
     public partial class SettingsContainer : SideOverlayContainer
     {
-        private AdaptiveScrollContainer settingsSections;
+        private ProjectYomiScrollContainer settingsSections;
 
         public void ShowSettingsOverlayAtName(string name)
         {
@@ -330,7 +330,7 @@ namespace NekoPlayer.App.Overlays.Containers
         }
 
         [BackgroundDependencyLoader]
-        private void load(OverlayColourProvider overlayColourProvider, TextureStore textures, AdaptiveColour colours, FrameworkDebugConfigManager debugConfig, FrameworkConfigManager config, Storage storage, NekoPlayerConfigManager appConfig)
+        private void load(OverlayColourProvider overlayColourProvider, TextureStore textures, ProjectYomiColour colours, FrameworkDebugConfigManager debugConfig, FrameworkConfigManager config, Storage storage, NekoPlayerConfigManager appConfig)
         {
             videoVolume = config.GetBindable<double>(FrameworkSetting.VolumeMusic);
             fpsDisplay = appConfig.GetBindable<bool>(NekoPlayerSetting.ShowFpsDisplay);
@@ -428,7 +428,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        settingsSections = new AdaptiveScrollContainer
+                                        settingsSections = new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -449,7 +449,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         Bottom = 8,
                                                     },
                                                     Children = new Drawable[] {
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Quick Actions",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -471,7 +471,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             TooltipText = NekoPlayerStrings.ReportBugsDesc,
                                                             Action = () => host.OpenUrlExternally("https://boomboxrapsody.featurebase.app/en"),
                                                         },
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "General Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -513,7 +513,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                                 CheckUpdateAction.Invoke();
                                                             },
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "UI Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -590,7 +590,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = overlaySFXType,
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Graphics Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -755,7 +755,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                                 })
                                                             }
                                                         },
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Screenshot Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -775,7 +775,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.MousePointer,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.ScreenshotCaptureMenuCursor)
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Video Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -846,7 +846,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.TachometerAlt,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo)
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "VFX Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -883,7 +883,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             KeyboardStep = 1,
                                                             LabelFormat = value => $"{value:N0}°"
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "CC Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -948,7 +948,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             KeyboardStep = 1,
                                                             LabelFormat = value => $"{value}px"
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Audio Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -971,7 +971,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Current = adjustPitch,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleAdjustPitchOnSpeedChange),
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.Volume,
@@ -1018,7 +1018,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.AudioNormalization)
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Debug Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -1076,7 +1076,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                                 }
                                                             },
                                                         },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"))
+                                                        new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"))
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
@@ -1129,7 +1129,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = 76,
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,

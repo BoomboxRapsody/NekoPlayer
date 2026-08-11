@@ -27,7 +27,7 @@ using Vector2 = osuTK.Vector2;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class NekoPlayerSeekBar<T> : AdaptiveSliderBar<T>
+    public partial class NekoPlayerSeekBar<T> : ProjectYomiSliderBar<T>
         where T : struct, INumber<T>, IMinMaxValue<T>
     {
         protected readonly NekoPlayerSeekBar.SliderNub Nub;

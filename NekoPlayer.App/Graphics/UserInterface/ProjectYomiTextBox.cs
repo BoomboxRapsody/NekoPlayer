@@ -25,7 +25,7 @@ using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveTextBox : BasicTextBox
+    public partial class ProjectYomiTextBox : BasicTextBox
     {
         /// <summary>
         /// Whether to allow playing a different samples based on the type of character.
@@ -37,7 +37,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected override float CaretWidth => 3;
 
-        protected override SpriteText CreatePlaceholder() => new AdaptiveSpriteText
+        protected override SpriteText CreatePlaceholder() => new ProjectYomiSpriteText
         {
             Font = NekoPlayerApp.DefaultFont,
             Margin = new MarginPadding { Left = 2 },
@@ -67,11 +67,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private Dictionary<FeedbackSampleType, Sample?[]> sampleMap = new Dictionary<FeedbackSampleType, Sample?[]>();
 
         /// <summary>
-        /// Whether all text should be selected when the <see cref="AdaptiveTextBox"/> gains focus.
+        /// Whether all text should be selected when the <see cref="ProjectYomiTextBox"/> gains focus.
         /// </summary>
         public bool SelectAllOnFocus { get; set; }
 
-        public AdaptiveTextBox()
+        public ProjectYomiTextBox()
         {
             Height = 40;
             TextContainer.Height = 0.5f;
@@ -82,10 +82,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         [BackgroundDependencyLoader(true)]
-        private void load(OverlayColourProvider? colourProvider, AdaptiveColour colour, AudioManager audio)
+        private void load(OverlayColourProvider? colourProvider, ProjectYomiColour colour, AudioManager audio)
         {
             BackgroundUnfocused = colourProvider?.Background4 ?? Color4.Black.Opacity(0.5f);
-            BackgroundFocused = colourProvider?.Background3 ?? AdaptiveColour.Gray(0.3f).Opacity(0.8f);
+            BackgroundFocused = colourProvider?.Background3 ?? ProjectYomiColour.Gray(0.3f).Opacity(0.8f);
             BackgroundCommit = BorderColour = colourProvider?.Highlight1 ?? colour.Yellow;
             selectionColour = colourProvider?.Background1 ?? new Color4(249, 90, 255, 255);
 
@@ -280,7 +280,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected override Drawable GetDrawableCharacter(Grapheme c) => new FallingDownContainer
         {
             AutoSizeAxes = Axes.Both,
-            Child = new AdaptiveSpriteText { Text = c.ToString(), Font = NekoPlayerApp.DefaultFont.With(size: FontSize) },
+            Child = new ProjectYomiSpriteText { Text = c.ToString(), Font = NekoPlayerApp.DefaultFont.With(size: FontSize) },
         };
 
         protected override Caret CreateCaret() => caret = new AdaptiveCaret

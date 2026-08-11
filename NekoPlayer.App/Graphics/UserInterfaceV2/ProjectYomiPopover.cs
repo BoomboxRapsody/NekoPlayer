@@ -18,7 +18,7 @@ using osuTK;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class AdaptivePopover : Popover, IKeyBindingHandler<GlobalAction>
+    public partial class ProjectYomiPopover : Popover, IKeyBindingHandler<GlobalAction>
     {
         private const float fade_duration = 250;
         private const double scale_duration = 500;
@@ -29,7 +29,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         // required due to LoadAsyncComplete() in `VisibilityContainer` calling PopOut() during load - similar workaround to `OsuDropdownMenu`
         private bool wasOpened;
 
-        public AdaptivePopover(bool withPadding = true)
+        public ProjectYomiPopover(bool withPadding = true)
         {
             Content.Padding = withPadding ? new MarginPadding(20) : new MarginPadding();
 
@@ -48,7 +48,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         private Bindable<SFXType> overlaySFXType;
 
         [BackgroundDependencyLoader(true)]
-        private void load(OverlayColourProvider? colourProvider, AdaptiveColour colours, AudioManager audio, NekoPlayerConfigManager appConfig)
+        private void load(OverlayColourProvider? colourProvider, ProjectYomiColour colours, AudioManager audio, NekoPlayerConfigManager appConfig)
         {
             overlaySFXType = appConfig.GetBindable<SFXType>(NekoPlayerSetting.OverlaySFXType);
 

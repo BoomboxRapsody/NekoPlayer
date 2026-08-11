@@ -17,7 +17,7 @@ using NekoPlayer.App.Graphics.Sprites;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class MenuButtonItem : AdaptiveTweakedClickableContainer
+    public partial class MenuButtonItem : ProjectYomiTweakedClickableContainer
     {
         private SpriteIcon icon;
         private TruncatingSpriteText titleText;

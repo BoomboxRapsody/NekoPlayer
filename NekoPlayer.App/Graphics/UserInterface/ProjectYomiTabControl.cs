@@ -22,7 +22,7 @@ using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveTabControl<T> : TabControl<T>
+    public partial class ProjectYomiTabControl<T> : TabControl<T>
     {
         private Color4 accentColour;
 
@@ -44,7 +44,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private readonly Box strip;
 
-        protected override Dropdown<T> CreateDropdown() => new AdaptiveTabDropdown<T>();
+        protected override Dropdown<T> CreateDropdown() => new ProjectYomiTabDropdown<T>();
 
         protected override TabItem<T> CreateTabItem(T value) => new OsuTabItem(value);
 
@@ -57,7 +57,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private static bool isEnumType => typeof(T).IsEnum;
 
-        public AdaptiveTabControl()
+        public ProjectYomiTabControl()
         {
             TabContainer.Spacing = new Vector2(HORIZONTAL_SPACING, 0f);
 
@@ -77,7 +77,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours)
+        private void load(ProjectYomiColour colours)
         {
             if (accentColour == default)
                 AccentColour = colours.Blue;
@@ -172,7 +172,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                 Children = new Drawable[]
                 {
-                    Text = new AdaptiveSpriteText
+                    Text = new ProjectYomiSpriteText
                     {
                         Margin = new MarginPadding { Top = 5, Bottom = 5 },
                         Origin = Anchor.BottomLeft,
@@ -196,7 +196,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             private Sample selectSample;
 
             [BackgroundDependencyLoader]
-            private void load(AdaptiveColour colours, AudioManager audio)
+            private void load(ProjectYomiColour colours, AudioManager audio)
             {
                 if (accentColour == default)
                     AccentColour = colours.Blue;

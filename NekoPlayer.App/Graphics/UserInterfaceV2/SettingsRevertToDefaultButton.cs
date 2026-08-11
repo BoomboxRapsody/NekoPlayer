@@ -13,7 +13,7 @@ using NekoPlayer.App.Localisation;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class SettingsRevertToDefaultButton : AdaptiveClickableContainer
+    public partial class SettingsRevertToDefaultButton : ProjectYomiClickableContainer
     {
         public const float WIDTH = 28;
 

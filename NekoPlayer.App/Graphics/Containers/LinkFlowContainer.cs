@@ -18,7 +18,7 @@ using NekoPlayer.App.Online;
 
 namespace NekoPlayer.App.Graphics.Containers
 {
-    public partial class LinkFlowContainer : AdaptiveTextFlowContainer
+    public partial class LinkFlowContainer : ProjectYomiTextFlowContainer
     {
         public LinkFlowContainer(Action<SpriteText> defaultCreationParameters = null)
             : base(defaultCreationParameters)

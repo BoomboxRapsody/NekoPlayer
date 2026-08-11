@@ -14,7 +14,7 @@ using NekoPlayer.App.Graphics.Containers;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveMenu : Menu
+    public partial class ProjectYomiMenu : Menu
     {
         protected const double DELAY_BEFORE_FADE_OUT = 50;
         protected const double FADE_DURATION = 280;
@@ -25,14 +25,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public bool PlaySamples { get; }
 
         [Resolved]
-        private AdaptiveMenuSamples menuSamples { get; set; } = null!;
+        private ProjectYomiMenuSamples menuSamples { get; set; } = null!;
 
-        public AdaptiveMenu(Direction direction, bool topLevelMenu = false)
+        public ProjectYomiMenu(Direction direction, bool topLevelMenu = false)
             : this(direction, topLevelMenu, playSamples: !topLevelMenu)
         {
         }
 
-        protected AdaptiveMenu(Direction direction, bool topLevelMenu, bool playSamples)
+        protected ProjectYomiMenu(Direction direction, bool topLevelMenu, bool playSamples)
             : base(direction, topLevelMenu)
         {
             PlaySamples = playSamples;
@@ -96,16 +96,16 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             switch (item)
             {
-                case AdaptiveMenuItemSpacer spacer:
+                case ProjectYomiMenuItemSpacer spacer:
                     return new DrawableSpacer(spacer);
             }
 
             return new DrawableAdaptiveMenuItem(item);
         }
 
-        protected override ScrollContainer<Drawable> CreateScrollContainer(Direction direction) => new AdaptiveScrollContainer(direction);
+        protected override ScrollContainer<Drawable> CreateScrollContainer(Direction direction) => new ProjectYomiScrollContainer(direction);
 
-        protected override Menu CreateSubMenu() => new AdaptiveMenu(Direction.Vertical)
+        protected override Menu CreateSubMenu() => new ProjectYomiMenu(Direction.Vertical)
         {
             Anchor = Direction == Direction.Horizontal ? Anchor.BottomLeft : Anchor.TopRight
         };

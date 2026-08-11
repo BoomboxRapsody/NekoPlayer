@@ -30,10 +30,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
     public partial class CommentDisplay : CompositeDrawable
     {
         private ProfileImage profileImage = null!;
-        private AdaptiveTextFlowContainer channelName = null!;
+        private ProjectYomiTextFlowContainer channelName = null!;
         private LinkFlowContainer commentText = null!;
         public Action<VideoMetadataDisplay> ClickEvent = null!;
-        private AdaptiveSpriteText likeCount = null!, replyCount = null!, translateToText = null!;
+        private ProjectYomiSpriteText likeCount = null!, replyCount = null!, translateToText = null!;
         private RoundedButtonContainer translateButton = null!;
 
         public Action<double> TimestampClicked;
@@ -118,7 +118,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                             Spacing = new Vector2(0, 2),
                                             Children = new Drawable[]
                                             {
-                                                channelName = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Bold"))
+                                                channelName = new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "Bold"))
                                                 {
                                                     RelativeSizeAxes = Axes.X,
                                                     AutoSizeAxes = Axes.Y,
@@ -161,7 +161,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                             Padding = new MarginPadding(8),
                                                             Children = new Drawable[]
                                                             {
-                                                                translateToText = new AdaptiveSpriteText
+                                                                translateToText = new ProjectYomiSpriteText
                                                                 {
                                                                     Colour = overlayColourProvider.Content2,
                                                                     Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Regular"),
@@ -214,7 +214,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                                             Icon = FontAwesome.Solid.ThumbsUp,
                                                                             Colour = overlayColourProvider.Content2,
                                                                         },
-                                                                        likeCount = new AdaptiveSpriteText
+                                                                        likeCount = new ProjectYomiSpriteText
                                                                         {
                                                                             Colour = overlayColourProvider.Content2,
                                                                             Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),
@@ -259,7 +259,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                                                             Icon = FontAwesome.Solid.CommentAlt,
                                                                             Colour = overlayColourProvider.Content2,
                                                                         },
-                                                                        replyCount = new AdaptiveSpriteText
+                                                                        replyCount = new ProjectYomiSpriteText
                                                                         {
                                                                             Colour = overlayColourProvider.Content2,
                                                                             Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "SemiBold"),

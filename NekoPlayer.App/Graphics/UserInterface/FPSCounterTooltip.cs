@@ -15,7 +15,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class FPSCounterTooltip : CompositeDrawable, ITooltip
     {
-        private AdaptiveTextFlowContainer textFlow = null!;
+        private ProjectYomiTextFlowContainer textFlow = null!;
 
         [Resolved]
         private GameHost gameHost { get; set; } = null!;
@@ -36,7 +36,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Alpha = 1,
                     RelativeSizeAxes = Axes.Both,
                 },
-                new AdaptiveTextFlowContainer(cp =>
+                new ProjectYomiTextFlowContainer(cp =>
                 {
                     cp.Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold");
                 })
@@ -48,7 +48,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Colour = overlayColourProvider.Content2,
                     ParagraphSpacing = 0,
                 },
-                textFlow = new AdaptiveTextFlowContainer(cp =>
+                textFlow = new ProjectYomiTextFlowContainer(cp =>
                 {
                     cp.Font = NekoPlayerApp.DefaultFont.With(fixedWidth: true, weight: "Regular");
                     cp.Spacing = new Vector2(-1);

@@ -35,7 +35,7 @@ namespace NekoPlayer.App.Graphics.Caption
     {
         public Bindable<bool> UIVisiblity = new Bindable<bool>();
 
-        private AdaptiveTextFlowContainer spriteText;
+        private ProjectYomiTextFlowContainer spriteText;
         private YouTubeVideoPlayer videoPlayer;
 
         // Legacy YouTubeExplode captions.
@@ -139,7 +139,7 @@ namespace NekoPlayer.App.Graphics.Caption
                         Colour = Color4.Black,
                         Alpha = 0.5f
                     },
-                    spriteText = new AdaptiveTextFlowContainer(t =>
+                    spriteText = new ProjectYomiTextFlowContainer(t =>
                     {
                         t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
                         t.Shadow = false;

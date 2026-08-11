@@ -3,9 +3,9 @@
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public class AdaptiveMenuItemSpacer : AdaptiveMenuItem
+    public class ProjectYomiMenuItemSpacer : ProjectYomiMenuItem
     {
-        public AdaptiveMenuItemSpacer()
+        public ProjectYomiMenuItemSpacer()
             : base(" ")
         {
         }

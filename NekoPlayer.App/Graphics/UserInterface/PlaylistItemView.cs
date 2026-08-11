@@ -37,14 +37,14 @@ using YoutubeExplode.Videos.ClosedCaptions;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class PlaylistItemView : AdaptiveClickableContainer
+    public partial class PlaylistItemView : ProjectYomiClickableContainer
     {
         private Sprite thumbnail = null!;
         private TruncatingSpriteText videoNameText = null!;
         private TruncatingSpriteText channelNameText = null!;
         public Action<PlaylistItemView> ClickEvent = null!;
-        private AdaptiveSpriteText viewsText = null!;
-        private AdaptiveSpriteText indexText = null!;
+        private ProjectYomiSpriteText viewsText = null!;
+        private ProjectYomiSpriteText indexText = null!;
 
         private Box bgLayer = null!;
 
@@ -75,7 +75,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private TextureStore textureStore { get; set; } = null!;
 
         [BackgroundDependencyLoader]
-        private void load(OverlayColourProvider? overlayColourProvider, AdaptiveColour colour)
+        private void load(OverlayColourProvider? overlayColourProvider, ProjectYomiColour colour)
         {
             uiLanguage = app.CurrentLanguage.GetBoundCopy();
 

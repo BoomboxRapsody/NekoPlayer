@@ -20,10 +20,10 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         public readonly Bindable<Data?> Current = new Bindable<Data?>();
 
         private Box background = null!;
-        private AdaptiveTextFlowContainer text = null!;
+        private ProjectYomiTextFlowContainer text = null!;
 
         [Resolved]
-        private AdaptiveColour colours { get; set; } = null!;
+        private ProjectYomiColour colours { get; set; } = null!;
 
         [Resolved]
         private OverlayColourProvider colourProvider { get; set; } = null!;
@@ -53,7 +53,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             Colour = Color4.Black,
                             RelativeSizeAxes = Axes.Both,
                         },
-                        text = new AdaptiveTextFlowContainer(s => s.Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold"))
+                        text = new ProjectYomiTextFlowContainer(s => s.Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold"))
                         {
                             Padding = new MarginPadding(8),
                             RelativeSizeAxes = Axes.X,
