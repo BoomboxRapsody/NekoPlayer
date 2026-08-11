@@ -28,13 +28,13 @@ using NekoPlayer.App.Online;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class YouTubeSearchResultView : AdaptiveClickableContainer
+    public partial class YouTubeSearchResultView : ProjectYomiClickableContainer
     {
         private Sprite thumbnail = null!;
-        private AdaptiveTextFlowContainer videoNameText = null!;
+        private ProjectYomiTextFlowContainer videoNameText = null!;
         private TruncatingSpriteText channelNameText = null!;
         public Action<YouTubeSearchResultView> ClickEvent = null!;
-        private AdaptiveSpriteText viewsText = null!;
+        private ProjectYomiSpriteText viewsText = null!;
 
         private Box bgLayer = null!;
 
@@ -122,7 +122,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoNameText = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "ExtraBold"))
+                                videoNameText = new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "ExtraBold"))
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Colour = overlayColourProvider.Content2,

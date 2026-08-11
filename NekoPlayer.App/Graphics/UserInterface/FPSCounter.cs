@@ -24,8 +24,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class FPSCounter : VisibilityContainer, IHasCustomTooltip
     {
-        private AdaptiveSpriteText counterUpdateFrameTime = null!;
-        private AdaptiveSpriteText counterDrawFPS = null!;
+        private ProjectYomiSpriteText counterUpdateFrameTime = null!;
+        private ProjectYomiSpriteText counterDrawFPS = null!;
 
         private Container mainContent = null!;
 
@@ -110,7 +110,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             AutoSizeAxes = Axes.Both,
                             Children = new Drawable[]
                             {
-                                counterUpdateFrameTime = new AdaptiveSpriteText
+                                counterUpdateFrameTime = new ProjectYomiSpriteText
                                 {
                                     Anchor = Anchor.TopRight,
                                     Origin = Anchor.TopRight,
@@ -120,7 +120,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     Spacing = new Vector2(-1),
                                     Y = -2,
                                 },
-                                counterDrawFPS = new AdaptiveSpriteText
+                                counterDrawFPS = new ProjectYomiSpriteText
                                 {
                                     Anchor = Anchor.TopRight,
                                     Origin = Anchor.TopRight,

@@ -73,7 +73,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         private FormControlBackgroundWithProfileImage background = null!;
         private FormFieldCaption caption = null!;
-        private AdaptiveSpriteText text = null!;
+        private ProjectYomiSpriteText text = null!;
 
         /// <summary>
         /// The action to invoke when the button is clicked.
@@ -133,7 +133,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                     TooltipText = HintText,
                                     Icon = Icon,
                                 },
-                                text = new AdaptiveSpriteText
+                                text = new ProjectYomiSpriteText
                                 {
                                     Text = Text,
                                     RelativeSizeAxes = Axes.X,
@@ -213,7 +213,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         public bool IsDisabled => false;
 
-        public partial class Button : AdaptiveButtonV2
+        public partial class Button : ProjectYomiButtonV2
         {
             protected override float HoverLayerFinalAlpha => 0;
 

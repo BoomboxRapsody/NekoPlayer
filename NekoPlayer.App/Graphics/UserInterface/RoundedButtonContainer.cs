@@ -8,7 +8,7 @@ using osu.Framework.Input.Events;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class RoundedButtonContainer : AdaptiveClickableContainer
+    public partial class RoundedButtonContainer : ProjectYomiClickableContainer
     {
         public Action<RoundedButtonContainer>? ClickAction { get; set; }
 

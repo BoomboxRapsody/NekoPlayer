@@ -44,7 +44,7 @@ namespace NekoPlayer.App.Overlays
         private SelectionCycleFillFlowContainer<VolumeMeter> volumeMeters = null!;
 
         [BackgroundDependencyLoader]
-        private void load(AudioManager audio, AdaptiveColour colours)
+        private void load(AudioManager audio, ProjectYomiColour colours)
         {
             Height = 150;
             RelativeSizeAxes = Axes.X;

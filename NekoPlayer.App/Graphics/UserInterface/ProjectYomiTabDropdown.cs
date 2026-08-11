@@ -16,7 +16,7 @@ using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveTabDropdown<T> : AdaptiveDropdown<T>, IHasAccentColour
+    public partial class ProjectYomiTabDropdown<T> : ProjectYomiDropdown<T>, IHasAccentColour
     {
         private Color4 accentColour;
 
@@ -32,7 +32,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }
         }
 
-        public AdaptiveTabDropdown()
+        public ProjectYomiTabDropdown()
         {
             RelativeSizeAxes = Axes.X;
         }

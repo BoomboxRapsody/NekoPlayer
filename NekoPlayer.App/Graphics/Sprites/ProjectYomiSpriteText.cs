@@ -6,7 +6,7 @@ using osu.Framework.Graphics.Sprites;
 
 namespace NekoPlayer.App.Graphics.Sprites
 {
-    public partial class AdaptiveSpriteText : SpriteText
+    public partial class ProjectYomiSpriteText : SpriteText
     {
         [Obsolete("Use TruncatingSpriteText instead.")]
         public new bool Truncate
@@ -14,7 +14,7 @@ namespace NekoPlayer.App.Graphics.Sprites
             set => throw new InvalidOperationException($"Use {nameof(TruncatingSpriteText)} instead.");
         }
 
-        public AdaptiveSpriteText(bool enableShadow = true)
+        public ProjectYomiSpriteText(bool enableShadow = true)
         {
             Font = NekoPlayerApp.DefaultFont;
             Shadow = enableShadow;

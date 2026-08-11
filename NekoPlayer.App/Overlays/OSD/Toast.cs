@@ -30,8 +30,8 @@ namespace NekoPlayer.App.Overlays.OSD
 
         protected override Container<Drawable> Content => content;
 
-        protected readonly AdaptiveSpriteText ValueSpriteText;
-        private readonly AdaptiveSpriteText extraText, descriptionText;
+        protected readonly ProjectYomiSpriteText ValueSpriteText;
+        private readonly ProjectYomiSpriteText extraText, descriptionText;
 
         [Resolved]
         private OverlayColourProvider overlayColourProvider { get; set; } = null!;
@@ -64,7 +64,7 @@ namespace NekoPlayer.App.Overlays.OSD
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                 },
-                descriptionText = new AdaptiveSpriteText
+                descriptionText = new ProjectYomiSpriteText
                 {
                     Padding = new MarginPadding { Horizontal = 22, Vertical = 15 },
                     Name = "Description",
@@ -73,7 +73,7 @@ namespace NekoPlayer.App.Overlays.OSD
                     Origin = Anchor.TopLeft,
                     Text = description
                 },
-                ValueSpriteText = new AdaptiveSpriteText
+                ValueSpriteText = new ProjectYomiSpriteText
                 {
                     Font = NekoPlayerApp.DefaultFont.With(size: 24, weight: "Light"),
                     Padding = new MarginPadding { Horizontal = 22, Vertical = 15 },
@@ -82,7 +82,7 @@ namespace NekoPlayer.App.Overlays.OSD
                     Origin = Anchor.CentreRight,
                     Text = value
                 },
-                extraText = new AdaptiveSpriteText
+                extraText = new ProjectYomiSpriteText
                 {
                     Anchor = Anchor.BottomLeft,
                     Origin = Anchor.BottomLeft,

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
+// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Allocation;
@@ -13,28 +13,19 @@ using osu.Framework.Localisation;
 using osuTK;
 using osuTK.Graphics;
 using NekoPlayer.App.Graphics.Sprites;
-using osu.Framework.Extensions.ObjectExtensions;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
     /// <summary>
     /// A button with added default sound effects.
     /// </summary>
-    public partial class AdaptiveMaterialIconButton : Button
+    public partial class ProjectYomiMaterialAltButton : Button
     {
         public LocalisableString Text
         {
-            get => text;
-            set
-            {
-                text = value;
-                SpriteText.Text = value;
-            }
+            get => SpriteText.Text;
+            set => SpriteText.Text = value;
         }
-
-        private LocalisableString text;
-
-        private IconUsage icon;
 
         private Color4? backgroundColour;
 
@@ -44,11 +35,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public virtual Color4 BackgroundColour
         {
             get => backgroundColour ?? defaultBackgroundColour;
-            set
-            {
-                backgroundColour = value;
-                Background.FadeColour(value);
-            }
+            set => backgroundColour = value;
         }
 
         private Color4 defaultBackgroundColour;
@@ -59,13 +46,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected Color4 DefaultBackgroundColour
         {
             get => defaultBackgroundColour;
-            set
-            {
-                defaultBackgroundColour = value;
-
-                if (backgroundColour == null)
-                    Background.FadeColour(value);
-            }
+            set => defaultBackgroundColour = value;
         }
 
         protected override Container<Drawable> Content { get; }
@@ -78,13 +59,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected Box Hover;
         protected Box Background;
-        protected AdaptiveTextFlowContainer SpriteText;
+        protected SpriteText SpriteText;
 
         private readonly Box flashLayer;
 
-        public AdaptiveMaterialIconButton(IconUsage icon, HoverSampleSet? hoverSounds = HoverSampleSet.Button)
+        public ProjectYomiMaterialAltButton(HoverSampleSet? hoverSounds = HoverSampleSet.Button)
         {
-            this.icon = icon;
             Height = 40;
 
             AddInternal(Content = new Container
@@ -96,6 +76,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 RelativeSizeAxes = Axes.Both,
                 Children = new Drawable[]
                 {
+                    /*
                     Background = new Box
                     {
                         Anchor = Anchor.Centre,
@@ -103,6 +84,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         RelativeSizeAxes = Axes.Both,
                         Depth = float.MaxValue,
                     },
+                    */
                     Hover = new Box
                     {
                         Alpha = 0,
@@ -129,21 +111,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(OverlayColourProvider overlayColourProvider)
         {
             DefaultBackgroundColour = Color4Extensions.FromHex(@"44aadd");
+            //Background.Colour = overlayColourProvider.Background5;
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
-            if (icon.Icon != 0)
-            {
-                SpriteText.Text = "";
-                SpriteText.AddIcon(icon, f => f.Margin = new MarginPadding { Right = 5 });
-                SpriteText.AddText(text);
-            }
 
             Colour = dimColour;
             Enabled.BindValueChanged(_ => this.FadeColour(dimColour, 200, Easing.OutQuint));
@@ -190,13 +166,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.OnMouseUp(e);
         }
 
-        protected virtual AdaptiveTextFlowContainer CreateText() => new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold"))
+        protected virtual SpriteText CreateText() => new ProjectYomiSpriteText
         {
-            TextAnchor = Anchor.Centre,
-            RelativeSizeAxes = Axes.Both,
             Depth = -1,
             Origin = Anchor.Centre,
             Anchor = Anchor.Centre,
+            Font = NekoPlayerApp.DefaultFont.With(weight: "SemiBold"),
         };
     }
 }

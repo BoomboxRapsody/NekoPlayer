@@ -153,13 +153,13 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             }
         }
 
-        private partial class ColourButton : AdaptiveClickableContainer, IHasPopover, IHasContextMenu
+        private partial class ColourButton : ProjectYomiClickableContainer, IHasPopover, IHasContextMenu
         {
             public Bindable<Colour4> Current { get; } = new Bindable<Colour4>();
             public Action? DeleteRequested { get; set; }
 
             private Box background = null!;
-            private AdaptiveSpriteText hexCode = null!;
+            private ProjectYomiSpriteText hexCode = null!;
 
             [BackgroundDependencyLoader]
             private void load()
@@ -177,7 +177,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                     {
                         RelativeSizeAxes = Axes.Both,
                     },
-                    hexCode = new AdaptiveSpriteText
+                    hexCode = new ProjectYomiSpriteText
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
@@ -199,18 +199,18 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
             public MenuItem[] ContextMenuItems => new MenuItem[]
             {
-                new AdaptiveMenuItem("Delete", () => DeleteRequested?.Invoke())
+                new ProjectYomiMenuItem("Delete", () => DeleteRequested?.Invoke())
             };
 
             private void updateState()
             {
                 background.Colour = Current.Value;
                 hexCode.Text = Current.Value.ToHex();
-                hexCode.Colour = AdaptiveColour.ForegroundTextColourFor(Current.Value);
+                hexCode.Colour = ProjectYomiColour.ForegroundTextColourFor(Current.Value);
             }
         }
 
-        private partial class ColourPickerPopover : AdaptivePopover, IHasCurrentValue<Colour4>
+        private partial class ColourPickerPopover : ProjectYomiPopover, IHasCurrentValue<Colour4>
         {
             public Bindable<Colour4> Current
             {
@@ -228,7 +228,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             [BackgroundDependencyLoader]
             private void load(OverlayColourProvider colourProvider)
             {
-                Child = new AdaptiveColourPicker
+                Child = new ProjectYomiColourPicker
                 {
                     Current = { BindTarget = Current }
                 };

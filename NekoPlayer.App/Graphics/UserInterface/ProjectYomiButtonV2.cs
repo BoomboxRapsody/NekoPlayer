@@ -19,7 +19,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     /// <summary>
     /// A button with added default sound effects.
     /// </summary>
-    public partial class AdaptiveButtonV2 : Button
+    public partial class ProjectYomiButtonV2 : Button
     {
         public LocalisableString Text
         {
@@ -73,7 +73,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         private readonly Box flashLayer;
 
-        public AdaptiveButtonV2(HoverSampleSet? hoverSounds = HoverSampleSet.Button)
+        public ProjectYomiButtonV2(HoverSampleSet? hoverSounds = HoverSampleSet.Button)
         {
             Height = 40;
 
@@ -176,7 +176,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.OnMouseUp(e);
         }
 
-        protected virtual SpriteText CreateText() => new AdaptiveSpriteText
+        protected virtual SpriteText CreateText() => new ProjectYomiSpriteText
         {
             Depth = -1,
             Origin = Anchor.Centre,

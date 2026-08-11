@@ -14,7 +14,7 @@ using osu.Framework.Utils;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public abstract partial class AdaptiveSliderBar<T> : SliderBar<T>, IHasTooltip
+    public abstract partial class ProjectYomiSliderBar<T> : SliderBar<T>, IHasTooltip
         where T : struct, INumber<T>, IMinMaxValue<T>
     {
         public override bool AcceptsFocus => !Current.Disabled;

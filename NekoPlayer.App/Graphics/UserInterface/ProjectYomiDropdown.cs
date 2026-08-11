@@ -25,7 +25,7 @@ using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveDropdown<T> : Dropdown<T>, IKeyBindingHandler<GlobalAction>
+    public partial class ProjectYomiDropdown<T> : Dropdown<T>, IKeyBindingHandler<GlobalAction>
     {
         private const float corner_radius = NekoPlayerApp.UI_CORNER_RADIUS / 2.5f;
 
@@ -33,7 +33,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected override DropdownMenu CreateMenu() => new AdaptiveDropdownMenu();
 
-        public AdaptiveDropdown()
+        public ProjectYomiDropdown()
         {
             if (Header is AdaptiveDropdownHeader osuHeader)
                 osuHeader.Dropdown = this;
@@ -78,7 +78,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }
 
             [BackgroundDependencyLoader(true)]
-            private void load(OverlayColourProvider? colourProvider, AdaptiveColour colours, AudioManager audio)
+            private void load(OverlayColourProvider? colourProvider, ProjectYomiColour colours, AudioManager audio)
             {
                 BackgroundColour = colourProvider?.Background5 ?? Color4.Black;
                 HoverColour = colourProvider?.Light4 ?? colours.PinkDarker;
@@ -153,7 +153,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 }
             }
 
-            protected override Menu CreateSubMenu() => new AdaptiveMenu(Direction.Vertical);
+            protected override Menu CreateSubMenu() => new ProjectYomiMenu(Direction.Vertical);
 
             protected override DrawableDropdownMenuItem CreateDrawableDropdownMenuItem(MenuItem item) => new DrawableAdaptiveDropdownMenuItem(item)
             {
@@ -161,7 +161,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 BackgroundColourSelected = SelectionColour
             };
 
-            protected override ScrollContainer<Drawable> CreateScrollContainer(Direction direction) => new AdaptiveScrollContainer(direction);
+            protected override ScrollContainer<Drawable> CreateScrollContainer(Direction direction) => new ProjectYomiScrollContainer(direction);
 
             #region DrawableAdaptiveDropdownMenuItem
 
@@ -243,7 +243,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         set => Label.Text = value;
                     }
 
-                    public readonly AdaptiveSpriteText Label;
+                    public readonly ProjectYomiSpriteText Label;
                     public readonly SpriteIcon Chevron;
 
                     private const float chevron_offset = -3;
@@ -326,7 +326,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             protected readonly SpriteIcon Chevron;
 
-            public AdaptiveDropdown<T>? Dropdown { get; set; }
+            public ProjectYomiDropdown<T>? Dropdown { get; set; }
 
             public AdaptiveDropdownHeader()
             {
@@ -379,7 +379,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             private OverlayColourProvider? colourProvider { get; set; }
 
             [Resolved]
-            private AdaptiveColour colours { get; set; } = null!;
+            private ProjectYomiColour colours { get; set; } = null!;
 
             protected override void LoadComplete()
             {
@@ -448,7 +448,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     FontSize = NekoPlayerApp.DefaultFont.Size,
                 };
 
-                private partial class DropdownSearchTextBox : AdaptiveTextBox
+                private partial class DropdownSearchTextBox : ProjectYomiTextBox
                 {
                     public DropdownSearchTextBox()
                     {

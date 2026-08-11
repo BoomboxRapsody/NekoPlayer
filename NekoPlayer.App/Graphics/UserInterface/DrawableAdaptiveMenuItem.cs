@@ -158,14 +158,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             AutoSizeAxes = Axes.Both,
                             Children = new Drawable[]
                             {
-                                NormalText = new AdaptiveSpriteText
+                                NormalText = new ProjectYomiSpriteText
                                 {
                                     AlwaysPresent = true, // ensures that the menu item does not change width when switching between normal and bold text.
                                     Anchor = Anchor.CentreLeft,
                                     Origin = Anchor.CentreLeft,
                                     Font = NekoPlayerApp.DefaultFont.With(size: TEXT_SIZE),
                                 },
-                                BoldText = new AdaptiveSpriteText
+                                BoldText = new ProjectYomiSpriteText
                                 {
                                     AlwaysPresent = true, // ensures that the menu item does not change width when switching between normal and bold text.
                                     Alpha = 0,

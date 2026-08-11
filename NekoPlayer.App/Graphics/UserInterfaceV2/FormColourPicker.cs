@@ -90,7 +90,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         private OverlayColourProvider colourProvider { get; set; } = null!;
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours)
+        private void load(ProjectYomiColour colours)
         {
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
@@ -326,11 +326,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 return true;
             }
 
-            public Popover GetPopover() => new AdaptivePopover(false)
+            public Popover GetPopover() => new ProjectYomiPopover(false)
             {
                 // Ensure the popover doesn't cover up the text input.
                 AllowableAnchors = [Anchor.TopCentre, Anchor.BottomCentre],
-                Child = new AdaptiveHSVColourPicker
+                Child = new ProjectYomiHSVColourPicker
                 {
                     Current = { BindTarget = Current },
                 },

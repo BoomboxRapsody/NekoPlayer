@@ -17,7 +17,7 @@ using NekoPlayer.App.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Overlays.Volume
 {
-    public partial class MuteButton : AdaptiveButton, IHasCurrentValue<bool>
+    public partial class MuteButton : ProjectYomiButton, IHasCurrentValue<bool>
     {
         private readonly Bindable<bool> current = new Bindable<bool>();
 
@@ -50,7 +50,7 @@ namespace NekoPlayer.App.Overlays.Volume
         }
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours, OverlayColourProvider overlayColourProvider)
+        private void load(ProjectYomiColour colours, OverlayColourProvider overlayColourProvider)
         {
             BackgroundColour = overlayColourProvider.Background5;
             hoveredBorderColour = overlayColourProvider.Light4;

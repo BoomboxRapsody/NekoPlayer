@@ -32,8 +32,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class VideoMetadataDisplayWithoutProfile : Container
     {
-        private AdaptiveSpriteText videoName;
-        private AdaptiveSpriteText desc;
+        private ProjectYomiSpriteText videoName;
+        private ProjectYomiSpriteText desc;
         public Action<VideoMetadataDisplayWithoutProfile> ClickEvent;
 
         private Box bgLayer, hover;
@@ -74,12 +74,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 },
                 new Container {
                     RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding
-                    {
-                        Vertical = 18,
-                        Right = 7,
-                        Left = 14,
-                    },
                     Children = new Drawable[]
                     {
                         new Container
@@ -87,18 +81,18 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             RelativeSizeAxes = Axes.Both,
                             Padding = new MarginPadding
                             {
-                                Vertical = 5,
-                                Horizontal = 5,
+                                Vertical = 6,
+                                Horizontal = 8,
                             },
                             Children = new Drawable[]
                             {
-                                videoName = new AdaptiveSpriteText
+                                videoName = new ProjectYomiSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                     Colour = Color4.White,
                                 },
-                                desc = new AdaptiveSpriteText
+                                desc = new ProjectYomiSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
@@ -106,35 +100,29 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     Position = new osuTK.Vector2(0, 20),
                                 }
                             }
-                        }
-                    }
-                },
-                new Container
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding
-                    {
-                        Bottom = 8,
-                        Top = 8 + 12,
-                        Horizontal = 8,
-                    },
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    Child = new Container
-                    {
-                        RelativeSizeAxes = Axes.Both,
-                        Masking = true,
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f),
-                        Child = hover = new Box
+                        },
+                        new Container
                         {
                             RelativeSizeAxes = Axes.Both,
-                            Colour = Color4.White,
-                            Blending = BlendingParameters.Additive,
-                            Alpha = 0,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            Child = new Container
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Masking = true,
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f),
+                                Child = hover = new Box
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Colour = Color4.White,
+                                    Blending = BlendingParameters.Additive,
+                                    Alpha = 0,
+                                },
+                            },
                         },
-                    },
+                    }
                 },
             };
         }
@@ -172,6 +160,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                     desc.Anchor = Anchor.TopLeft;
                     desc.Origin = Anchor.TopLeft;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Center:
+                {
+                    videoName.Anchor = Anchor.TopCentre;
+                    videoName.Origin = Anchor.TopCentre;
+
+                    desc.Anchor = Anchor.TopCentre;
+                    desc.Origin = Anchor.TopCentre;
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Right:

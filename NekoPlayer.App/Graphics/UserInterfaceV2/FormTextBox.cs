@@ -92,7 +92,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         private OverlayColourProvider colourProvider { get; set; } = null!;
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours)
+        private void load(ProjectYomiColour colours)
         {
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
@@ -202,7 +202,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 background.VisualStyle = VisualStyle.Normal;
         }
 
-        internal partial class InnerTextBox : AdaptiveTextBox
+        internal partial class InnerTextBox : ProjectYomiTextBox
         {
             public BindableBool Focused { get; } = new BindableBool();
 

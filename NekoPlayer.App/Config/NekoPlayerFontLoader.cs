@@ -242,6 +242,8 @@ namespace NekoPlayer.App.Config
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Griun_Mongtori");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/ONE_Mobile_POP");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/HayuFont");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/DreamHeumulKR");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/Hakgyoansim_ManitoR");
         }
     }
 }

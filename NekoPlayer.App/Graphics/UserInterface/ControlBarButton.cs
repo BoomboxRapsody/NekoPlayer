@@ -19,7 +19,7 @@ using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class ControlBarButton : AdaptiveClickableContainer
+    public partial class ControlBarButton : ProjectYomiClickableContainer
     {
         public Action<ControlBarButton>? ClickAction { get; set; }
 
@@ -230,7 +230,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [Resolved]
         private OverlayColourProvider overlayColourProvider { get; set; }
 
-        protected virtual SpriteText CreateText() => new AdaptiveSpriteText
+        protected virtual SpriteText CreateText() => new ProjectYomiSpriteText
         {
             Depth = -1,
             Origin = Anchor.Centre,

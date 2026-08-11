@@ -8,9 +8,9 @@ using osu.Framework.Localisation;
 namespace NekoPlayer.App.Graphics.Sprites
 {
     /// <summary>
-    /// A derived version of <see cref="AdaptiveSpriteText"/> which automatically shows non-truncated text in tooltip when required.
+    /// A derived version of <see cref="ProjectYomiSpriteText"/> which automatically shows non-truncated text in tooltip when required.
     /// </summary>
-    public sealed partial class TruncatingSpriteText : AdaptiveSpriteText, IHasTooltip
+    public sealed partial class TruncatingSpriteText : ProjectYomiSpriteText, IHasTooltip
     {
         /// <summary>
         /// Whether a tooltip should be shown with non-truncated text on hover.

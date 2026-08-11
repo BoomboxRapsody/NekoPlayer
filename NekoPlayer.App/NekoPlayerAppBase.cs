@@ -287,7 +287,7 @@ namespace NekoPlayer.App
         public Bindable<bool> UpdateButtonEnabled = new Bindable<bool>();
 
         private OverlayColourProvider overlayColourProvider;
-        private AdaptiveColour colours = null!;
+        private ProjectYomiColour colours = null!;
 
         private IdleTracker idleTracker;
 
@@ -350,13 +350,13 @@ namespace NekoPlayer.App
 
                 GlobalActionContainer globalBindings;
 
-                AdaptiveMenuSamples menuSamples;
-                dependencies.Cache(menuSamples = new AdaptiveMenuSamples());
+                ProjectYomiMenuSamples menuSamples;
+                dependencies.Cache(menuSamples = new ProjectYomiMenuSamples());
                 base.Content.Add(menuSamples);
 
                 dependencies.CacheAs(idleTracker = new AppIdleTracker(6000));
 
-                dependencies.CacheAs(colours = new AdaptiveColour());
+                dependencies.CacheAs(colours = new ProjectYomiColour());
 
                 dependencies.CacheAs(overlayColourProvider = new OverlayColourProvider(colourScheme));
 
@@ -424,14 +424,14 @@ namespace NekoPlayer.App
                     Origin = Anchor.Centre,
                     Children = new Drawable[]
                     {
-                        new AdaptiveSpriteText
+                        new ProjectYomiSpriteText
                         {
                             Text = "Failed to initialize app!",
                             Font = FontUsage.Default.With("Roboto", 32, "Regular"),
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre
                         },
-                        new AdaptiveSpriteText
+                        new ProjectYomiSpriteText
                         {
                             Text = $"{ex.GetType().Name}: {ex.Message}",
                             Font = FontUsage.Default.With("Roboto", 16, "Regular"),

@@ -5,15 +5,15 @@ using osu.Framework.Graphics.UserInterface;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class AdaptiveColourPicker : ColourPicker
+    public partial class ProjectYomiColourPicker : ColourPicker
     {
-        public AdaptiveColourPicker()
+        public ProjectYomiColourPicker()
         {
             CornerRadius = 10;
             Masking = true;
         }
 
-        protected override HSVColourPicker CreateHSVColourPicker() => new AdaptiveHSVColourPicker();
-        protected override HexColourPicker CreateHexColourPicker() => new AdaptiveHexColourPicker();
+        protected override HSVColourPicker CreateHSVColourPicker() => new ProjectYomiHSVColourPicker();
+        protected override HexColourPicker CreateHexColourPicker() => new ProjectYomiHexColourPicker();
     }
 }

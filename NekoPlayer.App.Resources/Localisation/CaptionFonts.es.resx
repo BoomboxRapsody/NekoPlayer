@@ -88,4 +88,10 @@
   <data name="Cafe24Syongsyong" xml:space="preserve">
     <value>Cafe24 Ssong Ssong</value>
   </data>
+  <data name="DreamHeumulKR" xml:space="preserve">
+    <value>DreamHeumul KR</value>
+  </data>
+  <data name="Hakgyoansim_ManitoR" xml:space="preserve">
+    <value>Hakgyoansim Manito</value>
+  </data>
 </root>

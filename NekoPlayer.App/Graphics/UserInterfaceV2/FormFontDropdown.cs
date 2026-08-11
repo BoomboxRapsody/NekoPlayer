@@ -22,7 +22,7 @@ using osuTK;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
-    public partial class FormFontDropdown<T> : AdaptiveDropdown<T>, IFormControl
+    public partial class FormFontDropdown<T> : ProjectYomiDropdown<T>, IFormControl
     {
         /// <summary>
         /// Caption describing this slider bar, displayed on top of the controls.
@@ -183,7 +183,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             protected new FormDropdownSearchBar SearchBar { get; set; } = null!;
 
             private FormFieldCaption caption = null!;
-            private AdaptiveSpriteText label = null!;
+            private ProjectYomiSpriteText label = null!;
             private SpriteIcon chevron = null!;
             private FormControlBackground background = null!;
 
@@ -295,52 +295,62 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                     {
                         case CaptionFonts.GoogleSansFlex:
                         {
-                            label.Font = NekoPlayerApp.GoogleSansFlex;
+                            label.Font = NekoPlayerApp.Fonts.GoogleSansFlex;
                             break;
                         }
                         case CaptionFonts.Rubik:
                         {
-                            label.Font = NekoPlayerApp.Rubik;
+                            label.Font = NekoPlayerApp.Fonts.Rubik;
                             break;
                         }
                         case CaptionFonts.Pretendard:
                         {
-                            label.Font = NekoPlayerApp.Pretendard;
+                            label.Font = NekoPlayerApp.Fonts.Pretendard;
                             break;
                         }
                         case CaptionFonts.Hungeul:
                         {
-                            label.Font = NekoPlayerApp.Hungeul;
+                            label.Font = NekoPlayerApp.Fonts.Hungeul;
                             break;
                         }
                         case CaptionFonts.Ownglyph_PDH:
                         {
-                            label.Font = NekoPlayerApp.Ownglyph_PDH;
+                            label.Font = NekoPlayerApp.Fonts.Ownglyph_PDH;
                             break;
                         }
                         case CaptionFonts.Dovemayo_Gothic:
                         {
-                            label.Font = NekoPlayerApp.Dovemayo_Gothic;
+                            label.Font = NekoPlayerApp.Fonts.Dovemayo_Gothic;
                             break;
                         }
                         case CaptionFonts.Griun_Mongtori:
                         {
-                            label.Font = NekoPlayerApp.Griun_Mongtori;
+                            label.Font = NekoPlayerApp.Fonts.Griun_Mongtori;
                             break;
                         }
                         case CaptionFonts.ONE_Mobile_POP:
                         {
-                            label.Font = NekoPlayerApp.ONE_Mobile_POP;
+                            label.Font = NekoPlayerApp.Fonts.ONE_Mobile_POP;
                             break;
                         }
                         case CaptionFonts.Cafe24Syongsyong:
                         {
-                            label.Font = NekoPlayerApp.Cafe24Syongsyong;
+                            label.Font = NekoPlayerApp.Fonts.Cafe24Syongsyong;
                             break;
                         }
                         case CaptionFonts.Roboto:
                         {
-                            label.Font = NekoPlayerApp.Roboto;
+                            label.Font = NekoPlayerApp.Fonts.Roboto;
+                            break;
+                        }
+                        case CaptionFonts.DreamHeumulKR:
+                        {
+                            label.Font = NekoPlayerApp.Fonts.DreamHeumulKR;
+                            break;
+                        }
+                        case CaptionFonts.Hakgyoansim_ManitoR:
+                        {
+                            label.Font = NekoPlayerApp.Fonts.Hakgyoansim_ManitoR;
                             break;
                         }
                     }

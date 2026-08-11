@@ -893,4 +893,7 @@ On にすることを推奨します。問題が発生している場合のみ O
   <data name="advanced_subtitle_style" xml:space="preserve">
     <value>高度な字幕スタイルを使用する</value>
   </data>
+  <data name="screenshot_quality" xml:space="preserve">
+    <value>スクリーンショットの品質</value>
+  </data>
 </root>

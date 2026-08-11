@@ -33,7 +33,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     public partial class YouTubeChannelMetadataDisplayWithShadow : CompositeDrawable
     {
         private ProfileImage profileImage;
-        private AdaptiveTextFlowContainer videoName;
+        private ProjectYomiTextFlowContainer videoName;
         private TruncatingSpriteText desc;
         public Action<YouTubeChannelMetadataDisplayWithShadow> ClickEvent;
 
@@ -102,7 +102,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoName = new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"))
+                                videoName = new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"))
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     Text = "",

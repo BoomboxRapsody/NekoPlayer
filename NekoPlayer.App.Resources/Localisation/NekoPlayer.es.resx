@@ -893,4 +893,7 @@ Recomendado tener En, apagar sólo si experimenta problemas.</value>
   <data name="advanced_subtitle_style" xml:space="preserve">
     <value>Usa estilo avanzado de subtítulos</value>
   </data>
+  <data name="screenshot_quality" xml:space="preserve">
+    <value>Calidad de pantalla</value>
+  </data>
 </root>

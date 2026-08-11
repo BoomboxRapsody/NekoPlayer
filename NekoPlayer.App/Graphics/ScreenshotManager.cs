@@ -162,7 +162,7 @@ namespace NekoPlayer.App.Graphics
                                 break;
 
                             case ScreenshotFormat.Jpg:
-                                const int jpeg_quality = 92;
+                                int jpeg_quality = config.Get<int>(NekoPlayerSetting.ScreenshotQuality); //92
 
                                 await image.SaveAsJpegAsync(stream, new JpegEncoder { Quality = jpeg_quality }).ConfigureAwait(false);
                                 break;

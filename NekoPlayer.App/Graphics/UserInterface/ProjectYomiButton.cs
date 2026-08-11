@@ -3,25 +3,23 @@
 
 #nullable enable
 
-using System;
-using osu.Framework.Allocation;
-using osu.Framework.Bindables;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osu.Framework.Localisation;
-using osuTK;
 using osuTK.Graphics;
+using System;
+using osu.Framework.Localisation;
+using osu.Framework.Bindables;
 using NekoPlayer.App.Graphics.Sprites;
+using osu.Framework.Allocation;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveButtonWithShadow : AdaptiveClickableContainer
+    public partial class ProjectYomiButton : ProjectYomiClickableContainer
     {
-        public Action<AdaptiveButtonWithShadow>? ClickAction { get; set; }
+        public Action<ProjectYomiButton>? ClickAction { get; set; }
 
         public LocalisableString Text
         {
@@ -95,7 +93,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected Container ForegroundContent;
 
-        public AdaptiveButtonWithShadow(HoverSampleSet hoverSampleSet = HoverSampleSet.Default)
+        public ProjectYomiButton(HoverSampleSet hoverSampleSet = HoverSampleSet.Default)
             : base(hoverSampleSet)
         {
             base.Content.Add(content = new Container
@@ -105,13 +103,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 RelativeSizeAxes = Axes.Both,
                 CornerRadius = 12,
                 Masking = true,
-                EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
-                {
-                    Type = osu.Framework.Graphics.Effects.EdgeEffectType.Shadow,
-                    Colour = Color4.Black.Opacity(0.25f),
-                    Offset = new Vector2(0, 2),
-                    Radius = 16,
-                },
                 Children = new Drawable[]
                 {
                     Background = new Box
@@ -119,7 +110,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Alpha = 1f,
+                        Alpha = 1,
                     },
                     Hover = new Box
                     {
@@ -144,22 +135,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
-            Background.Colour = overlayColourProvider.Background3;
+            Background.Colour = BackgroundColour;
             SpriteText.Colour = overlayColourProvider.Content2;
+            content.CornerRadius = DrawHeight / 2;
         }
 
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-            content.CornerRadius = new CornersInfo(DrawHeight / 2);
-        }
-
-        protected virtual SpriteText CreateText() => new AdaptiveSpriteText
+        protected virtual SpriteText CreateText() => new ProjectYomiSpriteText
         {
             Depth = -1,
             Origin = Anchor.Centre,
             Anchor = Anchor.Centre,
-            Font = NekoPlayerApp.DefaultFont,
+            Font = NekoPlayerApp.DefaultFont.With(size: 24),
             Colour = Color4.White,
         };
 

@@ -10,7 +10,7 @@ using osu.Framework.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class AdaptiveMenuSamples : Component
+    public partial class ProjectYomiMenuSamples : Component
     {
         private Sample sampleClick;
         private Sample sampleOpen;

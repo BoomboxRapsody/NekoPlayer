@@ -92,6 +92,7 @@ namespace NekoPlayer.App.Config
             SetDefault(NekoPlayerSetting.CaptionBGColor, Colour4.Black);
             SetDefault(NekoPlayerSetting.CaptionCornerRadius, 0, 0, 16);
             SetDefault(NekoPlayerSetting.UseNewSubtitlesFeature, false);
+            SetDefault(NekoPlayerSetting.ScreenshotQuality, 92, 1, 100);
         }
 
         public NekoPlayerConfigManager(Storage storage, IDictionary<NekoPlayerSetting, object> defaultOverrides = null) : base(storage, defaultOverrides)
@@ -178,5 +179,6 @@ namespace NekoPlayer.App.Config
         CaptionBGColor,
         CaptionCornerRadius,
         UseNewSubtitlesFeature,
+        ScreenshotQuality,
     }
 }

@@ -144,7 +144,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             protected override Drawable GetDrawableCharacter(Grapheme c) => new FallingDownContainer
             {
                 AutoSizeAxes = Axes.Both,
-                Child = new AdaptiveSpriteText { Text = c.ToString(), Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "SemiBold") },
+                Child = new ProjectYomiSpriteText { Text = c.ToString(), Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "SemiBold") },
             };
         }
     }

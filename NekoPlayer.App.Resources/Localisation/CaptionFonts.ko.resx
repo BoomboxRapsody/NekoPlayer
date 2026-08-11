@@ -85,4 +85,10 @@
   <data name="Cafe24Syongsyong" xml:space="preserve">
     <value>카페24 숑숑</value>
   </data>
+  <data name="DreamHeumulKR" xml:space="preserve">
+    <value>드림흐물체</value>
+  </data>
+  <data name="Hakgyoansim_ManitoR" xml:space="preserve">
+    <value>학교안심 마니또</value>
+  </data>
 </root>

@@ -45,7 +45,7 @@ namespace NekoPlayer.App.Overlays.Volume
         private Color4 meterColour;
         private readonly LocalisableString name;
 
-        private AdaptiveSpriteText text;
+        private ProjectYomiSpriteText text;
         private BufferedContainer maxGlow;
 
         private Container selectedGlowContainer;
@@ -86,7 +86,7 @@ namespace NekoPlayer.App.Overlays.Volume
         }
 
         [BackgroundDependencyLoader]
-        private void load(AdaptiveColour colours, AudioManager audio, OverlayColourProvider overlayColourProvider)
+        private void load(ProjectYomiColour colours, AudioManager audio, OverlayColourProvider overlayColourProvider)
         {
             hoverSample = audio.Samples.Get($@"UI/{HoverSampleSet.Button.GetDescription()}-hover");
             notchSample = audio.Samples.Get(@"notch-tick");
@@ -201,7 +201,7 @@ namespace NekoPlayer.App.Overlays.Volume
                                 Radius = 10,
                             }
                         },
-                        maxGlow = (text = new AdaptiveSpriteText
+                        maxGlow = (text = new ProjectYomiSpriteText
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -229,7 +229,7 @@ namespace NekoPlayer.App.Overlays.Volume
                             RelativeSizeAxes = Axes.Both,
                             Colour = backgroundColour,
                         },
-                        new AdaptiveSpriteText
+                        new ProjectYomiSpriteText
                         {
                             Margin = new MarginPadding
                             {

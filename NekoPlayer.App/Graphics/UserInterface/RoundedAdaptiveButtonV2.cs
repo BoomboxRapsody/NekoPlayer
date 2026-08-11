@@ -191,7 +191,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             base.OnMouseUp(e);
         }
 
-        protected virtual SpriteText CreateText() => new AdaptiveSpriteText
+        protected virtual SpriteText CreateText() => new ProjectYomiSpriteText
         {
             Depth = -1,
             Origin = Anchor.Centre,

@@ -39,7 +39,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             set => text.Text = value;
         }
 
-        private readonly AdaptiveSpriteText text;
+        private readonly ProjectYomiSpriteText text;
 
         private Box bg;
 
@@ -58,7 +58,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Spacing = new Vector2(4, 0),
                         Children = new Drawable[]
                         {
-                            text = new AdaptiveSpriteText
+                            text = new ProjectYomiSpriteText
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
@@ -112,7 +112,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [NotNull]
         protected virtual SortTabControl CreateControl() => new SortTabControl();
 
-        protected partial class SortTabControl : AdaptiveTabControl<T>
+        protected partial class SortTabControl : ProjectYomiTabControl<T>
         {
             protected override Dropdown<T> CreateDropdown() => null;
 
@@ -182,7 +182,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Padding = new MarginPadding(8),
                     Children = new Drawable[]
                     {
-                        text = new AdaptiveSpriteText
+                        text = new ProjectYomiSpriteText
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,

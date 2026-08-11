@@ -893,4 +893,7 @@
   <data name="advanced_subtitle_style" xml:space="preserve">
     <value>고급 자막 스타일 사용</value>
   </data>
+  <data name="screenshot_quality" xml:space="preserve">
+    <value>스크린샷 품질</value>
+  </data>
 </root>

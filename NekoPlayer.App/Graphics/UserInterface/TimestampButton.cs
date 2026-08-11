@@ -17,7 +17,7 @@ using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class TimestampButton : AdaptiveClickableContainer
+    public partial class TimestampButton : ProjectYomiClickableContainer
     {
         private string text;
         public Action<double> TimestampClicked;
@@ -33,7 +33,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             TooltipText = NekoPlayerStrings.JumpTo(text);
         }
 
-        private AdaptiveTextFlowContainer textFlow;
+        private ProjectYomiTextFlowContainer textFlow;
         protected Box Hover;
 
         [BackgroundDependencyLoader]
@@ -54,7 +54,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             RelativeSizeAxes = Axes.Both,
                             Colour = overlayColourProvider.Background2,
                         },
-                        textFlow = new AdaptiveTextFlowContainer(f =>
+                        textFlow = new ProjectYomiTextFlowContainer(f =>
                         {
                             f.Font = NekoPlayerApp.DefaultFont.With(size: 13.5f, weight: "Bold");
                         })

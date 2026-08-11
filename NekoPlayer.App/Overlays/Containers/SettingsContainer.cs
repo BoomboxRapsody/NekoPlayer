@@ -54,7 +54,7 @@ namespace NekoPlayer.App.Overlays.Containers
 {
     public partial class SettingsContainer : SideOverlayContainer
     {
-        private AdaptiveScrollContainer settingsSections;
+        private ProjectYomiScrollContainer settingsSections;
 
         public void ShowSettingsOverlayAtName(string name)
         {
@@ -186,7 +186,8 @@ namespace NekoPlayer.App.Overlays.Containers
 
         public FormButton CheckForUpdatesButton;
 
-        private SettingsItemV2 checkForUpdatesButtonCore, captionLangOptions, reflexSettingBase;
+        private SettingsItemV2 checkForUpdatesButtonCore, reflexSettingBase;
+        private FillFlowContainer captionLangOptions;
         private Bindable<UsernameDisplayMode> usernameDisplayMode;
 
         private Bindable<UIFont> ui_font;
@@ -253,6 +254,8 @@ namespace NekoPlayer.App.Overlays.Containers
         public YouTubeQualityDropdown VideoQualitySettings;
         public FormEnumDropdown<Config.AudioQuality> AudioQualitySettings;
         private Bindable<bool> showVideoMetadataOnWindowTitle;
+
+        private Bindable<ScreenshotFormat> screenshotFormat;
 
         private void PrepareSettingsTabs()
         {
@@ -330,7 +333,7 @@ namespace NekoPlayer.App.Overlays.Containers
         }
 
         [BackgroundDependencyLoader]
-        private void load(OverlayColourProvider overlayColourProvider, TextureStore textures, AdaptiveColour colours, FrameworkDebugConfigManager debugConfig, FrameworkConfigManager config, Storage storage, NekoPlayerConfigManager appConfig)
+        private void load(OverlayColourProvider overlayColourProvider, TextureStore textures, ProjectYomiColour colours, FrameworkDebugConfigManager debugConfig, FrameworkConfigManager config, Storage storage, NekoPlayerConfigManager appConfig)
         {
             videoVolume = config.GetBindable<double>(FrameworkSetting.VolumeMusic);
             fpsDisplay = appConfig.GetBindable<bool>(NekoPlayerSetting.ShowFpsDisplay);
@@ -353,6 +356,8 @@ namespace NekoPlayer.App.Overlays.Containers
             scalingBackgroundDim = appConfig.GetBindable<float>(NekoPlayerSetting.ScalingBackgroundDim);
             alwaysUseOriginalAudio = appConfig.GetBindable<bool>(NekoPlayerSetting.AlwaysUseOriginalAudio);
             sizeWindowed = config.GetBindable<Size>(FrameworkSetting.WindowedSize);
+
+            screenshotFormat = appConfig.GetBindable<ScreenshotFormat>(NekoPlayerSetting.ScreenshotFormat);
             window = host.Window;
 
             var reflexMode = config.GetBindable<LatencyMode>(FrameworkSetting.LatencyMode);
@@ -377,6 +382,24 @@ namespace NekoPlayer.App.Overlays.Containers
                 else
                     srv3Notice.Value = null;
             }, true);
+
+            captionEnabled.BindValueChanged(_ =>
+            {
+                captionLangOptions.ClearTransforms();
+                captionLangOptions.AutoSizeDuration = 400;
+                captionLangOptions.AutoSizeEasing = Easing.OutQuint;
+
+                updateCaptionLangOptionsVisibility();
+            });
+
+            screenshotFormat.BindValueChanged(_ =>
+            {
+                screenshotOptions.ClearTransforms();
+                screenshotOptions.AutoSizeDuration = 400;
+                screenshotOptions.AutoSizeEasing = Easing.OutQuint;
+
+                updateScreenshotOptionsVisibility();
+            });
 
             var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
             automaticRendererInUse = renderer.Value == RendererType.Automatic;
@@ -428,7 +451,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        settingsSections = new AdaptiveScrollContainer
+                                        settingsSections = new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -449,7 +472,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         Bottom = 8,
                                                     },
                                                     Children = new Drawable[] {
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Quick Actions",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -471,7 +494,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             TooltipText = NekoPlayerStrings.ReportBugsDesc,
                                                             Action = () => host.OpenUrlExternally("https://boomboxrapsody.featurebase.app/en"),
                                                         },
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "General Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -513,7 +536,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                                 CheckUpdateAction.Invoke();
                                                             },
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "UI Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -590,7 +613,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = overlaySFXType,
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Graphics Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -755,7 +778,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                                 })
                                                             }
                                                         },
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Screenshot Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -767,15 +790,33 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             Caption = NekoPlayerStrings.ScreenshotFormat,
                                                             Icon = FontAwesome.Solid.WindowMaximize,
-                                                            Current = appConfig.GetBindable<ScreenshotFormat>(NekoPlayerSetting.ScreenshotFormat)
+                                                            Current = screenshotFormat,
                                                         }),
+                                                        screenshotOptions = new FillFlowContainer
+                                                        {
+                                                            Direction = FillDirection.Vertical,
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Masking = true,
+                                                            Spacing = new Vector2(0, 4),
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new SettingsItemV2(new FormSliderBar<int>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.ScreenshotQuality,
+                                                                    Icon = FontAwesome.Solid.SlidersH,
+                                                                    Current = appConfig.GetBindable<int>(NekoPlayerSetting.ScreenshotQuality),
+                                                                    LabelFormat = value => $"{value}%",
+                                                                }),
+                                                            }
+                                                        },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowCursorInScreenshots,
                                                             Icon = FontAwesome.Solid.MousePointer,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.ScreenshotCaptureMenuCursor)
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Video Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -846,7 +887,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.TachometerAlt,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo)
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "VFX Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -883,7 +924,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             KeyboardStep = 1,
                                                             LabelFormat = value => $"{value:N0}°"
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "CC Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -913,13 +954,24 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             Note = { BindTarget = srv3Notice },
                                                         },
-                                                        captionLangOptions = new SettingsItemV2(CaptionLangDropdown = new YouTubeI18nLangDropdown
+                                                        captionLangOptions = new FillFlowContainer
                                                         {
-                                                            Caption = NekoPlayerStrings.CaptionLanguage,
-                                                            Icon = FontAwesome.Solid.Language,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
+                                                            Direction = FillDirection.Vertical,
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Masking = true,
+                                                            Spacing = new Vector2(0, 4),
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new SettingsItemV2(CaptionLangDropdown = new YouTubeI18nLangDropdown
+                                                                {
+                                                                    Caption = NekoPlayerStrings.CaptionLanguage,
+                                                                    Icon = FontAwesome.Solid.Language,
+                                                                })
+                                                                {
+                                                                    ShowRevertToDefaultButton = false,
+                                                                },
+                                                            }
                                                         },
                                                         new SettingsItemV2(new FormEnumFontDropdown<CaptionFonts>
                                                         {
@@ -948,7 +1000,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             KeyboardStep = 1,
                                                             LabelFormat = value => $"{value}px"
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Audio Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -971,7 +1023,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Current = adjustPitch,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleAdjustPitchOnSpeedChange),
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
                                                             Text = NekoPlayerStrings.Volume,
@@ -1018,7 +1070,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.VolumeUp,
                                                             Current = appConfig.GetBindable<bool>(NekoPlayerSetting.AudioNormalization)
                                                         }),
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Name = "Debug Settings",
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 30),
@@ -1076,7 +1128,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                                 }
                                                             },
                                                         },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"))
+                                                        new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"))
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
@@ -1129,7 +1181,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = 76,
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -1239,6 +1291,7 @@ namespace NekoPlayer.App.Overlays.Containers
                     setReflexBoostNotice();
             }, true);
 
+            /*
             captionEnabled.BindValueChanged(enabled =>
             {
                 if (enabled.NewValue)
@@ -1246,6 +1299,7 @@ namespace NekoPlayer.App.Overlays.Containers
                 else
                     captionLangOptions.Hide();
             }, true);
+            */
 
             renderer.BindValueChanged(r =>
             {
@@ -1397,6 +1451,34 @@ namespace NekoPlayer.App.Overlays.Containers
                     windowedResolution.Value = size.NewValue;
             });
 
+            void updateCaptionLangOptionsVisibility()
+            {
+                try
+                {
+                    if (captionEnabled.Value == false)
+                        captionLangOptions.ResizeHeightTo(0, 400, Easing.OutQuint);
+
+                    captionLangOptions.AutoSizeAxes = captionEnabled.Value != false ? Axes.Y : Axes.None;
+                }
+                catch
+                {
+                }
+            }
+
+            void updateScreenshotOptionsVisibility()
+            {
+                try
+                {
+                    if (screenshotFormat.Value == ScreenshotFormat.Png)
+                        screenshotOptions.ResizeHeightTo(0, 400, Easing.OutQuint);
+
+                    screenshotOptions.AutoSizeAxes = screenshotFormat.Value != ScreenshotFormat.Png ? Axes.Y : Axes.None;
+                }
+                catch
+                {
+                }
+            }
+
             void updateScalingModeVisibility()
             {
                 try
@@ -1517,7 +1599,7 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<SettingsNote.Data> discordNotInstalledNote = new Bindable<SettingsNote.Data>();
         private LinkFlowContainer dislikeCounterCredits, madeByText, gameVersion;
         private FormEnumDropdownWithDiscordProfileImage<DiscordRichPresenceMode> discordRichPresenceDropdown;
-        private FillFlowContainer volumeOptions;
+        private FillFlowContainer volumeOptions, screenshotOptions;
 
         private FormEnumDropdown<GCLatencyMode> latencyModeDropdown;
 

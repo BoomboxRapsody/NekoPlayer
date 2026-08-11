@@ -81,7 +81,7 @@ namespace NekoPlayer.App.Screens
     public partial class MainAppView : NekoPlayerScreen, IKeyBindingHandler<GlobalAction>, INekoPlayerAppMessageHandler
     {
         private BufferedContainer videoContainer;
-        private AdaptiveButton commentSendButton, searchButton, loadPlaylistBtn, downloadBtn;
+        private ProjectYomiButton commentSendButton, searchButton, loadPlaylistBtn, downloadBtn;
         private RoundedButton acceptButton, updatePlaylistButton, loadBtn, viewChannelButton;
         private RoundedAltButton logoutButton, declineButton;
         private ControlBarIconButton prevVideoButton, nextVideoButton;
@@ -119,7 +119,7 @@ namespace NekoPlayer.App.Screens
         private SettingsItemV2 audioLanguageItem, audioLanguageItem2;
 
         private Sample overlayShowSample, overlayHideSample;
-        private AdaptiveMaterialButton reportButton;
+        private ProjectYomiMaterialButton reportButton;
         private FormTextBox reportComment, playlistTitleBox, editPlaylistTitleBox;
 
         private FormDropdown<Playlist> myPlaylistsDropdown;
@@ -142,8 +142,8 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private AudioManager audio { get; set; } = null!;
 
-        private AdaptiveSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, volumeText;
-        private AdaptiveSpriteText speedText;
+        private ProjectYomiSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, volumeText;
+        private ProjectYomiSpriteText speedText;
         private LinkFlowContainer videoDescription;
         private FillFlowContainer commentContainer, searchResultContainer, playlistItemsView, myPlaylistItemsView;
 
@@ -182,7 +182,7 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private AudioEffectsConfigManager audioEffectsConfig { get; set; } = null!;
 
-        private AdaptiveTextFlowContainer debugInfo;
+        private ProjectYomiTextFlowContainer debugInfo;
 
         private BufferedContainer videoScalingContainer;
 
@@ -195,7 +195,7 @@ namespace NekoPlayer.App.Screens
         private Bindable<bool> alwaysUseOriginalAudio;
 
         [Resolved]
-        private AdaptiveColour colours { get; set; } = null!;
+        private ProjectYomiColour colours { get; set; } = null!;
 
         private Bindable<SettingsNote.Data> videoQualityWarning = new Bindable<SettingsNote.Data>();
         private Bindable<SettingsNote.Data> oauth_note = new Bindable<SettingsNote.Data>();
@@ -252,7 +252,7 @@ namespace NekoPlayer.App.Screens
 
         private ControlBarIconButton repeatButton, pinButton, captionButton, videoSettingsButton, playlistButton, quickLikeButton, quickDislikeButton, quickCommentOpenButton;
 
-        private AdaptiveSpriteText timeText;
+        private ProjectYomiSpriteText timeText;
 
         private Bindable<bool> trayIconVisible;
 
@@ -436,7 +436,7 @@ namespace NekoPlayer.App.Screens
                             Origin = Anchor.Centre,
                             Margin = new MarginPadding(40),
                         },
-                        videoLoadingProgress = new AdaptiveSpriteText
+                        videoLoadingProgress = new ProjectYomiSpriteText
                         {
                             Anchor = Anchor.BottomCentre,
                             Origin = Anchor.BottomCentre,
@@ -479,19 +479,14 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.Both,
                                     Padding = new MarginPadding
                                     {
-                                        Right = 40,
+                                        Right = 48,
                                     },
                                     Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
                                     {
                                         Width = 520,
-                                        Height = 70,
+                                        Height = 46,
                                         Origin = Anchor.TopLeft,
                                         Anchor = Anchor.TopLeft,
-                                        Position = new Vector2(-18, -18),
-                                        Margin = new MarginPadding
-                                        {
-                                            Left = 8,
-                                        },
                                         ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
                                     },
                                 },
@@ -560,7 +555,7 @@ namespace NekoPlayer.App.Screens
                                                     RelativeSizeAxes = Axes.X,
                                                     AutoSizeAxes = Axes.Y,
                                                     Children = new Drawable[] {
-                                                        currentTime = new AdaptiveSpriteText
+                                                        currentTime = new ProjectYomiSpriteText
                                                         {
                                                             Anchor = Anchor.TopLeft,
                                                             Origin = Anchor.TopLeft,
@@ -570,7 +565,7 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                     },
                                                 },
-                                                new AdaptiveRoundedScrollContainer(Direction.Horizontal)
+                                                new ProjectYomiRoundedScrollContainer(Direction.Horizontal)
                                                 {
                                                     ScrollbarVisible = false,
                                                     Masking = false,
@@ -830,7 +825,7 @@ namespace NekoPlayer.App.Screens
                                                                                     AlwaysPresent = true,
                                                                                     Current = { BindTarget = playbackSpeed },
                                                                                 },
-                                                                                speedText = new AdaptiveSpriteText
+                                                                                speedText = new ProjectYomiSpriteText
                                                                                 {
                                                                                     Margin = new MarginPadding
                                                                                     {
@@ -902,7 +897,7 @@ namespace NekoPlayer.App.Screens
                                                                                     AlwaysPresent = true,
                                                                                     Current = videoVolume,
                                                                                 },
-                                                                                volumeText = new AdaptiveSpriteText
+                                                                                volumeText = new ProjectYomiSpriteText
                                                                                 {
                                                                                     Margin = new MarginPadding
                                                                                     {
@@ -950,7 +945,7 @@ namespace NekoPlayer.App.Screens
                                                                             },
                                                                             Children = new Drawable[]
                                                                             {
-                                                                                timeText = new AdaptiveSpriteText
+                                                                                timeText = new ProjectYomiSpriteText
                                                                                 {
                                                                                     Margin = new MarginPadding
                                                                                     {
@@ -1033,7 +1028,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -1165,7 +1160,7 @@ namespace NekoPlayer.App.Screens
                                     {
                                         Horizontal = 6,
                                     },
-                                    Child = new AdaptiveScrollContainer
+                                    Child = new ProjectYomiScrollContainer
                                     {
                                         Padding = new MarginPadding()
                                         {
@@ -1200,7 +1195,7 @@ namespace NekoPlayer.App.Screens
                                                 Masking = true,
                                                 Children = new Drawable[]
                                                 {
-                                                    videoInfoDetails = new AdaptiveSpriteText
+                                                    videoInfoDetails = new ProjectYomiSpriteText
                                                     {
                                                         RelativeSizeAxes = Axes.X,
                                                         Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
@@ -1293,7 +1288,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 15,
                                                                     Icon = FontAwesome.Solid.ThumbsUp,
                                                                 },
-                                                                likeCount = new AdaptiveSpriteText
+                                                                likeCount = new ProjectYomiSpriteText
                                                                 {
                                                                     Text = "0",
                                                                 },
@@ -1344,7 +1339,7 @@ namespace NekoPlayer.App.Screens
                                                                     Height = 15,
                                                                     Icon = FontAwesome.Solid.ThumbsDown,
                                                                 },
-                                                                dislikeCount = new AdaptiveSpriteText
+                                                                dislikeCount = new ProjectYomiSpriteText
                                                                 {
                                                                     Text = "0",
                                                                 },
@@ -1396,7 +1391,7 @@ namespace NekoPlayer.App.Screens
                                                                     Icon = FontAwesome.Regular.CommentAlt,
                                                                     Colour = overlayColourProvider.Content2,
                                                                 },
-                                                                commentCount = new AdaptiveSpriteText
+                                                                commentCount = new ProjectYomiSpriteText
                                                                 {
                                                                     Text = "0",
                                                                     Colour = overlayColourProvider.Content2,
@@ -1433,7 +1428,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -1479,7 +1474,7 @@ namespace NekoPlayer.App.Screens
                                                             },
                                                             Colour = overlayColourProvider.Content2,
                                                         },
-                                                        new AdaptiveSpriteText
+                                                        new ProjectYomiSpriteText
                                                         {
                                                             Anchor = Anchor.TopCentre,
                                                             Origin = Anchor.TopCentre,
@@ -1544,7 +1539,7 @@ namespace NekoPlayer.App.Screens
                                         hideOverlayContainer(commentsContainer);
                                     }
                                 },
-                                commentsContainerTitle = new AdaptiveSpriteText
+                                commentsContainerTitle = new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -1657,7 +1652,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -1695,7 +1690,7 @@ namespace NekoPlayer.App.Screens
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
                                     Height = 56 + 20,
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -1811,7 +1806,7 @@ namespace NekoPlayer.App.Screens
                                     },
                                     Children = new Drawable[]
                                     {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -1836,7 +1831,7 @@ namespace NekoPlayer.App.Screens
                                                             Font = NekoPlayerApp.DefaultFont.With(size: 27, weight: "Bold"),
                                                             Colour = overlayColourProvider.Content2,
                                                         },
-                                                        new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"))
+                                                        new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 17, weight: "Regular"))
                                                         {
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
@@ -1903,7 +1898,7 @@ namespace NekoPlayer.App.Screens
                                         hideOverlayContainer(reportAbuseOverlay);
                                     }
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -1938,7 +1933,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -1957,7 +1952,7 @@ namespace NekoPlayer.App.Screens
                                                     Spacing = new Vector2(4),
                                                     Children = new Drawable[]
                                                     {
-                                                        playlistName = new AdaptiveTextFlowContainer(f =>
+                                                        playlistName = new ProjectYomiTextFlowContainer(f =>
                                                         {
                                                             f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold");
                                                             f.Colour = overlayColourProvider.Content2;
@@ -2019,7 +2014,7 @@ namespace NekoPlayer.App.Screens
                                         hideOverlayContainer(playlistOverlay);
                                     }
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopLeft,
                                     Anchor = Anchor.TopLeft,
@@ -2053,7 +2048,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -2108,7 +2103,7 @@ namespace NekoPlayer.App.Screens
                                         hideOverlayContainer(myPlaylistsOverlay);
                                     }
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopLeft,
                                     Anchor = Anchor.TopLeft,
@@ -2134,7 +2129,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -2143,7 +2138,7 @@ namespace NekoPlayer.App.Screens
                                     Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                                     Colour = overlayColourProvider.Content2,
                                 },
-                                loadPlaylistBtn = new AdaptiveButton
+                                loadPlaylistBtn = new ProjectYomiButton
                                 {
                                     Enabled = { Value = true },
                                     Origin = Anchor.BottomRight,
@@ -2195,7 +2190,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -2423,7 +2418,7 @@ namespace NekoPlayer.App.Screens
                                         hideOverlayContainer(audioEffectsOverlay);
                                     }
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopLeft,
                                     Anchor = Anchor.TopLeft,
@@ -2458,7 +2453,7 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.TopLeft,
                                     AlwaysPresent = true,
                                 },
-                                new AdaptiveTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 20))
+                                new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 20))
                                 {
                                     RelativeSizeAxes = Axes.X,
                                     AutoSizeAxes = Axes.Y,
@@ -2513,7 +2508,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -2602,7 +2597,7 @@ namespace NekoPlayer.App.Screens
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -2636,7 +2631,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -2708,7 +2703,7 @@ namespace NekoPlayer.App.Screens
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -2742,7 +2737,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -2818,7 +2813,7 @@ namespace NekoPlayer.App.Screens
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
                                     Height = (56 + 20),
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -2853,7 +2848,7 @@ namespace NekoPlayer.App.Screens
                                         Horizontal = 16,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -3059,7 +3054,7 @@ namespace NekoPlayer.App.Screens
                                         hideOverlayContainer(menuOverlay);
                                     }
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopLeft,
                                     Anchor = Anchor.TopLeft,
@@ -3085,7 +3080,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopLeft,
                                     Anchor = Anchor.TopLeft,
@@ -3104,7 +3099,7 @@ namespace NekoPlayer.App.Screens
                                         Top = 56,
                                     },
                                     Children = new Drawable[] {
-                                        new AdaptiveScrollContainer
+                                        new ProjectYomiScrollContainer
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             ScrollbarVisible = false,
@@ -3156,7 +3151,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                 },
-                                new AdaptiveSpriteText
+                                new ProjectYomiSpriteText
                                 {
                                     Origin = Anchor.TopCentre,
                                     Anchor = Anchor.TopCentre,
@@ -3924,7 +3919,7 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private ScreenshotManager screenshotManager { get; set; }
 
-        private AdaptiveTextFlowContainer infoForNerds, playlistName;
+        private ProjectYomiTextFlowContainer infoForNerds, playlistName;
 
         private Bindable<float> scalingPositionX = null!;
         private Bindable<float> scalingPositionY = null!;
@@ -4618,7 +4613,7 @@ namespace NekoPlayer.App.Screens
         protected override bool OnKeyDown(KeyDownEvent e)
         {
             // ignore seek shortcuts on focused to text box
-            if (currentVideoSource == null || ((e.Target.GetType() == typeof(AdaptiveTextBox)) || (e.Target.GetType() == typeof(FormTextBox)) || (e.Target.GetType() == typeof(FormNumberBox))))
+            if (currentVideoSource == null || ((e.Target.GetType() == typeof(ProjectYomiTextBox)) || (e.Target.GetType() == typeof(FormTextBox)) || (e.Target.GetType() == typeof(FormNumberBox))))
                 return true;
 
             if (e.Key >= Key.Number0 && e.Key <= Key.Number9)
@@ -5713,6 +5708,12 @@ namespace NekoPlayer.App.Screens
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopLeft;
                     videoMetadataDisplay.Origin = Anchor.TopLeft;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Center:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopCentre;
+                    videoMetadataDisplay.Origin = Anchor.TopCentre;
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Right:
