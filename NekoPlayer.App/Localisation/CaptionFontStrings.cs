@@ -66,6 +66,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString DreamHeumulKR => new TranslatableString(getKey(@"DreamHeumulKR"), "DreamHeumul KR");
 
+        /// <summary>
+        /// "Hakgyoansim Manito"
+        /// </summary>
+        public static LocalisableString Hakgyoansim_ManitoR => new TranslatableString(getKey(@"Hakgyoansim_ManitoR"), "Hakgyoansim Manito");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

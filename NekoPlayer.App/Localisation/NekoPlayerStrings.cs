@@ -1397,6 +1397,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString AdvancedSubtitleStyle => new TranslatableString(getKey(@"advanced_subtitle_style"), @"Use advanced subtitles style");
 
+        /// <summary>
+        /// "Screenshot quality"
+        /// </summary>
+        public static LocalisableString ScreenshotQuality => new TranslatableString(getKey(@"screenshot_quality"), @"Screenshot quality");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

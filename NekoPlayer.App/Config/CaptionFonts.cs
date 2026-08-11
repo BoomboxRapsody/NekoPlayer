@@ -29,5 +29,7 @@ namespace NekoPlayer.App.Config
         Roboto,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.DreamHeumulKR))]
         DreamHeumulKR,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Hakgyoansim_ManitoR))]
+        Hakgyoansim_ManitoR,
     }
 }

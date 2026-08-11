@@ -59,7 +59,7 @@ namespace NekoPlayer.App
             public static FontUsage HayuFont = FontUsage.Default.With("HayuFont", 16);
             public static FontUsage Cafe24Syongsyong = FontUsage.Default.With("Cafe24Syongsyong", 16);
             public static FontUsage DreamHeumulKR = FontUsage.Default.With("DreamHeumulKR", 16);
-
+            public static FontUsage Hakgyoansim_ManitoR = FontUsage.Default.With("Hakgyoansim_ManitoR", 16);
             public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
         }
 

@@ -348,6 +348,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             label.Font = NekoPlayerApp.Fonts.DreamHeumulKR;
                             break;
                         }
+                        case CaptionFonts.Hakgyoansim_ManitoR:
+                        {
+                            label.Font = NekoPlayerApp.Fonts.Hakgyoansim_ManitoR;
+                            break;
+                        }
                     }
                 }, true);
 

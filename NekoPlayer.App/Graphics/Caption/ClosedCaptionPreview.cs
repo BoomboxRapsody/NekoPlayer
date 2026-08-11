@@ -168,6 +168,11 @@ namespace NekoPlayer.App.Graphics.Caption
                         textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.DreamHeumulKR.With(size: 24);
                         break;
                     }
+                    case CaptionFonts.Hakgyoansim_ManitoR:
+                    {
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Hakgyoansim_ManitoR.With(size: 24);
+                        break;
+                    }
                 }
                 RefreshFont();
             }, true);

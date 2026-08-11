@@ -78,7 +78,7 @@ namespace NekoPlayer.App.Input.Binding
             new KeyBinding(new[] { InputKey.P }, GlobalAction.OpenPlaylist),
             new KeyBinding(new[] { InputKey.R }, GlobalAction.ReportAbuse),
 
-            new KeyBinding(new[] { InputKey.Alt, InputKey.P }, GlobalAction.ToggleAdjustPitchOnSpeedChange),
+            new KeyBinding(new[] { InputKey.Shift, InputKey.P }, GlobalAction.ToggleAdjustPitchOnSpeedChange),
 
             new KeyBinding(new[] { InputKey.Control, InputKey.P }, GlobalAction.ToggleFPSDisplay),
 
