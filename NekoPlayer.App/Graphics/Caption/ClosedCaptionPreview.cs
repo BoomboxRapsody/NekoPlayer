@@ -54,7 +54,7 @@ namespace NekoPlayer.App.Graphics.Caption
                     },
                     spriteText = new ProjectYomiTextFlowContainer(t =>
                     {
-                        t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                        t.Font = NekoPlayerApp.Fonts.GoogleSansFlex.With(size: 24);
                         t.Shadow = false;
                     })
                     {
@@ -115,52 +115,57 @@ namespace NekoPlayer.App.Graphics.Caption
                 {
                     case CaptionFonts.GoogleSansFlex:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.GoogleSansFlex.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Rubik:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Rubik.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Rubik.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Pretendard:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Pretendard.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Pretendard.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Hungeul:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Hungeul.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Hungeul.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Ownglyph_PDH:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Ownglyph_PDH.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Ownglyph_PDH.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Dovemayo_Gothic:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Dovemayo_Gothic.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Dovemayo_Gothic.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Griun_Mongtori:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Griun_Mongtori.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Griun_Mongtori.With(size: 24);
                         break;
                     }
                     case CaptionFonts.ONE_Mobile_POP:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.ONE_Mobile_POP.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Cafe24Syongsyong:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Cafe24Syongsyong.With(size: 24);
                         break;
                     }
                     case CaptionFonts.Roboto:
                     {
-                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Roboto.With(size: 24);
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Roboto.With(size: 24);
+                        break;
+                    }
+                    case CaptionFonts.DreamHeumulKR:
+                    {
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.DreamHeumulKR.With(size: 24);
                         break;
                     }
                 }

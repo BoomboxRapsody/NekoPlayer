@@ -27,5 +27,7 @@ namespace NekoPlayer.App.Config
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Cafe24Syongsyong))]
         Cafe24Syongsyong,
         Roboto,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.DreamHeumulKR))]
+        DreamHeumulKR,
     }
 }

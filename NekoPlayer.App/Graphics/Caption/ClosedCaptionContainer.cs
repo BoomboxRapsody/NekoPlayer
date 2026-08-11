@@ -141,7 +141,7 @@ namespace NekoPlayer.App.Graphics.Caption
                     },
                     spriteText = new ProjectYomiTextFlowContainer(t =>
                     {
-                        t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                        t.Font = NekoPlayerApp.Fonts.GoogleSansFlex.With(size: 24);
                         t.Shadow = false;
                     })
                     {
@@ -181,37 +181,40 @@ namespace NekoPlayer.App.Graphics.Caption
                 switch (v.NewValue)
                 {
                     case CaptionFonts.GoogleSansFlex:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.GoogleSansFlex.With(size: 24);
                         break;
                     case CaptionFonts.Rubik:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Rubik.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Rubik.With(size: 24);
                         break;
                     case CaptionFonts.Pretendard:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Pretendard.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Pretendard.With(size: 24);
                         break;
                     case CaptionFonts.Hungeul:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Hungeul.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Hungeul.With(size: 24);
                         break;
                     case CaptionFonts.Ownglyph_PDH:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Ownglyph_PDH.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Ownglyph_PDH.With(size: 24);
                         break;
                     case CaptionFonts.Dovemayo_Gothic:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Dovemayo_Gothic.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Dovemayo_Gothic.With(size: 24);
                         break;
                     case CaptionFonts.Griun_Mongtori:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Griun_Mongtori.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Griun_Mongtori.With(size: 24);
                         break;
                     case CaptionFonts.ONE_Mobile_POP:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.ONE_Mobile_POP.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.ONE_Mobile_POP.With(size: 24);
                         break;
                     case CaptionFonts.Cafe24Syongsyong:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Cafe24Syongsyong.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Cafe24Syongsyong.With(size: 24);
                         break;
                     case CaptionFonts.Roboto:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.Roboto.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Roboto.With(size: 24);
+                        break;
+                    case CaptionFonts.DreamHeumulKR:
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.DreamHeumulKR.With(size: 24);
                         break;
                     default:
-                        textCreationParameters = t => t.Font = NekoPlayerApp.GoogleSansFlex.With(size: 24);
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.GoogleSansFlex.With(size: 24);
                         break;
                 }
             }, true);
@@ -360,25 +363,27 @@ namespace NekoPlayer.App.Graphics.Caption
             switch (captionFont.Value)
             {
                 case CaptionFonts.Rubik:
-                    return NekoPlayerApp.Rubik.With(size: size);
+                    return NekoPlayerApp.Fonts.Rubik.With(size: size);
                 case CaptionFonts.Pretendard:
-                    return NekoPlayerApp.Pretendard.With(size: size);
+                    return NekoPlayerApp.Fonts.Pretendard.With(size: size);
                 case CaptionFonts.Hungeul:
-                    return NekoPlayerApp.Hungeul.With(size: size);
+                    return NekoPlayerApp.Fonts.Hungeul.With(size: size);
                 case CaptionFonts.Ownglyph_PDH:
-                    return NekoPlayerApp.Ownglyph_PDH.With(size: size);
+                    return NekoPlayerApp.Fonts.Ownglyph_PDH.With(size: size);
                 case CaptionFonts.Dovemayo_Gothic:
-                    return NekoPlayerApp.Dovemayo_Gothic.With(size: size);
+                    return NekoPlayerApp.Fonts.Dovemayo_Gothic.With(size: size);
                 case CaptionFonts.Griun_Mongtori:
-                    return NekoPlayerApp.Griun_Mongtori.With(size: size);
+                    return NekoPlayerApp.Fonts.Griun_Mongtori.With(size: size);
                 case CaptionFonts.ONE_Mobile_POP:
-                    return NekoPlayerApp.ONE_Mobile_POP.With(size: size);
+                    return NekoPlayerApp.Fonts.ONE_Mobile_POP.With(size: size);
                 case CaptionFonts.Cafe24Syongsyong:
-                    return NekoPlayerApp.Cafe24Syongsyong.With(size: size);
+                    return NekoPlayerApp.Fonts.Cafe24Syongsyong.With(size: size);
                 case CaptionFonts.Roboto:
-                    return NekoPlayerApp.Roboto.With(size: size);
+                    return NekoPlayerApp.Fonts.Roboto.With(size: size);
+                case CaptionFonts.DreamHeumulKR:
+                    return NekoPlayerApp.Fonts.DreamHeumulKR.With(size: size);
                 default:
-                    return NekoPlayerApp.GoogleSansFlex.With(size: size);
+                    return NekoPlayerApp.Fonts.GoogleSansFlex.With(size: size);
             }
         }
     }

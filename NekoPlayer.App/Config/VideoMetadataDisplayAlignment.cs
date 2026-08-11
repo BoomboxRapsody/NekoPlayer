@@ -11,6 +11,9 @@ namespace NekoPlayer.App.Config
         [LocalisableDescription(typeof(VideoMetadataDisplayAlignmentStrings), nameof(VideoMetadataDisplayAlignmentStrings.Left))]
         Left,
 
+        [LocalisableDescription(typeof(VideoMetadataDisplayAlignmentStrings), nameof(VideoMetadataDisplayAlignmentStrings.Center))]
+        Center,
+
         [LocalisableDescription(typeof(VideoMetadataDisplayAlignmentStrings), nameof(VideoMetadataDisplayAlignmentStrings.Right))]
         Right,
     }

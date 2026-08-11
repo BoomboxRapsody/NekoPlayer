@@ -479,19 +479,14 @@ namespace NekoPlayer.App.Screens
                                     RelativeSizeAxes = Axes.Both,
                                     Padding = new MarginPadding
                                     {
-                                        Right = 40,
+                                        Right = 48,
                                     },
                                     Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
                                     {
                                         Width = 520,
-                                        Height = 70,
+                                        Height = 46,
                                         Origin = Anchor.TopLeft,
                                         Anchor = Anchor.TopLeft,
-                                        Position = new Vector2(-18, -18),
-                                        Margin = new MarginPadding
-                                        {
-                                            Left = 8,
-                                        },
                                         ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
                                     },
                                 },
@@ -5713,6 +5708,12 @@ namespace NekoPlayer.App.Screens
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopLeft;
                     videoMetadataDisplay.Origin = Anchor.TopLeft;
+                    break;
+                }
+                case VideoMetadataDisplayAlignment.Center:
+                {
+                    videoMetadataDisplay.Anchor = Anchor.TopCentre;
+                    videoMetadataDisplay.Origin = Anchor.TopCentre;
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Right:
