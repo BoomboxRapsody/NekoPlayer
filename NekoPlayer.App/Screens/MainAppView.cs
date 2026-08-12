@@ -68,6 +68,9 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using PaletteNet;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using Veldrid.MetalBindings;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Videos.ClosedCaptions;
 using YoutubeExplode.Videos.Streams;
@@ -233,7 +236,7 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<double> videoVolume;
 
-        private GhostIcon ghostIcon;
+        private GhostIcon ghostIcon, ghostIcon2;
 
 #nullable enable
         [Resolved(canBeNull: true)]
@@ -273,7 +276,9 @@ namespace NekoPlayer.App.Screens
         private bool commentTextBoxContainerFocused, searchTextBoxContainerFocused;
         private Container commentTextBoxContainer, searchTextBoxContainer;
 
-        private Container topUIContainer, bottomUIContainer;
+        private Container topUIContainer, bottomUIContainer, videoMetadataDisplayBase;
+
+        private Sprite playlistThumbnail;
 
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
@@ -480,7 +485,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Children = new Drawable[] {
-                                        new Container
+                                        videoMetadataDisplayBase = new Container
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             Padding = new MarginPadding
@@ -1941,10 +1946,6 @@ namespace NekoPlayer.App.Screens
                                 new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 16,
-                                    },
                                     Children = new Drawable[] {
                                         new ProjectYomiScrollContainer
                                         {
@@ -1953,7 +1954,7 @@ namespace NekoPlayer.App.Screens
                                             Padding = new MarginPadding
                                             {
                                                 Bottom = 16,
-                                                Top = 56,
+                                                Top = 250 + 16
                                             },
                                             Children = new Drawable[]
                                             {
@@ -1965,19 +1966,76 @@ namespace NekoPlayer.App.Screens
                                                     Spacing = new Vector2(4),
                                                     Children = new Drawable[]
                                                     {
-                                                        playlistName = new ProjectYomiTextFlowContainer(f =>
+                                                        playlistItemsView = new FillFlowContainer
                                                         {
-                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold");
-                                                            f.Colour = overlayColourProvider.Content2;
-                                                        })
-                                                        {
-                                                            TextAnchor = Anchor.Centre,
-                                                            Origin = Anchor.TopCentre,
-                                                            Anchor = Anchor.TopCentre,
-                                                            Text = NekoPlayerStrings.PlaylistNotLoaded,
-                                                             RelativeSizeAxes = Axes.X,
+                                                            RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
+                                                            Direction = FillDirection.Vertical,
+                                                            Spacing = new Vector2(4),
+                                                            Padding = new MarginPadding
+                                                            {
+                                                                Horizontal = 16,
+                                                            },
+                                                            Children = Array.Empty<Drawable>()
                                                         },
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        new Container
+                                        {
+                                            RelativeSizeAxes = Axes.X,
+                                            Height = 250,
+                                            Masking = true,
+                                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS),
+                                            Children = new Drawable[] {
+                                                new Box
+                                                {
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    Colour = Color4.Black,
+                                                },
+                                                new Container
+                                                {
+                                                    Anchor = Anchor.Centre,
+                                                    Origin = Anchor.Centre,
+                                                    Margin = new MarginPadding(10),
+                                                    Size = new Vector2(50),
+                                                    Child = ghostIcon2 = new GhostIcon
+                                                    {
+                                                        RelativeSizeAxes = Axes.Both,
+                                                    },
+                                                    Colour = overlayColourProvider.Content2,
+                                                },
+                                                playlistThumbnail = new Sprite
+                                                {
+                                                    Scale = new Vector2(1.5f),
+                                                    Origin = Anchor.Centre,
+                                                    Anchor = Anchor.Centre,
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    FillMode = FillMode.Fill,
+                                                },
+                                                new Box
+                                                {
+                                                    Name = "masking of overlay",
+                                                    RelativeSizeAxes = Axes.X,
+                                                    Anchor = Anchor.BottomCentre,
+                                                    Origin = Anchor.BottomCentre,
+                                                    Height = (56 + 56),
+                                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
+                                                },
+                                                new FillFlowContainer
+                                                {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    Anchor = Anchor.BottomCentre,
+                                                    Origin = Anchor.BottomCentre,
+                                                    Padding = new MarginPadding
+                                                    {
+                                                        Bottom = 16,
+                                                    },
+                                                    Spacing = new Vector2(4),
+                                                    Height = 100,
+                                                    Children = new Drawable[]
+                                                    {
                                                         playlistAuthor = new LinkFlowContainer(f =>
                                                         {
                                                             f.Font = NekoPlayerApp.DefaultFont.With(size: 16, weight: "SemiBold");
@@ -1985,24 +2043,29 @@ namespace NekoPlayer.App.Screens
                                                         })
                                                         {
                                                             TextAnchor = Anchor.Centre,
-                                                            Origin = Anchor.TopCentre,
-                                                            Anchor = Anchor.TopCentre,
+                                                            Origin = Anchor.BottomCentre,
+                                                            Anchor = Anchor.BottomCentre,
                                                             Text = NekoPlayerStrings.PlaylistNotLoadedDesc,
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
                                                         },
-                                                        playlistItemsView = new FillFlowContainer
+                                                        playlistName = new ProjectYomiTextFlowContainer(f =>
                                                         {
+                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold");
+                                                            f.Colour = overlayColourProvider.Content2;
+                                                        })
+                                                        {
+                                                            TextAnchor = Anchor.Centre,
+                                                            Origin = Anchor.BottomCentre,
+                                                            Anchor = Anchor.BottomCentre,
+                                                            Text = NekoPlayerStrings.PlaylistNotLoaded,
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
-                                                            Direction = FillDirection.Vertical,
-                                                            Spacing = new Vector2(4),
-                                                            Children = Array.Empty<Drawable>()
                                                         },
                                                     }
                                                 }
-                                            }
-                                        }
+                                            },
+                                        },
                                     }
                                 },
                                 new Box
@@ -2010,6 +2073,23 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 + 20),
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 + 20),
+                                    Margin = new MarginPadding { Top = 250 }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
                                     Height = (56 + 20),
                                 },
                                 new IconButton
@@ -3302,6 +3382,8 @@ namespace NekoPlayer.App.Screens
                     }
 
                     Schedule(() => settingsContainer.UpdateLoginState());
+
+                    GetProfileImagePalette(api.GetMineChannel());
                 }
                 else
                 {
@@ -4018,12 +4100,12 @@ namespace NekoPlayer.App.Screens
                 if (isControlVisible == true)
                 {
                     isControlVisible = false;
-                    uiContainer.FadeOutFromOne(250, Easing.InQuint);
-                    uiGradientContainer.FadeOutFromOne(250, Easing.InQuint);
-                    uiContainer.BlurTo(new Vector2(4), 250, Easing.InQuint);
+                    uiContainer.FadeOutFromOne(250, Easing.InCubic);
+                    uiGradientContainer.FadeOutFromOne(250, Easing.InCubic);
+                    uiContainer.BlurTo(new Vector2(8), 250, Easing.InCubic);
                     sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
-                    bottomUIContainer.MoveToY(30, 250, Easing.InQuint);
-                    topUIContainer.MoveToY(-30, 250, Easing.InQuint);
+                    bottomUIContainer.MoveToY(30, 250, Easing.InCubic);
+                    topUIContainer.MoveToY(-30, 250, Easing.InCubic);
                 }
             }
         }
@@ -4463,6 +4545,12 @@ namespace NekoPlayer.App.Screens
             settingsOverlayCharacter.FadeOut();
 
             ghostIcon.Loop(t =>
+                t.MoveToY(-10, 2000, Easing.InOutSine)
+                 .Then()
+                 .MoveToY(0, 2000, Easing.InOutSine)
+            );
+
+            ghostIcon2.Loop(t =>
                 t.MoveToY(-10, 2000, Easing.InOutSine)
                  .Then()
                  .MoveToY(0, 2000, Easing.InOutSine)
@@ -5025,6 +5113,7 @@ namespace NekoPlayer.App.Screens
                 Schedule(() => item.Expire());
             }
 
+            playlistThumbnail.Texture = null;
             playlistName.Text = NekoPlayerStrings.PlaylistNotLoaded;
             playlistAuthor.Text = NekoPlayerStrings.PlaylistNotLoadedDesc;
 
@@ -5034,6 +5123,9 @@ namespace NekoPlayer.App.Screens
                 Schedule(() => nextVideoButton.Enabled.Value = false);
             }
         }
+
+        [Resolved]
+        private TextureStore textureStore { get; set; }
 
         private Google.Apis.YouTube.v3.Data.Video videoData;
         private Google.Apis.YouTube.v3.Data.Channel channelData;
@@ -5102,6 +5194,7 @@ namespace NekoPlayer.App.Screens
         {
             Schedule(() =>
             {
+                playlistThumbnail.Texture = textureStore.Get(playlist.Snippet.Thumbnails.High.Url);
                 playlistName.Text = playlist.Snippet.Title;
                 playlistAuthor.Text = string.Empty;
                 playlistAuthor.AddLink(playlist.Snippet.ChannelTitle, $"https://www.youtube.com/channel/{playlist.Snippet.ChannelId}");
@@ -5725,24 +5818,63 @@ namespace NekoPlayer.App.Screens
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopLeft;
                     videoMetadataDisplay.Origin = Anchor.TopLeft;
+                    videoMetadataDisplayBase.Padding = new MarginPadding(0);
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Center:
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopCentre;
                     videoMetadataDisplay.Origin = Anchor.TopCentre;
+                    videoMetadataDisplayBase.Padding = new MarginPadding(0);
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Right:
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopRight;
                     videoMetadataDisplay.Origin = Anchor.TopRight;
+                    videoMetadataDisplayBase.Padding = new MarginPadding
+                    {
+                        Right = 48,
+                    };
                     break;
                 }
             }
         }
 
         private Color4 bgColor2;
+
+        public void GetProfileImagePalette(Google.Apis.YouTube.v3.Data.Channel channel)
+        {
+            Task.Run(async () =>
+            {
+                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache_GetProfileImagePalette").GetFullPath($"{channel.Id}.png");
+
+                using (var httpClient = new System.Net.Http.HttpClient())
+                {
+                    var imageBytes = await httpClient.GetByteArrayAsync(channel.Snippet.Thumbnails.High.Url);
+                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                }
+
+                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channel.Id}.png"));
+
+                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
+                PaletteBuilder paletteBuilder = new PaletteBuilder();
+                Palette palette = paletteBuilder.Generate(bitmapHelper);
+                int? rgbColor = palette.MutedSwatch.Rgb;
+                int? rgbTextColor = palette.MutedSwatch.TitleTextColor;
+
+                if (rgbColor != null && rgbTextColor != null)
+                {
+                    Color4 bgColor = System.Drawing.Color.FromArgb((int)rgbColor);
+                    Color4 textColor = System.Drawing.Color.FromArgb((int)rgbTextColor);
+                    Schedule(() =>
+                    {
+                        viewChannelButton.BackgroundColour = bgColor;
+                        viewChannelButton.ForegroundColour = textColor;
+                    });
+                }
+            });
+        }
 
         public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)
         {

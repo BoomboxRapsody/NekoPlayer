@@ -3,6 +3,7 @@
 
 using osu.Framework.Localisation;
 using NekoPlayer.App.Localisation;
+using System.ComponentModel;
 
 namespace NekoPlayer.App.Config
 {
@@ -12,6 +13,9 @@ namespace NekoPlayer.App.Config
         Jpg = 1,
 
         [LocalisableDescription(typeof(NekoPlayerStrings), nameof(NekoPlayerStrings.Png))]
-        Png = 2
+        Png = 2,
+
+        [Description("WebP")]
+        Webp = 3,
     }
 }

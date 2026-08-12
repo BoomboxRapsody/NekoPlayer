@@ -25,11 +25,10 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         public override Color4 BackgroundColour
         {
             get => base.BackgroundColour;
-            set
-            {
-                base.BackgroundColour = value;
-            }
+            set => base.BackgroundColour = value;
         }
+
+        public override Color4 ForegroundColour { get => base.ForegroundColour; set => base.ForegroundColour = value; }
 
         [BackgroundDependencyLoader(true)]
         private void load(OverlayColourProvider? overlayColourProvider, ProjectYomiColour colours)
