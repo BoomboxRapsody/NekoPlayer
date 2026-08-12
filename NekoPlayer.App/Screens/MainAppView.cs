@@ -1496,7 +1496,7 @@ namespace NekoPlayer.App.Screens
                                                                 },
                                                                 dateUploadedText = new ProjectYomiSpriteText
                                                                 {
-                                                                    Text = "0",
+                                                                    Text = "(unknown)",
                                                                     Colour = overlayColourProvider.Content2,
                                                                 },
                                                             }
