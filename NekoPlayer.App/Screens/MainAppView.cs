@@ -1946,10 +1946,6 @@ namespace NekoPlayer.App.Screens
                                 new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding
-                                    {
-                                        Horizontal = 16,
-                                    },
                                     Children = new Drawable[] {
                                         new ProjectYomiScrollContainer
                                         {
@@ -1958,7 +1954,7 @@ namespace NekoPlayer.App.Screens
                                             Padding = new MarginPadding
                                             {
                                                 Bottom = 16,
-                                                Top = 56,
+                                                Top = 250 + 16
                                             },
                                             Children = new Drawable[]
                                             {
@@ -1970,26 +1966,76 @@ namespace NekoPlayer.App.Screens
                                                     Spacing = new Vector2(4),
                                                     Children = new Drawable[]
                                                     {
-                                                        new Container
+                                                        playlistItemsView = new FillFlowContainer
                                                         {
                                                             RelativeSizeAxes = Axes.X,
-                                                            Height = 150,
-                                                            Masking = true,
-                                                            CornerRadius = 12,
-                                                            Children = new Drawable[] {
-                                                                new Box
-                                                                {
-                                                                    RelativeSizeAxes = Axes.Both,
-                                                                    Colour = Color4.Black,
-                                                                },
-                                                                playlistThumbnail = new Sprite
-                                                                {
-                                                                    Origin = Anchor.Centre,
-                                                                    Anchor = Anchor.Centre,
-                                                                    RelativeSizeAxes = Axes.Both,
-                                                                    FillMode = FillMode.Fill,
-                                                                },
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Direction = FillDirection.Vertical,
+                                                            Spacing = new Vector2(4),
+                                                            Padding = new MarginPadding
+                                                            {
+                                                                Horizontal = 16,
                                                             },
+                                                            Children = Array.Empty<Drawable>()
+                                                        },
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        new Container
+                                        {
+                                            RelativeSizeAxes = Axes.X,
+                                            Height = 250,
+                                            Masking = true,
+                                            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, NekoPlayerApp.UI_CORNER_RADIUS),
+                                            Children = new Drawable[] {
+                                                new Box
+                                                {
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    Colour = Color4.Black,
+                                                },
+                                                playlistThumbnail = new Sprite
+                                                {
+                                                    Scale = new Vector2(1.5f),
+                                                    Origin = Anchor.Centre,
+                                                    Anchor = Anchor.Centre,
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    FillMode = FillMode.Fill,
+                                                },
+                                                new Box
+                                                {
+                                                    Name = "masking of overlay",
+                                                    RelativeSizeAxes = Axes.X,
+                                                    Anchor = Anchor.BottomCentre,
+                                                    Origin = Anchor.BottomCentre,
+                                                    Height = (56 + 56),
+                                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
+                                                },
+                                                new FillFlowContainer
+                                                {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    Anchor = Anchor.BottomCentre,
+                                                    Origin = Anchor.BottomCentre,
+                                                    Padding = new MarginPadding
+                                                    {
+                                                        Bottom = 16,
+                                                    },
+                                                    Spacing = new Vector2(4),
+                                                    Height = 100,
+                                                    Children = new Drawable[]
+                                                    {
+                                                        playlistAuthor = new LinkFlowContainer(f =>
+                                                        {
+                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 16, weight: "SemiBold");
+                                                            f.Colour = overlayColourProvider.Background1;
+                                                        })
+                                                        {
+                                                            TextAnchor = Anchor.Centre,
+                                                            Origin = Anchor.BottomCentre,
+                                                            Anchor = Anchor.BottomCentre,
+                                                            Text = NekoPlayerStrings.PlaylistNotLoadedDesc,
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
                                                         },
                                                         playlistName = new ProjectYomiTextFlowContainer(f =>
                                                         {
@@ -1998,37 +2044,16 @@ namespace NekoPlayer.App.Screens
                                                         })
                                                         {
                                                             TextAnchor = Anchor.Centre,
-                                                            Origin = Anchor.TopCentre,
-                                                            Anchor = Anchor.TopCentre,
+                                                            Origin = Anchor.BottomCentre,
+                                                            Anchor = Anchor.BottomCentre,
                                                             Text = NekoPlayerStrings.PlaylistNotLoaded,
-                                                             RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                        },
-                                                        playlistAuthor = new LinkFlowContainer(f =>
-                                                        {
-                                                            f.Font = NekoPlayerApp.DefaultFont.With(size: 16, weight: "SemiBold");
-                                                            f.Colour = overlayColourProvider.Background1;
-                                                        })
-                                                        {
-                                                            TextAnchor = Anchor.Centre,
-                                                            Origin = Anchor.TopCentre,
-                                                            Anchor = Anchor.TopCentre,
-                                                            Text = NekoPlayerStrings.PlaylistNotLoadedDesc,
                                                             RelativeSizeAxes = Axes.X,
                                                             AutoSizeAxes = Axes.Y,
-                                                        },
-                                                        playlistItemsView = new FillFlowContainer
-                                                        {
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            Direction = FillDirection.Vertical,
-                                                            Spacing = new Vector2(4),
-                                                            Children = Array.Empty<Drawable>()
                                                         },
                                                     }
                                                 }
-                                            }
-                                        }
+                                            },
+                                        },
                                     }
                                 },
                                 new Box
@@ -2036,6 +2061,23 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 + 20),
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
+                                    Height = (56 + 20),
+                                    Margin = new MarginPadding { Top = 250 }
+                                },
+                                new Box
+                                {
+                                    Name = "masking of overlay",
+                                    RelativeSizeAxes = Axes.X,
+                                    Anchor = Anchor.BottomCentre,
+                                    Origin = Anchor.BottomCentre,
+                                    Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5.Opacity(0), overlayColourProvider.Background5),
                                     Height = (56 + 20),
                                 },
                                 new IconButton
@@ -5134,7 +5176,7 @@ namespace NekoPlayer.App.Screens
         {
             Schedule(() =>
             {
-                playlistThumbnail.Texture = textureStore.Get(playlist.Snippet.Thumbnails.Maxres.Url);
+                playlistThumbnail.Texture = textureStore.Get(playlist.Snippet.Thumbnails.High.Url);
                 playlistName.Text = playlist.Snippet.Title;
                 playlistAuthor.Text = string.Empty;
                 playlistAuthor.AddLink(playlist.Snippet.ChannelTitle, $"https://www.youtube.com/channel/{playlist.Snippet.ChannelId}");
