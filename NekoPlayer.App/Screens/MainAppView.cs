@@ -147,7 +147,7 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private AudioManager audio { get; set; } = null!;
 
-        private ProjectYomiSpriteText videoLoadingProgress, likeCount, dislikeCount, commentCount, commentsContainerTitle, volumeText;
+        private ProjectYomiSpriteText videoLoadingProgress, likeCount, dislikeCount, commentCount, commentsContainerTitle, volumeText, currentTime;
         private ProjectYomiSpriteText speedText;
         private LinkFlowContainer videoDescription;
         private FillFlowContainer commentContainer, searchResultContainer, playlistItemsView, myPlaylistItemsView;
