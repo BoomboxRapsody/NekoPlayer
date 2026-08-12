@@ -278,6 +278,8 @@ namespace NekoPlayer.App.Screens
 
         private Container topUIContainer, bottomUIContainer;
 
+        private Sprite playlistThumbnail;
+
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
         {
@@ -1968,6 +1970,27 @@ namespace NekoPlayer.App.Screens
                                                     Spacing = new Vector2(4),
                                                     Children = new Drawable[]
                                                     {
+                                                        new Container
+                                                        {
+                                                            RelativeSizeAxes = Axes.X,
+                                                            Height = 150,
+                                                            Masking = true,
+                                                            CornerRadius = 12,
+                                                            Children = new Drawable[] {
+                                                                new Box
+                                                                {
+                                                                    RelativeSizeAxes = Axes.Both,
+                                                                    Colour = Color4.Black,
+                                                                },
+                                                                playlistThumbnail = new Sprite
+                                                                {
+                                                                    Origin = Anchor.Centre,
+                                                                    Anchor = Anchor.Centre,
+                                                                    RelativeSizeAxes = Axes.Both,
+                                                                    FillMode = FillMode.Fill,
+                                                                },
+                                                            },
+                                                        },
                                                         playlistName = new ProjectYomiTextFlowContainer(f =>
                                                         {
                                                             f.Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "Bold");
@@ -3300,12 +3323,13 @@ namespace NekoPlayer.App.Screens
 
                     if (api.TryToGetMineChannel() != null)
                     {
-                        GetProfileImagePalette(api.GetMineChannel());
                         commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith;
                         commentTextBox.RefreshChannelProfile(api.GetMineChannel());
                     }
 
                     Schedule(() => settingsContainer.UpdateLoginState());
+
+                    GetProfileImagePalette(api.GetMineChannel());
                 }
                 else
                 {
@@ -5029,6 +5053,7 @@ namespace NekoPlayer.App.Screens
                 Schedule(() => item.Expire());
             }
 
+            playlistThumbnail.Texture = null;
             playlistName.Text = NekoPlayerStrings.PlaylistNotLoaded;
             playlistAuthor.Text = NekoPlayerStrings.PlaylistNotLoadedDesc;
 
@@ -5038,6 +5063,9 @@ namespace NekoPlayer.App.Screens
                 Schedule(() => nextVideoButton.Enabled.Value = false);
             }
         }
+
+        [Resolved]
+        private TextureStore textureStore { get; set; }
 
         private Google.Apis.YouTube.v3.Data.Video videoData;
         private Google.Apis.YouTube.v3.Data.Channel channelData;
@@ -5106,6 +5134,7 @@ namespace NekoPlayer.App.Screens
         {
             Schedule(() =>
             {
+                playlistThumbnail.Texture = textureStore.Get(playlist.Snippet.Thumbnails.Maxres.Url);
                 playlistName.Text = playlist.Snippet.Title;
                 playlistAuthor.Text = string.Empty;
                 playlistAuthor.AddLink(playlist.Snippet.ChannelTitle, $"https://www.youtube.com/channel/{playlist.Snippet.ChannelId}");
