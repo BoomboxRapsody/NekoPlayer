@@ -236,7 +236,7 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<double> videoVolume;
 
-        private GhostIcon ghostIcon;
+        private GhostIcon ghostIcon, ghostIcon2;
 
 #nullable enable
         [Resolved(canBeNull: true)]
@@ -1993,6 +1993,18 @@ namespace NekoPlayer.App.Screens
                                                 {
                                                     RelativeSizeAxes = Axes.Both,
                                                     Colour = Color4.Black,
+                                                },
+                                                new Container
+                                                {
+                                                    Anchor = Anchor.Centre,
+                                                    Origin = Anchor.Centre,
+                                                    Margin = new MarginPadding(10),
+                                                    Size = new Vector2(50),
+                                                    Child = ghostIcon2 = new GhostIcon
+                                                    {
+                                                        RelativeSizeAxes = Axes.Both,
+                                                    },
+                                                    Colour = overlayColourProvider.Content2,
                                                 },
                                                 playlistThumbnail = new Sprite
                                                 {
@@ -4533,6 +4545,12 @@ namespace NekoPlayer.App.Screens
             settingsOverlayCharacter.FadeOut();
 
             ghostIcon.Loop(t =>
+                t.MoveToY(-10, 2000, Easing.InOutSine)
+                 .Then()
+                 .MoveToY(0, 2000, Easing.InOutSine)
+            );
+
+            ghostIcon2.Loop(t =>
                 t.MoveToY(-10, 2000, Easing.InOutSine)
                  .Then()
                  .MoveToY(0, 2000, Easing.InOutSine)

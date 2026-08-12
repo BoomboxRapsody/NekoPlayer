@@ -110,38 +110,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
             Task.Run(async () =>
             {
                 profileImage.UpdateProfileImage(channel.Id);
-
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channel.Id}.png");
-
-                using (var httpClient = new System.Net.Http.HttpClient())
-                {
-                    var imageBytes = await httpClient.GetByteArrayAsync(channel.Snippet.Thumbnails.High.Url);
-                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
-                }
-
-                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channel.Id}.png"));
-
-                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
-                PaletteBuilder paletteBuilder = new PaletteBuilder();
-                Palette palette = paletteBuilder.Generate(bitmapHelper);
-                int? rgbColor = palette.MutedSwatch.Rgb;
-                int? rgbTextColor = palette.MutedSwatch.TitleTextColor;
-
-                if (rgbColor != null && rgbTextColor != null)
-                {
-                    Color4 bgColor = System.Drawing.Color.FromArgb((int)rgbColor);
-                    Color4 textColor = System.Drawing.Color.FromArgb((int)rgbTextColor);
-                    Schedule(() =>
-                    {
-                        BackgroundUnfocused = bgColor.Darken(0.5f);
-                        BackgroundFocused = bgColor.Darken(0.4f);
-                        BackgroundCommit = BorderColour = bgColor.Lighten(0.5f);
-                        selectionColour = bgColor.Lighten(0.5f);
-
-                        if (caret != null)
-                            caret.SelectionColour = selectionColour;
-                    });
-                }
             });
         }
 
