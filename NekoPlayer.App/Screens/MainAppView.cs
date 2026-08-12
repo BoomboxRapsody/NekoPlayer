@@ -68,6 +68,9 @@ using osuTK;
 using osuTK.Graphics;
 using osuTK.Input;
 using PaletteNet;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using Veldrid.MetalBindings;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Videos.ClosedCaptions;
 using YoutubeExplode.Videos.Streams;
@@ -3299,6 +3302,7 @@ namespace NekoPlayer.App.Screens
                     {
                         commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith;
                         commentTextBox.RefreshChannelProfile(api.GetMineChannel());
+                        GetProfileImagePalette(api.GetMineChannel());
                     }
 
                     Schedule(() => settingsContainer.UpdateLoginState());
@@ -5743,6 +5747,39 @@ namespace NekoPlayer.App.Screens
         }
 
         private Color4 bgColor2;
+
+        public void GetProfileImagePalette(Google.Apis.YouTube.v3.Data.Channel channel)
+        {
+            Task.Run(async () =>
+            {
+                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channel.Id}.png");
+
+                using (var httpClient = new System.Net.Http.HttpClient())
+                {
+                    var imageBytes = await httpClient.GetByteArrayAsync(channel.Snippet.Thumbnails.High.Url);
+                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
+                }
+
+                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channel.Id}.png"));
+
+                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
+                PaletteBuilder paletteBuilder = new PaletteBuilder();
+                Palette palette = paletteBuilder.Generate(bitmapHelper);
+                int? rgbColor = palette.MutedSwatch.Rgb;
+                int? rgbTextColor = palette.MutedSwatch.TitleTextColor;
+
+                if (rgbColor != null && rgbTextColor != null)
+                {
+                    Color4 bgColor = System.Drawing.Color.FromArgb((int)rgbColor);
+                    Color4 textColor = System.Drawing.Color.FromArgb((int)rgbTextColor);
+                    Schedule(() =>
+                    {
+                        viewChannelButton.BackgroundColour = bgColor;
+                        viewChannelButton.ForegroundColour = textColor;
+                    });
+                }
+            });
+        }
 
         public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)
         {

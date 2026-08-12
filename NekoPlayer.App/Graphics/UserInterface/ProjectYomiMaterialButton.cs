@@ -42,6 +42,21 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }
         }
 
+        private Color4? foregroundColour;
+
+        /// <summary>
+        /// Sets a custom background colour to this button, replacing the provided default.
+        /// </summary>
+        public virtual Color4 ForegroundColour
+        {
+            get => foregroundColour ?? defaultForegroundColour;
+            set
+            {
+                foregroundColour = value;
+                SpriteText.FadeColour(value);
+            }
+        }
+
         private Color4 defaultBackgroundColour;
 
         /// <summary>
@@ -56,6 +71,23 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                 if (backgroundColour == null)
                     Background.FadeColour(value);
+            }
+        }
+
+        private Color4 defaultForegroundColour;
+
+        /// <summary>
+        /// Sets a default background colour to this button.
+        /// </summary>
+        protected Color4 DefaultForegroundColour
+        {
+            get => defaultForegroundColour;
+            set
+            {
+                defaultForegroundColour = value;
+
+                if (foregroundColour == null)
+                    SpriteText.FadeColour(value);
             }
         }
 
@@ -122,6 +154,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private void load()
         {
             DefaultBackgroundColour = Color4Extensions.FromHex(@"44aadd");
+            defaultForegroundColour = Color4.White;
         }
 
         protected override void LoadComplete()
