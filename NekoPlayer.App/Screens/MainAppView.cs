@@ -3300,9 +3300,9 @@ namespace NekoPlayer.App.Screens
 
                     if (api.TryToGetMineChannel() != null)
                     {
+                        GetProfileImagePalette(api.GetMineChannel());
                         commentTextBox.PlaceholderText = NekoPlayerStrings.CommentWith;
                         commentTextBox.RefreshChannelProfile(api.GetMineChannel());
-                        GetProfileImagePalette(api.GetMineChannel());
                     }
 
                     Schedule(() => settingsContainer.UpdateLoginState());
@@ -4022,12 +4022,12 @@ namespace NekoPlayer.App.Screens
                 if (isControlVisible == true)
                 {
                     isControlVisible = false;
-                    uiContainer.FadeOutFromOne(250, Easing.InQuint);
-                    uiGradientContainer.FadeOutFromOne(250, Easing.InQuint);
-                    uiContainer.BlurTo(new Vector2(4), 250, Easing.InQuint);
+                    uiContainer.FadeOutFromOne(250, Easing.InCubic);
+                    uiGradientContainer.FadeOutFromOne(250, Easing.InCubic);
+                    uiContainer.BlurTo(new Vector2(4), 250, Easing.InCubic);
                     sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
-                    bottomUIContainer.MoveToY(30, 250, Easing.InQuint);
-                    topUIContainer.MoveToY(-30, 250, Easing.InQuint);
+                    bottomUIContainer.MoveToY(30, 250, Easing.InCubic);
+                    topUIContainer.MoveToY(-30, 250, Easing.InCubic);
                 }
             }
         }
@@ -5752,7 +5752,7 @@ namespace NekoPlayer.App.Screens
         {
             Task.Run(async () =>
             {
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache").GetFullPath($"{channel.Id}.png");
+                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("profile_cache_GetProfileImagePalette").GetFullPath($"{channel.Id}.png");
 
                 using (var httpClient = new System.Net.Http.HttpClient())
                 {
