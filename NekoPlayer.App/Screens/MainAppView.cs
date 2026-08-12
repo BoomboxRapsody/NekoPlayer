@@ -276,7 +276,7 @@ namespace NekoPlayer.App.Screens
         private bool commentTextBoxContainerFocused, searchTextBoxContainerFocused;
         private Container commentTextBoxContainer, searchTextBoxContainer;
 
-        private Container topUIContainer, bottomUIContainer;
+        private Container topUIContainer, bottomUIContainer, videoMetadataDisplayBase;
 
         private Sprite playlistThumbnail;
 
@@ -485,7 +485,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Children = new Drawable[] {
-                                        new Container
+                                        videoMetadataDisplayBase = new Container
                                         {
                                             RelativeSizeAxes = Axes.Both,
                                             Padding = new MarginPadding
@@ -5818,18 +5818,24 @@ namespace NekoPlayer.App.Screens
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopLeft;
                     videoMetadataDisplay.Origin = Anchor.TopLeft;
+                    videoMetadataDisplayBase.Padding = new MarginPadding(0);
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Center:
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopCentre;
                     videoMetadataDisplay.Origin = Anchor.TopCentre;
+                    videoMetadataDisplayBase.Padding = new MarginPadding(0);
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Right:
                 {
                     videoMetadataDisplay.Anchor = Anchor.TopRight;
                     videoMetadataDisplay.Origin = Anchor.TopRight;
+                    videoMetadataDisplayBase.Padding = new MarginPadding
+                    {
+                        Right = 48,
+                    };
                     break;
                 }
             }
