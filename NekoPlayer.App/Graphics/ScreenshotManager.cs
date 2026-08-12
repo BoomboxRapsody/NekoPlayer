@@ -28,6 +28,7 @@ using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Overlays;
 using NekoPlayer.App.Overlays.OSD;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace NekoPlayer.App.Graphics
 {
@@ -165,6 +166,10 @@ namespace NekoPlayer.App.Graphics
                                 int jpeg_quality = config.Get<int>(NekoPlayerSetting.ScreenshotQuality); //92
 
                                 await image.SaveAsJpegAsync(stream, new JpegEncoder { Quality = jpeg_quality }).ConfigureAwait(false);
+                                break;
+
+                            case ScreenshotFormat.Webp:
+                                await image.SaveAsWebpAsync(stream).ConfigureAwait(false);
                                 break;
 
                             default:

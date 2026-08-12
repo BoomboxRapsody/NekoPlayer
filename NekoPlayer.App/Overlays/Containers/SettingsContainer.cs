@@ -1488,10 +1488,10 @@ namespace NekoPlayer.App.Overlays.Containers
             {
                 try
                 {
-                    if (screenshotFormat.Value == ScreenshotFormat.Png)
+                    if (screenshotFormat.Value != ScreenshotFormat.Jpg)
                         screenshotOptions.ResizeHeightTo(0, 400, Easing.OutQuint);
 
-                    screenshotOptions.AutoSizeAxes = screenshotFormat.Value != ScreenshotFormat.Png ? Axes.Y : Axes.None;
+                    screenshotOptions.AutoSizeAxes = screenshotFormat.Value == ScreenshotFormat.Jpg ? Axes.Y : Axes.None;
                 }
                 catch
                 {
