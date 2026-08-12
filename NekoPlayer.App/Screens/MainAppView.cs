@@ -4102,7 +4102,7 @@ namespace NekoPlayer.App.Screens
                     isControlVisible = false;
                     uiContainer.FadeOutFromOne(250, Easing.InCubic);
                     uiGradientContainer.FadeOutFromOne(250, Easing.InCubic);
-                    uiContainer.BlurTo(new Vector2(4), 250, Easing.InCubic);
+                    uiContainer.BlurTo(new Vector2(8), 250, Easing.InCubic);
                     sessionStatics.GetBindable<bool>(Static.IsControlVisible).Value = false;
                     bottomUIContainer.MoveToY(30, 250, Easing.InCubic);
                     topUIContainer.MoveToY(-30, 250, Easing.InCubic);
