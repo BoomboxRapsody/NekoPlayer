@@ -121,6 +121,8 @@ namespace NekoPlayer.App.Screens
 
         private SettingsItemV2 audioLanguageItem, audioLanguageItem2;
 
+        private ProjectYomiSpriteText viewCountText, dateUploadedText;
+
         private Sample overlayShowSample, overlayHideSample;
         private ProjectYomiMaterialButton reportButton;
         private FormTextBox reportComment, playlistTitleBox, editPlaylistTitleBox;
@@ -145,7 +147,7 @@ namespace NekoPlayer.App.Screens
         [Resolved]
         private AudioManager audio { get; set; } = null!;
 
-        private ProjectYomiSpriteText videoLoadingProgress, videoInfoDetails, likeCount, dislikeCount, commentCount, commentsContainerTitle, currentTime, totalTime, volumeText;
+        private ProjectYomiSpriteText videoLoadingProgress, likeCount, dislikeCount, commentCount, commentsContainerTitle, volumeText;
         private ProjectYomiSpriteText speedText;
         private LinkFlowContainer videoDescription;
         private FillFlowContainer commentContainer, searchResultContainer, playlistItemsView, myPlaylistItemsView;
@@ -1213,13 +1215,6 @@ namespace NekoPlayer.App.Screens
                                                 Masking = true,
                                                 Children = new Drawable[]
                                                 {
-                                                    videoInfoDetails = new ProjectYomiSpriteText
-                                                    {
-                                                        RelativeSizeAxes = Axes.X,
-                                                        Font = NekoPlayerApp.DefaultFont.With(weight: "Bold"),
-                                                        Colour = overlayColourProvider.Content2,
-                                                        AlwaysPresent = true,
-                                                    },
                                                     videoDescription = new LinkFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont)
                                                     {
                                                         RelativeSizeAxes = Axes.X,
@@ -1410,6 +1405,96 @@ namespace NekoPlayer.App.Screens
                                                                     Colour = overlayColourProvider.Content2,
                                                                 },
                                                                 commentCount = new ProjectYomiSpriteText
+                                                                {
+                                                                    Text = "0",
+                                                                    Colour = overlayColourProvider.Content2,
+                                                                },
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                new RoundedButtonContainer
+                                                {
+                                                    AutoSizeAxes = Axes.X,
+                                                    Height = 32,
+                                                    CornerRadius = 16,
+                                                    Masking = true,
+                                                    AlwaysPresent = true,
+                                                    Children = new Drawable[]
+                                                    {
+                                                        new Container
+                                                        {
+                                                            RelativeSizeAxes = Axes.Both,
+                                                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
+                                                            Child = new Box
+                                                            {
+                                                                RelativeSizeAxes = Axes.Both,
+                                                                Colour = overlayColourProvider.Background3,
+                                                                Alpha = 1f,
+                                                            },
+                                                        },
+                                                        new FillFlowContainer
+                                                        {
+                                                            AutoSizeAxes = Axes.X,
+                                                            RelativeSizeAxes = Axes.Y,
+                                                            Direction = FillDirection.Horizontal,
+                                                            Spacing = new Vector2(4, 0),
+                                                            Padding = new MarginPadding(8),
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new SpriteIcon
+                                                                {
+                                                                    Width = 15,
+                                                                    Height = 15,
+                                                                    Icon = FontAwesome.Regular.ChartBar,
+                                                                    Colour = overlayColourProvider.Content2,
+                                                                },
+                                                                viewCountText = new ProjectYomiSpriteText
+                                                                {
+                                                                    Text = "0",
+                                                                    Colour = overlayColourProvider.Content2,
+                                                                },
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                new RoundedButtonContainer
+                                                {
+                                                    AutoSizeAxes = Axes.X,
+                                                    Height = 32,
+                                                    CornerRadius = 16,
+                                                    Masking = true,
+                                                    AlwaysPresent = true,
+                                                    Children = new Drawable[]
+                                                    {
+                                                        new Container
+                                                        {
+                                                            RelativeSizeAxes = Axes.Both,
+                                                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
+                                                            Child = new Box
+                                                            {
+                                                                RelativeSizeAxes = Axes.Both,
+                                                                Colour = overlayColourProvider.Background3,
+                                                                Alpha = 1f,
+                                                            },
+                                                        },
+                                                        new FillFlowContainer
+                                                        {
+                                                            AutoSizeAxes = Axes.X,
+                                                            RelativeSizeAxes = Axes.Y,
+                                                            Direction = FillDirection.Horizontal,
+                                                            Spacing = new Vector2(4, 0),
+                                                            Padding = new MarginPadding(8),
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new SpriteIcon
+                                                                {
+                                                                    Width = 15,
+                                                                    Height = 15,
+                                                                    Icon = FontAwesome.Regular.CalendarAlt,
+                                                                    Colour = overlayColourProvider.Content2,
+                                                                },
+                                                                dateUploadedText = new ProjectYomiSpriteText
                                                                 {
                                                                     Text = "0",
                                                                     Colour = overlayColourProvider.Content2,
@@ -6014,6 +6099,19 @@ namespace NekoPlayer.App.Screens
 
         private string currentCommentsNextPageToken;
 
+        private void updateVideoInfoDetails(Google.Apis.YouTube.v3.Data.Video videoData)
+        {
+            string uploadDateRaw = videoData.Snippet.PublishedAtRaw;
+
+            DateTime.TryParseExact(uploadDateRaw, @"yyyy-MM-dd\THH:mm:ss\Z", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var uploadDate);
+
+            Schedule(() =>
+            {
+                viewCountText.Text = Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0);
+                dateUploadedText.Text = uploadDate.ToString();
+            });
+        }
+
         private void updateVideoMetadata(string videoId)
         {
             videoMetadataDisplay.UpdateVideo(videoId);
@@ -6087,7 +6185,8 @@ namespace NekoPlayer.App.Screens
 
                 //likeCount.Text = videoData.Statistics.LikeCount != null ? Convert.ToDouble(videoData.Statistics.LikeCount).ToMetric(decimals: 2) : Convert.ToDouble(ReturnYouTubeDislike.GetDislikes(videoId).RawLikes).ToMetric(decimals: 2);
                 //commentsContainerTitle.Text = NekoPlayerStrings.Comments(videoData.Statistics.CommentCount != null ? Convert.ToInt32(videoData.Statistics.CommentCount).ToStandardFormattedString(0) : NekoPlayerStrings.Disabled);
-                videoInfoDetails.Text = NekoPlayerStrings.VideoMetadataDescWithoutChannelName(Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), uploadDate.ToString());
+                //videoInfoDetails.Text = NekoPlayerStrings.VideoMetadataDescWithoutChannelName(Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), uploadDate.ToString());
+                updateVideoInfoDetails(videoData);
 
                 updateComments(videoId);
 
@@ -6229,7 +6328,8 @@ namespace NekoPlayer.App.Screens
                                     text.Colour = overlayColourProvider1.Background1;
                                 }));
                             }
-                            videoInfoDetails.Text = NekoPlayerStrings.VideoMetadataDescWithoutChannelName(Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), uploadDate.ToString());
+                            updateVideoInfoDetails(videoData);
+                            //videoInfoDetails.Text = NekoPlayerStrings.VideoMetadataDescWithoutChannelName(Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), uploadDate.ToString());
                         });
                     });
                 });
