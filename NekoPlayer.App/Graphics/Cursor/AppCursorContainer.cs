@@ -236,6 +236,9 @@ namespace NekoPlayer.App.Graphics.Cursor
             dragRotationState = DragRotationState.NotDragging;
         }
 
+        [Resolved]
+        private NekoPlayerConfigManager config { get; set; }
+
         private void playTapSample(double baseFrequency = 1f)
         {
             const float random_range = 0.02f;
@@ -246,7 +249,8 @@ namespace NekoPlayer.App.Graphics.Cursor
             channel.Frequency.Value = baseFrequency - (random_range / 2f) + RNG.NextDouble(random_range);
             channel.Volume.Value = baseFrequency;
 
-            //channel.Play();
+            if (config.Get<bool>(NekoPlayerSetting.PlayOverlaySFX))
+                channel.Play();
         }
 
         public partial class Cursor : Container
