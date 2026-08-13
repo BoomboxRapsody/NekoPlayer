@@ -15,9 +15,9 @@
     <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
     <PackageReference Include="Google.Apis.Auth" Version="1.75.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.74.0.1869" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.10" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.11" />
     <PackageReference Include="SharpCompress" Version="0.50.4" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.75.0.4207" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.75.0.4239" />
     <PackageReference Include="Humanizer" Version="3.0.10" />
     <PackageReference Include="PaletteNet" Version="3.0.1" />
     <PackageReference Include="McEndu.FreeTypeSharp" Version="4.1.5" />
