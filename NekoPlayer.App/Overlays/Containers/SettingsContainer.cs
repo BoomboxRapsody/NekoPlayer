@@ -186,8 +186,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
         public FormButton CheckForUpdatesButton;
 
-        private SettingsItemV2 checkForUpdatesButtonCore, reflexSettingBase;
-        private FillFlowContainer captionLangOptions;
+        private SettingsItemV2 checkForUpdatesButtonCore, reflexSettingBase, captionLangOptions;
         private Bindable<UsernameDisplayMode> usernameDisplayMode;
 
         private Bindable<UIFont> ui_font;
@@ -382,15 +381,6 @@ namespace NekoPlayer.App.Overlays.Containers
                 else
                     srv3Notice.Value = null;
             }, true);
-
-            captionEnabled.BindValueChanged(_ =>
-            {
-                captionLangOptions.ClearTransforms();
-                captionLangOptions.AutoSizeDuration = 400;
-                captionLangOptions.AutoSizeEasing = Easing.OutQuint;
-
-                updateCaptionLangOptionsVisibility();
-            });
 
             screenshotFormat.BindValueChanged(_ =>
             {
@@ -954,24 +944,13 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             Note = { BindTarget = srv3Notice },
                                                         },
-                                                        captionLangOptions = new FillFlowContainer
+                                                        captionLangOptions = new SettingsItemV2(CaptionLangDropdown = new YouTubeI18nLangDropdown
                                                         {
-                                                            Direction = FillDirection.Vertical,
-                                                            RelativeSizeAxes = Axes.X,
-                                                            AutoSizeAxes = Axes.Y,
-                                                            Masking = true,
-                                                            Spacing = new Vector2(0, 4),
-                                                            Children = new Drawable[]
-                                                            {
-                                                                new SettingsItemV2(CaptionLangDropdown = new YouTubeI18nLangDropdown
-                                                                {
-                                                                    Caption = NekoPlayerStrings.CaptionLanguage,
-                                                                    Icon = FontAwesome.Solid.Language,
-                                                                })
-                                                                {
-                                                                    ShowRevertToDefaultButton = false,
-                                                                },
-                                                            }
+                                                            Caption = NekoPlayerStrings.CaptionLanguage,
+                                                            Icon = FontAwesome.Solid.Language,
+                                                        })
+                                                        {
+                                                            ShowRevertToDefaultButton = false,
                                                         },
                                                         new SettingsItemV2(new FormEnumFontDropdown<CaptionFonts>
                                                         {
@@ -1243,16 +1222,6 @@ namespace NekoPlayer.App.Overlays.Containers
                 }
             }
 
-
-            captionEnabled.BindValueChanged(_ =>
-            {
-                captionLangOptions.ClearTransforms();
-                captionLangOptions.AutoSizeDuration = 400;
-                captionLangOptions.AutoSizeEasing = Easing.OutQuint;
-
-                updateCaptionLangOptionsVisibility();
-            }, true);
-
             screenshotFormat.BindValueChanged(_ =>
             {
                 screenshotOptions.ClearTransforms();
@@ -1310,7 +1279,6 @@ namespace NekoPlayer.App.Overlays.Containers
                     setReflexBoostNotice();
             }, true);
 
-            /*
             captionEnabled.BindValueChanged(enabled =>
             {
                 if (enabled.NewValue)
@@ -1318,7 +1286,6 @@ namespace NekoPlayer.App.Overlays.Containers
                 else
                     captionLangOptions.Hide();
             }, true);
-            */
 
             renderer.BindValueChanged(r =>
             {
@@ -1469,20 +1436,6 @@ namespace NekoPlayer.App.Overlays.Containers
                 if (size.NewValue != windowedResolution.Value)
                     windowedResolution.Value = size.NewValue;
             });
-
-            void updateCaptionLangOptionsVisibility()
-            {
-                try
-                {
-                    if (captionEnabled.Value == false)
-                        captionLangOptions.ResizeHeightTo(0, 400, Easing.OutQuint);
-
-                    captionLangOptions.AutoSizeAxes = captionEnabled.Value != false ? Axes.Y : Axes.None;
-                }
-                catch
-                {
-                }
-            }
 
             void updateScreenshotOptionsVisibility()
             {
