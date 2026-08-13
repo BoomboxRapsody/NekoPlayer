@@ -106,6 +106,10 @@ namespace NekoPlayer.App
                 {
                     return Directory.GetCurrentDirectory() + "/FFmpeg/bin/win-x64/ffmpeg.exe";
                 }
+                case RuntimeInfo.Platform.Linux:
+                {
+                    return "ffmpeg";
+                }
                 default:
                 {
                     throw new PlatformNotSupportedException();
@@ -120,6 +124,10 @@ namespace NekoPlayer.App
                 case RuntimeInfo.Platform.Windows:
                 {
                     return Directory.GetCurrentDirectory() + "/yt-dlp.exe";
+                }
+                case RuntimeInfo.Platform.Linux:
+                {
+                    return Directory.GetCurrentDirectory() + "/yt-dlp_linux";
                 }
                 default:
                 {
