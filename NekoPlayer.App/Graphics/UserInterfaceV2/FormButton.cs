@@ -180,6 +180,17 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             updateState();
         }
 
+        protected override bool OnClick(ClickEvent e)
+        {
+            if (Enabled.Value)
+            {
+                background.FlashOnCommit();
+                button.TriggerClick();
+            }
+
+            return true;
+        }
+
         private void updateState()
         {
             caption.TextColour = colourProvider.Content2;

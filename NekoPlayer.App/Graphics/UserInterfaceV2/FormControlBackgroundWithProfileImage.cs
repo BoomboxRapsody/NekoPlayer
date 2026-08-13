@@ -50,6 +50,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         private OverlayColourProvider colourProvider { get; set; } = null!;
 
         private readonly Box box, box2;
+        private readonly Box flashLayer;
 
         private readonly HoverSounds sounds;
 
@@ -75,6 +76,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 {
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreLeft,
+                },
+                flashLayer = new Box
+                {
+                    Colour = Colour4.Transparent,
+                    RelativeSizeAxes = Axes.Both,
                 },
                 sounds = new HoverSounds(),
             };
@@ -108,10 +114,21 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         [Resolved]
         private YouTubeAPI yt_api { get; set; }
 
-        public void Flash()
+        private void flash(Colour4 flashColour, double duration)
         {
-            box.FlashColour(ColourInfo.GradientHorizontal(colourProvider.Background5, colourProvider.Dark2), 800, Easing.OutQuint);
+            flashLayer.Colour = ColourInfo.GradientHorizontal(flashColour.Opacity(0), flashColour);
+            flashLayer.FadeOutFromOne(duration, Easing.OutQuint);
         }
+
+        /// <summary>
+        /// Use when indicating that a change in value or a definitive action has occurred.
+        /// </summary>
+        public void FlashOnCommit() => flash(colourProvider.Dark2, 800);
+
+        /// <summary>
+        /// Use when rejecting the user's input as incorrect.
+        /// </summary>
+        public void FlashOnInputError() => flash(Colour4.Red, 200);
 
         private void updateStyle()
         {

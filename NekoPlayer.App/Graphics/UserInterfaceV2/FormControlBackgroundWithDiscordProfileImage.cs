@@ -50,6 +50,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         private OverlayColourProvider colourProvider { get; set; } = null!;
 
         private readonly Box box, box2;
+        private readonly Box flashLayer;
 
         private readonly HoverSounds sounds;
 
@@ -75,6 +76,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                 {
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreLeft,
+                },
+                flashLayer = new Box
+                {
+                    Colour = Colour4.Transparent,
+                    RelativeSizeAxes = Axes.Both,
                 },
                 sounds = new HoverSounds(),
             };
@@ -107,9 +113,10 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         [Resolved]
         private YouTubeAPI yt_api { get; set; }
 
-        public void Flash()
+        private void flash(Colour4 flashColour, double duration)
         {
-            box.FlashColour(ColourInfo.GradientHorizontal(colourProvider.Background5, colourProvider.Dark2), 800, Easing.OutQuint);
+            flashLayer.Colour = ColourInfo.GradientHorizontal(flashColour.Opacity(0), flashColour);
+            flashLayer.FadeOutFromOne(duration, Easing.OutQuint);
         }
 
         private void updateStyle()

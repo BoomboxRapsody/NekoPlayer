@@ -16,7 +16,6 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Extensions.ObjectExtensions;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
@@ -129,7 +128,6 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
         public Func<T, LocalisableString> TooltipFormat { get; init; }
 
         private FormControlBackground background = null!;
-        private Box flashLayer = null!;
         private FormTextBox.InnerTextBox textBox = null!;
         private ProjectYomiSpriteText valueLabel = null!;
         private FormFieldCaption captionText = null!;
@@ -204,18 +202,9 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
 
-            Masking = true;
-            CornerRadius = 5;
-            CornerExponent = 2.5f;
-
             InternalChildren = new Drawable[]
             {
                 background = new FormControlBackground(),
-                flashLayer = new Box
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = Colour4.Transparent,
-                },
                 new Container
                 {
                     RelativeSizeAxes = Axes.X,
@@ -263,11 +252,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                                             AlwaysPresent = true,
                                             CommitOnFocusLost = true,
                                             SelectAllOnFocus = true,
-                                            OnInputError = () =>
-                                            {
-                                                flashLayer.Colour = ColourInfo.GradientVertical(colours.Red3.Opacity(0), colours.Red3);
-                                                flashLayer.FadeOutFromOne(200, Easing.OutQuint);
-                                            },
+                                            OnInputError = background.FlashOnInputError,
                                             TabbableContentContainer = tabbableContentContainer,
                                         },
                                         valueLabel = new TruncatingSpriteText
@@ -335,7 +320,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             currentNumberInstantaneous.TriggerChange();
             current.Value = currentNumberInstantaneous.Value;
 
-            background.Flash();
+            background.FlashOnCommit();
         }
 
         private void tryUpdateSliderFromTextBox()
