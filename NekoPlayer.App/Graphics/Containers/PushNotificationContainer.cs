@@ -26,8 +26,11 @@ namespace NekoPlayer.App.Graphics.Containers
         private Container content;
         private IconButton closeBtn;
 
-        public PushNotificationContainer(IconUsage icon, Color4 iconColour, LocalisableString title, LocalisableString desc)
+        public bool DoNotMoveToNotificationCenter;
+
+        public PushNotificationContainer(IconUsage icon, Color4 iconColour, LocalisableString title, LocalisableString desc, bool doNotMoveToNotificationCenter = false)
         {
+            DoNotMoveToNotificationCenter = doNotMoveToNotificationCenter;
             Enabled.Value = true;
             AutoSizeAxes = Axes.Y;
             Width = 380;
