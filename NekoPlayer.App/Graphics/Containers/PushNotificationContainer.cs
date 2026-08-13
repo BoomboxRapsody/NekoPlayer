@@ -26,7 +26,7 @@ namespace NekoPlayer.App.Graphics.Containers
         public PushNotificationContainer(IconUsage icon, Color4 iconColour, LocalisableString title, LocalisableString desc)
         {
             Height = 64;
-            Width = 280;
+            Width = 380;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
 

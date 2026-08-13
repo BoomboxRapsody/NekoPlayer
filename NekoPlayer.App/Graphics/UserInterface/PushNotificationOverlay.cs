@@ -31,7 +31,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             Add(content = new BufferedContainer
             {
-                Width = 296,
+                Width = 396,
                 AutoSizeAxes = Axes.Y,
                 Masking = true,
                 CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS + 24,
