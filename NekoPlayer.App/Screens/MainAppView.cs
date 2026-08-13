@@ -4204,6 +4204,8 @@ namespace NekoPlayer.App.Screens
             if (playOverlaySFX.Value)
                 overlayShowSample.Play();
 
+            videoContainer.BlurTo(new Vector2(6), 250, Easing.OutQuart);
+
             if (overlayContent is BottomOverlayContainer)
             {
                 isAnyOverlayOpen.Value = true;
@@ -4286,6 +4288,8 @@ namespace NekoPlayer.App.Screens
 
             if (playOverlaySFX.Value)
                 overlayHideSample.Play();
+
+            videoContainer.BlurTo(new Vector2(0), 250, Easing.OutQuart);
 
             if (overlayContent is BottomOverlayContainer)
             {
