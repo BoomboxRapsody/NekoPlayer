@@ -179,7 +179,7 @@ namespace NekoPlayer.App
             onScreenDisplay.BeginTracking(this, LocalConfig);
             onScreenDisplay.BeginTracking(this, AudioEffectsConfig);
 
-            loadComponentSingleFile(onScreenDisplay, overlayContainer.Add, true);
+            loadComponentSingleFile(onScreenDisplay, topMostOverlayContent.Add, true);
 
             loadComponentSingleFile(notificationOverlay, overlayContainer.Add, true);
 
