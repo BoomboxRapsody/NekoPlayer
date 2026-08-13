@@ -896,4 +896,7 @@
   <data name="screenshot_quality" xml:space="preserve">
     <value>스크린샷 품질</value>
   </data>
+  <data name="notifications" xml:space="preserve">
+    <value>알림</value>
+  </data>
 </root>

@@ -1402,6 +1402,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString ScreenshotQuality => new TranslatableString(getKey(@"screenshot_quality"), @"Screenshot quality");
 
+        /// <summary>
+        /// "Notifications"
+        /// </summary>
+        public static LocalisableString Notifications => new TranslatableString(getKey(@"notifications"), @"Notifications");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

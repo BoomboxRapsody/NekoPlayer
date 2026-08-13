@@ -3,6 +3,7 @@
 
 using System;
 using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Graphics.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -11,6 +12,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
+using osuTK;
 using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.Containers
@@ -22,9 +24,11 @@ namespace NekoPlayer.App.Graphics.Containers
         private Box bg, hover;
         private ProjectYomiSpriteText titleText, descText;
         private Container content;
+        private IconButton closeBtn;
 
         public PushNotificationContainer(IconUsage icon, Color4 iconColour, LocalisableString title, LocalisableString desc)
         {
+            Enabled.Value = true;
             Height = 64;
             Width = 380;
             Anchor = Anchor.Centre;
@@ -110,6 +114,20 @@ namespace NekoPlayer.App.Graphics.Containers
                             }
                         }
                     },
+                    closeBtn = new IconButton
+                    {
+                        Enabled = { Value = true },
+                        Origin = Anchor.TopRight,
+                        Anchor = Anchor.TopRight,
+                        Size = new Vector2(35, 35),
+                        IconScale = new Vector2(0.8f),
+                        Margin = new MarginPadding(14),
+                        Icon = FontAwesome.Solid.Times,
+                        Action = () =>
+                        {
+                            CloseNotification();
+                        }
+                    },
                     hover = new Box
                     {
                         RelativeSizeAxes = Axes.Both,
@@ -127,6 +145,17 @@ namespace NekoPlayer.App.Graphics.Containers
             bg.Colour = overlayColourProvider.Background4;
             titleText.Colour = overlayColourProvider.Content2;
             descText.Colour = overlayColourProvider.Foreground1;
+            closeBtn.BackgroundColour = overlayColourProvider.Background3;
+        }
+
+        public void ShowCloseButton()
+        {
+            closeBtn.Show();
+        }
+
+        public void HideCloseButton()
+        {
+            closeBtn.Hide();
         }
 
         protected override bool OnMouseDown(MouseDownEvent e)
@@ -146,6 +175,11 @@ namespace NekoPlayer.App.Graphics.Containers
             hover.FadeTo(0.1f, 500, Easing.OutQuint);
 
             return base.OnHover(e);
+        }
+
+        private void CloseNotification()
+        {
+            this.FadeOut(500, Easing.InQuint).OnComplete(_ => Expire());
         }
 
         protected override void OnHoverLost(HoverLostEvent e)

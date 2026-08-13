@@ -896,4 +896,7 @@ Recomendado tener En, apagar sólo si experimenta problemas.</value>
   <data name="screenshot_quality" xml:space="preserve">
     <value>Calidad de pantalla</value>
   </data>
+  <data name="notifications" xml:space="preserve">
+    <value>Notificaciones</value>
+  </data>
 </root>

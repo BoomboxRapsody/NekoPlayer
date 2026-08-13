@@ -113,6 +113,7 @@ namespace NekoPlayer.App.Input.Binding
             new KeyBinding(new[] { InputKey.Shift, InputKey.F6 }, GlobalAction.ToggleChorusEffect),
 
             new KeyBinding(new[] { InputKey.Control, InputKey.I }, GlobalAction.ToggleControlsPinState),
+            new KeyBinding(new[] { InputKey.Control, InputKey.N }, GlobalAction.Notifications),
         };
     }
 
@@ -184,5 +185,6 @@ namespace NekoPlayer.App.Input.Binding
         ToggleChorusEffect,
 
         ToggleControlsPinState,
+        Notifications,
     }
 }

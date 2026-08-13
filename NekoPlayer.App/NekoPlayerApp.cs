@@ -14,9 +14,12 @@ using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Graphics.UserInterface;
+using NekoPlayer.App.Input.Binding;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Overlays;
+using NekoPlayer.App.Overlays.Containers;
+using NekoPlayer.App.Overlays.OSD;
 using NekoPlayer.App.Screens;
 using NekoPlayer.App.Updater;
 using osu.Framework;
@@ -29,6 +32,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
@@ -193,6 +197,25 @@ namespace NekoPlayer.App
 
             applySafeAreaConsiderations = LocalConfig.GetBindable<bool>(NekoPlayerSetting.SafeAreaConsiderations);
             applySafeAreaConsiderations.BindValueChanged(apply => SafeAreaContainer.SafeAreaOverrideEdges = apply.NewValue ? SafeAreaOverrideEdges : Edges.All, true);
+        }
+
+        public bool OnPressed(KeyBindingPressEvent<GlobalAction> e)
+        {
+            if (e.Repeat)
+                return false;
+
+            switch (e.Action)
+            {
+                case GlobalAction.Notifications:
+                    if (notificationOverlay.IsOpened.Value)
+                        notificationOverlay.HideOverlay();
+                    else
+                        notificationOverlay.OpenOverlay();
+
+                    return true;
+            }
+
+            return false;
         }
 
         private void replaceDefaultFont()

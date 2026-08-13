@@ -2,10 +2,15 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
+using NekoPlayer.App.Config;
 using NekoPlayer.App.Graphics.Containers;
+using NekoPlayer.App.Graphics.Sprites;
+using NekoPlayer.App.Localisation;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -13,14 +18,41 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Threading;
 using osuTK;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
     public partial class PushNotificationOverlay : Container
     {
-        private Box bg;
-        private FillFlowContainer notifications;
-        private BufferedContainer content;
+        private Box bg, bg2;
+        private FillFlowContainer notifications, notifications2;
+        private BufferedContainer content, overlayContainer;
+        private ProjectYomiSpriteText titleText;
+        private IconButton closeBtn;
+
+        [Resolved]
+        private NekoPlayerConfigManager appGlobalConfig { get; set; }
+
+        [Resolved]
+        private ISampleStore sampleStoreGlobal { get; set; }
+
+        private Sample overlayShowSample, overlayHideSample;
+
+        private void refreshSFX()
+        {
+            if (appGlobalConfig.Get<SFXType>(NekoPlayerSetting.OverlaySFXType) == SFXType.Legacy)
+            {
+                overlayShowSample = sampleStoreGlobal.Get(@"overlay-pop-in");
+                overlayHideSample = sampleStoreGlobal.Get(@"overlay-pop-out");
+            }
+            else
+            {
+                overlayShowSample = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-in");
+                overlayHideSample = sampleStoreGlobal.Get(@"New_Fix/overlay-pop-out");
+            }
+        }
+
+        private Container overlayFadeContainer;
 
         public PushNotificationOverlay()
         {
@@ -28,6 +60,87 @@ namespace NekoPlayer.App.Graphics.UserInterface
             RelativeSizeAxes = Axes.Both;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
+
+            Add(overlayFadeContainer = new OverlayFadeContainer
+            {
+                RelativeSizeAxes = Axes.Both,
+                ClickAction = _ => HideOverlay(),
+                Child = new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = Color4.Black,
+                }
+            });
+
+            Add(overlayContainer = new BufferedContainer
+            {
+                Width = 396 + 32,
+                RelativeSizeAxes = Axes.Y,
+                Origin = Anchor.TopRight,
+                Anchor = Anchor.TopRight,
+                Padding = new MarginPadding(16),
+                AutoSizeDuration = 400,
+                AutoSizeEasing = Easing.OutQuint,
+                Children = new Drawable[]
+                {
+                    titleText = new ProjectYomiSpriteText
+                    {
+                        Origin = Anchor.TopLeft,
+                        Anchor = Anchor.TopLeft,
+                        Text = NekoPlayerStrings.Notifications,
+                        Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
+                    },
+                    closeBtn = new IconButton
+                    {
+                        Enabled = { Value = true },
+                        Origin = Anchor.TopRight,
+                        Anchor = Anchor.TopRight,
+                        Size = new Vector2(35, 35),
+                        IconScale = new Vector2(0.8f),
+                        Icon = FontAwesome.Solid.Times,
+                        Action = () =>
+                        {
+                           HideOverlay();
+                        }
+                    },
+                    new Container {
+                        RelativeSizeAxes = Axes.Both,
+                        Padding = new MarginPadding { Top = 48 },
+                        Children = new Drawable[]
+                        {
+                            new Container
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Masking = true,
+                                CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS + 24,
+                                Children = new Drawable[]
+                                {
+                                    bg2 = new Box
+                                    {
+                                        RelativeSizeAxes = Axes.Both,
+                                    },
+                                    new ProjectYomiScrollContainer {
+                                        RelativeSizeAxes = Axes.Both,
+                                        Masking = true,
+                                        Children = new Drawable[]
+                                        {
+                                            notifications2 = new FillFlowContainer
+                                            {
+                                                RelativeSizeAxes = Axes.X,
+                                                AutoSizeAxes = Axes.Y,
+                                                Direction = FillDirection.Vertical,
+                                                Padding = new MarginPadding(8),
+                                                Spacing = new Vector2(8),
+                                                Children = Array.Empty<Drawable>(),
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                    }
+                }
+            });
 
             Add(content = new BufferedContainer
             {
@@ -59,19 +172,80 @@ namespace NekoPlayer.App.Graphics.UserInterface
             });
         }
 
+        private Bindable<SFXType> overlaySFXType;
+        private Bindable<bool> playOverlaySFX;
+
         [BackgroundDependencyLoader]
-        private void load(OverlayColourProvider overlayColourProvider)
+        private void load(OverlayColourProvider overlayColourProvider, NekoPlayerConfigManager appConfig)
         {
+            playOverlaySFX = appConfig.GetBindable<bool>(NekoPlayerSetting.PlayOverlaySFX);
+            overlaySFXType = appConfig.GetBindable<SFXType>(NekoPlayerSetting.OverlaySFXType);
+            overlayFadeContainer.Hide();
+
+            overlaySFXType.BindValueChanged(sfx =>
+            {
+                refreshSFX();
+            }, true);
+
             bg.Colour = overlayColourProvider.Background5;
+            bg2.Colour = overlayColourProvider.Background5;
+            titleText.Colour = overlayColourProvider.Content2;
+            closeBtn.BackgroundColour = overlayColourProvider.Background5;
             content.MoveToX(100);
             content.FadeOut();
+            overlayContainer.MoveToX(100);
+            overlayContainer.FadeOut();
         }
 
         [Resolved]
         private AudioManager audio { get; set; }
 
-        private TransformSequence<BufferedContainer> fadeIn;
+        private TransformSequence<BufferedContainer> fadeIn, fadeIn2, fadeOut2;
         private ScheduledDelegate fadeOut;
+
+        public Bindable<bool> IsOpened = new Bindable<bool>(false);
+
+        public void OpenOverlay()
+        {
+            if (IsOpened.Value == false)
+            {
+                IsOpened.Value = true;
+
+                if (playOverlaySFX.Value)
+                    overlayShowSample.Play();
+
+                overlayFadeContainer.FadeTo(0.5f, 250, Easing.OutQuart);
+
+                fadeIn2 = overlayContainer.Animate(
+                    b => b.BlurTo(new Vector2(0), 250, Easing.OutExpo),
+                    b => b.FadeIn(500, Easing.OutQuint),
+                    b => b.MoveToX(0f, 500, Easing.OutQuint)
+                );
+
+                fadeIn2.Finally(_ => fadeIn2 = null);
+            }
+        }
+
+        public void HideOverlay()
+        {
+            if (IsOpened.Value == true)
+            {
+                IsOpened.Value = false;
+
+                if (playOverlaySFX.Value)
+                    overlayHideSample.Play();
+
+                overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
+
+                fadeOut2 = overlayContainer.Animate(
+                    b => b.BlurTo(new Vector2(15), 250, Easing.OutQuint),
+                    b => b.FadeOutFromOne(250, Easing.OutQuint),
+                    b => b.MoveToX(100, 250, Easing.OutQuint)
+                );
+
+                fadeOut2.Finally(_ => fadeOut2 = null);
+            }
+        }
 
         public void Push(PushNotificationContainer container)
         {
@@ -81,6 +255,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 sample.Play();
 
                 notifications.Add(container);
+                container.HideCloseButton();
 
                 // avoid starting a new fade-in if one is already active.
                 if (fadeIn == null)
@@ -103,9 +278,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         b => b.MoveToX(100, 250, Easing.OutQuint)
                     );
 
-                    foreach (var item in notifications.AliveChildren)
+                    foreach (PushNotificationContainer item in notifications.AliveChildren)
                     {
-                        Scheduler.AddDelayed(() => item.Expire(), 250);
+                        if (item != null)
+                        {
+                            Scheduler.AddDelayed(() =>
+                            {
+                                notifications.Remove(item, false);
+                                notifications2.Add(item);
+                                item.ShowCloseButton();
+                            }, 250);
+                        }
                     }
                 }, 3500);
             });

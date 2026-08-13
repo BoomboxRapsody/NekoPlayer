@@ -101,7 +101,10 @@ namespace NekoPlayer.Desktop.Updater
                     game.UpdateButtonEnabled.Value = false;
                 }, cancellationToken).ConfigureAwait(false);
                 game.UpdateManagerVersionText.Value = NekoPlayerStrings.RestartRequired;
-                pushNotificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Sync, Color4.Green, NekoPlayerStrings.RestartRequired, NekoPlayerStrings.Updates));
+                pushNotificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Sync, Color4.Green, NekoPlayerStrings.RestartRequired, NekoPlayerStrings.Updates)
+                {
+                    Action = () => restartToApplyUpdate(updateManager, update),
+                });
                 game.RestartRequired.Value = true;
                 game.RestartAction = () => restartToApplyUpdate(updateManager, update);
                 game.UpdateButtonEnabled.Value = true;

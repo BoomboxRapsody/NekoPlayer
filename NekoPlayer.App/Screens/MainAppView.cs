@@ -3102,6 +3102,23 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                         new MenuButtonItem
                                                         {
+                                                            Enabled = { Value = false },
+                                                            Origin = Anchor.TopRight,
+                                                            Anchor = Anchor.TopRight,
+                                                            Size = new Vector2(1, 45),
+                                                            RelativeSizeAxes = Axes.X,
+                                                            Icon = FontAwesome.Solid.Bell,
+                                                            IconScale = new Vector2(1.2f),
+                                                            Text = NekoPlayerStrings.Notifications,
+                                                            Hotkey = new Hotkey(GlobalAction.Notifications),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
+                                                            Action = () =>
+                                                            {
+                                                                notificationOverlay.OpenOverlay();
+                                                            },
+                                                        },
+                                                        new MenuButtonItem
+                                                        {
                                                             Enabled = { Value = true },
                                                             Origin = Anchor.TopRight,
                                                             Anchor = Anchor.TopRight,
