@@ -237,7 +237,7 @@ namespace NekoPlayer.App.Overlays
 
                 fadeIn2 = overlayContainer.Animate(
                     b => b.BlurTo(new Vector2(0), 250, Easing.OutExpo),
-                    b => b.FadeIn(500, Easing.OutQuart),
+                    b => b.FadeIn(250, Easing.OutQuart),
                     b => b.MoveToX(0f, 500, Easing.OutExpo)
                 );
 
