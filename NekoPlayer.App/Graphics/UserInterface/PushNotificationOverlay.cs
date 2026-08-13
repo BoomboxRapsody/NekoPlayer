@@ -84,26 +84,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 AutoSizeEasing = Easing.OutQuint,
                 Children = new Drawable[]
                 {
-                    titleText = new ProjectYomiSpriteText
-                    {
-                        Origin = Anchor.TopLeft,
-                        Anchor = Anchor.TopLeft,
-                        Text = NekoPlayerStrings.Notifications,
-                        Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
-                    },
-                    closeBtn = new IconButton
-                    {
-                        Enabled = { Value = true },
-                        Origin = Anchor.TopRight,
-                        Anchor = Anchor.TopRight,
-                        Size = new Vector2(35, 35),
-                        IconScale = new Vector2(0.8f),
-                        Icon = FontAwesome.Solid.Times,
-                        Action = () =>
-                        {
-                           HideOverlay();
-                        }
-                    },
                     new OverlayContainer {
                         RelativeSizeAxes = Axes.Both,
                         Padding = new MarginPadding { Top = 48 },
@@ -139,7 +119,27 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 }
                             }
                         },
-                    }
+                    },
+                    titleText = new ProjectYomiSpriteText
+                    {
+                        Origin = Anchor.TopLeft,
+                        Anchor = Anchor.TopLeft,
+                        Text = NekoPlayerStrings.Notifications,
+                        Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
+                    },
+                    closeBtn = new IconButton
+                    {
+                        Enabled = { Value = true },
+                        Origin = Anchor.TopRight,
+                        Anchor = Anchor.TopRight,
+                        Size = new Vector2(35, 35),
+                        IconScale = new Vector2(0.8f),
+                        Icon = FontAwesome.Solid.Times,
+                        Action = () =>
+                        {
+                           HideOverlay();
+                        }
+                    },
                 }
             });
 
