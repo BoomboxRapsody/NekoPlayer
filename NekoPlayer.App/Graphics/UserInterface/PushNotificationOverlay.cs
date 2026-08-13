@@ -73,72 +73,85 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 }
             });
 
-            Add(overlayContainer = new BufferedContainer
+            Add(overlayContainer = new OverlayContainer
             {
                 Width = 396 + 32,
                 RelativeSizeAxes = Axes.Y,
                 Origin = Anchor.TopRight,
                 Anchor = Anchor.TopRight,
-                Padding = new MarginPadding(16),
                 AutoSizeDuration = 400,
                 AutoSizeEasing = Easing.OutQuint,
+                Masking = true,
+                CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS, NekoPlayerApp.UI_CORNER_RADIUS, 0, 0),
                 Children = new Drawable[]
                 {
-                    new OverlayContainer {
+                    new OverlayBackground
+                    {
                         RelativeSizeAxes = Axes.Both,
-                        Padding = new MarginPadding { Top = 48 },
+                    },
+                    new Container
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Padding = new MarginPadding(16),
                         Children = new Drawable[]
                         {
-                            new Container
-                            {
+                            new OverlayContainer {
                                 RelativeSizeAxes = Axes.Both,
-                                Masking = true,
-                                CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS + 24,
+                                Padding = new MarginPadding { Top = 48 },
                                 Children = new Drawable[]
                                 {
-                                    bg2 = new Box
+                                    new Container
                                     {
                                         RelativeSizeAxes = Axes.Both,
-                                    },
-                                    new ProjectYomiScrollContainer {
-                                        RelativeSizeAxes = Axes.Both,
                                         Masking = true,
+                                        CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS + 24,
                                         Children = new Drawable[]
                                         {
-                                            notifications2 = new FillFlowContainer
+                                            bg2 = new Box
                                             {
-                                                RelativeSizeAxes = Axes.X,
-                                                AutoSizeAxes = Axes.Y,
-                                                Direction = FillDirection.Vertical,
-                                                Padding = new MarginPadding(8),
-                                                Spacing = new Vector2(8),
-                                                Children = Array.Empty<Drawable>(),
+                                                RelativeSizeAxes = Axes.Both,
+                                            },
+                                            new ProjectYomiScrollContainer {
+                                                RelativeSizeAxes = Axes.Both,
+                                                Masking = true,
+                                                Children = new Drawable[]
+                                                {
+                                                    notifications2 = new FillFlowContainer
+                                                    {
+                                                        RelativeSizeAxes = Axes.X,
+                                                        AutoSizeAxes = Axes.Y,
+                                                        Direction = FillDirection.Vertical,
+                                                        Padding = new MarginPadding(8),
+                                                        Spacing = new Vector2(8),
+                                                        Children = Array.Empty<Drawable>(),
+                                                    }
+                                                }
                                             }
                                         }
                                     }
+                                },
+                            },
+                            titleText = new ProjectYomiSpriteText
+                            {
+                                Origin = Anchor.TopLeft,
+                                Anchor = Anchor.TopLeft,
+                                Text = NekoPlayerStrings.Notifications,
+                                Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
+                            },
+                            closeBtn = new IconButton
+                            {
+                                Enabled = { Value = true },
+                                Origin = Anchor.TopRight,
+                                Anchor = Anchor.TopRight,
+                                Size = new Vector2(35, 35),
+                                IconScale = new Vector2(0.8f),
+                                Icon = FontAwesome.Solid.Times,
+                                Action = () =>
+                                {
+                                   HideOverlay();
                                 }
-                            }
+                            },
                         },
-                    },
-                    titleText = new ProjectYomiSpriteText
-                    {
-                        Origin = Anchor.TopLeft,
-                        Anchor = Anchor.TopLeft,
-                        Text = NekoPlayerStrings.Notifications,
-                        Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
-                    },
-                    closeBtn = new IconButton
-                    {
-                        Enabled = { Value = true },
-                        Origin = Anchor.TopRight,
-                        Anchor = Anchor.TopRight,
-                        Size = new Vector2(35, 35),
-                        IconScale = new Vector2(0.8f),
-                        Icon = FontAwesome.Solid.Times,
-                        Action = () =>
-                        {
-                           HideOverlay();
-                        }
                     },
                 }
             });
@@ -189,9 +202,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }, true);
 
             bg.Colour = overlayColourProvider.Background5;
-            bg2.Colour = overlayColourProvider.Background5;
+            bg2.Colour = overlayColourProvider.Background4;
             titleText.Colour = overlayColourProvider.Content2;
-            closeBtn.BackgroundColour = overlayColourProvider.Background5;
+            closeBtn.BackgroundColour = overlayColourProvider.Background4;
             content.MoveToX(100);
             content.FadeOut();
             overlayContainer.MoveToX(100);
