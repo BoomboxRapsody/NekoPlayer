@@ -3102,7 +3102,7 @@ namespace NekoPlayer.App.Screens
                                                         },
                                                         new MenuButtonItem
                                                         {
-                                                            Enabled = { Value = false },
+                                                            Enabled = { Value = true },
                                                             Origin = Anchor.TopRight,
                                                             Anchor = Anchor.TopRight,
                                                             Size = new Vector2(1, 45),
@@ -3114,6 +3114,7 @@ namespace NekoPlayer.App.Screens
                                                             RoundCorner = new CornersInfo(8, 8, 8, 8),
                                                             Action = () =>
                                                             {
+                                                                hideOverlays();
                                                                 notificationOverlay.OpenOverlay();
                                                             },
                                                         },
@@ -4201,6 +4202,9 @@ namespace NekoPlayer.App.Screens
 
         private void showOverlayContainer(OverlayContainer overlayContent)
         {
+            if (notificationOverlay.IsOpened.Value)
+                notificationOverlay.HideOverlay();
+
             /*
             duckOperation = game.Duck(new DuckParameters
             {
@@ -5136,6 +5140,16 @@ namespace NekoPlayer.App.Screens
 
                 case GlobalAction.ToggleChorusEffect:
                     chorusEnabled.Value = !chorusEnabled.Value;
+                    return true;
+
+                case GlobalAction.Notifications:
+                    hideOverlays();
+
+                    if (notificationOverlay.IsOpened.Value)
+                        notificationOverlay.HideOverlay();
+                    else
+                        notificationOverlay.OpenOverlay();
+
                     return true;
             }
 
