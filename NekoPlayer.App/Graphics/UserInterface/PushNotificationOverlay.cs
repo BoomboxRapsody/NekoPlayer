@@ -253,7 +253,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             Schedule(() =>
             {
                 Sample sample = audio.Samples.Get("NotificationPush");
-                sample.Play();
+
+                if (playOverlaySFX.Value)
+                    sample.Play();
 
                 notifications.Add(container);
                 container.HideCloseButton();
