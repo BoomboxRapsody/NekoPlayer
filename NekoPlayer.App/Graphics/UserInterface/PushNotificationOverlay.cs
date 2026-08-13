@@ -136,6 +136,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 Origin = Anchor.TopLeft,
                                 Anchor = Anchor.TopLeft,
                                 Text = NekoPlayerStrings.Notifications,
+                                Margin = new MarginPadding(2),
                                 Font = NekoPlayerApp.DefaultFont.With(size: 30, weight: "ExtraBold"),
                             },
                             closeBtn = new IconButton
