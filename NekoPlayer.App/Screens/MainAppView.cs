@@ -4126,7 +4126,7 @@ namespace NekoPlayer.App.Screens
             }
         }
 
-        public override bool CursorVisible => (isControlVisible || isAnyOverlayOpen.Value);
+        public override bool CursorVisible => (isControlVisible || isAnyOverlayOpen.Value || notificationOverlay.IsOpened.Value);
 
         private void showControls()
         {
