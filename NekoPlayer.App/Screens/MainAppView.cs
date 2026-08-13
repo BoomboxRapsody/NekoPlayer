@@ -98,7 +98,7 @@ namespace NekoPlayer.App.Screens
         private SettingsContainer settingsContainer;
         private OverlayContainer loadVideoContainer, videoDescriptionContainer, commentsContainer, searchContainer, reportAbuseOverlay, loadPlaylistContainer, unsubscribeDialog, addPlaylistOverlay, videoSaveLocationOverlay, myChannelDialog, editPlaylistOverlay, downloadReadyContainer, downloadOverlay, downloadCompletedOverlay;
         private SideOverlayContainer playlistOverlay, audioEffectsOverlay, menuOverlay, myPlaylistsOverlay, exitOptions;
-        private IconButton menuOverlayShow;
+        private IconButton menuOverlayShow, editChannelButton;
         private MenuButtonItem loadBtnOverlayShow, settingsOverlayShowBtn, commentOpenButton, searchOpenButton, reportOpenButton, playlistOpenButton, audioEffectsOpenButton, saveVideoOpenButton, newPlaylistOpenButton, myPlaylistsOpenButton;
         private VideoMetadataDisplayWithoutProfile videoMetadataDisplay;
         private VideoMetadataDisplay videoMetadataDisplayDetails;
@@ -3259,6 +3259,17 @@ namespace NekoPlayer.App.Screens
                                     Anchor = Anchor.Centre,
                                     AlwaysPresent = true,
                                 },
+                                editChannelButton = new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.CentreRight,
+                                    Anchor = Anchor.CentreRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding() { Right = 24 },
+                                    Icon = FontAwesome.Solid.Edit,
+                                    BackgroundColour = overlayColourProvider.Background3,
+                                },
                                 logoutButton = new RoundedAltButton
                                 {
                                     Enabled = { Value = true },
@@ -3382,6 +3393,17 @@ namespace NekoPlayer.App.Screens
 
                             if (wth != null)
                                 app.Host.OpenUrlExternally($"https://www.youtube.com/channel/{wth.Id}");
+                        }
+                    };
+
+                    editChannelButton.Action = () =>
+                    {
+                        if (googleOAuth2.SignedIn.Value)
+                        {
+                            hideOverlays();
+
+                            if (wth != null)
+                                app.Host.OpenUrlExternally($"https://studio.youtube.com/channel/{wth.Id}/editing/profile");
                         }
                     };
 
