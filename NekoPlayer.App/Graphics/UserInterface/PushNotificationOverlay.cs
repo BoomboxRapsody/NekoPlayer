@@ -212,6 +212,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         [Resolved]
+        private OverlayColourProvider overlayColourProvider1 { get; set; }
+
+        [Resolved]
         private AudioManager audio { get; set; }
 
         private TransformSequence<BufferedContainer> fadeIn, fadeIn2, fadeOut2;
@@ -302,6 +305,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             {
                                 notifications.Remove(item, false);
                                 notifications2.Add(item);
+                                item.SetBackgroundColour(overlayColourProvider1.Background3);
                                 item.ShowCloseButton();
                             }, 250);
                         }

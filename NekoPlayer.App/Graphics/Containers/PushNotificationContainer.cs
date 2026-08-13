@@ -139,6 +139,11 @@ namespace NekoPlayer.App.Graphics.Containers
             });
         }
 
+        public void SetBackgroundColour(Color4 color)
+        {
+            bg.Colour = color;
+        }
+
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
