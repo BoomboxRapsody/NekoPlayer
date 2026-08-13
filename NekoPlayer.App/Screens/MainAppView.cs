@@ -3292,6 +3292,20 @@ namespace NekoPlayer.App.Screens
             };
             #endregion
 
+            prevVideoButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
+            nextVideoButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
+
+            repeatButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
+            pinButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
+            playPause.SetEnabledValue2(true);
+            captionButton.SetEnabledValue2(true);
+            videoSettingsButton.SetEnabledValue2(true);
+            playlistButton.SetEnabledValue2(true);
+            quickCommentOpenButton.SetEnabledValue2(true);
+
+            quickLikeButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
+            quickDislikeButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
+
             thumbnailContainer.BlurTo(Vector2.Divide(new Vector2(10, 10), 1));
 
             RegisterOverlayContainer(loadVideoContainer);
@@ -3437,20 +3451,6 @@ namespace NekoPlayer.App.Screens
             });
 
             commentsDisabled = true;
-
-            prevVideoButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
-            nextVideoButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
-
-            repeatButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
-            pinButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
-            playPause.SetEnabledValue2(true);
-            captionButton.SetEnabledValue2(true);
-            videoSettingsButton.SetEnabledValue2(true);
-            playlistButton.SetEnabledValue2(true);
-            quickCommentOpenButton.SetEnabledValue2(true);
-
-            quickLikeButton.SetCornerRadius(new CornersInfo(15, 15, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f));
-            quickDislikeButton.SetCornerRadius(new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 15, 15));
 
             searchButton.BackgroundColour = commentSendButton.BackgroundColour = overlayColourProvider.Background3;
 
