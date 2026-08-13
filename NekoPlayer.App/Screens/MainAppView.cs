@@ -1617,12 +1617,13 @@ namespace NekoPlayer.App.Screens
                                                 if (string.IsNullOrEmpty(commentTextBox.Text))
                                                     return;
 
-                                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
+                                                //ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
                                                 api.SendComment(videoId, commentTextBox.Text);
 
                                                 Scheduler.AddDelayed(() => updateComments(videoId), 2000);
 
-                                                Schedule(() => onScreenDisplay.Display(toast));
+                                                //Schedule(() => onScreenDisplay.Display(toast));
+                                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Regular.Comment, Color4.White, NekoPlayerStrings.CommentAdded, NekoPlayerStrings.General));
 
                                                 commentTextBox.Text = string.Empty;
                                             }
@@ -3981,9 +3982,12 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Solid.Bookmark;
 
+                /*
                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoSavedToPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
+                */
+                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.List, Color4.Green, NekoPlayerStrings.VideoSavedToPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), NekoPlayerStrings.Playlists));
 
                 await Task.Delay(1000);
 
@@ -4005,9 +4009,12 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Regular.Bookmark;
 
+                /*
                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoRemovedFromPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
+                */
+                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.List, Color4.Red, NekoPlayerStrings.VideoRemovedFromPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), NekoPlayerStrings.Playlists));
 
                 await Task.Delay(1000);
 
@@ -6156,9 +6163,12 @@ namespace NekoPlayer.App.Screens
 
                                     Logger.Log("UnsubscribeChannel()");
 
+                                    /*
                                     ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionRemoved, FontAwesome.Solid.SignOutAlt);
 
                                     Schedule(() => onScreenDisplay.Display(toast));
+                                    */
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.SignOutAlt, Color4.Red, NekoPlayerStrings.SubscriptionRemoved, NekoPlayerStrings.General));
                                     Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
                                 };
 
@@ -6174,9 +6184,12 @@ namespace NekoPlayer.App.Screens
 
                                 Logger.Log("SubscribeChannel()");
 
+                                /*
                                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionAdded, FontAwesome.Solid.SignInAlt);
 
                                 Schedule(() => onScreenDisplay.Display(toast));
+                                */
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.SignInAlt, Color4.Green, NekoPlayerStrings.SubscriptionAdded, NekoPlayerStrings.General));
                                 Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
                             }
                         });
@@ -6204,12 +6217,13 @@ namespace NekoPlayer.App.Screens
                         if (!googleOAuth2.SignedIn.Value)
                             return;
 
-                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
+                        //ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
                         api.SendComment(videoId, commentTextBox.Text);
 
                         Scheduler.AddDelayed(() => updateComments(videoId), 2000);
 
-                        Schedule(() => onScreenDisplay.Display(toast));
+                        //Schedule(() => onScreenDisplay.Display(toast));
+                        notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Regular.Comment, Color4.White, NekoPlayerStrings.CommentAdded, NekoPlayerStrings.General));
 
                         commentTextBox.Text = string.Empty;
                     };
