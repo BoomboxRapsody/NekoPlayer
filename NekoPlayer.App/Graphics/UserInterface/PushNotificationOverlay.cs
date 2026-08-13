@@ -19,6 +19,7 @@ using osu.Framework.Graphics.Transforms;
 using osu.Framework.Threading;
 using osuTK;
 using osuTK.Graphics;
+using OverlayContainer = NekoPlayer.App.Graphics.Containers.OverlayContainer;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -103,7 +104,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                            HideOverlay();
                         }
                     },
-                    new Container {
+                    new OverlayContainer {
                         RelativeSizeAxes = Axes.Both,
                         Padding = new MarginPadding { Top = 48 },
                         Children = new Drawable[]
