@@ -306,6 +306,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 notifications.Remove(item, false);
                                 notifications2.Add(item);
                                 item.SetBackgroundColour(overlayColourProvider1.Background3);
+                                item.SetCloseBtnBGColour(overlayColourProvider1.Background2);
                                 item.ShowCloseButton();
                             }, 250);
                         }

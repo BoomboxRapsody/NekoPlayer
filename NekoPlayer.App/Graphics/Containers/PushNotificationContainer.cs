@@ -144,6 +144,11 @@ namespace NekoPlayer.App.Graphics.Containers
             bg.Colour = color;
         }
 
+        public void SetCloseBtnBGColour(Color4 color)
+        {
+            closeBtn.BackgroundColour = color;
+        }
+
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
