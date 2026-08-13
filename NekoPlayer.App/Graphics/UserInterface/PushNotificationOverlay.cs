@@ -51,7 +51,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Direction = FillDirection.Vertical,
                         Padding = new MarginPadding(8),
                         Spacing = new Vector2(8),
-                        Children = new Drawable[]
+                        Children = Array.Empty<Drawable>()
                         {
                         }
                     }
