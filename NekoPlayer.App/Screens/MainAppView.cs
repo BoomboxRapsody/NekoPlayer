@@ -280,7 +280,8 @@ namespace NekoPlayer.App.Screens
 
         private Sprite playlistThumbnail;
 
-        private PushNotificationOverlay notificationOverlay;
+        [Resolved]
+        private PushNotificationOverlay notificationOverlay { get; set; }
 
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
@@ -3301,7 +3302,6 @@ namespace NekoPlayer.App.Screens
                                 },
                             }
                         },
-                        notificationOverlay = new PushNotificationOverlay(),
                     }
                 }
             };
@@ -6863,9 +6863,7 @@ namespace NekoPlayer.App.Screens
                                     .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                     .First();
 
-                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                onScreenDisplay.Display(toast);
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                 settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                             }
                             catch (Exception e)
@@ -6879,9 +6877,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                         .TryGetWithHighestVideoQuality();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                                 catch (Exception e2)
@@ -6893,9 +6889,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                         .First();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                             }
@@ -7240,9 +7234,7 @@ namespace NekoPlayer.App.Screens
                                     .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                     .First();
 
-                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                onScreenDisplay.Display(toast);
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                 settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                             }
                             catch (Exception e)
@@ -7256,9 +7248,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                         .TryGetWithHighestVideoQuality();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                                 catch (Exception e2)
@@ -7270,9 +7260,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                         .First();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                             }

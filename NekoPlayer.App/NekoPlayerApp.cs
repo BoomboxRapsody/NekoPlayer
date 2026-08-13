@@ -70,7 +70,7 @@ namespace NekoPlayer.App
         public const float UI_CORNER_RADIUS = 18f;
 
         private OnScreenDisplay onScreenDisplay;
-
+        private PushNotificationOverlay notificationOverlay;
         private ScreenshotManager screenshotManager;
 
         private Online.DiscordRPC discord_rpc;
@@ -169,12 +169,15 @@ namespace NekoPlayer.App
 
             onScreenDisplay = new OnScreenDisplay();
             screenshotManager = new ScreenshotManager();
+            notificationOverlay = new PushNotificationOverlay();
 
             onScreenDisplay.BeginTracking(this, frameworkConfig);
             onScreenDisplay.BeginTracking(this, LocalConfig);
             onScreenDisplay.BeginTracking(this, AudioEffectsConfig);
 
             loadComponentSingleFile(onScreenDisplay, overlayContainer.Add, true);
+
+            loadComponentSingleFile(notificationOverlay, overlayContainer.Add, true);
 
             loadComponentSingleFile(screenshotManager, Add, true);
 

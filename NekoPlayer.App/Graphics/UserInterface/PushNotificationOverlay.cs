@@ -13,7 +13,6 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Threading;
 using osuTK;
-using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -25,7 +24,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public PushNotificationOverlay()
         {
+            AlwaysPresent = true;
             RelativeSizeAxes = Axes.Both;
+            Anchor = Anchor.Centre;
+            Origin = Anchor.Centre;
 
             Add(content = new BufferedContainer
             {
@@ -73,41 +75,40 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public void Push(PushNotificationContainer container)
         {
-            Sample sample = audio.Samples.Get("NotificationPush");
-            sample.Play();
-
-            notifications.Add(container);
-
-            // avoid starting a new fade-in if one is already active.
-            if (fadeIn == null)
+            Schedule(() =>
             {
-                fadeIn = content.Animate(
-                    b => b.BlurTo(new Vector2(0), 250, Easing.OutExpo),
-                    b => b.FadeIn(500, Easing.OutQuint),
-                    b => b.MoveToX(0f, 500, Easing.OutQuint)
-                );
+                Sample sample = audio.Samples.Get("NotificationPush");
+                sample.Play();
 
-                fadeIn.Finally(_ => fadeIn = null);
-            }
+                notifications.Add(container);
 
-            fadeOut?.Cancel();
-            fadeOut = Scheduler.AddDelayed(() =>
-            {
-                content.Animate(
-                    b => b.BlurTo(new Vector2(15), 250, Easing.OutQuint),
-                    b => b.FadeOutFromOne(250, Easing.OutQuint),
-                    b => b.MoveToX(100, 250, Easing.OutQuint)
-                );
-
-                foreach (var item in notifications.AliveChildren)
+                // avoid starting a new fade-in if one is already active.
+                if (fadeIn == null)
                 {
-                    Scheduler.AddDelayed(() => item.Expire(), 250);
+                    fadeIn = content.Animate(
+                        b => b.BlurTo(new Vector2(0), 250, Easing.OutExpo),
+                        b => b.FadeIn(500, Easing.OutQuint),
+                        b => b.MoveToX(0f, 500, Easing.OutQuint)
+                    );
+
+                    fadeIn.Finally(_ => fadeIn = null);
                 }
-            }, 3500);
 
-            container.MoveToX(296);
+                fadeOut?.Cancel();
+                fadeOut = Scheduler.AddDelayed(() =>
+                {
+                    content.Animate(
+                        b => b.BlurTo(new Vector2(15), 250, Easing.OutQuint),
+                        b => b.FadeOutFromOne(250, Easing.OutQuint),
+                        b => b.MoveToX(100, 250, Easing.OutQuint)
+                    );
 
-            container.MoveToX(0, 500, Easing.OutQuint);
+                    foreach (var item in notifications.AliveChildren)
+                    {
+                        Scheduler.AddDelayed(() => item.Expire(), 250);
+                    }
+                }, 3500);
+            });
         }
     }
 }

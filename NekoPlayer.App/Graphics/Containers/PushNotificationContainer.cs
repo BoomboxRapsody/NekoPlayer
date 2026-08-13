@@ -27,6 +27,8 @@ namespace NekoPlayer.App.Graphics.Containers
         {
             Height = 64;
             Width = 280;
+            Anchor = Anchor.Centre;
+            Origin = Anchor.Centre;
 
             Add(content = new Container
             {
