@@ -389,7 +389,7 @@ namespace NekoPlayer.App.Overlays.Containers
                 screenshotOptions.AutoSizeEasing = Easing.OutQuint;
 
                 updateScreenshotOptionsVisibility();
-            });
+            }, true);
 
             var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
             automaticRendererInUse = renderer.Value == RendererType.Automatic;
