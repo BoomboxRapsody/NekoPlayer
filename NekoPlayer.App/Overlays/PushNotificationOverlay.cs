@@ -237,8 +237,8 @@ namespace NekoPlayer.App.Overlays
 
                 fadeIn2 = overlayContainer.Animate(
                     b => b.BlurTo(new Vector2(0), 250, Easing.OutExpo),
-                    b => b.FadeIn(500, Easing.OutQuint),
-                    b => b.MoveToX(0f, 500, Easing.OutQuint)
+                    b => b.FadeIn(500, Easing.OutQuart),
+                    b => b.MoveToX(0f, 500, Easing.OutExpo)
                 );
 
                 fadeIn2.Finally(_ => fadeIn2 = null);
@@ -257,9 +257,9 @@ namespace NekoPlayer.App.Overlays
                 overlayFadeContainer.FadeTo(0f, 250, Easing.OutQuart);
 
                 fadeOut2 = overlayContainer.Animate(
-                    b => b.BlurTo(new Vector2(15), 250, Easing.OutQuint),
-                    b => b.FadeOutFromOne(250, Easing.OutQuint),
-                    b => b.MoveToX(100, 250, Easing.OutQuint)
+                    b => b.BlurTo(new Vector2(15), 250, Easing.OutExpo),
+                    b => b.FadeOutFromOne(250, Easing.OutQuart),
+                    b => b.MoveToX(100, 250, Easing.OutQuart)
                 );
 
                 fadeOut2.Finally(_ => fadeOut2 = null);
