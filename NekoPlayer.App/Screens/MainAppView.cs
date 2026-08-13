@@ -4858,6 +4858,7 @@ namespace NekoPlayer.App.Screens
                     return true;
 
                 case GlobalAction.ToggleControlsPinState:
+                    showControls();
                     updatePinState();
                     return true;
 
