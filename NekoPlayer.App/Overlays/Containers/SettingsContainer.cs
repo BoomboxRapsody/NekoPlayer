@@ -382,15 +382,6 @@ namespace NekoPlayer.App.Overlays.Containers
                     srv3Notice.Value = null;
             }, true);
 
-            screenshotFormat.BindValueChanged(_ =>
-            {
-                screenshotOptions.ClearTransforms();
-                screenshotOptions.AutoSizeDuration = 400;
-                screenshotOptions.AutoSizeEasing = Easing.OutQuint;
-
-                updateScreenshotOptionsVisibility();
-            }, true);
-
             var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
             automaticRendererInUse = renderer.Value == RendererType.Automatic;
 
@@ -1193,6 +1184,15 @@ namespace NekoPlayer.App.Overlays.Containers
                     }
                 }
             };
+
+            screenshotFormat.BindValueChanged(_ =>
+            {
+                screenshotOptions.ClearTransforms();
+                screenshotOptions.AutoSizeDuration = 400;
+                screenshotOptions.AutoSizeEasing = Easing.OutQuint;
+
+                updateScreenshotOptionsVisibility();
+            }, true);
 
             dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_1);
             dislikeCounterCredits.AddLink("Return YouTube Dislike API", "https://returnyoutubedislike.com/");
