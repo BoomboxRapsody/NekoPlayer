@@ -26,6 +26,18 @@
     <None Update="FFmpeg\bin\win-x64\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="FFmpeg\linux-x64\libavcodec.so.62">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\linux-x64\libavformat.so.62">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\linux-x64\libavutil.so.60">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\linux-x64\libswscale.so.9">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="FFmpeg\windows-x64-fix\avcodec-62.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -47,11 +59,17 @@
     <None Update="FFmpeg\windows-x64-fix\swscale-9.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="libbassloud.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="nekoplayer_app.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="nekoplayer_app.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\linux-x64\native\libbassloud.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="runtimes\win-x64\native\bassloud.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
