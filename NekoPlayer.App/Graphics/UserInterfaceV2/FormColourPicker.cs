@@ -233,7 +233,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             currentColourInstantaneous.TriggerChange();
             current.Value = currentColourInstantaneous.Value;
 
-            background.Flash();
+            background.FlashOnCommit();
         }
 
         private void tryUpdateColourFromTextBox()
