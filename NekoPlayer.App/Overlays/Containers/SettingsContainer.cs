@@ -256,7 +256,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
         private Bindable<ScreenshotFormat> screenshotFormat;
 
-        private void PrepareSettingsTabs()
+        private void prepareSettingsTabs()
         {
             Drawable[] drawables = new Drawable[]
             {
@@ -1321,12 +1321,14 @@ namespace NekoPlayer.App.Overlays.Containers
 
             if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
             {
+#pragma warning disable CA1416 // 플랫폼 호환성 유효성 검사
                 discordRichPresence.Disabled = !DiscordInstallationChecker.IsDiscordInstalled();
 
                 if (!DiscordInstallationChecker.IsDiscordInstalled())
                 {
                     discordNotInstalledNote.Value = new SettingsNote.Data(NekoPlayerStrings.DiscordNotInstalled, SettingsNote.Type.Informational);
                 }
+#pragma warning restore CA1416 // 플랫폼 호환성 유효성 검사
             }
 
             audio.OnNewDevice += onAudioDeviceChanged;
@@ -1337,7 +1339,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
             onAudioDeviceChanged(string.Empty);
 
-            PrepareSettingsTabs();
+            prepareSettingsTabs();
 
             if (!game.IsDeployedBuild)
             {
