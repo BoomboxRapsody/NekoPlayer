@@ -22,14 +22,14 @@ namespace NekoPlayer.App.Graphics.Containers
         private IconUsage icon;
 
         private Box bg, hover;
-        private ProjectYomiSpriteText titleText, descText;
+        private ProjectYomiTextFlowContainer titleText, descText;
         private Container content;
         private IconButton closeBtn;
 
         public PushNotificationContainer(IconUsage icon, Color4 iconColour, LocalisableString title, LocalisableString desc)
         {
             Enabled.Value = true;
-            Height = 64;
+            AutoSizeAxes = Axes.Y;
             Width = 380;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
@@ -40,24 +40,21 @@ namespace NekoPlayer.App.Graphics.Containers
                 CornerRadius = 32,
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
-                RelativeSizeAxes = Axes.Both,
+                AutoSizeAxes = Axes.Y,
+                RelativeSizeAxes = Axes.X,
                 Children = new Drawable[]
                 {
                     bg = new Box
                     {
                         RelativeSizeAxes = Axes.Both,
                     },
-                    new GridContainer
+                    new FillFlowContainer
                     {
                         Padding = new MarginPadding(8),
-                        RelativeSizeAxes = Axes.Both,
-                        ColumnDimensions = new[]
-                        {
-                            new Dimension(GridSizeMode.AutoSize),
-                            new Dimension(),
-                        },
-                        Content = new[]
-                        {
+                        RelativeSizeAxes = Axes.X,
+                        AutoSizeAxes = Axes.Y,
+                        Direction = FillDirection.Horizontal,
+                        Children = 
                             new Drawable[]
                             {
                                 new Container
@@ -86,33 +83,36 @@ namespace NekoPlayer.App.Graphics.Containers
                                 },
                                 new FillFlowContainer
                                 {
-                                    RelativeSizeAxes = Axes.Both,
+                                    AutoSizeAxes = Axes.Y,
+                                    RelativeSizeAxes = Axes.X,
                                     Margin = new MarginPadding { Left = 8 },
+                                    Padding = new MarginPadding { Right = 100 },
                                     Direction = FillDirection.Vertical,
                                     Anchor = Anchor.CentreLeft,
                                     Origin = Anchor.CentreLeft,
                                     Children = new Drawable[]
                                     {
-                                        titleText = new TruncatingSpriteText
+                                        titleText = new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"))
                                         {
+                                            AutoSizeAxes = Axes.Y,
                                             RelativeSizeAxes = Axes.X,
                                             Text = title,
-                                            Anchor = Anchor.CentreLeft,
-                                            Origin = Anchor.CentreLeft,
-                                            Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "Bold"),
+                                            Anchor = Anchor.TopLeft,
+                                            Origin = Anchor.TopLeft,
+                                            TextAnchor = Anchor.CentreLeft,
                                         },
-                                        descText = new TruncatingSpriteText
+                                        descText = new ProjectYomiTextFlowContainer(f => f.Font = NekoPlayerApp.DefaultFont.With(size: 16, weight: "Bold"))
                                         {
+                                            AutoSizeAxes = Axes.Y,
                                             RelativeSizeAxes = Axes.X,
                                             Text = desc,
-                                            Anchor = Anchor.CentreLeft,
-                                            Origin = Anchor.CentreLeft,
-                                            Font = NekoPlayerApp.DefaultFont.With(size: 16, weight: "Bold"),
+                                            Anchor = Anchor.TopLeft,
+                                            Origin = Anchor.TopLeft,
+                                            TextAnchor = Anchor.CentreLeft,
                                         }
                                     }
                                 }
                             }
-                        }
                     },
                     closeBtn = new IconButton
                     {
