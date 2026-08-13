@@ -273,12 +273,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                             }
                                         }
                                     }
-                                }
+                                },
+                                loading = new NekoPlayerLoadingLayer(true, false, true),
                             }
                         }
                     }
                 },
-                loading = new NekoPlayerLoadingLayer(true, false, true),
             };
         }
 

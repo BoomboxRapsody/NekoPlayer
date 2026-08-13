@@ -896,4 +896,7 @@ On にすることを推奨します。問題が発生している場合のみ O
   <data name="screenshot_quality" xml:space="preserve">
     <value>スクリーンショットの品質</value>
   </data>
+  <data name="notifications" xml:space="preserve">
+    <value>お知らせ</value>
+  </data>
 </root>

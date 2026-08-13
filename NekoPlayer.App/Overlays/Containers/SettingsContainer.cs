@@ -256,7 +256,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
         private Bindable<ScreenshotFormat> screenshotFormat;
 
-        private void PrepareSettingsTabs()
+        private void prepareSettingsTabs()
         {
             Drawable[] drawables = new Drawable[]
             {
@@ -381,15 +381,6 @@ namespace NekoPlayer.App.Overlays.Containers
                 else
                     srv3Notice.Value = null;
             }, true);
-
-            screenshotFormat.BindValueChanged(_ =>
-            {
-                screenshotOptions.ClearTransforms();
-                screenshotOptions.AutoSizeDuration = 400;
-                screenshotOptions.AutoSizeEasing = Easing.OutQuint;
-
-                updateScreenshotOptionsVisibility();
-            });
 
             var renderer = config.GetBindable<RendererType>(FrameworkSetting.Renderer);
             automaticRendererInUse = renderer.Value == RendererType.Automatic;
@@ -1194,6 +1185,15 @@ namespace NekoPlayer.App.Overlays.Containers
                 }
             };
 
+            screenshotFormat.BindValueChanged(_ =>
+            {
+                screenshotOptions.ClearTransforms();
+                screenshotOptions.AutoSizeDuration = 400;
+                screenshotOptions.AutoSizeEasing = Easing.OutQuint;
+
+                updateScreenshotOptionsVisibility();
+            }, true);
+
             dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_1);
             dislikeCounterCredits.AddLink("Return YouTube Dislike API", "https://returnyoutubedislike.com/");
             dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_2);
@@ -1321,12 +1321,14 @@ namespace NekoPlayer.App.Overlays.Containers
 
             if (RuntimeInfo.OS == RuntimeInfo.Platform.Windows)
             {
+#pragma warning disable CA1416 // 플랫폼 호환성 유효성 검사
                 discordRichPresence.Disabled = !DiscordInstallationChecker.IsDiscordInstalled();
 
                 if (!DiscordInstallationChecker.IsDiscordInstalled())
                 {
                     discordNotInstalledNote.Value = new SettingsNote.Data(NekoPlayerStrings.DiscordNotInstalled, SettingsNote.Type.Informational);
                 }
+#pragma warning restore CA1416 // 플랫폼 호환성 유효성 검사
             }
 
             audio.OnNewDevice += onAudioDeviceChanged;
@@ -1337,7 +1339,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
             onAudioDeviceChanged(string.Empty);
 
-            PrepareSettingsTabs();
+            prepareSettingsTabs();
 
             if (!game.IsDeployedBuild)
             {

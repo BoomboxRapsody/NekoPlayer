@@ -259,13 +259,13 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<bool> trayIconVisible;
 
-        private Bindable<CommentsSortCriteria> CommentsSort;
-        private Bindable<SearchSortCriteria> SearchSort;
+        private Bindable<CommentsSortCriteria> commentsSort;
+        private Bindable<SearchSortCriteria> searchSort;
 
         protected Bindable<ReleaseStream> ReleaseStream;
 
         private Bindable<SFXType> overlaySFXType;
-        private Bindable<bool> playOverlaySFX, ResetPlaybackSpeedWhenLoadingAVideo, advancedCaptions;
+        private Bindable<bool> playOverlaySFX, resetPlaybackSpeedWhenLoadingAVideo, advancedCaptions;
 
         private Bindable<float> captionBGOpacity;
 
@@ -279,6 +279,9 @@ namespace NekoPlayer.App.Screens
         private Container topUIContainer, bottomUIContainer, videoMetadataDisplayBase;
 
         private Sprite playlistThumbnail;
+
+        [Resolved]
+        private PushNotificationOverlay notificationOverlay { get; set; }
 
         [BackgroundDependencyLoader]
         private void load(ISampleStore sampleStore, FrameworkConfigManager config, NekoPlayerConfigManager appConfig, GameHost host, Storage storage, OverlayColourProvider overlayColourProvider, TextureStore textures, FrameworkDebugConfigManager debugConfig)
@@ -309,9 +312,9 @@ namespace NekoPlayer.App.Screens
 
             uiLanguage = app.CurrentLanguage.GetBoundCopy();
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
-            CommentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
-            SearchSort = appConfig.GetBindable<SearchSortCriteria>(NekoPlayerSetting.SearchSortCriteria);
-            ResetPlaybackSpeedWhenLoadingAVideo = appConfig.GetBindable<bool>(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo);
+            commentsSort = appConfig.GetBindable<CommentsSortCriteria>(NekoPlayerSetting.CommentsSortCriteria);
+            searchSort = appConfig.GetBindable<SearchSortCriteria>(NekoPlayerSetting.SearchSortCriteria);
+            resetPlaybackSpeedWhenLoadingAVideo = appConfig.GetBindable<bool>(NekoPlayerSetting.ResetPlaybackSpeedWhenLoadingAVideo);
 
             reverbEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.ReverbEnabled);
             rotateEnabled = audioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.RotateEnabled);
@@ -1566,7 +1569,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     Origin = Anchor.TopRight,
                                     Anchor = Anchor.TopRight,
-                                    Current = CommentsSort,
+                                    Current = commentsSort,
                                     Margin = new MarginPadding()
                                     {
                                         Top = 15,
@@ -1615,12 +1618,13 @@ namespace NekoPlayer.App.Screens
                                                 if (string.IsNullOrEmpty(commentTextBox.Text))
                                                     return;
 
-                                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
+                                                //ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
                                                 api.SendComment(videoId, commentTextBox.Text);
 
                                                 Scheduler.AddDelayed(() => updateComments(videoId), 2000);
 
-                                                Schedule(() => onScreenDisplay.Display(toast));
+                                                //Schedule(() => onScreenDisplay.Display(toast));
+                                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Regular.Comment, Color4.White, NekoPlayerStrings.CommentAdded, NekoPlayerStrings.General));
 
                                                 commentTextBox.Text = string.Empty;
                                             }
@@ -1732,7 +1736,7 @@ namespace NekoPlayer.App.Screens
                                 {
                                     Origin = Anchor.TopRight,
                                     Anchor = Anchor.TopRight,
-                                    Current = SearchSort,
+                                    Current = searchSort,
                                     Margin = new MarginPadding()
                                     {
                                         Top = 15,
@@ -3103,6 +3107,24 @@ namespace NekoPlayer.App.Screens
                                                             Anchor = Anchor.TopRight,
                                                             Size = new Vector2(1, 45),
                                                             RelativeSizeAxes = Axes.X,
+                                                            Icon = FontAwesome.Solid.Bell,
+                                                            IconScale = new Vector2(1.2f),
+                                                            Text = NekoPlayerStrings.Notifications,
+                                                            Hotkey = new Hotkey(GlobalAction.Notifications),
+                                                            RoundCorner = new CornersInfo(8, 8, 8, 8),
+                                                            Action = () =>
+                                                            {
+                                                                hideOverlays();
+                                                                notificationOverlay.OpenOverlay();
+                                                            },
+                                                        },
+                                                        new MenuButtonItem
+                                                        {
+                                                            Enabled = { Value = true },
+                                                            Origin = Anchor.TopRight,
+                                                            Anchor = Anchor.TopRight,
+                                                            Size = new Vector2(1, 45),
+                                                            RelativeSizeAxes = Axes.X,
                                                             Icon = FontAwesome.Solid.SignOutAlt,
                                                             IconScale = new Vector2(1.2f),
                                                             Text = NekoPlayerStrings.Exit,
@@ -3594,8 +3616,8 @@ namespace NekoPlayer.App.Screens
 
                                 captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
 
-                                if (File.Exists(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3"))
-                                    srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
+                                if (File.Exists(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{videoId}") + @$"/{videoId}.{trackInfo.Language.Code}.srv3"))
+                                    srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{videoId}") + @$"/{videoId}.{trackInfo.Language.Code}.srv3");
                             }
 
                             currentVideoSource.UpdateCaptionTrack(captionTrack, srv3Contents);
@@ -3656,8 +3678,8 @@ namespace NekoPlayer.App.Screens
 
                                 captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
 
-                                if (File.Exists(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3"))
-                                    srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
+                                if (File.Exists(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{videoId}") + @$"/{videoId}.{trackInfo.Language.Code}.srv3"))
+                                    srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{videoId}") + @$"/{videoId}.{trackInfo.Language.Code}.srv3");
                             }
 
                             currentVideoSource.UpdateCaptionTrack(captionTrack, srv3Contents);
@@ -3718,8 +3740,8 @@ namespace NekoPlayer.App.Screens
 
                                 captionTrack = await game.YouTubeClient.Videos.ClosedCaptions.GetAsync(trackInfo);
 
-                                if (File.Exists(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3"))
-                                    srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}") + @$"/{this.videoId}.{trackInfo.Language.Code}.srv3");
+                                if (File.Exists(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{videoId}") + @$"/{videoId}.{trackInfo.Language.Code}.srv3"))
+                                    srv3Contents = File.ReadAllText(app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{videoId}") + @$"/{videoId}.{trackInfo.Language.Code}.srv3");
                             }
 
                             currentVideoSource.UpdateCaptionTrack(captionTrack, srv3Contents);
@@ -3978,9 +4000,12 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Solid.Bookmark;
 
+                /*
                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoSavedToPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
+                */
+                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.List, Color4.Green, NekoPlayerStrings.VideoSavedToPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), NekoPlayerStrings.Playlists));
 
                 await Task.Delay(1000);
 
@@ -4002,9 +4027,12 @@ namespace NekoPlayer.App.Screens
 
                 saveVideoOpenButton.Icon = FontAwesome.Regular.Bookmark;
 
+                /*
                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Playlists, NekoPlayerStrings.VideoRemovedFromPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), FontAwesome.Solid.List);
 
                 Schedule(() => onScreenDisplay.Display(toast));
+                */
+                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.List, Color4.Red, NekoPlayerStrings.VideoRemovedFromPlaylist(myPlaylistsDropdown.Current.Value.Snippet.Title), NekoPlayerStrings.Playlists));
 
                 await Task.Delay(1000);
 
@@ -4076,9 +4104,12 @@ namespace NekoPlayer.App.Screens
                     */
                     if (settingsContainer.IsVisible)
                     {
+                        notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.CheckCircle, Color4.Green, NekoPlayerStrings.RunningLatestRelease(game.Version), NekoPlayerStrings.Updates));
+                        /*
                         ToastBase toast = new ToastWithIcon(NekoPlayerStrings.Updates, NekoPlayerStrings.RunningLatestRelease(game.Version), FontAwesome.Solid.CheckCircle);
 
                         onScreenDisplay.Display(toast);
+                        */
                     }
 
                     game.UpdateManagerVersionText.Value = game.Version;
@@ -4095,7 +4126,7 @@ namespace NekoPlayer.App.Screens
             }
         }
 
-        public override bool CursorVisible => (isControlVisible || isAnyOverlayOpen.Value);
+        public override bool CursorVisible => (isControlVisible || isAnyOverlayOpen.Value || notificationOverlay.IsOpened.Value);
 
         private void showControls()
         {
@@ -4171,6 +4202,9 @@ namespace NekoPlayer.App.Screens
 
         private void showOverlayContainer(OverlayContainer overlayContent)
         {
+            if (notificationOverlay.IsOpened.Value)
+                notificationOverlay.HideOverlay();
+
             /*
             duckOperation = game.Duck(new DuckParameters
             {
@@ -4351,7 +4385,7 @@ namespace NekoPlayer.App.Screens
 
             Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum orderEnum = Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum.Relevance;
 
-            switch (SearchSort.Value)
+            switch (searchSort.Value)
             {
                 case SearchSortCriteria.Date:
                 {
@@ -4845,6 +4879,7 @@ namespace NekoPlayer.App.Screens
                     return true;
 
                 case GlobalAction.ToggleControlsPinState:
+                    showControls();
                     updatePinState();
                     return true;
 
@@ -5105,6 +5140,16 @@ namespace NekoPlayer.App.Screens
 
                 case GlobalAction.ToggleChorusEffect:
                     chorusEnabled.Value = !chorusEnabled.Value;
+                    return true;
+
+                case GlobalAction.Notifications:
+                    hideOverlays();
+
+                    if (notificationOverlay.IsOpened.Value)
+                        notificationOverlay.HideOverlay();
+                    else
+                        notificationOverlay.OpenOverlay();
+
                     return true;
             }
 
@@ -5419,7 +5464,7 @@ namespace NekoPlayer.App.Screens
                 commentCount.Text = videoData.Statistics.CommentCount != null ? Convert.ToDouble(videoData.Statistics.CommentCount).ToMetric(decimals: 2) : NekoPlayerStrings.DisabledByUploader;
                 commentsContainerTitle.Text = NekoPlayerStrings.Comments(videoData.Statistics.CommentCount != null ? Convert.ToInt32(videoData.Statistics.CommentCount).ToStandardFormattedString(0) : NekoPlayerStrings.DisabledByUploader);
 
-                OrderEnum orderEnum = CommentsSort.Value == CommentsSortCriteria.Top ? OrderEnum.Relevance : OrderEnum.Time;
+                OrderEnum orderEnum = commentsSort.Value == CommentsSortCriteria.Top ? OrderEnum.Relevance : OrderEnum.Time;
 
                 CommentThreadListResponse commentThreadListResponse;
 
@@ -6150,9 +6195,12 @@ namespace NekoPlayer.App.Screens
 
                                     Logger.Log("UnsubscribeChannel()");
 
+                                    /*
                                     ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionRemoved, FontAwesome.Solid.SignOutAlt);
 
                                     Schedule(() => onScreenDisplay.Display(toast));
+                                    */
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.SignOutAlt, Color4.Red, NekoPlayerStrings.SubscriptionRemoved, NekoPlayerStrings.General));
                                     Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
                                 };
 
@@ -6168,9 +6216,12 @@ namespace NekoPlayer.App.Screens
 
                                 Logger.Log("SubscribeChannel()");
 
+                                /*
                                 ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.SubscriptionAdded, FontAwesome.Solid.SignInAlt);
 
                                 Schedule(() => onScreenDisplay.Display(toast));
+                                */
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.SignInAlt, Color4.Green, NekoPlayerStrings.SubscriptionAdded, NekoPlayerStrings.General));
                                 Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
                             }
                         });
@@ -6198,18 +6249,19 @@ namespace NekoPlayer.App.Screens
                         if (!googleOAuth2.SignedIn.Value)
                             return;
 
-                        ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
+                        //ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CommentAdded, FontAwesome.Regular.Comment);
                         api.SendComment(videoId, commentTextBox.Text);
 
                         Scheduler.AddDelayed(() => updateComments(videoId), 2000);
 
-                        Schedule(() => onScreenDisplay.Display(toast));
+                        //Schedule(() => onScreenDisplay.Display(toast));
+                        notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Regular.Comment, Color4.White, NekoPlayerStrings.CommentAdded, NekoPlayerStrings.General));
 
                         commentTextBox.Text = string.Empty;
                     };
                 });
 
-                CommentsSort.BindValueChanged(sort =>
+                commentsSort.BindValueChanged(sort =>
                 {
                     updateComments(videoId);
                 });
@@ -6443,9 +6495,10 @@ namespace NekoPlayer.App.Screens
                 args = $"--sub-langs all --write-subs --write-auto-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer\\cache\\subtitleCache\\{videoId}\\";
             }
 
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(app.GetYtDlpPath(), args);
-
-            processStartInfo.CreateNoWindow = true;
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(app.GetYtDlpPath(), args)
+            {
+                CreateNoWindow = true
+            };
 
             using (Process process = Process.Start(processStartInfo))
             {
@@ -6458,7 +6511,7 @@ namespace NekoPlayer.App.Screens
             srv3Contents = string.Empty;
             videoIdBox.Text = string.Empty;
 
-            if (ResetPlaybackSpeedWhenLoadingAVideo.Value)
+            if (resetPlaybackSpeedWhenLoadingAVideo.Value)
             {
                 if (playbackSpeed.Value != 1)
                 {
@@ -6486,8 +6539,7 @@ namespace NekoPlayer.App.Screens
             if (isVideoLoading)
                 return;
 
-            if (videoLoadProcess != null)
-                videoLoadProcess.Cancel();
+            videoLoadProcess?.Cancel();
 
             videoLoadProcess = new CancellationTokenSource();
             CancellationToken cancellationToken = videoLoadProcess.Token;
@@ -6498,9 +6550,12 @@ namespace NekoPlayer.App.Screens
                     loadBtnOverlayShow.Enabled.Value = false;
                     if (string.IsNullOrEmpty(videoId))
                     {
+                        notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.MinusCircle, Color4.Red, NekoPlayerStrings.NoVideoIdError, NekoPlayerStrings.General));
+                        /*
                         ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.NoVideoIdError, FontAwesome.Solid.MinusCircle);
 
                         onScreenDisplay.Display(toast);
+                        */
                         return;
                     }
 
@@ -6516,7 +6571,7 @@ namespace NekoPlayer.App.Screens
                     //ClearPlaylistItems();
                     pausedTime = clearCache ? currentVideoSource.VideoProgress.Value : 0;
                     Schedule(() => currentVideoSource?.Expire());
-                    CommentsSort.UnbindEvents();
+                    commentsSort.UnbindEvents();
 
                     if (playlists.Count > 0)
                     {
@@ -6590,17 +6645,6 @@ namespace NekoPlayer.App.Screens
                     if (videoId.Length != 0)
                     {
                         Google.Apis.YouTube.v3.Data.Video videoData = api.GetVideo(this.videoId);
-
-                        if (videoData.Status.PrivacyStatus == "private")
-                        {
-                            Schedule(() =>
-                            {
-                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.General, NekoPlayerStrings.CannotPlayPrivateVideos, FontAwesome.Solid.MinusCircle);
-
-                                onScreenDisplay.Display(toast);
-                            });
-                            return;
-                        }
 
                         IProgress<double> audioDownloadProgress = new Progress<double>((percent) => Schedule(() => videoLoadingProgress.Text = NekoPlayerStrings.DownloadingAudioStream($"{(percent * 100):N0}%")));
                         IProgress<double> videoDownloadProgress = new Progress<double>((percent) => Schedule(() => videoLoadingProgress.Text = NekoPlayerStrings.DownloadingVideoStream($"{(percent * 100):N0}%")));
@@ -6851,9 +6895,7 @@ namespace NekoPlayer.App.Screens
                                     .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                     .First();
 
-                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                onScreenDisplay.Display(toast);
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                 settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                             }
                             catch (Exception e)
@@ -6867,9 +6909,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                         .TryGetWithHighestVideoQuality();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                                 catch (Exception e2)
@@ -6881,9 +6921,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                         .First();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                             }
@@ -7228,9 +7266,7 @@ namespace NekoPlayer.App.Screens
                                     .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                     .First();
 
-                                ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                onScreenDisplay.Display(toast);
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                 settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                             }
                             catch (Exception e)
@@ -7244,9 +7280,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.Container == YoutubeExplode.Videos.Streams.Container.WebM)
                                         .TryGetWithHighestVideoQuality();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                                 catch (Exception e2)
@@ -7258,9 +7292,7 @@ namespace NekoPlayer.App.Screens
                                         .Where(s => s.VideoQuality.Label.Contains(settingsContainer.VideoQualitySettings.Current.Value))
                                         .First();
 
-                                    ToastBase toast = new ToastWithIcon(NekoPlayerStrings.VideoQuality, videoStreamInfo.VideoQuality.Label, FontAwesome.Solid.Video);
-
-                                    onScreenDisplay.Display(toast);
+                                    notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.Video, Color4.Green, videoStreamInfo.VideoQuality.Label, NekoPlayerStrings.VideoQuality));
                                     settingsContainer.VideoQualitySettings.Caption = NekoPlayerStrings.VideoQualityWithLabel($"{videoStreamInfo.VideoQuality.Label}, {videoStreamInfo.VideoCodec}, {videoStreamInfo.VideoQuality.Framerate}fps");
                                 }
                             }

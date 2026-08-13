@@ -86,13 +86,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             Children = new Drawable[]
                             {
-                                videoName = new TruncatingSpriteText
+                                videoName = new ProjectYomiSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                     Colour = Color4.White,
                                 },
-                                desc = new TruncatingSpriteText
+                                desc = new ProjectYomiSpriteText
                                 {
                                     Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
@@ -273,7 +273,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 Channel channelData = api.GetChannel(videoData.Snippet.ChannelId);
                 Schedule(() =>
                 {
-                    videoName.Text = api.GetLocalizedVideoTitle(videoData);
+                    videoName.Text = TruncateWithEllipsis(api.GetLocalizedVideoTitle(videoData), 50);
                     updateDescText();
                 });
 
@@ -285,7 +285,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     {
                         Schedule(() =>
                         {
-                            videoName.Text = api.GetLocalizedVideoTitle(videoData);
+                            videoName.Text = TruncateWithEllipsis(api.GetLocalizedVideoTitle(videoData), 50);
                             updateDescText();
                         });
                     });
@@ -308,7 +308,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     {
                         Schedule(() =>
                         {
-                            videoName.Text = api.GetLocalizedVideoTitle(videoData);
+                            videoName.Text = TruncateWithEllipsis(api.GetLocalizedVideoTitle(videoData), 50);
                             updateDescText();
                         });
                     });
