@@ -490,7 +490,7 @@ namespace NekoPlayer.App.Screens
                                             RelativeSizeAxes = Axes.Both,
                                             Padding = new MarginPadding
                                             {
-                                                Right = 48,
+                                                Right = 44,
                                             },
                                             Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
                                             {
@@ -504,10 +504,6 @@ namespace NekoPlayer.App.Screens
                                         new Container
                                         {
                                             RelativeSizeAxes = Axes.Both,
-                                            Padding = new MarginPadding
-                                            {
-                                                Horizontal = 4,
-                                            },
                                             Children = new Drawable[]
                                             {
                                                 menuOverlayShow = new IconButton
@@ -4822,6 +4818,10 @@ namespace NekoPlayer.App.Screens
                     updateRepeatState();
                     return true;
 
+                case GlobalAction.ToggleControlsPinState:
+                    updatePinState();
+                    return true;
+
                 case GlobalAction.OpenLoadVideo:
                     if (!loadBtnOverlayShow.Enabled.Value)
                         return true;
@@ -5834,7 +5834,7 @@ namespace NekoPlayer.App.Screens
                     videoMetadataDisplay.Origin = Anchor.TopRight;
                     videoMetadataDisplayBase.Padding = new MarginPadding
                     {
-                        Right = 48,
+                        Right = 44,
                     };
                     break;
                 }

@@ -111,6 +111,8 @@ namespace NekoPlayer.App.Input.Binding
             new KeyBinding(new[] { InputKey.Shift, InputKey.F4 }, GlobalAction.ToggleDistortionEffect),
             new KeyBinding(new[] { InputKey.Shift, InputKey.F5 }, GlobalAction.ToggleKaraokeEffect),
             new KeyBinding(new[] { InputKey.Shift, InputKey.F6 }, GlobalAction.ToggleChorusEffect),
+
+            new KeyBinding(new[] { InputKey.Control, InputKey.I }, GlobalAction.ToggleControlsPinState),
         };
     }
 
@@ -180,5 +182,7 @@ namespace NekoPlayer.App.Input.Binding
         ToggleDistortionEffect,
         ToggleKaraokeEffect,
         ToggleChorusEffect,
+
+        ToggleControlsPinState,
     }
 }
