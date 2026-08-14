@@ -42,7 +42,7 @@ namespace NekoPlayer.Desktop.Windows
                     host.SetLowLatencyProvider(new NVAPIDirect3D11LowLatencyProvider());
 
                 //host.AllowBenchmarkUnlimitedFrames = true;
-                host.Run(new NekoPlayerAppDesktop());
+                host.Run(new NekoPlayerAppDesktopWindows());
             }
         }
     }
