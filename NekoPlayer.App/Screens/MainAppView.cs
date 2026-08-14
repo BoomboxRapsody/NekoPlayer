@@ -6485,16 +6485,7 @@ namespace NekoPlayer.App.Screens
             if (string.IsNullOrEmpty(videoUrl))
                 return;
 
-            string args = string.Empty;
-
-            if (DebugUtils.IsDebugBuild)
-            {
-                args = $"--sub-langs all --write-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer-development\\cache\\subtitleCache\\{videoId}\\";
-            }
-            else
-            {
-                args = $"--sub-langs all --write-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer\\cache\\subtitleCache\\{videoId}\\";
-            }
+            string args = $"--sub-langs all --write-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P {app.Host.CacheStorage.GetStorageForDirectory("subtitleCache").GetFullPath($"{this.videoId}")}";
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo(app.GetYtDlpPath(), args)
             {
