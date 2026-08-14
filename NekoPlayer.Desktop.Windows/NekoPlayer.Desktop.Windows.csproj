@@ -26,25 +26,16 @@
     <None Update="FFmpeg\bin\win-x64\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\windows-x64-fix\avcodec-62.dll">
+    <None Update="avcodec-62.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\windows-x64-fix\avdevice-62.dll">
+    <None Update="avformat-62.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\windows-x64-fix\avfilter-11.dll">
+    <None Update="avutil-60.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="FFmpeg\windows-x64-fix\avformat-62.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\avutil-60.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\swresample-6.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="FFmpeg\windows-x64-fix\swscale-9.dll">
+    <None Update="swscale-9.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="nekoplayer_app.bmp">
