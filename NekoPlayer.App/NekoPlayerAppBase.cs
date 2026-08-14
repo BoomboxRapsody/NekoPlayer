@@ -317,6 +317,12 @@ namespace NekoPlayer.App
                 UpdateManagerVersionText.Value = Version;
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+                if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux)
+                {
+                    // fix permission denied issues
+                    Process.Start("chmod", $"+x {GetYtDlpPath()}");
+                }
+
                 //Logger.Log(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath("videoId") + @"\video.mp4");
                 Resources.AddStore(new DllResourceStore(typeof(NekoPlayerAppResources).Assembly));
                 //Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(typeof(NekoPlayerAppBase).Assembly), "BuiltInResources"));
