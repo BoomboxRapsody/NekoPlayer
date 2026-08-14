@@ -6489,11 +6489,11 @@ namespace NekoPlayer.App.Screens
 
             if (DebugUtils.IsDebugBuild)
             {
-                args = $"--sub-langs all --write-subs --write-auto-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer-development\\cache\\subtitleCache\\{videoId}\\";
+                args = $"--sub-langs all --write-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer-development\\cache\\subtitleCache\\{videoId}\\";
             }
             else
             {
-                args = $"--sub-langs all --write-subs --write-auto-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer\\cache\\subtitleCache\\{videoId}\\";
+                args = $"--sub-langs all --write-subs --skip-download --force-overwrites --sub-format srv3 {videoUrl} -o \"%(id)s.%(ext)s\" -P %appdata%\\NekoPlayer\\cache\\subtitleCache\\{videoId}\\";
             }
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo(app.GetYtDlpPath(), args)
