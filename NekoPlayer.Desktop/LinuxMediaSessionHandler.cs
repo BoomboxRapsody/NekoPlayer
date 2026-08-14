@@ -173,33 +173,62 @@ namespace NekoPlayer.Desktop
 
             public ObjectPath ObjectPath => new ObjectPath("/org/mpris/MediaPlayer2");
 
-            public string PlaybackStatus { get; set; } = "Paused";
+            // D-Bus 속성 변경 알림 시그널 이벤트
+            public event Action<PropertyChanges> OnPropertiesChanged;
+
+            private string playbackStatus = "Paused";
+            public string PlaybackStatus
+            {
+                get => playbackStatus;
+                set
+                {
+                    if (playbackStatus != value)
+                    {
+                        playbackStatus = value;
+                        // OS 알림 센터에 재생/일시정지 상태 변경 전파
+                        OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("PlaybackStatus", playbackStatus));
+                    }
+                }
+            }
+
             public long Position { get; set; }
             public double Rate { get; set; } = 1.0;
 
             public MprisPlayer(LinuxMediaSessionHandler handler)
             {
                 this.handler = handler;
+
+                // 1. 초기 기본 메타데이터 세팅 (OS가 플레이어로 인지하도록 최소 정보 설정)
+                metadata["mpris:trackid"] = new ObjectPath("/org/mpris/Null");
+                metadata["xesam:title"] = "NekoPlayer";
+                metadata["xesam:artist"] = new string[] { "NekoPlayer" };
             }
 
             public void SetMetadata(string title, string artist, string artUrl, long lengthMicroseconds)
             {
                 metadata["mpris:trackid"] = new ObjectPath("/org/mpris/MediaPlayer2/Track/1");
                 metadata["mpris:length"] = lengthMicroseconds;
-                metadata["xesam:title"] = title;
-                metadata["xesam:artist"] = new string[] { artist };
-                metadata["mpris:artUrl"] = artUrl;
+                metadata["xesam:title"] = string.IsNullOrEmpty(title) ? "Unknown" : title;
+                metadata["xesam:artist"] = new string[] { string.IsNullOrEmpty(artist) ? "Unknown" : artist };
+
+                if (!string.IsNullOrEmpty(artUrl))
+                    metadata["mpris:artUrl"] = artUrl;
+
+                // 2. OS 알림 센터에 메타데이터(곡 정보/앨범아트) 변경 전파
+                OnPropertiesChanged?.Invoke(PropertyChanges.ForProperty("Metadata", metadata));
             }
 
-            // IMediaPlayer2
+            // .desktop 파일이 없는 경우 빈 문자열을 반환해야 OS가 유효하지 않은 앱으로 판단하지 않습니다.
+            public Task<string> GetDesktopEntryAsync() => Task.FromResult(string.Empty);
+
+            // IMediaPlayer2 기본 구현
             public Task RaiseAsync() => Task.CompletedTask;
             public Task QuitAsync() => Task.CompletedTask;
             public Task<bool> GetCanQuitAsync() => Task.FromResult(false);
             public Task<bool> GetCanRaiseAsync() => Task.FromResult(false);
             public Task<string> GetIdentityAsync() => Task.FromResult("NekoPlayer");
-            public Task<string> GetDesktopEntryAsync() => Task.FromResult("nekoplayer");
 
-            // IPlayer - Event Handlers
+            // IPlayer 제어 메서드
             public Task PlayAsync()
             {
                 handler.controls?.PlayButtonPressed?.Invoke();
@@ -242,7 +271,6 @@ namespace NekoPlayer.Desktop
 
             public Task SeekAsync(long offset)
             {
-                // offset: microseconds -> ms
                 double newPosMs = (Position + offset) / 1000.0;
                 handler.controls?.OnSeek?.Invoke(newPosMs);
                 return Task.CompletedTask;
@@ -250,7 +278,6 @@ namespace NekoPlayer.Desktop
 
             public Task SetPositionAsync(ObjectPath trackId, long position)
             {
-                // position: microseconds -> ms
                 double posMs = position / 1000.0;
                 handler.controls?.OnSeek?.Invoke(posMs);
                 return Task.CompletedTask;
