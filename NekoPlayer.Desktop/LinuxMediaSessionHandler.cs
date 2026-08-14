@@ -33,8 +33,15 @@ namespace NekoPlayer.Desktop
                 {
                     mprisPlayer = new MprisPlayer(this);
 
-                    // D-Bus 세션 버스 연결 및 객체/서비스 등록
-                    dbusConnection = Connection.Session;
+                    // [기존 코드 - 오류 발생]
+                    // dbusConnection = Connection.Session;
+
+                    // [수정 코드]
+                    // Address.Session 주소로 인스턴스를 직접 생성하고 explicit하게 ConnectAsync()를 호출합니다.
+                    dbusConnection = new Connection(Address.Session);
+                    await dbusConnection.ConnectAsync();
+
+                    // 연결이 성공적으로 맺어진 후 D-Bus 객체 및 서비스 등록
                     await dbusConnection.RegisterObjectAsync(mprisPlayer);
                     await dbusConnection.RegisterServiceAsync("org.mpris.MediaPlayer2.NekoPlayer");
 
