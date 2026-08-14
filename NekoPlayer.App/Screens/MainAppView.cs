@@ -40,6 +40,7 @@ using NekoPlayer.App.Overlays.OSD;
 using NekoPlayer.App.Overlays.Volume;
 using NekoPlayer.App.Updater;
 using NekoPlayer.App.Utils;
+using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -6482,6 +6483,9 @@ namespace NekoPlayer.App.Screens
         //we need to download subtitles to preload subtitles
         private async void downloadSubtitles()
         {
+            if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux)
+                return; //crashs on appimage state
+
             if (string.IsNullOrEmpty(videoUrl))
                 return;
 
