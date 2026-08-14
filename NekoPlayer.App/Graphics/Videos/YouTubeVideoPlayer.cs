@@ -370,6 +370,11 @@ namespace NekoPlayer.App.Graphics.Videos
                 VideoProgress.MaxValue = drawableTrack.Length / 1000;
                 VideoProgress.Value = drawableTrack.CurrentTime / 1000;
             }
+
+            if (drawableTrack.CurrentTime != video.Time.Current)
+            {
+                video.Seek(drawableTrack.CurrentTime); //prevent desyncing
+            }
         }
 
         public void SeekTo(double pos)
