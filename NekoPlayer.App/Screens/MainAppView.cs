@@ -5307,6 +5307,9 @@ namespace NekoPlayer.App.Screens
 
         private Bindable<bool> videoPlaying;
 
+        private bool blurState;
+        private bool notificationOverlayOpened => notificationOverlay.IsOpened.Value;
+
         protected override void Update()
         {
             base.Update();
@@ -5330,6 +5333,12 @@ namespace NekoPlayer.App.Screens
                 searchTextBoxContainerFocused = searchTextBox.HasFocus;
                 searchTextBoxContainer.TransformTo(nameof(Padding), searchTextBoxContainerFocused ? new MarginPadding { Horizontal = 32 } : new MarginPadding { Horizontal = 48 }, 1000, Easing.OutQuint);
                 searchTextBoxContainer.TransformTo(nameof(Margin), searchTextBoxContainerFocused ? new MarginPadding { Bottom = 16 } : new MarginPadding { Bottom = 12 }, 500, Easing.OutBack);
+            }
+
+            if (notificationOverlayOpened != blurState)
+            {
+                blurState = notificationOverlayOpened;
+                videoContainer.BlurTo(new Vector2(blurState ? 6 : 0), 250, Easing.OutQuart);
             }
 
             if (currentVideoSource != null)
