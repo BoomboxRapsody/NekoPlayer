@@ -5338,7 +5338,7 @@ namespace NekoPlayer.App.Screens
             if (notificationOverlayOpened != blurState)
             {
                 blurState = notificationOverlayOpened;
-                videoContainer.BlurTo(new Vector2(blurState ? 6 : 0), 250, Easing.OutQuart);
+                videoContainer.BlurTo(new Vector2((blurState || isAnyOverlayOpen.Value) ? 6 : 0), 250, Easing.OutQuart);
             }
 
             if (currentVideoSource != null)
