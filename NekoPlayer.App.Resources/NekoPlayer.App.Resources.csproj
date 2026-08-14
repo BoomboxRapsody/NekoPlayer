@@ -7,6 +7,5 @@
     <EmbeddedResource Include="Samples\**\*" />
     <EmbeddedResource Include="Textures\**\*" />
     <EmbeddedResource Include="Shaders\**\*" />
-	  <EmbeddedResource Include="Spine\**\*" />
   </ItemGroup>
 </Project>
