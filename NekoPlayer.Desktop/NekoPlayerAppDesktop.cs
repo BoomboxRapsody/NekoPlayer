@@ -8,6 +8,7 @@ using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Updater;
 using NekoPlayer.App.Utils;
 using NekoPlayer.Desktop.Updater;
+using osu.Framework;
 
 namespace NekoPlayer.Desktop
 {
@@ -33,6 +34,14 @@ namespace NekoPlayer.Desktop
         {
             base.RequestHideToTrayIcon();
             trayIconManager.HideToTrayIcon();
+        }
+
+        public override MediaSession CreateMediaSession()
+        {
+            if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux)
+                return new LinuxMediaSessionHandler();
+
+            return new MediaSession();
         }
     }
 }
