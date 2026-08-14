@@ -1337,6 +1337,8 @@ namespace NekoPlayer.App.Overlays.Containers
 
             audioDeviceDropdown.Current.ValueChanged += d => onDeviceSelected(d.NewValue);
 
+            onDeviceSelected(audioDeviceDropdown.Current.Value);
+
             onAudioDeviceChanged(string.Empty);
 
             prepareSettingsTabs();
