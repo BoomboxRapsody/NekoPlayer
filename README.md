@@ -16,8 +16,8 @@
 
 ### Latest release:
 
-| [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
-|--------------------------------------------------------------------------------------|
+| [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) | [Linux (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-linux-x64.AppImage) |
+|--------------------------------------------------------------------------------------|-------------|
 
 The YouTube API Daily Quota fills up very fast (Google has a hard limit of 10,000 units). Please do not ask about this.
 
