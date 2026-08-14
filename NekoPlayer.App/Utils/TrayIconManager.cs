@@ -89,15 +89,6 @@ namespace NekoPlayer.App.Utils
                                 app.AppMessageHandler.OpenSettings();
                             },
                         },
-                        new TrayCheckBox
-                        {
-                            Label = NekoPlayerTrayIconStrings.AdjustPitchOnSpeedChange,
-                            Checked = config.Get<bool>(NekoPlayerSetting.AdjustPitchOnSpeedChange),
-                            Action = () =>
-                            {
-                                app.AppMessageHandler.TogglePreservePitch();
-                            },
-                        },
                         new TraySeparator(),
                         new TrayButton
                         {

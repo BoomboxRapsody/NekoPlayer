@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using NekoPlayer.App.Graphics.Containers;
-using NekoPlayer.App.Graphics.UserInterface;
+using NekoPlayer.App.Overlays;
 using NUnit.Framework;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;

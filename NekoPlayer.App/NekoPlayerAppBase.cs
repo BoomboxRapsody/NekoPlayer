@@ -104,7 +104,11 @@ namespace NekoPlayer.App
             {
                 case RuntimeInfo.Platform.Windows:
                 {
-                    return Directory.GetCurrentDirectory() + "/FFmpeg/bin/win-x64/ffmpeg.exe";
+                    return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/FFmpeg/bin/win-x64/ffmpeg.exe";
+                }
+                case RuntimeInfo.Platform.Linux:
+                {
+                    return "ffmpeg";
                 }
                 default:
                 {
@@ -119,7 +123,11 @@ namespace NekoPlayer.App
             {
                 case RuntimeInfo.Platform.Windows:
                 {
-                    return Directory.GetCurrentDirectory() + "/yt-dlp.exe";
+                    return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/yt-dlp.exe";
+                }
+                case RuntimeInfo.Platform.Linux:
+                {
+                    return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/yt-dlp_linux";
                 }
                 default:
                 {
@@ -308,6 +316,12 @@ namespace NekoPlayer.App
                 RestartRequired.Value = false;
                 UpdateManagerVersionText.Value = Version;
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+                if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux)
+                {
+                    // fix permission denied issues
+                    Process.Start("chmod", $"+x {GetYtDlpPath()}");
+                }
 
                 //Logger.Log(Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath("videoId") + @"\video.mp4");
                 Resources.AddStore(new DllResourceStore(typeof(NekoPlayerAppResources).Assembly));

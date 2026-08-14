@@ -16,7 +16,7 @@ namespace NekoPlayer.App.Tests.Visual.UserInterface
 
         public TestScenePushNotificationContainer()
         {
-            Add(new PushNotificationContainer(FontAwesome.Solid.Bell, Color4.Yellow, "Test notification", "test テスト 테스트 123")
+            Add(new PushNotificationContainer(FontAwesome.Solid.Bell, Color4.Yellow, "Test notification test テスト 테스트 123\nmultiline test\nmultiline test", "test テスト 테스트 123")
             {
                 Anchor = osu.Framework.Graphics.Anchor.Centre,
                 Origin = osu.Framework.Graphics.Anchor.Centre,

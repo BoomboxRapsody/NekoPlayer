@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NekoPlayer.App.Resources", "NekoPlayer.App.Resources\NekoPlayer.App.Resources.csproj", "{D4121EB2-258A-C29C-3909-D4DB7778B54B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NekoPlayer.Desktop.Windows", "NekoPlayer.Desktop.Windows\NekoPlayer.Desktop.Windows.csproj", "{C445463B-3E1F-14F8-43BC-21B8166A2AA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +156,22 @@ Global
 		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|x64.ActiveCfg = Release|Any CPU
 		{D4121EB2-258A-C29C-3909-D4DB7778B54B}.Release|x64.Build.0 = Release|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|x64.ActiveCfg = Debug|x64
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Debug|x64.Build.0 = Debug|x64
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|iPhone.Build.0 = Release|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|x64.ActiveCfg = Release|x64
+		{C445463B-3E1F-14F8-43BC-21B8166A2AA4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
