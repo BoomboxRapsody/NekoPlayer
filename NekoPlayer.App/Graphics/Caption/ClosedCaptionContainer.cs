@@ -238,7 +238,7 @@ namespace NekoPlayer.App.Graphics.Caption
 
         public void UpdateControlsVisibleState(bool state)
         {
-            this.TransformBindableTo(bottomMargin, state ? 55 : 0, 500, Easing.OutQuint);
+            this.TransformBindableTo(bottomMargin, state ? 55 : 0, 500, state ? Easing.OutQuint : Easing.InOutCubic);
         }
 
         protected override void Update()
