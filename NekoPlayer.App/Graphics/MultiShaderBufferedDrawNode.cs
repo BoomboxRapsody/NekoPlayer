@@ -54,7 +54,7 @@ namespace NekoPlayer.App.Graphics
         {
             var sharedDatas = SharedData.GetDrawSharedDatas().Reverse().ToArray();
 
-            if (sharedDatas.Any())
+            if (sharedDatas.Length != 0)
             {
                 foreach (var sharedData in sharedDatas)
                 {

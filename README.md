@@ -27,7 +27,7 @@ The YouTube API Daily Quota fills up very fast (Google has a hard limit of 10,00
 
 Please make sure you have the following prerequisites:
 
-- A desktop platform with the [.NET 8.0 SDK](https://dotnet.microsoft.com/download) installed.
+- A desktop platform with the [.NET 10.0 SDK](https://dotnet.microsoft.com/download) installed.
 
 When working with the codebase, we recommend using an IDE with intelligent code completion and syntax highlighting, such as the latest version of [Visual Studio](https://visualstudio.microsoft.com/vs/), [Visual Studio Code](https://code.visualstudio.com/) with the [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) and [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) plugin installed.
 
@@ -72,14 +72,6 @@ When running locally to do any kind of performance testing, make sure to add `-c
 
 If the build fails, try to restore NuGet packages with `dotnet restore`.
 
-### Code analysis
-
-Before committing your code, please run a code formatter. This can be achieved by running `dotnet format` in the command line, or using the `Format code` command in your IDE.
-
-We have adopted some cross-platform, compiler integrated analyzers. They can provide warnings when you are editing, building inside IDE or from command line, as-if they are provided by the compiler itself.
-
-JetBrains ReSharper InspectCode is also used for wider rule sets. You can run it from PowerShell with `.\InspectCode.ps1`. Alternatively, you can install ReSharper or use Rider to get inline support in your IDE of choice.
-
 ## Contributing
 
 When it comes to contributing to the project, the two main things you can do to help out are reporting issues and submitting pull requests. Please refer to the [contributing guidelines](CONTRIBUTING.md) to understand how to help in the most effective way possible.
@@ -91,7 +83,4 @@ When it comes to contributing to the project, the two main things you can do to 
 **Note:** FFmpeg binaries are distributed under their original licenses (GPL/LGPL) from the source.
 Please refer to [FFmpeg License](https://www.ffmpeg.org/legal.html) for details.
 
-This app uses `spine-csharp` (located as Spine in the source code) the C# Spine Runtime.
-Please refer to [Spine Runtimes License](https://esotericsoftware.com/spine-runtimes-license) for details.
-
-Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/NekoPlayer.Resources/LICENSE.md) for more information.
+Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md) for more information.

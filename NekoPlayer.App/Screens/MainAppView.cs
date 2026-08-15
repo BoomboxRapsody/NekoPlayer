@@ -21,10 +21,8 @@ using NekoPlayer.App.Audio;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
 using NekoPlayer.App.Graphics;
-using NekoPlayer.App.Graphics.Characters;
 using NekoPlayer.App.Graphics.Containers;
 using NekoPlayer.App.Graphics.Shaders;
-using NekoPlayer.App.Graphics.Spine;
 using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Graphics.UserInterface;
 using NekoPlayer.App.Graphics.UserInterfaceV2;
@@ -223,8 +221,6 @@ namespace NekoPlayer.App.Screens
 
         private PlaybackSpeedSliderBar speedBarSlider;
         private RoundedSliderBar<double> volumeBarSlider;
-
-        private SpineSprite menuOverlayCharacter, audioEffectsOverlayCharacter, settingsOverlayCharacter;
 
         private LinkFlowContainer playlistAuthor;
 
@@ -997,39 +993,6 @@ namespace NekoPlayer.App.Screens
                                 RelativeSizeAxes = Axes.Both,
                                 Colour = Color4.Black,
                             }
-                        },
-                        menuOverlayCharacter = new ErpinSkin3Sprite
-                        {
-                            Margin = new MarginPadding
-                            {
-                                Right = 650,
-                            },
-                            Y = 100,
-                            Scale = new Vector2(0.4f),
-                            Origin = Anchor.BottomRight,
-                            Anchor = Anchor.BottomRight,
-                        },
-                        audioEffectsOverlayCharacter = new YomiSprite
-                        {
-                            Margin = new MarginPadding
-                            {
-                                Right = 650,
-                            },
-                            Y = 100,
-                            Scale = new Vector2(0.4f),
-                            Origin = Anchor.BottomRight,
-                            Anchor = Anchor.BottomRight,
-                        },
-                        settingsOverlayCharacter = new ButterSprite
-                        {
-                            Margin = new MarginPadding
-                            {
-                                Right = 1100,
-                            },
-                            Y = 100,
-                            Scale = new Vector2(0.4f),
-                            Origin = Anchor.BottomRight,
-                            Anchor = Anchor.BottomRight,
                         },
                         loadVideoContainer = new BottomOverlayContainer
                         {
@@ -4221,21 +4184,6 @@ namespace NekoPlayer.App.Screens
                 sample.Play();
             }
 
-            if (overlayContent.Name == "Menu Overlay")
-            {
-                //menuOverlayCharacter.FadeIn(500, Easing.OutQuint);
-            }
-
-            if (overlayContent == settingsContainer)
-            {
-                //settingsOverlayCharacter.FadeIn(500, Easing.OutQuint);
-            }
-
-            if (overlayContent.Name == "Audio Effects Overlay")
-            {
-                //audioEffectsOverlayCharacter.FadeIn(500, Easing.OutQuint);
-            }
-
             if (playOverlaySFX.Value)
                 overlayShowSample.Play();
 
@@ -4305,21 +4253,6 @@ namespace NekoPlayer.App.Screens
         private void hideOverlayContainer(OverlayContainer overlayContent)
         {
             //duckOperation?.Dispose();
-
-            if (overlayContent.Name == "Menu Overlay")
-            {
-                //menuOverlayCharacter.FadeOut(250, Easing.OutQuint);
-            }
-
-            if (overlayContent == settingsContainer)
-            {
-                //settingsOverlayCharacter.FadeOut(250, Easing.OutQuint);
-            }
-
-            if (overlayContent.Name == "Audio Effects Overlay")
-            {
-                //audioEffectsOverlayCharacter.FadeOut(250, Easing.OutQuint);
-            }
 
             if (playOverlaySFX.Value)
                 overlayHideSample.Play();
@@ -4596,10 +4529,6 @@ namespace NekoPlayer.App.Screens
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
-            menuOverlayCharacter.FadeOut();
-            audioEffectsOverlayCharacter.FadeOut();
-            settingsOverlayCharacter.FadeOut();
 
             ghostIcon.Loop(t =>
                 t.MoveToY(-10, 2000, Easing.InOutSine)
