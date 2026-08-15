@@ -28,6 +28,7 @@ The YouTube API Daily Quota fills up very fast (Google has a hard limit of 10,00
 Please make sure you have the following prerequisites:
 
 - A desktop platform with the [.NET 10.0 SDK](https://dotnet.microsoft.com/download) installed.
+- When running on linux, please have a system-wide ffmpeg installation available to support video decoding.
 
 When working with the codebase, we recommend using an IDE with intelligent code completion and syntax highlighting, such as the latest version of [Visual Studio](https://visualstudio.microsoft.com/vs/), [Visual Studio Code](https://code.visualstudio.com/) with the [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) and [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) plugin installed.
 
