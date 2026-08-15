@@ -331,6 +331,8 @@ namespace NekoPlayer.App.Overlays.Containers
             settingsTabBar.SetItems(drawables);
         }
 
+        private SettingsItemV2 advancedSubtitlesBase;
+
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider, TextureStore textures, ProjectYomiColour colours, FrameworkDebugConfigManager debugConfig, FrameworkConfigManager config, Storage storage, NekoPlayerConfigManager appConfig)
         {
@@ -926,7 +928,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Current = captionEnabled,
                                                             Hotkey = new Hotkey(GlobalAction.CycleCaptionLanguage),
                                                         }),
-                                                        new SettingsItemV2(new FormCheckBox
+                                                        advancedSubtitlesBase = new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.AdvancedSubtitleStyle,
                                                             Icon = FontAwesome.Solid.ClosedCaptioning,
@@ -1266,6 +1268,9 @@ namespace NekoPlayer.App.Overlays.Containers
                 reflexMode.Value = LatencyMode.Off;
                 reflexSettingBase.Hide();
             }
+
+            if (RuntimeInfo.OS == RuntimeInfo.Platform.Linux)
+                advancedSubtitlesBase.Hide();
 
             // Disable frame limiter if reflex is enabled and add notice when reflex boost is enabled
             reflexMode.BindValueChanged(r =>
