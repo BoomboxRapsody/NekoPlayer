@@ -6619,7 +6619,21 @@ namespace NekoPlayer.App.Screens
                             if (loadType == LoadType.Full)
                                 Directory.CreateDirectory(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}"));
 
-                            var streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoUrl);
+                            StreamManifest streamManifest;
+
+                            try
+                            {
+                                streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoUrl);
+                            }
+                            catch (Exception e)
+                            {
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.MinusCircle, Color4.Red, e.Message, NekoPlayerStrings.General));
+                                Schedule(() => thumbnailContainer.Hide());
+                                isVideoLoading = false;
+                                loadBtnOverlayShow.Enabled.Value = true;
+                                Schedule(() => spinner.Hide());
+                                return;
+                            }
 
                             IAudioStreamInfo audioStreamInfo;
 
@@ -6990,7 +7004,21 @@ namespace NekoPlayer.App.Screens
                             captionEnabled.Disabled = false;
                             Schedule(() => captionButton.Enabled.Value = true);
 
-                            var streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoUrl);
+                            StreamManifest streamManifest;
+
+                            try
+                            {
+                                streamManifest = await app.YouTubeClient.Videos.Streams.GetManifestAsync(videoUrl);
+                            }
+                            catch (Exception e)
+                            {
+                                notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.MinusCircle, Color4.Red, e.Message, NekoPlayerStrings.General));
+                                Schedule(() => thumbnailContainer.Hide());
+                                isVideoLoading = false;
+                                loadBtnOverlayShow.Enabled.Value = true;
+                                Schedule(() => spinner.Hide());
+                                return;
+                            }
 
                             IAudioStreamInfo audioStreamInfo;
 
