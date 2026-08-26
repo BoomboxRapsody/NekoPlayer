@@ -67,12 +67,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Colour = overlayColourProvider.Background4,
                     Alpha = 1f,
                 },
-                hover = new Box
+                profileImage = new ProfileImage(20)
                 {
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = Color4.White,
-                    Blending = BlendingParameters.Additive,
-                    Alpha = 0,
+                    Enabled = { Value = false }
                 },
                 new Container {
                     AutoSizeAxes = Axes.X,
@@ -80,17 +77,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Padding = new MarginPadding(4),
                     Children = new Drawable[]
                     {
-                        profileImage = new ProfileImage(12)
-                        {
-                            Enabled = { Value = false }
-                        },
                         new Container
                         {
                             AutoSizeAxes = Axes.X,
                             RelativeSizeAxes = Axes.Y,
                             Padding = new MarginPadding
                             {
-                                Left = 15,
+                                Left = 20,
                                 Right = 5,
                             },
                             Children = new Drawable[]
@@ -105,7 +98,14 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             }
                         }
                     }
-                }
+                },
+                hover = new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = Color4.White,
+                    Blending = BlendingParameters.Additive,
+                    Alpha = 0,
+                },
             };
 
             UpdateDesc(VideoData);
