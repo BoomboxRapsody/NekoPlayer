@@ -491,8 +491,7 @@ namespace NekoPlayer.App.Screens
                                             },
                                             Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
                                             {
-                                                Width = 520,
-                                                Height = 42,
+                                                AutoSizeAxes = Axes.Both,
                                                 Origin = Anchor.TopLeft,
                                                 Anchor = Anchor.TopLeft,
                                                 ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),
@@ -5936,6 +5935,13 @@ namespace NekoPlayer.App.Screens
 
                 Schedule(() =>
                 {
+                    videoMetadataDisplay.ApplyColours(new VideoMetadataDisplayWithoutProfile.VideoMetadataDisplayWithoutProfileColours
+                    {
+                        BGColor = bgColor,
+                        FGColor = accentColor,
+                        FGColor2 = bgColor2.Lighten(0.5f),
+                    });
+
                     seekbar.AccentColour = accentColor;
                     seekbar.BackgroundColour = bgColor2;
 
@@ -6614,7 +6620,7 @@ namespace NekoPlayer.App.Screens
                         }
 
                         isVideoLoading = true;
-                        if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
+                        if (true) // always download cache
                         {
                             if (loadType == LoadType.Full)
                                 Directory.CreateDirectory(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}"));
