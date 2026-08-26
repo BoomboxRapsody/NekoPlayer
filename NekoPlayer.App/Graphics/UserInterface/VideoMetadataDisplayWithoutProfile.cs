@@ -33,7 +33,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
     public partial class VideoMetadataDisplayWithoutProfile : Container
     {
         private ProjectYomiSpriteText videoName;
-        private ProjectYomiSpriteText desc;
+        private ProjectYomiTextFlowContainer desc;
         public Action<VideoMetadataDisplayWithoutProfile> ClickEvent;
 
         private Box bgLayer, hover;
@@ -92,11 +92,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                     Colour = Color4.White,
                                 },
-                                desc = new ProjectYomiSpriteText
+                                desc = new ProjectYomiTextFlowContainer(f =>
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold"),
+                                    f.Colour = Color4.Gray;
+                                    f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold");
+                                })
+                                {
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
-                                    Colour = Color4.Gray,
                                     Position = new osuTK.Vector2(0, 20),
                                 }
                             }
@@ -255,10 +257,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             Schedule(() =>
             {
-                DateTimeOffset? dateTime = videoData.Snippet.PublishedAtDateTimeOffset;
-                DateTimeOffset now = DateTime.Now;
-                Channel channelData = api.GetChannel(videoData.Snippet.ChannelId);
-                desc.Text = NekoPlayerStrings.VideoMetadataDescWithLikeCount(TruncateWithEllipsis(api.GetLocalizedChannelTitle(channelData), 50), videoData.Statistics.LikeCount != null ? Convert.ToDouble(videoData.Statistics.LikeCount).ToStandardFormattedString(0) : Convert.ToDouble(ReturnYouTubeDislike.GetDislikes(videoData.Id).RawLikes).ToStandardFormattedString(0), Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), dateTime.Value.Humanize(dateToCompareAgainst: now));
+                desc.Text = "";
+                YouTubeVideoMetadataDescChip chip = new YouTubeVideoMetadataDescChip()
+                {
+                    VideoData = videoData,
+                };
+                desc.AddArbitraryDrawable(chip);
             });
         }
 
