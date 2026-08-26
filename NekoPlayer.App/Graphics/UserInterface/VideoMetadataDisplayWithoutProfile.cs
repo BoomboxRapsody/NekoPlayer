@@ -162,6 +162,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                     desc.Anchor = Anchor.TopLeft;
                     desc.Origin = Anchor.TopLeft;
+                    desc.TextAnchor = Anchor.TopLeft;
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Center:
@@ -171,6 +172,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                     desc.Anchor = Anchor.TopCentre;
                     desc.Origin = Anchor.TopCentre;
+                    desc.TextAnchor = Anchor.TopCentre;
                     break;
                 }
                 case VideoMetadataDisplayAlignment.Right:
@@ -180,6 +182,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
                     desc.Anchor = Anchor.TopRight;
                     desc.Origin = Anchor.TopRight;
+                    desc.TextAnchor = Anchor.TopRight;
                     break;
                 }
             }
