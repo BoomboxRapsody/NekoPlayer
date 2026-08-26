@@ -5939,7 +5939,7 @@ namespace NekoPlayer.App.Screens
                     {
                         BGColor = bgColor,
                         FGColor = accentColor,
-                        FGColor2 = bgColor.Lighten(0.5f),
+                        FGColor2 = bgColor2,
                     });
 
                     seekbar.AccentColour = accentColor;
