@@ -103,25 +103,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 }
                             }
                         },
-                        new Container
+                        hover = new Box
                         {
                             RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            Child = new Container
-                            {
-                                RelativeSizeAxes = Axes.Both,
-                                Masking = true,
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                Child = hover = new Box
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Colour = Color4.White,
-                                    Blending = BlendingParameters.Additive,
-                                    Alpha = 0,
-                                },
-                            },
+                            Colour = Color4.White,
+                            Blending = BlendingParameters.Additive,
+                            Alpha = 0,
                         },
                     }
                 },
