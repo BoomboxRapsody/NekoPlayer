@@ -6620,7 +6620,7 @@ namespace NekoPlayer.App.Screens
                         }
 
                         isVideoLoading = true;
-                        if (!File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/audio.ogg") || !File.Exists(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}") + @"/video.webm"))
+                        if (true) // always download cache
                         {
                             if (loadType == LoadType.Full)
                                 Directory.CreateDirectory(app.Host.CacheStorage.GetStorageForDirectory("videos").GetFullPath($"{this.videoId}"));
