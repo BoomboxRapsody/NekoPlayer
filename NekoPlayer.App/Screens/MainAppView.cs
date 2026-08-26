@@ -5935,6 +5935,13 @@ namespace NekoPlayer.App.Screens
 
                 Schedule(() =>
                 {
+                    videoMetadataDisplay.ApplyColours(new VideoMetadataDisplayWithoutProfile.VideoMetadataDisplayWithoutProfileColours
+                    {
+                        BGColor = bgColor,
+                        FGColor = accentColor,
+                        FGColor2 = bgColor.Lighten(0.5f),
+                    });
+
                     seekbar.AccentColour = accentColor;
                     seekbar.BackgroundColour = bgColor2;
 

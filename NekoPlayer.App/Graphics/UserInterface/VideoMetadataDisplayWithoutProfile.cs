@@ -50,6 +50,20 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private Bindable<UsernameDisplayMode> usernameDisplayMode;
         private Bindable<VideoMetadataTranslateSource> translationSource = new Bindable<VideoMetadataTranslateSource>();
 
+        public class VideoMetadataDisplayWithoutProfileColours
+        {
+            public ColourInfo BGColor;
+            public ColourInfo FGColor;
+            public ColourInfo FGColor2;
+        }
+
+        public void ApplyColours(VideoMetadataDisplayWithoutProfileColours colours)
+        {
+            bgLayer.Colour = colours.BGColor;
+            videoName.Colour = colours.FGColor;
+            desc.Colour = colours.FGColor2;
+        }
+
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
@@ -85,19 +99,19 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             {
                                 videoName = new ProjectYomiTextFlowContainer(f =>
                                 {
-                                    f.Colour = overlayColourProvider.Content2;
                                     f.Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold");
                                 })
                                 {
+                                    Colour = overlayColourProvider.Content2,
                                     AutoSizeAxes = Axes.Both,
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                 },
                                 desc = new ProjectYomiTextFlowContainer(f =>
                                 {
-                                    f.Colour = overlayColourProvider.Foreground2;
                                     f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold");
                                 })
                                 {
+                                    Colour = overlayColourProvider.Foreground2,
                                     AutoSizeAxes = Axes.Both,
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
                                 }
