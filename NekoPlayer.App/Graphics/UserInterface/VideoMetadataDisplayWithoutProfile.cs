@@ -159,6 +159,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 {
                     videoName.Anchor = Anchor.TopLeft;
                     videoName.Origin = Anchor.TopLeft;
+                    videoName.TextAnchor = Anchor.TopLeft;
 
                     desc.Anchor = Anchor.TopLeft;
                     desc.Origin = Anchor.TopLeft;
@@ -169,6 +170,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 {
                     videoName.Anchor = Anchor.TopCentre;
                     videoName.Origin = Anchor.TopCentre;
+                    videoName.TextAnchor = Anchor.TopCentre;
 
                     desc.Anchor = Anchor.TopCentre;
                     desc.Origin = Anchor.TopCentre;
@@ -179,6 +181,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 {
                     videoName.Anchor = Anchor.TopRight;
                     videoName.Origin = Anchor.TopRight;
+                    videoName.TextAnchor = Anchor.TopRight;
 
                     desc.Anchor = Anchor.TopRight;
                     desc.Origin = Anchor.TopRight;
