@@ -491,8 +491,7 @@ namespace NekoPlayer.App.Screens
                                             },
                                             Child = videoMetadataDisplay = new VideoMetadataDisplayWithoutProfile
                                             {
-                                                Width = 520,
-                                                Height = 42,
+                                                AutoSizeAxes = Axes.Both,
                                                 Origin = Anchor.TopLeft,
                                                 Anchor = Anchor.TopLeft,
                                                 ClickEvent = _ => showOverlayContainer(videoDescriptionContainer),

@@ -10,7 +10,6 @@ using Google.Apis.YouTube.v3.Data;
 using Humanizer;
 using NekoPlayer.App.Config;
 using NekoPlayer.App.Extensions;
-using NekoPlayer.App.Graphics.Sprites;
 using NekoPlayer.App.Localisation;
 using NekoPlayer.App.Online;
 using NekoPlayer.App.Utils;
@@ -30,9 +29,9 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
-    public partial class VideoMetadataDisplayWithoutProfile : Container
+    public partial class VideoMetadataDisplayWithoutProfile : CircularContainer
     {
-        private ProjectYomiSpriteText videoName;
+        private ProjectYomiTextFlowContainer videoName;
         private ProjectYomiTextFlowContainer desc;
         public Action<VideoMetadataDisplayWithoutProfile> ClickEvent;
 
@@ -58,10 +57,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             usernameDisplayMode = appConfig.GetBindable<UsernameDisplayMode>(NekoPlayerSetting.UsernameDisplayMode);
             translationSource = appConfig.GetBindable<VideoMetadataTranslateSource>(NekoPlayerSetting.VideoMetadataTranslateSource);
 
-            Masking = false;
-
-            Shear = new Vector2(0f, 0);
-            CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f);
+            Masking = true;
 
             InternalChildren = new Drawable[]
             {
@@ -69,37 +65,41 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 bgLayer = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Colour = ColourInfo.GradientHorizontal(overlayColourProvider.Background5.Opacity(0.75f), overlayColourProvider.Background5.Opacity(0f)),
-                    Alpha = 0f,
+                    Colour = overlayColourProvider.Background5,
+                    Alpha = 1f,
                 },
                 new Container {
-                    RelativeSizeAxes = Axes.Both,
+                    AutoSizeAxes = Axes.Both,
                     Children = new Drawable[]
                     {
-                        new Container
+                        new FillFlowContainer
                         {
-                            RelativeSizeAxes = Axes.Both,
+                            AutoSizeAxes = Axes.Both,
+                            Direction = FillDirection.Vertical,
                             Padding = new MarginPadding
                             {
-                                Vertical = 3,
-                                Horizontal = 8,
+                                Vertical = 7,
+                                Horizontal = 14,
                             },
                             Children = new Drawable[]
                             {
-                                videoName = new ProjectYomiSpriteText
+                                videoName = new ProjectYomiTextFlowContainer(f =>
                                 {
-                                    Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold"),
+                                    f.Colour = overlayColourProvider.Content2;
+                                    f.Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold");
+                                })
+                                {
+                                    AutoSizeAxes = Axes.Both,
                                     Text = NekoPlayerStrings.VideoNotLoaded,
-                                    Colour = Color4.White,
                                 },
                                 desc = new ProjectYomiTextFlowContainer(f =>
                                 {
-                                    f.Colour = Color4.Gray;
+                                    f.Colour = overlayColourProvider.Foreground2;
                                     f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold");
                                 })
                                 {
+                                    AutoSizeAxes = Axes.Both,
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
-                                    Position = new osuTK.Vector2(0, 20),
                                 }
                             }
                         },
@@ -114,7 +114,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 Masking = true,
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
-                                CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 1.5f),
                                 Child = hover = new Box
                                 {
                                     RelativeSizeAxes = Axes.Both,
@@ -260,12 +259,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             Schedule(() =>
             {
-                desc.Text = "";
-                YouTubeVideoMetadataDescChip chip = new YouTubeVideoMetadataDescChip()
-                {
-                    VideoData = videoData,
-                };
-                desc.AddArbitraryDrawable(chip);
+                DateTimeOffset? dateTime = videoData.Snippet.PublishedAtDateTimeOffset;
+                DateTimeOffset now = DateTime.Now;
+                Channel channelData = api.GetChannel(videoData.Snippet.ChannelId);
+                desc.Text = NekoPlayerStrings.VideoMetadataDescWithLikeCount(TruncateWithEllipsis(api.GetLocalizedChannelTitle(channelData), 50), videoData.Statistics.LikeCount != null ? Convert.ToDouble(videoData.Statistics.LikeCount).ToStandardFormattedString(0) : Convert.ToDouble(ReturnYouTubeDislike.GetDislikes(videoData.Id).RawLikes).ToStandardFormattedString(0), Convert.ToInt32(videoData.Statistics.ViewCount).ToStandardFormattedString(0), dateTime.Value.Humanize(dateToCompareAgainst: now));
             });
         }
 
