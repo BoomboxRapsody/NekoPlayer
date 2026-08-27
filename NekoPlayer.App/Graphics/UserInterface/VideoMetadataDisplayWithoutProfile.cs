@@ -111,7 +111,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold");
                                 })
                                 {
-                                    Colour = (overlayColourProvider.Content2.Darken(1)).Lighten(0.5f),
+                                    Colour = overlayColourProvider.Content2,
                                     AutoSizeAxes = Axes.Both,
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
                                 }
