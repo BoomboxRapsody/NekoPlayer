@@ -91,6 +91,8 @@ namespace NekoPlayer.App.Screens
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, @"ChromaticAberration"));
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, @"Greyscale"));
                 loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, @"HueShift"));
+                loadTargets.Add(manager.Load(VertexShaderDescriptor.TEXTURE_2, "Path"));
+                loadTargets.Add(manager.Load("PathPrepass", "PathPrepass"));
             }
 
             protected virtual bool AllLoaded => loadTargets.All(s => s.IsLoaded);
