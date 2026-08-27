@@ -6676,7 +6676,7 @@ namespace NekoPlayer.App.Screens
                                         // Select best audio stream (highest bitrate)
                                         audioStreamInfo = (IAudioStreamInfo)streamManifest
                                             .GetAudioOnlyStreams()
-                                            .Where(s => IsAudioLanguageDefault == true)
+                                            .Where(s => s.IsAudioLanguageDefault == true)
                                             .Where(s => s.AudioCodec.Contains("mp4a"))
                                             .TryGetWithHighestBitrate();
                                         settingsContainer.AudioQualitySettings.Caption = NekoPlayerStrings.AudioQualityWithLabel($"{audioStreamInfo.AudioCodec}, {audioStreamInfo.Bitrate.KiloBitsPerSecond:N0}kbps");
