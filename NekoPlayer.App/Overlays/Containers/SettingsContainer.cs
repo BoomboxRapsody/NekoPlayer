@@ -365,8 +365,6 @@ namespace NekoPlayer.App.Overlays.Containers
             var frameSyncMode = config.GetBindable<FrameSync>(FrameworkSetting.FrameSync);
 
             captionEnabled = appConfig.GetBindable<bool>(NekoPlayerSetting.CaptionEnabled);
-
-            audioLanguage = appConfig.GetBindable<Localisation.Language>(NekoPlayerSetting.AudioLanguage);
             showVideoMetadataOnWindowTitle = appConfig.GetBindable<bool>(NekoPlayerSetting.ShowVideoMetadataOnWindowTitle);
 
             windowedPositionX = config.GetBindable<double>(FrameworkSetting.WindowedPositionX);
@@ -843,21 +841,6 @@ namespace NekoPlayer.App.Overlays.Containers
                                                             Icon = FontAwesome.Solid.FileAudio,
                                                             Current = audioQuality,
                                                         }),
-                                                        new SettingsItemV2(new FormCheckBox
-                                                        {
-                                                            Caption = NekoPlayerStrings.AlwaysUseOriginalAudio,
-                                                            Icon = FontAwesome.Solid.FileAudio,
-                                                            Current = alwaysUseOriginalAudio,
-                                                        }),
-                                                        audioLanguageItem = new SettingsItemV2(new FormEnumDropdown<Localisation.Language>
-                                                        {
-                                                            Caption = NekoPlayerStrings.AudioLanguage,
-                                                            Icon = FontAwesome.Solid.Language,
-                                                            Current = audioLanguage,
-                                                        })
-                                                        {
-                                                            ShowRevertToDefaultButton = false,
-                                                        },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,
@@ -1368,6 +1351,7 @@ namespace NekoPlayer.App.Overlays.Containers
                 updateDisplaySettingsVisibility();
             }, true);
 
+            /*
             alwaysUseOriginalAudio.BindValueChanged(enabled =>
             {
                 if (enabled.NewValue)
@@ -1379,6 +1363,7 @@ namespace NekoPlayer.App.Overlays.Containers
                     audioLanguageItem.Show();
                 }
             }, true);
+            */
 
             currentDisplay.BindValueChanged(display => Schedule(() =>
             {
@@ -1493,8 +1478,6 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<double> windowedPositionX = null!;
         private Bindable<double> windowedPositionY = null!;
         private Bindable<ScalingMode> scalingMode = null!;
-        private SettingsItemV2 audioLanguageItem;
-        private Bindable<Localisation.Language> audioLanguage;
 
         private bool automaticRendererInUse;
         private FormCheckBox hwAccelCheckbox;
