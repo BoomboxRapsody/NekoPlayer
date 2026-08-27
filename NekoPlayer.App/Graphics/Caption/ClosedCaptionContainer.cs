@@ -216,6 +216,9 @@ namespace NekoPlayer.App.Graphics.Caption
                     case CaptionFonts.Hakgyoansim_ManitoR:
                         textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.Hakgyoansim_ManitoR.With(size: 24);
                         break;
+                    case CaptionFonts.OwnglyphDaisy:
+                        textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.OwnglyphDaisy.With(size: 24);
+                        break;
                     default:
                         textCreationParameters = t => t.Font = NekoPlayerApp.Fonts.GoogleSansFlex.With(size: 24);
                         break;
@@ -387,6 +390,8 @@ namespace NekoPlayer.App.Graphics.Caption
                     return NekoPlayerApp.Fonts.DreamHeumulKR.With(size: size);
                 case CaptionFonts.Hakgyoansim_ManitoR:
                     return NekoPlayerApp.Fonts.Hakgyoansim_ManitoR.With(size: size);
+                case CaptionFonts.OwnglyphDaisy:
+                    return NekoPlayerApp.Fonts.OwnglyphDaisy.With(size: size);
                 default:
                     return NekoPlayerApp.Fonts.GoogleSansFlex.With(size: size);
             }

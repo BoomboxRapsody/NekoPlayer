@@ -244,6 +244,7 @@ namespace NekoPlayer.App.Config
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/HayuFont");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/DreamHeumulKR");
             game.AddOutlineFont(Resources, @"Fonts/UIFonts/Hakgyoansim_ManitoR");
+            game.AddOutlineFont(Resources, @"Fonts/UIFonts/OwnglyphDaisy");
         }
     }
 }

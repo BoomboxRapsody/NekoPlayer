@@ -65,6 +65,7 @@ namespace NekoPlayer.App
             public static FontUsage DreamHeumulKR = FontUsage.Default.With("DreamHeumulKR", 16);
             public static FontUsage Hakgyoansim_ManitoR = FontUsage.Default.With("Hakgyoansim_ManitoR", 16);
             public static FontUsage Roboto = FontUsage.Default.With("Roboto", 16, "Regular");
+            public static FontUsage OwnglyphDaisy = FontUsage.Default.With("OwnglyphDaisy", 16);
         }
 
         private BindableNumber<double> sampleVolume = null!;

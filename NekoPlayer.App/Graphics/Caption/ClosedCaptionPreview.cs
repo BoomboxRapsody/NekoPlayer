@@ -173,6 +173,11 @@ namespace NekoPlayer.App.Graphics.Caption
                         textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.Hakgyoansim_ManitoR.With(size: 24);
                         break;
                     }
+                    case CaptionFonts.OwnglyphDaisy:
+                    {
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.OwnglyphDaisy.With(size: 24);
+                        break;
+                    }
                 }
                 RefreshFont();
             }, true);

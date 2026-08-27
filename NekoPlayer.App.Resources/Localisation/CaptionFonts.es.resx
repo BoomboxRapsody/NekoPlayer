@@ -94,4 +94,7 @@
   <data name="Hakgyoansim_ManitoR" xml:space="preserve">
     <value>Hakgyoansim Manito</value>
   </data>
+  <data name="OwnglyphDaisy" xml:space="preserve">
+    <value>Ownglyph Daisy</value>
+  </data>
 </root>

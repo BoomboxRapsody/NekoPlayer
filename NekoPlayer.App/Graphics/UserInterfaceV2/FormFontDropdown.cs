@@ -353,6 +353,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             label.Font = NekoPlayerApp.Fonts.Hakgyoansim_ManitoR;
                             break;
                         }
+                        case CaptionFonts.OwnglyphDaisy:
+                        {
+                            label.Font = NekoPlayerApp.Fonts.OwnglyphDaisy;
+                            break;
+                        }
                     }
                 }, true);
 

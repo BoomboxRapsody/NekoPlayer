@@ -31,5 +31,7 @@ namespace NekoPlayer.App.Config
         DreamHeumulKR,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.Hakgyoansim_ManitoR))]
         Hakgyoansim_ManitoR,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.OwnglyphDaisy))]
+        OwnglyphDaisy,
     }
 }
