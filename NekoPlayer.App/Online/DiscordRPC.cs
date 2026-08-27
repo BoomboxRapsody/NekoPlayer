@@ -28,7 +28,7 @@ namespace NekoPlayer.App.Online
 
             //Connect to the RPC
             client.Initialize();
-            Logger.Log("[Discord] Discord RPC system initialized.", LoggingTarget.Runtime);
+            Logger.Log("[Discord] Discord RPC initialized.", LoggingTarget.Runtime);
         }
 
         public void UpdatePresence(RichPresence richPresence) => client.SetPresence(richPresence);
