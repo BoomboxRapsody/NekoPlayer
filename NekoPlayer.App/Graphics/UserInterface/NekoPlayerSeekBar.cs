@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
 using NekoPlayer.App.Utils;
@@ -14,7 +16,6 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Lines;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
@@ -35,10 +36,23 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected readonly Box RightBox;
         protected readonly Container LeftBoxContainer;
         protected readonly Container RightBoxContainer;
-        protected readonly Circle EndCircle;
         private readonly Container nubContainer;
-
         private readonly Container mainContent;
+
+        private const float track_height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f;
+        private const float nub_overlap = 0f;
+        private const float wave_frequency = 0.1f;
+        private const float wave_point_spacing = 1f;
+
+        private static readonly HttpClient httpClient = new HttpClient();
+        private readonly List<Vector2> waveVertices = new List<Vector2>();
+
+        private bool isWavy;
+        private bool isNubGlowing;
+        private bool waveIsFlat = true;
+        private float lastWaveWidth = float.NaN;
+        private float lastRangePadding = float.NaN;
+        private int paletteRequestVersion;
 
         private Color4 accentColour;
 
@@ -65,7 +79,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }
         }
 
-        public Bindable<double> PlaybackSpeed = new Bindable<double>(1);
+        public Bindable<double> PlaybackSpeed { get; } = new Bindable<double>(1);
+
+        public Bindable<bool> IsPlaying { get; } = new Bindable<bool>();
 
         /// <summary>
         /// The action to use to reset the value of <see cref="SliderBar{T}.Current"/> to the default.
@@ -76,7 +92,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public NekoPlayerSeekBar()
         {
             Height = NekoPlayerSeekBar.SliderNub.HEIGHT;
-            RangePadding = NekoPlayerSeekBar.SliderNub.DEFAULT_EXPANDED_SIZE / 2;
+            //RangePadding = NekoPlayerSeekBar.SliderNub.DEFAULT_EXPANDED_SIZE / 2;
             ResetToDefault = () =>
             {
                 if (!Current.Disabled)
@@ -101,12 +117,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         {
                             LeftBoxContainer = new Container
                             {
-                                Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
-                                //AutoSizeAxes = Axes.X,
+                                Height = track_height,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
                                 Masking = false,
-                                //CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3),
                                 Children = new Drawable[] {
                                     LeftBox = new SmoothPath
                                     {
@@ -119,18 +133,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             },
                             RightBoxContainer = new Container
                             {
-                                Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
-                                AutoSizeAxes = Axes.X,
+                                Height = track_height,
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
                                 Masking = true,
-                                CornerRadius = new CornersInfo((NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 3, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2, (NekoPlayerSeekBar.SliderNub.HEIGHT / 3f) / 2),
+                                CornerRadius = new CornersInfo(track_height / 3, track_height / 3, track_height / 2, track_height / 2),
                                 Children = new Drawable[] {
                                     RightBox = new Box
                                     {
-                                        Height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f,
+                                        Height = track_height,
                                         Colour = backgroundColour,
-                                        RelativeSizeAxes = Axes.None,
+                                        RelativeSizeAxes = Axes.X,
                                     },
                                 },
                              },
@@ -142,10 +155,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     RelativeSizeAxes = Axes.Both,
                     Child = Nub = new SliderNub
                     {
-                        Origin = Anchor.TopCentre,
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
                         Colour = AccentColour,
                         RelativePositionAxes = Axes.X,
-                        Current = { Value = true },
                         OnDoubleClicked = () => ResetToDefault.Invoke(),
                     },
                 },
@@ -170,46 +183,52 @@ namespace NekoPlayer.App.Graphics.UserInterface
         }
 
         [Resolved]
-        private NekoPlayerAppBase app { get; set; }
-
-        [Resolved]
-        private OverlayColourProvider overlayColourProvider { get; set; }
+        private OverlayColourProvider overlayColourProvider { get; set; } = null!;
 
         public void GetPalette(Video video)
         {
-            Task.Run(async () =>
+            ArgumentNullException.ThrowIfNull(video);
+
+            int requestVersion = Interlocked.Increment(ref paletteRequestVersion);
+            _ = updatePaletteAsync(video, requestVersion);
+        }
+
+        private async Task updatePaletteAsync(Video video, int requestVersion)
+        {
+            try
             {
-                var cachePath = app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{video.Id}.png");
+                string? thumbnailUrl = video.Snippet?.Thumbnails?.High?.Url;
 
-                using (var httpClient = new System.Net.Http.HttpClient())
-                {
-                    var imageBytes = await httpClient.GetByteArrayAsync(video.Snippet.Thumbnails.High.Url);
-                    await System.IO.File.WriteAllBytesAsync(cachePath, imageBytes);
-                }
+                if (string.IsNullOrWhiteSpace(thumbnailUrl))
+                    throw new InvalidOperationException("The video does not have a high-resolution thumbnail.");
 
-                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(app.Host.CacheStorage.GetStorageForDirectory("videoThumbnailCache").GetFullPath($"{video.Id}.png"));
+                byte[] imageBytes = await httpClient.GetByteArrayAsync(thumbnailUrl).ConfigureAwait(false);
+                using Image<Rgba32> bitmap = SixLabors.ImageSharp.Image.Load<Rgba32>(imageBytes);
 
-                IBitmapHelper bitmapHelper = new BitmapHelper(bitmap);
-                PaletteBuilder paletteBuilder = new PaletteBuilder();
-                Palette palette = paletteBuilder.Generate(bitmapHelper);
-                int? rgbColor = palette.LightMutedSwatch.Rgb;
-                int? rgbColor2 = palette.DarkMutedSwatch.Rgb;
+                Palette palette = new PaletteBuilder().Generate(new BitmapHelper(bitmap));
+                int? accentRgb = palette.LightMutedSwatch?.Rgb;
+                int? backgroundRgb = palette.DarkMutedSwatch?.Rgb;
 
-                if (rgbColor != null && rgbColor2 != null)
-                {
-                    Color4 accentColor = System.Drawing.Color.FromArgb((int)rgbColor);
-                    Color4 bgColor = System.Drawing.Color.FromArgb((int)rgbColor2);
-                    Schedule(() =>
-                    {
-                        AccentColour = accentColor;
-                        BackgroundColour = bgColor;
-                    });
-                }
-                else
-                {
-                    AccentColour = Nub.Colour = overlayColourProvider.Content2;
-                    BackgroundColour = overlayColourProvider.Content2.Darken(1);
-                }
+                if (accentRgb is null || backgroundRgb is null)
+                    throw new InvalidOperationException("The thumbnail palette does not contain suitable muted colours.");
+
+                applyPalette(requestVersion, System.Drawing.Color.FromArgb(accentRgb.Value), System.Drawing.Color.FromArgb(backgroundRgb.Value));
+            }
+            catch (Exception)
+            {
+                applyPalette(requestVersion, overlayColourProvider.Content2, overlayColourProvider.Content2.Darken(1));
+            }
+        }
+
+        private void applyPalette(int requestVersion, Color4 accent, Color4 background)
+        {
+            Schedule(() =>
+            {
+                if (requestVersion != Volatile.Read(ref paletteRequestVersion))
+                    return;
+
+                AccentColour = accent;
+                BackgroundColour = background;
             });
         }
 
@@ -217,53 +236,65 @@ namespace NekoPlayer.App.Graphics.UserInterface
         {
             base.Update();
 
-            nubContainer.Padding = new MarginPadding { Horizontal = RangePadding };
-
-            if (Current != null && Current is BindableNumber<double>)
+            if (lastRangePadding != RangePadding)
             {
-                if (((Current as BindableNumber<double>).Value >= ((Current as BindableNumber<double>).MaxValue * 0.04)) && ((Current as BindableNumber<double>).Value <= ((Current as BindableNumber<double>).MaxValue * 0.96))) // peak
-                {
-                    if (!isWavy)
-                    {
-                        isWavy = true;
-                        this.TransformBindableTo(amplitudeAnimated2, 1f, 1250, Easing.OutQuint);
-                    }
-                }
-                else
-                {
-                    if (isWavy)
-                    {
-                        isWavy = false;
-                        this.TransformBindableTo(amplitudeAnimated2, 0f, 750, Easing.OutQuint);
-                    }
-                }
+                nubContainer.Padding = new MarginPadding { Horizontal = RangePadding };
+                lastRangePadding = RangePadding;
             }
+
+            updateWaveState();
 
             updateWavePath();
         }
 
-        private bool isWavy = false;
+        private readonly Bindable<double> speedRolling = new Bindable<double>(1);
+        private readonly Bindable<float> amplitudeAnimated = new Bindable<float>(0);
+        private readonly Bindable<float> amplitudeAnimated2 = new Bindable<float>(0);
 
-        private Bindable<double> speedRolling = new Bindable<double>(1);
-        private Bindable<float> amplitudeAnimated = new Bindable<float>(0);
-        private Bindable<float> amplitudeAnimated2 = new Bindable<float>(0);
-        public Bindable<bool> IsPlaying = new Bindable<bool>(false);
+        private void updateWaveState()
+        {
+            double minValue = double.CreateTruncating(CurrentNumber.MinValue);
+            double maxValue = double.CreateTruncating(CurrentNumber.MaxValue);
+            double value = double.CreateTruncating(CurrentNumber.Value);
+            double range = maxValue - minValue;
+            bool shouldBeWavy = range > 0 && value >= minValue + range * 0.04 && value <= maxValue - range * 0.04;
+
+            if (shouldBeWavy == isWavy)
+                return;
+
+            isWavy = shouldBeWavy;
+            this.TransformBindableTo(amplitudeAnimated2, shouldBeWavy ? 1f : 0f, shouldBeWavy ? 1250 : 750, Easing.OutQuint);
+        }
 
         private void updateWavePath()
         {
-            var points = new List<Vector2>();
-
-            float frequency = 0.1f;
             float amplitude = amplitudeAnimated.Value * amplitudeAnimated2.Value;
-            float step = 1f;
+            float width = Math.Max(0, LeftBoxContainer.Width - nub_overlap);
+            bool isFlat = amplitude <= 0.001f;
 
-            for (float x = 0; x <= LeftBoxContainer.Width - 8f; x += step)
+            if (width == lastWaveWidth)
+                return;
+
+            waveVertices.Clear();
+
+            if (isFlat)
             {
-                float y = MathF.Sin((x - ((float)(((Time.Current * -1f) * 0.05f) * speedRolling.Value))) * frequency) * amplitude;
-                points.Add(new Vector2(x, y));
+                waveVertices.Add(Vector2.Zero);
+                waveVertices.Add(new Vector2(width - wave_point_spacing, 0));
+            }
+            else
+            {
+                float phase = (float)(Time.Current * -0.05 * speedRolling.Value);
+
+                for (float x = wave_point_spacing; x < width; x += wave_point_spacing)
+                    waveVertices.Add(new Vector2(x, MathF.Sin((x - phase) * wave_frequency) * amplitude));
+
+                waveVertices.Add(new Vector2(width, MathF.Sin((width - phase) * wave_frequency) * amplitude));
             }
 
-            LeftBox.Vertices = points;
+            LeftBox.Vertices = waveVertices;
+            waveIsFlat = isFlat;
+            lastWaveWidth = width;
         }
 
         protected override void LoadComplete()
@@ -276,39 +307,18 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }, true);
         }
 
-        protected override bool OnHover(HoverEvent e)
-        {
-            updateGlow();
-            return base.OnHover(e);
-        }
-
-        protected override void OnHoverLost(HoverLostEvent e)
-        {
-            updateGlow();
-            base.OnHoverLost(e);
-        }
-
         protected override bool ShouldHandleAsRelativeDrag(MouseDownEvent e)
             => Nub.ReceivePositionalInputAt(e.ScreenSpaceMouseDownPosition);
-
-        protected override void OnDragEnd(DragEndEvent e)
-        {
-            updateGlow();
-            base.OnDragEnd(e);
-        }
-
-        private void updateGlow()
-        {
-        }
 
         protected override void UpdateAfterChildren()
         {
             base.UpdateAfterChildren();
 
-            // [중요] 기존 LeftBox.Scale 방식을 버리고 마스킹 컨테이너의 Width를 직접 조절합니다.
-            LeftBoxContainer.Width = Math.Clamp(RangePadding + (Nub.DrawPosition.X - 8), 0, Math.Max(0, DrawWidth));
+            float trackWidth = mainContent.DrawWidth;
+            float nubCentre = Nub.ToSpaceOfOtherDrawable(Vector2.Zero, mainContent).X;
 
-            RightBox.Scale = new Vector2(Math.Clamp(DrawWidth - (Nub.DrawPosition.X + 8) - RangePadding, 0, Math.Max(0, DrawWidth)), 1);
+            LeftBoxContainer.Width = Math.Clamp(RangePadding + nubCentre - (nub_overlap), 0, trackWidth);
+            RightBoxContainer.Width = Math.Clamp(trackWidth - nubCentre - (nub_overlap) - RangePadding, 0, trackWidth);
         }
 
         protected override void UpdateValue(float value)
