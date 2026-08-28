@@ -40,9 +40,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private readonly Container mainContent;
 
         private const float track_height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f;
-        private const float nub_overlap = 6f;
+        private const float nub_overlap = 0f;
         private const float wave_frequency = 0.1f;
-        private const float wave_point_spacing = 2f;
+        private const float wave_point_spacing = 1f;
 
         private static readonly HttpClient httpClient = new HttpClient();
         private readonly List<Vector2> waveVertices = new List<Vector2>();
@@ -92,7 +92,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public NekoPlayerSeekBar()
         {
             Height = NekoPlayerSeekBar.SliderNub.HEIGHT;
-            RangePadding = NekoPlayerSeekBar.SliderNub.DEFAULT_EXPANDED_SIZE / 2;
+            //RangePadding = NekoPlayerSeekBar.SliderNub.DEFAULT_EXPANDED_SIZE / 2;
             ResetToDefault = () =>
             {
                 if (!Current.Disabled)
@@ -155,10 +155,10 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     RelativeSizeAxes = Axes.Both,
                     Child = Nub = new SliderNub
                     {
-                        Origin = Anchor.TopCentre,
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
                         Colour = AccentColour,
                         RelativePositionAxes = Axes.X,
-                        Current = { Value = true },
                         OnDoubleClicked = () => ResetToDefault.Invoke(),
                     },
                 },
@@ -276,11 +276,11 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 return;
 
             waveVertices.Clear();
-            //waveVertices.Add(Vector2.Zero);
 
             if (isFlat)
             {
-                waveVertices.Add(new Vector2(width, 0));
+                waveVertices.Add(Vector2.Zero);
+                waveVertices.Add(new Vector2(width - wave_point_spacing, 0));
             }
             else
             {
@@ -307,37 +307,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             }, true);
         }
 
-        protected override bool OnHover(HoverEvent e)
-        {
-            updateGlow();
-            return base.OnHover(e);
-        }
-
-        protected override void OnHoverLost(HoverLostEvent e)
-        {
-            updateGlow();
-            base.OnHoverLost(e);
-        }
-
         protected override bool ShouldHandleAsRelativeDrag(MouseDownEvent e)
             => Nub.ReceivePositionalInputAt(e.ScreenSpaceMouseDownPosition);
-
-        protected override void OnDragEnd(DragEndEvent e)
-        {
-            updateGlow();
-            base.OnDragEnd(e);
-        }
-
-        private void updateGlow()
-        {
-            bool shouldGlow = IsHovered || IsDragged;
-
-            if (isNubGlowing == shouldGlow)
-                return;
-
-            isNubGlowing = shouldGlow;
-            Nub.Glowing = shouldGlow;
-        }
 
         protected override void UpdateAfterChildren()
         {
@@ -346,8 +317,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             float trackWidth = mainContent.DrawWidth;
             float nubCentre = Nub.ToSpaceOfOtherDrawable(Vector2.Zero, mainContent).X;
 
-            LeftBoxContainer.Width = Math.Clamp(RangePadding + nubCentre - nub_overlap, 0, trackWidth);
-            RightBoxContainer.Width = Math.Clamp(trackWidth - nubCentre - nub_overlap - RangePadding, 0, trackWidth);
+            LeftBoxContainer.Width = Math.Clamp(RangePadding + nubCentre - (nub_overlap), 0, trackWidth);
+            RightBoxContainer.Width = Math.Clamp(trackWidth - nubCentre - (nub_overlap) - RangePadding, 0, trackWidth);
         }
 
         protected override void UpdateValue(float value)
