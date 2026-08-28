@@ -272,7 +272,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             float width = Math.Max(0, LeftBoxContainer.Width - nub_overlap);
             bool isFlat = amplitude <= 0.001f;
 
-            if (isFlat && waveIsFlat && width == lastWaveWidth)
+            if (width == lastWaveWidth)
                 return;
 
             waveVertices.Clear();
