@@ -40,7 +40,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private readonly Container mainContent;
 
         private const float track_height = NekoPlayerSeekBar.SliderNub.HEIGHT / 3f;
-        private const float nub_overlap = 8f;
+        private const float nub_overlap = 6f;
         private const float wave_frequency = 0.1f;
         private const float wave_point_spacing = 2f;
 
@@ -276,7 +276,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 return;
 
             waveVertices.Clear();
-            waveVertices.Add(Vector2.Zero);
+            //waveVertices.Add(Vector2.Zero);
 
             if (isFlat)
             {
