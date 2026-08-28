@@ -32,24 +32,28 @@ namespace NekoPlayer.App.Graphics.Videos
 {
     public partial class YouTubeVideoPlayer : Container
     {
+        private const double milliseconds_per_second = 1000;
+        private const double video_sync_tolerance = 10;
+        private const double seek_interval = 5000;
+
         private Video video = null!;
         private Track track = null!;
         private DrawableTrack drawableTrack = null!;
-        private Google.Apis.YouTube.v3.Data.Video videoData = null!;
+        private readonly Google.Apis.YouTube.v3.Data.Video videoData;
 
-        private string fileName_Video, fileName_Audio = null!;
+        private readonly string fileName_Video;
+        private readonly string fileName_Audio;
         private string srv3Contents = null!;
         private ClosedCaptionTrack closedCaptionTrack;
-        private ClosedCaptionLanguage captionLanguage;
 
         private StopwatchClock rateAdjustClock = null!;
         private DecouplingFramedClock framedClock = null!;
 
-        private BufferedContainer blurContainer;
+        private BufferedContainer blurContainer = null!;
 
         private Bindable<double> playbackSpeed = null!;
-        private double resumeFromTime;
-        private bool trackFinished = false;
+        private readonly double resumeFromTime;
+        private bool trackFinished;
 
         public Action? OnVideoCompleted = null!;
 
@@ -89,7 +93,7 @@ namespace NekoPlayer.App.Graphics.Videos
                 closedCaption.UpdateCaptionTrack(closedCaptionTrack);
         }
 
-        public BindableNumber<double> VideoProgress = new BindableNumber<double>()
+        public BindableNumber<double> VideoProgress { get; } = new BindableNumber<double>()
         {
             MinValue = 0,
             MaxValue = 1,
@@ -102,9 +106,9 @@ namespace NekoPlayer.App.Graphics.Videos
 
         private VideoNewShaderContainer bloom, chromatic, grayscale, hueShift = null!;
 
-        private Bindable<bool> useNewSubtitlesFeature;
+        private Bindable<bool> useNewSubtitlesFeature = null!;
 
-        private Bindable<Localisation.Language> uiLanguage;
+        private Bindable<Localisation.Language> uiLanguage = null!;
 
         private bool lastPlayingState = false;
         private bool isSeeking = false;
@@ -119,7 +123,7 @@ namespace NekoPlayer.App.Graphics.Videos
             if (seeking)
             {
                 lastPlayingState = IsPlaying();
-                if (lastPlayingState == true)
+                if (lastPlayingState)
                 {
                     Pause();
                 }
@@ -128,7 +132,7 @@ namespace NekoPlayer.App.Graphics.Videos
             }
             else
             {
-                if (lastPlayingState == true)
+                if (lastPlayingState)
                 {
                     Play();
                 }
@@ -244,7 +248,7 @@ namespace NekoPlayer.App.Graphics.Videos
 
             UpdatePreservePitch(config.Get<bool>(NekoPlayerSetting.AdjustPitchOnSpeedChange));
 
-            SeekTo(resumeFromTime * 1000);
+            SeekTo(resumeFromTime * milliseconds_per_second);
             Play();
 
             uiVisible.BindValueChanged(visible =>
@@ -300,11 +304,6 @@ namespace NekoPlayer.App.Graphics.Videos
             SeekTo(0);
             Pause();
             OnVideoCompleted?.Invoke();
-            /*
-            drawableTrack?.Stop();
-            framedClock.Stop();
-            SeekTo(0);
-            */ // fix app freezing on track completed
         }
 
         public void UpdatePreservePitch(bool value)
@@ -312,7 +311,7 @@ namespace NekoPlayer.App.Graphics.Videos
             drawableTrack?.RemoveAllAdjustments(AdjustableProperty.Tempo);
             drawableTrack?.RemoveAllAdjustments(AdjustableProperty.Frequency);
 
-            if (value == true)
+            if (value)
                 drawableTrack?.AddAdjustment(AdjustableProperty.Frequency, playbackSpeed);
             else
                 drawableTrack?.AddAdjustment(AdjustableProperty.Tempo, playbackSpeed);
@@ -321,11 +320,13 @@ namespace NekoPlayer.App.Graphics.Videos
         protected override void Dispose(bool isDisposing)
         {
             uiLanguage.UnbindEvents();
+            uiVisible.UnbindEvents();
             mediaSession?.UnregisterControlEvents();
             mediaSession?.DeleteMediaSession();
 
-            drawableTrack.Dispose();
-            video.Dispose();
+            if (drawableTrack != null)
+                drawableTrack.Completed -= trackCompleted;
+
             base.Dispose(isDisposing);
         }
 
@@ -367,94 +368,92 @@ namespace NekoPlayer.App.Graphics.Videos
 
             if (drawableTrack != null)
             {
-                VideoProgress.MaxValue = drawableTrack.Length / 1000;
-                VideoProgress.Value = drawableTrack.CurrentTime / 1000;
-            }
+                double length = drawableTrack.Length / milliseconds_per_second;
 
-            if (drawableTrack.CurrentTime != video.Time.Current)
-            {
-                video.Seek(drawableTrack.CurrentTime); //prevent desyncing
+                if (VideoProgress.MaxValue != length)
+                    VideoProgress.MaxValue = length;
+
+                VideoProgress.Value = drawableTrack.CurrentTime / milliseconds_per_second;
+
+                if (Math.Abs(drawableTrack.CurrentTime - video.Time.Current) > video_sync_tolerance)
+                    video.Seek(drawableTrack.CurrentTime);
             }
         }
 
         public void SeekTo(double pos)
         {
-            double pos2 = pos;
+            if (drawableTrack == null)
+                return;
 
-            if (pos2 < 0)
-                pos2 = 0;
+            double targetPosition = Math.Clamp(pos, 0, drawableTrack.Length);
 
-            if (drawableTrack != null)
-            {
-                drawableTrack?.Seek(pos2);
-                video?.Seek(pos2);
-                mediaSession?.UpdateTimestamp(videoData, pos2);
-            }
+            drawableTrack.Seek(targetPosition);
+            video.Seek(targetPosition);
+            mediaSession?.UpdateTimestamp(videoData, targetPosition);
         }
 
         public void FastForward10Sec()
         {
-            if (drawableTrack != null)
-            {
-                if ((drawableTrack.CurrentTime + 5000) >= drawableTrack.Length)
-                {
-                    SeekTo(drawableTrack.Length);
-                    trackFinished = true;
-                    Pause();
-                }
+            if (drawableTrack == null)
+                return;
 
-                SeekTo(drawableTrack.CurrentTime + 5000);
-                keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.FastForward10sec, FontAwesome.Solid.Box);
-                mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
+            double targetPosition = Math.Min(drawableTrack.CurrentTime + seek_interval, drawableTrack.Length);
+            SeekTo(targetPosition);
+
+            if (targetPosition >= drawableTrack.Length)
+            {
+                trackFinished = true;
+                Pause();
             }
+
+            keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.FastForward10sec, FontAwesome.Solid.Box);
         }
 
         public void FastRewind10Sec()
         {
-            if (drawableTrack != null)
-            {
-                SeekTo(drawableTrack.CurrentTime - 5000);
-                keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.FastRewind10sec, FontAwesome.Solid.Box);
-                mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
-            }
+            if (drawableTrack == null)
+                return;
+
+            SeekTo(drawableTrack.CurrentTime - seek_interval);
+            keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.FastRewind10sec, FontAwesome.Solid.Box);
         }
 
         public void Pause(bool isKeyboardOrMouseAction = false)
         {
-            if (drawableTrack != null)
-            {
-                drawableTrack?.Stop();
-                framedClock.Stop();
+            if (drawableTrack == null)
+                return;
 
-                mediaSession?.UpdatePlayingState(false);
-                mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
+            drawableTrack.Stop();
+            framedClock.Stop();
 
-                if (isKeyboardOrMouseAction)
-                    keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Pause);
-            }
+            mediaSession?.UpdatePlayingState(false);
+            mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
+
+            if (isKeyboardOrMouseAction)
+                keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Pause);
         }
 
         public void Play(bool isKeyboardOrMouseAction = false)
         {
-            if (drawableTrack != null)
+            if (drawableTrack == null)
+                return;
+
+            if (trackFinished)
             {
-                if (trackFinished)
-                {
-                    if (drawableTrack.CurrentTime == drawableTrack.Length)
-                        SeekTo(0);
+                if (drawableTrack.CurrentTime >= drawableTrack.Length)
+                    SeekTo(0);
 
-                    trackFinished = false;
-                }
-
-                mediaSession?.UpdatePlayingState(true);
-                mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
-
-                drawableTrack?.Start();
-                framedClock.Start();
-
-                if (isKeyboardOrMouseAction)
-                    keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Play);
+                trackFinished = false;
             }
+
+            mediaSession?.UpdatePlayingState(true);
+            mediaSession?.UpdateTimestamp(videoData, drawableTrack.CurrentTime);
+
+            drawableTrack.Start();
+            framedClock.Start();
+
+            if (isKeyboardOrMouseAction)
+                keyBindingAnimations.PlaySeekAnimation(KeyBindingAnimations.SeekAction.PlayPause, FontAwesome.Solid.Play);
         }
 
         [Resolved]
