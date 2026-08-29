@@ -62,8 +62,8 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV3
 
                 if (!Current.Disabled && Current.Value == null)
                 {
-                    Current.Value = (IAudioStreamInfo)audioStreamInfo.Where(i => i.IsAudioLanguageDefault == true).First();
-                    Current.Default = (IAudioStreamInfo)audioStreamInfo.Where(i => i.IsAudioLanguageDefault == true).First();
+                    Current.Value = (IAudioStreamInfo)audioStreamInfo.Where(i => i.IsAudioLanguageDefault == true).Last();
+                    Current.Default = (IAudioStreamInfo)audioStreamInfo.Where(i => i.IsAudioLanguageDefault == true).Last();
                 }
             }
             catch (Exception e)

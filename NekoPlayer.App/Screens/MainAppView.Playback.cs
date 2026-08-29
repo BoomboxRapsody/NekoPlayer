@@ -322,7 +322,7 @@ namespace NekoPlayer.App.Screens
 
                         try
                         {
-                            if (settingsContainer.AudioQualitySettings.Current.Value == null)
+                            if (loadType == LoadType.Full)
                                 await settingsContainer.AudioQualitySettings.RefreshAudioStreamList(videoUrl);
                         }
                         catch (Exception e)
