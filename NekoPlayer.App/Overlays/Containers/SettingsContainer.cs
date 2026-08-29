@@ -839,7 +839,10 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             Caption = NekoPlayerStrings.AudioTracks,
                                                             Icon = FontAwesome.Solid.FileAudio,
-                                                        }),
+                                                        })
+                                                        {
+                                                            ShowRevertToDefaultButton = false,
+                                                        },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,
