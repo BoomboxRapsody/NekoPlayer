@@ -92,7 +92,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         public NekoPlayerSeekBar()
         {
             Height = NekoPlayerSeekBar.SliderNub.HEIGHT;
-            RangePadding = NekoPlayerSeekBar.SliderNub.DEFAULT_EXPANDED_SIZE / 2;
+            //RangePadding = NekoPlayerSeekBar.SliderNub.DEFAULT_EXPANDED_SIZE / 2;
             ResetToDefault = () =>
             {
                 if (!Current.Disabled)
@@ -156,7 +156,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     Child = Nub = new SliderNub
                     {
                         Anchor = Anchor.CentreLeft,
-                        Origin = Anchor.CentreLeft,
+                        Origin = Anchor.Centre,
                         Colour = AccentColour,
                         RelativePositionAxes = Axes.X,
                         OnDoubleClicked = () => ResetToDefault.Invoke(),
