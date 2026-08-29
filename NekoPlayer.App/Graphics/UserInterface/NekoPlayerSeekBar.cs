@@ -257,7 +257,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
             double maxValue = double.CreateTruncating(CurrentNumber.MaxValue);
             double value = double.CreateTruncating(CurrentNumber.Value);
             double range = maxValue - minValue;
-            bool shouldBeWavy = range > 0 && value >= minValue + range * 0.04 && value <= maxValue - range * 0.04;
+            //bool shouldBeWavy = range > 0 && value >= minValue + range * 0.04 && value <= maxValue - range * 0.04;
+            bool shouldBeWavy = true; // always wavy seekbar
 
             if (shouldBeWavy == isWavy)
                 return;
