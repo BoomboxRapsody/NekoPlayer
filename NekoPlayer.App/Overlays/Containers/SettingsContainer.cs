@@ -837,7 +837,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         },
                                                         new SettingsItemV2(AudioQualitySettings = new YouTubeAudioStreamDropdown
                                                         {
-                                                            Caption = NekoPlayerStrings.AudioQuality,
+                                                            Caption = NekoPlayerStrings.AudioTracks,
                                                             Icon = FontAwesome.Solid.FileAudio,
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox

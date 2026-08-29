@@ -77,12 +77,6 @@ If the build fails, try to restore NuGet packages with `dotnet restore`.
 
 When it comes to contributing to the project, the two main things you can do to help out are reporting issues and submitting pull requests. Please refer to the [contributing guidelines](CONTRIBUTING.md) to understand how to help in the most effective way possible.
 
-## Translation
-
-To help translate NekoPlayer, we no longer accept translation contributions via Crowdin.
-
-If you would like to add support for a new language, feel free to open a PR. Please note that modifications to existing English and Korean translations are not accepted.
-
 ## Licence
 
 *NekoPlayer*'s codes are licensed under the [MIT licence](https://opensource.org/licenses/MIT). Please see [the licence file](LICENCE) for more information. [tl;dr](https://tldrlegal.com/license/mit-license) you can do whatever you want as long as you include the original copyright and license notice in any copy of the software/source.

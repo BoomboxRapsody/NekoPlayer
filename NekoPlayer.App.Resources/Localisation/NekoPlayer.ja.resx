@@ -899,4 +899,7 @@ On にすることを推奨します。問題が発生している場合のみ O
   <data name="notifications" xml:space="preserve">
     <value>お知らせ</value>
   </data>
+  <data name="audio_tracks" xml:space="preserve">
+    <value>音声トラック</value>
+  </data>
 </root>

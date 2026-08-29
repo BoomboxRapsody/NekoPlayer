@@ -899,4 +899,7 @@
   <data name="notifications" xml:space="preserve">
     <value>알림</value>
   </data>
+  <data name="audio_tracks" xml:space="preserve">
+    <value>오디오 트랙</value>
+  </data>
 </root>

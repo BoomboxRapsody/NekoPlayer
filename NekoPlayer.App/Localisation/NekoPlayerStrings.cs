@@ -1407,6 +1407,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString Notifications => new TranslatableString(getKey(@"notifications"), @"Notifications");
 
+        /// <summary>
+        /// "Audio tracks"
+        /// </summary>
+        public static LocalisableString AudioTracks => new TranslatableString(getKey(@"audio_tracks"), @"Audio tracks");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }
