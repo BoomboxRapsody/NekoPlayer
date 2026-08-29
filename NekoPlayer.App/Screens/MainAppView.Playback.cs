@@ -158,6 +158,8 @@ namespace NekoPlayer.App.Screens
             srv3Contents = string.Empty;
             videoIdBox.Text = string.Empty;
 
+            isVideoLoading = true;
+
             if (resetPlaybackSpeedWhenLoadingAVideo.Value)
             {
                 if (playbackSpeed.Value != 1)
