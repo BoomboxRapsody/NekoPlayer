@@ -158,8 +158,6 @@ namespace NekoPlayer.App.Screens
             srv3Contents = string.Empty;
             videoIdBox.Text = string.Empty;
 
-            isVideoLoading = true;
-
             if (resetPlaybackSpeedWhenLoadingAVideo.Value)
             {
                 if (playbackSpeed.Value != 1)
@@ -194,6 +192,7 @@ namespace NekoPlayer.App.Screens
             CancellationToken cancellationToken = videoLoadProcess.Token;
             Task.Run(() =>
             {
+                isVideoLoading = true;
                 Schedule(async () =>
                 {
                     loadBtnOverlayShow.Enabled.Value = false;
