@@ -251,7 +251,7 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<float> scalingBackgroundDim = null!;
 
         public YouTubeQualityDropdown VideoQualitySettings;
-        public FormEnumDropdown<Config.AudioQuality> AudioQualitySettings;
+        public YouTubeAudioStreamDropdown AudioQualitySettings;
         private Bindable<bool> showVideoMetadataOnWindowTitle;
 
         private Bindable<ScreenshotFormat> screenshotFormat;
@@ -835,11 +835,10 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
-                                                        new SettingsItemV2(AudioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
+                                                        new SettingsItemV2(AudioQualitySettings = new YouTubeAudioStreamDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.AudioQuality,
                                                             Icon = FontAwesome.Solid.FileAudio,
-                                                            Current = audioQuality,
                                                         }),
                                                         new SettingsItemV2(new FormCheckBox
                                                         {

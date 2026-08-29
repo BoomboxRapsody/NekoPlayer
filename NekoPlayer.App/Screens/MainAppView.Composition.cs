@@ -3279,7 +3279,7 @@ namespace NekoPlayer.App.Screens
                 }
             });
 
-            audioQuality.BindValueChanged(quality =>
+            settingsContainer.AudioQualitySettings.Current.BindValueChanged(quality =>
             {
                 if (currentVideoSource != null && isVideoLoading == false)
                 {
