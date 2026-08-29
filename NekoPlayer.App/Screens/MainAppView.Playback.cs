@@ -340,6 +340,9 @@ namespace NekoPlayer.App.Screens
                             Logger.Error(e, e.GetDescription());
                         }
 
+                        settingsContainer.VideoQualitySettingsCore.Show();
+                        settingsContainer.AudioQualitySettingsCore.Show();
+
                         isVideoLoading = true;
                         if (true) // always download cache
                         {

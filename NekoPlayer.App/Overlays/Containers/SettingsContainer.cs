@@ -127,6 +127,8 @@ namespace NekoPlayer.App.Overlays.Containers
         public Action CheckUpdateAction;
         private readonly BindableBool displayDropdownCanBeShown = new BindableBool(true);
         private FillFlowContainer<SettingsItemV2> scalingSettings = null!;
+
+        public SettingsItemV2 VideoQualitySettingsCore, AudioQualitySettingsCore;
         private FormEnumDropdown<LatencyMode>? reflexSetting;
 
         private void onAudioDeviceChanged(string _)
@@ -827,7 +829,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             Note = { BindTarget = hwAccelNote },
                                                         },
-                                                        new SettingsItemV2(VideoQualitySettings = new YouTubeQualityDropdown
+                                                        VideoQualitySettingsCore = new SettingsItemV2(VideoQualitySettings = new YouTubeQualityDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.VideoQuality,
                                                             Icon = FontAwesome.Solid.Video,
@@ -835,7 +837,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
-                                                        new SettingsItemV2(AudioQualitySettings = new YouTubeAudioStreamDropdown
+                                                        AudioQualitySettingsCore = new SettingsItemV2(AudioQualitySettings = new YouTubeAudioStreamDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.AudioTracks,
                                                             Icon = FontAwesome.Solid.FileAudio,
@@ -1180,6 +1182,9 @@ namespace NekoPlayer.App.Overlays.Containers
 
                 updateScreenshotOptionsVisibility();
             }, true);
+
+            VideoQualitySettingsCore.Hide();
+            AudioQualitySettingsCore.Hide();
 
             dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_1);
             dislikeCounterCredits.AddLink("Return YouTube Dislike API", "https://returnyoutubedislike.com/");
