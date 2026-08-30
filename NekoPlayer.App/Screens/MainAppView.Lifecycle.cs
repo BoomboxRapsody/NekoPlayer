@@ -455,6 +455,7 @@ namespace NekoPlayer.App.Screens
                 double target = currentVideoSource.VideoProgress.MaxValue * (digit / 10.0);
 
                 currentVideoSource?.SeekTo(target * 1000);
+                showControls();
             }
 
             if (e.Key >= Key.Keypad0 && e.Key <= Key.Keypad9)
@@ -463,6 +464,7 @@ namespace NekoPlayer.App.Screens
                 double target = currentVideoSource.VideoProgress.MaxValue * (digit / 10.0);
 
                 currentVideoSource?.SeekTo(target * 1000);
+                showControls();
             }
 
             return true;
