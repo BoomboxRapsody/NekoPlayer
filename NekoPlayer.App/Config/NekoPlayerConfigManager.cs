@@ -114,6 +114,7 @@ namespace NekoPlayer.App.Config
                         shortcut: "Ctrl+Shift+F5"
                     )
                 ),
+            new TrackedSetting<ProfileImageShape>(NekoPlayerSetting.ProfileImageShape, v => new SettingDescription(v, NekoPlayerStrings.ProfileImageShape, v.GetLocalisableDescription(), "Ctrl+F8")),
         };
     }
 

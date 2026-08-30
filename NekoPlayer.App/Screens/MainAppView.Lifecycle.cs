@@ -786,6 +786,10 @@ namespace NekoPlayer.App.Screens
                     CycleAspectRatio();
                     return true;
 
+                case GlobalAction.CycleProfileShape:
+                    CycleProfileShape();
+                    return true;
+
                 case GlobalAction.CycleScalingMode:
                     CycleScalingMode();
                     return true;
@@ -972,6 +976,20 @@ namespace NekoPlayer.App.Screens
 
                 case AspectRatioMethod.Fill:
                     aspectRatioMethod.Value = AspectRatioMethod.Letterbox;
+                    break;
+            }
+        }
+
+        protected void CycleProfileShape()
+        {
+            switch (profileImageShape.Value)
+            {
+                case ProfileImageShape.Circle:
+                    profileImageShape.Value = ProfileImageShape.Square;
+                    break;
+
+                case ProfileImageShape.Square:
+                    profileImageShape.Value = ProfileImageShape.Circle;
                     break;
             }
         }

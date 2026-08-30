@@ -97,7 +97,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
             BorderColour = overlayColourProvider.Light4;
             BorderThickness = 0;
 
-            profileImageShape = appConfig.GetBindable<ProfileImageShape>(NekoPlayerSetting.ProfileImageShape).GetBoundCopy();
+            profileImageShape = appConfig.GetBindable<ProfileImageShape>(NekoPlayerSetting.ProfileImageShape);
             profileImageShape.BindValueChanged(shape => applyShape(shape.NewValue), true);
         }
 
