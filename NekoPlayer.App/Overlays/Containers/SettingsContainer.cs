@@ -127,6 +127,8 @@ namespace NekoPlayer.App.Overlays.Containers
         public Action CheckUpdateAction;
         private readonly BindableBool displayDropdownCanBeShown = new BindableBool(true);
         private FillFlowContainer<SettingsItemV2> scalingSettings = null!;
+
+        public SettingsItemV2 VideoQualitySettingsCore, AudioQualitySettingsCore;
         private FormEnumDropdown<LatencyMode>? reflexSetting;
 
         private void onAudioDeviceChanged(string _)
@@ -251,7 +253,7 @@ namespace NekoPlayer.App.Overlays.Containers
         private Bindable<float> scalingBackgroundDim = null!;
 
         public YouTubeQualityDropdown VideoQualitySettings;
-        public FormEnumDropdown<Config.AudioQuality> AudioQualitySettings;
+        public YouTubeAudioStreamDropdown AudioQualitySettings;
         private Bindable<bool> showVideoMetadataOnWindowTitle;
 
         private Bindable<ScreenshotFormat> screenshotFormat;
@@ -827,7 +829,7 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             Note = { BindTarget = hwAccelNote },
                                                         },
-                                                        new SettingsItemV2(VideoQualitySettings = new YouTubeQualityDropdown
+                                                        VideoQualitySettingsCore = new SettingsItemV2(VideoQualitySettings = new YouTubeQualityDropdown
                                                         {
                                                             Caption = NekoPlayerStrings.VideoQuality,
                                                             Icon = FontAwesome.Solid.Video,
@@ -835,12 +837,14 @@ namespace NekoPlayer.App.Overlays.Containers
                                                         {
                                                             ShowRevertToDefaultButton = false,
                                                         },
-                                                        new SettingsItemV2(AudioQualitySettings = new FormEnumDropdown<Config.AudioQuality>
+                                                        AudioQualitySettingsCore = new SettingsItemV2(AudioQualitySettings = new YouTubeAudioStreamDropdown
                                                         {
-                                                            Caption = NekoPlayerStrings.AudioQuality,
+                                                            Caption = NekoPlayerStrings.AudioTracks,
                                                             Icon = FontAwesome.Solid.FileAudio,
-                                                            Current = audioQuality,
-                                                        }),
+                                                        })
+                                                        {
+                                                            ShowRevertToDefaultButton = false,
+                                                        },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ShowVideoMetadataOnWindowTitle,
@@ -1178,6 +1182,9 @@ namespace NekoPlayer.App.Overlays.Containers
 
                 updateScreenshotOptionsVisibility();
             }, true);
+
+            VideoQualitySettingsCore.Hide();
+            AudioQualitySettingsCore.Hide();
 
             dislikeCounterCredits.AddText(NekoPlayerStrings.DislikeCounterCredits_1);
             dislikeCounterCredits.AddLink("Return YouTube Dislike API", "https://returnyoutubedislike.com/");

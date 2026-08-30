@@ -125,7 +125,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     LeftBox = new SmoothPath
                                     {
                                         AlwaysPresent = true,
-                                        PathRadius = 4.5f,
+                                        PathRadius = 5f,
                                         Anchor = Anchor.CentreLeft,
                                         Origin = Anchor.CentreLeft,
                                     },

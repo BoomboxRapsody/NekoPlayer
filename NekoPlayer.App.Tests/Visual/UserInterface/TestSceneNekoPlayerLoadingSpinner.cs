@@ -16,7 +16,7 @@ namespace NekoPlayer.App.Tests.Visual.UserInterface
 
         public TestSceneNekoPlayerLoadingSpinner()
         {
-            Add(spinner = new NekoPlayerLoadingSpinner());
+            Add(spinner = new NekoPlayerLoadingSpinner(true, true));
 
             spinner.Show();
         }
