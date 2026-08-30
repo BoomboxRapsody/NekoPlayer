@@ -85,7 +85,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV3
         protected override LocalisableString GenerateItemText(IAudioStreamInfo item)
         {
             if (item.AudioLanguage.HasValue)
-                return $"[{item.AudioCodec}] {item.AudioLanguage.Value} ({item.Bitrate.KiloBitsPerSecond:N0}kbps)";
+                return $"[{item.AudioCodec}] {item.AudioLanguage.Value.Name} ({item.Bitrate.KiloBitsPerSecond:N0}kbps)";
             else
                 return $"{item.AudioCodec} ({item.Bitrate.KiloBitsPerSecond:N0}kbps)";
         }
