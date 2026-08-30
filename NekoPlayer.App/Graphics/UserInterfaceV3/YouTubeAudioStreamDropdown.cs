@@ -60,7 +60,7 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV3
 
                 Items = audioStreamInfo;
 
-                if (!Current.Disabled && Current.Value == null)
+                if (!Current.Disabled)
                 {
                     Current.Value = (IAudioStreamInfo)audioStreamInfo.GetWithHighestBitrate();
                     Current.Default = (IAudioStreamInfo)audioStreamInfo.GetWithHighestBitrate();
