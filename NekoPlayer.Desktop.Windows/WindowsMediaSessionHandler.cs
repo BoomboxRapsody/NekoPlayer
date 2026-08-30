@@ -159,8 +159,14 @@ namespace NekoPlayer.Desktop.Windows
 
         public override void UpdatePlaybackSpeed(double speed)
         {
-            smtc.PlaybackRate = speed;
-            mediaPlayer.PlaybackRate = speed;
+            try
+            {
+                smtc.PlaybackRate = speed;
+                mediaPlayer.PlaybackRate = speed;
+            } catch (Exception ex)
+            {
+                Logger.Error(ex, ex.GetDescription());
+            }
         }
     }
 }
