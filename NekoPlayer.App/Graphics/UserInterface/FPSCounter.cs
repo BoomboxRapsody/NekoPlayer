@@ -72,7 +72,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(NekoPlayerConfigManager config, GameHost gameHost, ScreenshotManager screenshotManager, OverlayColourProvider overlayColourProvider)
         {
-            uiVisible = screenshotManager.CursorVisibility.GetBoundCopy();
+            uiVisible = screenshotManager.CursorVisibility;
 
             InternalChildren = new Drawable[]
             {
@@ -172,7 +172,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                     requestDisplay();
             }, true);
 
-            State.BindValueChanged(state => showFpsDisplay.Value = state.NewValue == Visibility.Visible);
+            //State.BindValueChanged(state => showFpsDisplay.Value = state.NewValue == Visibility.Visible);
         }
 
         protected override void PopIn() => this.FadeIn(uiVisible.Value ? 100 : 0);
