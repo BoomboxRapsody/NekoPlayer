@@ -95,7 +95,15 @@ namespace NekoPlayer.Desktop.Windows
         {
             Task.Run(async () =>
             {
-                smtc.PlaybackStatus = playing ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused;
+                try
+                {
+                    smtc.PlaybackStatus = playing ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused;
+                    smtc.DisplayUpdater.Update();
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, e.GetDescription());
+                }
             });
         }
 
@@ -111,8 +119,8 @@ namespace NekoPlayer.Desktop.Windows
                         EndTime = XmlConvert.ToTimeSpan(video.ContentDetails.Duration),
                         Position = TimeSpan.FromSeconds(pos * 0.001f)
                     });
-
                     mediaPlayer.Position = TimeSpan.FromSeconds(pos * 0.001f);
+                    smtc.DisplayUpdater.Update();
                 }
             }
             catch (Exception ex)
