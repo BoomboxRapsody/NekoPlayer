@@ -55,7 +55,7 @@ namespace NekoPlayer.App.Overlays
                 {
                     RelativeSizeAxes = Axes.X,
                     Height = 100,
-                    Colour = ColourInfo.GradientVertical(Color4.Black.Opacity(0.25f), Color4.Black.Opacity(0))
+                    Colour = ColourInfo.GradientVertical(Color4.Black.Opacity(0.5f), Color4.Black.Opacity(0))
                 },
                 newVolumeSliderBar = new FormVolumeSliderBarSmall<double>
                 {
