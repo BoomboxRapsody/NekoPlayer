@@ -1,10 +1,13 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osuTK;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -28,6 +31,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         RelativeSizeAxes = Axes.Both,
                         Anchor = Anchor.TopCentre,
                         Origin = Anchor.TopCentre,
+                        BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f)),
+                        BorderThickness = 2,
                         Children = new Drawable[]
                         {
                             new Box
@@ -35,6 +40,12 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                 RelativeSizeAxes = Axes.Both,
                                 Alpha = 1,
                                 AlwaysPresent = true,
+                            },
+                            new Box
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                                Alpha = 0.1f,
                             },
                         }
                     },

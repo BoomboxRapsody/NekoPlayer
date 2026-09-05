@@ -1,15 +1,18 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using NekoPlayer.App.Graphics.UserInterface;
+using NekoPlayer.App.Localisation;
 using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osuTK;
-using NekoPlayer.App.Graphics.UserInterface;
-using NekoPlayer.App.Localisation;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterfaceV2
 {
@@ -41,12 +44,21 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             Masking = true;
             CornerRadius = DrawHeight / 2;
 
+            BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f));
+            BorderThickness = 2;
+
             Children = new Drawable[]
             {
                 background = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
                     Colour = colourProvider.Background4,
+                },
+                new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                    Alpha = 0.1f,
                 },
                 spriteIcon = new SpriteIcon
                 {

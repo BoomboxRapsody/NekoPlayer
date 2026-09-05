@@ -584,6 +584,8 @@ namespace NekoPlayer.App.Screens
                                                                             Height = 30,
                                                                             Masking = true,
                                                                             CornerRadius = 15,
+                                                                            BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f)),
+                                                                            BorderThickness = 2,
                                                                             /*
                                                                             EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                             {
@@ -600,6 +602,12 @@ namespace NekoPlayer.App.Screens
                                                                                     RelativeSizeAxes = Axes.Both,
                                                                                     Colour = overlayColourProvider.Background3,
                                                                                     Alpha = 1f,
+                                                                                },
+                                                                                new Box
+                                                                                {
+                                                                                    RelativeSizeAxes = Axes.Both,
+                                                                                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                                                                                    Alpha = 0.1f,
                                                                                 },
                                                                                 new FillFlowContainer
                                                                                 {
@@ -655,6 +663,8 @@ namespace NekoPlayer.App.Screens
                                                                             Height = 30,
                                                                             Masking = true,
                                                                             CornerRadius = 15,
+                                                                            BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f)),
+                                                                            BorderThickness = 2,
                                                                             /*
                                                                             EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                             {
@@ -671,6 +681,12 @@ namespace NekoPlayer.App.Screens
                                                                                     RelativeSizeAxes = Axes.Both,
                                                                                     Colour = overlayColourProvider.Background3,
                                                                                     Alpha = 1f,
+                                                                                },
+                                                                                new Box
+                                                                                {
+                                                                                    RelativeSizeAxes = Axes.Both,
+                                                                                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                                                                                    Alpha = 0.1f,
                                                                                 },
                                                                                 new FillFlowContainer
                                                                                 {
@@ -727,6 +743,8 @@ namespace NekoPlayer.App.Screens
                                                                             Height = 30,
                                                                             Masking = true,
                                                                             CornerRadius = 15,
+                                                                            BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f)),
+                                                                            BorderThickness = 2,
                                                                             /*
                                                                             EdgeEffect = new osu.Framework.Graphics.Effects.EdgeEffectParameters
                                                                             {
@@ -743,6 +761,12 @@ namespace NekoPlayer.App.Screens
                                                                                     RelativeSizeAxes = Axes.Both,
                                                                                     Colour = overlayColourProvider.Background3,
                                                                                     Alpha = 1f,
+                                                                                },
+                                                                                new Box
+                                                                                {
+                                                                                    RelativeSizeAxes = Axes.Both,
+                                                                                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                                                                                    Alpha = 0.1f,
                                                                                 },
                                                                                 new FillFlowContainer
                                                                                 {

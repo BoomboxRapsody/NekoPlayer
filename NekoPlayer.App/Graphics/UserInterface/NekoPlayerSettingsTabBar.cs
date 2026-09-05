@@ -4,6 +4,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
@@ -30,11 +31,21 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 Radius = 64,
             };
 
+            BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f));
+            BorderThickness = 2;
+
             Children = new Drawable[]
             {
                 bg = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
+                    Alpha = 0,
+                },
+                new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                    Alpha = 0.1f,
                 },
                 items = new FillFlowContainer
                 {

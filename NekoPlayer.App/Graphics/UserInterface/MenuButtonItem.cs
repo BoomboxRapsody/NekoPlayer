@@ -3,8 +3,12 @@
 
 #nullable disable
 
+using NekoPlayer.App.Graphics.Containers;
+using NekoPlayer.App.Graphics.Sprites;
 using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
@@ -12,8 +16,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osuTK;
 using osuTK.Graphics;
-using NekoPlayer.App.Graphics.Containers;
-using NekoPlayer.App.Graphics.Sprites;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -111,20 +113,15 @@ namespace NekoPlayer.App.Graphics.UserInterface
                             CornerRadius = roundCorner,
                             Masking = true,
                             RelativeSizeAxes = Axes.Both,
+                            BorderColour = ColourInfo.GradientVertical(overlayColourProvider.Content2.Opacity(0f), overlayColourProvider.Content2.Opacity(0.25f)),
+                            BorderThickness = 2,
                             Children = new Drawable[]
                             {
                                 new Box
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = overlayColourProvider.Background4,
-                                    Alpha = 1f,
-                                },
-                                hover = new Box
-                                {
-                                    RelativeSizeAxes = Axes.Both,
-                                    Colour = Color4.White,
-                                    Blending = BlendingParameters.Additive,
-                                    Alpha = 0,
+                                    Alpha = 0f,
                                 },
                                 new Container {
                                     RelativeSizeAxes = Axes.Both,
@@ -173,11 +170,24 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                         }
                                     }
                                 },
+                                hover = new Box
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White),
+                                    Blending = BlendingParameters.Additive,
+                                    Alpha = 0,
+                                },
                                 disabledOverlay = new Box
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = Color4.Black,
                                     Alpha = 0,
+                                },
+                                new Box
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                                    Alpha = 0.1f,
                                 },
                             },
                         },
@@ -189,7 +199,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected override bool OnHover(HoverEvent e)
         {
             if (Action != null)
-                hover.FadeTo(0.1f, 500, Easing.OutQuint);
+                hover.FadeTo(0.2f, 500, Easing.OutQuint);
 
             return base.OnHover(e);
         }

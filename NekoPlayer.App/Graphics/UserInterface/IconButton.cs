@@ -76,7 +76,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
-            IconColour = overlayColourProvider.Content2;
+            //IconColour = overlayColourProvider.Content2;
         }
 
         protected override bool OnHover(HoverEvent e)

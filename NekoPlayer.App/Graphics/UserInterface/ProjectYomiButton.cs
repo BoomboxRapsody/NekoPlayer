@@ -3,17 +3,19 @@
 
 #nullable enable
 
+using System;
+using NekoPlayer.App.Graphics.Sprites;
+using osu.Framework.Allocation;
+using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osuTK.Graphics;
-using System;
 using osu.Framework.Localisation;
-using osu.Framework.Bindables;
-using NekoPlayer.App.Graphics.Sprites;
-using osu.Framework.Allocation;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -103,6 +105,8 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 RelativeSizeAxes = Axes.Both,
                 CornerRadius = 12,
                 Masking = true,
+                BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f)),
+                BorderThickness = 2,
                 Children = new Drawable[]
                 {
                     Background = new Box
@@ -110,13 +114,6 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Alpha = 1,
-                    },
-                    Hover = new Box
-                    {
-                        RelativeSizeAxes = Axes.Both,
-                        Colour = Color4.White,
-                        Blending = BlendingParameters.Additive,
                         Alpha = 0,
                     },
                     ForegroundContent = new Container
@@ -125,7 +122,20 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         Anchor = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
                         Child = SpriteText = CreateText()
-                    }
+                    },
+                    new Box
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                        Alpha = 0.1f,
+                    },
+                    Hover = new Box
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White),
+                        Blending = BlendingParameters.Additive,
+                        Alpha = 0,
+                    },
                 }
             });
 
@@ -136,7 +146,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         private void load(OverlayColourProvider overlayColourProvider)
         {
             Background.Colour = BackgroundColour;
-            SpriteText.Colour = overlayColourProvider.Content2;
+            //SpriteText.Colour = overlayColourProvider.Content2;
             content.CornerRadius = DrawHeight / 2;
         }
 
@@ -151,7 +161,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected override bool OnHover(HoverEvent e)
         {
-            Hover.FadeTo(0.1f, 500, Easing.OutQuint);
+            Hover.FadeTo(0.2f, 500, Easing.OutQuint);
 
             return base.OnHover(e);
         }

@@ -12,7 +12,9 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
@@ -106,11 +108,20 @@ namespace NekoPlayer.App.Overlays
                                         RelativeSizeAxes = Axes.Both,
                                         Masking = true,
                                         CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS + 24,
+                                        BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f)),
+                                        BorderThickness = 2,
                                         Children = new Drawable[]
                                         {
                                             bg2 = new Box
                                             {
                                                 RelativeSizeAxes = Axes.Both,
+                                                Alpha = 0,
+                                            },
+                                            new Box
+                                            {
+                                                RelativeSizeAxes = Axes.Both,
+                                                Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                                                Alpha = 0.1f,
                                             },
                                             new ProjectYomiScrollContainer {
                                                 RelativeSizeAxes = Axes.Both,
@@ -169,11 +180,20 @@ namespace NekoPlayer.App.Overlays
                 Anchor = Anchor.TopRight,
                 AutoSizeDuration = 400,
                 AutoSizeEasing = Easing.OutQuint,
+                BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f)),
+                BorderThickness = 2,
                 Children = new Drawable[]
                 {
                     bg = new Box
                     {
                         RelativeSizeAxes = Axes.Both,
+                        Alpha = 0,
+                    },
+                    new Box
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                        Alpha = 0.1f,
                     },
                     notifications = new FillFlowContainer
                     {

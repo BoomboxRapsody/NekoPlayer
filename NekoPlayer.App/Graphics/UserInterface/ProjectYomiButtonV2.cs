@@ -1,9 +1,11 @@
 ﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using NekoPlayer.App.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
@@ -12,7 +14,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osuTK;
 using osuTK.Graphics;
-using NekoPlayer.App.Graphics.Sprites;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -93,17 +94,17 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         RelativeSizeAxes = Axes.Both,
                         Depth = float.MaxValue,
                     },
+                    SpriteText = CreateText(),
                     Hover = new Box
                     {
                         Alpha = 0,
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Colour = Color4.White,
+                        Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White),
                         Blending = BlendingParameters.Additive,
                         Depth = float.MinValue
                     },
-                    SpriteText = CreateText(),
                     flashLayer = new Box
                     {
                         RelativeSizeAxes = Axes.Both,

@@ -2,10 +2,13 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
+using osuTK.Graphics;
 
 namespace NekoPlayer.App.Graphics.UserInterface
 {
@@ -15,7 +18,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         protected override Container<Drawable> Content => content;
 
-        private readonly Box background;
+        private readonly Container background;
         private readonly Container content;
 
         public SortButton()
@@ -23,12 +26,25 @@ namespace NekoPlayer.App.Graphics.UserInterface
             AutoSizeAxes = Axes.X;
             Height = 25;
             Masking = true;
+
             AddRangeInternal(new Drawable[]
             {
-                background = new Box
+                background = new CircularContainer
                 {
                     RelativeSizeAxes = Axes.Both,
                     Alpha = 0,
+                    Masking = true,
+                    BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.5f)),
+                    BorderThickness = 2,
+                    Children = new Drawable[]
+                    {
+                        new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                            Alpha = 0.6f,
+                        },
+                    }
                 },
                 content = new Container
                 {

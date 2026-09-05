@@ -59,9 +59,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
         public void ApplyColours(VideoMetadataDisplayWithoutProfileColours colours)
         {
-            bgLayer.Colour = colours.BGColor;
-            videoName.Colour = colours.FGColor;
-            desc.Colour = colours.FGColor2;
+            //bgLayer.Colour = colours.BGColor;
+            //videoName.Colour = colours.FGColor;
+            //desc.Colour = colours.FGColor2;
         }
 
         [BackgroundDependencyLoader]
@@ -73,6 +73,9 @@ namespace NekoPlayer.App.Graphics.UserInterface
 
             Masking = true;
 
+            BorderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f));
+            BorderThickness = 2;
+
             InternalChildren = new Drawable[]
             {
                 samples,
@@ -80,7 +83,13 @@ namespace NekoPlayer.App.Graphics.UserInterface
                 {
                     RelativeSizeAxes = Axes.Both,
                     Colour = overlayColourProvider.Background5,
-                    Alpha = 1f,
+                    Alpha = 0f,
+                },
+                new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                    Alpha = 0.1f,
                 },
                 new Container {
                     AutoSizeAxes = Axes.Both,
@@ -102,7 +111,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     f.Font = NekoPlayerApp.DefaultFont.With(size: 20, weight: "ExtraBold");
                                 })
                                 {
-                                    Colour = overlayColourProvider.Content2,
+                                    //Colour = overlayColourProvider.Content2,
                                     AutoSizeAxes = Axes.Both,
                                     Text = NekoPlayerStrings.VideoNotLoaded,
                                 },
@@ -111,7 +120,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                                     f.Font = NekoPlayerApp.DefaultFont.With(size: 13, weight: "SemiBold");
                                 })
                                 {
-                                    Colour = overlayColourProvider.Content2,
+                                    //Colour = overlayColourProvider.Content2,
                                     AutoSizeAxes = Axes.Both,
                                     Text = NekoPlayerStrings.VideoNotLoadedDesc,
                                 }
@@ -120,7 +129,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
                         hover = new Box
                         {
                             RelativeSizeAxes = Axes.Both,
-                            Colour = Color4.White,
+                            Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White),
                             Blending = BlendingParameters.Additive,
                             Alpha = 0,
                         },
@@ -196,7 +205,7 @@ namespace NekoPlayer.App.Graphics.UserInterface
         protected override bool OnHover(HoverEvent e)
         {
             if (ClickEvent != null)
-                hover.FadeTo(0.1f, 500, Easing.OutQuint);
+                hover.FadeTo(0.2f, 500, Easing.OutQuint);
 
             return base.OnHover(e);
         }

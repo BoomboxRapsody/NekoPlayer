@@ -69,8 +69,15 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             {
                 box = new Box
                 {
-                    Colour = Color4.White,
+                    Colour = Color4.Black,
                     RelativeSizeAxes = Axes.Both,
+                    Alpha = 0.1f,
+                },
+                new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = ColourInfo.GradientVertical(Color4.White.Opacity(0.5f), Color4.White),
+                    Alpha = 0.1f,
                 },
                 profileImage = new DiscordProfileImageWithoutMasking(100)
                 {
@@ -115,9 +122,19 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
 
         private void flash(Colour4 flashColour, double duration)
         {
-            flashLayer.Colour = ColourInfo.GradientHorizontal(flashColour.Opacity(0), flashColour);
+            flashLayer.Colour = ColourInfo.GradientVertical(flashColour.Opacity(0), flashColour);
             flashLayer.FadeOutFromOne(duration, Easing.OutQuint);
         }
+
+        /// <summary>
+        /// Use when indicating that a change in value or a definitive action has occurred.
+        /// </summary>
+        public void FlashOnCommit() => flash(colourProvider.Dark2, 800);
+
+        /// <summary>
+        /// Use when rejecting the user's input as incorrect.
+        /// </summary>
+        public void FlashOnInputError() => flash(Colour4.Red, 200);
 
         private void updateStyle()
         {
@@ -132,24 +149,26 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
             {
                 case VisualStyle.Normal:
                     colour = colourProvider.Background4.Darken(0.1f);
-                    borderColour = colourProvider.Light4;
+                    borderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.05f));
+                    border = true;
                     break;
 
                 case VisualStyle.Disabled:
                     colour = colourProvider.Background4;
-                    borderColour = colourProvider.Dark1;
+                    borderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.05f));
+                    border = true;
                     break;
 
                 case VisualStyle.Hovered:
                     colour = ColourInfo.GradientHorizontal(colourProvider.Background5, colourProvider.Dark4);
-                    borderColour = colourProvider.Light4;
+                    borderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f));
                     border = true;
                     break;
 
                 case VisualStyle.Focused:
                     colour = ColourInfo.GradientHorizontal(colourProvider.Background5, colourProvider.Dark3);
                     border = true;
-                    borderColour = colourProvider.Highlight1;
+                    borderColour = ColourInfo.GradientVertical(Color4.White.Opacity(0f), Color4.White.Opacity(0.25f));
                     break;
 
                 default:
