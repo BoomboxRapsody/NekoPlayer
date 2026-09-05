@@ -152,6 +152,14 @@ namespace NekoPlayer.App.Graphics.Containers
             closeBtn.BackgroundColour = color;
         }
 
+        public void UpdateDesc(LocalisableString text)
+        {
+            Schedule(() =>
+            {
+                descText.Text = text;
+            });
+        }
+
         [BackgroundDependencyLoader]
         private void load(OverlayColourProvider overlayColourProvider)
         {
