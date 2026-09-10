@@ -16,7 +16,7 @@
     <PackageReference Include="Google.Apis.Auth" Version="1.76.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.74.0.1869" />
     <PackageReference Include="SharpCompress" Version="0.50.4" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.76.0.4249" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.76.0.4262" />
     <PackageReference Include="Humanizer" Version="3.0.10" />
     <PackageReference Include="PaletteNet" Version="3.0.1" />
     <PackageReference Include="McEndu.FreeTypeSharp" Version="4.1.5" />
