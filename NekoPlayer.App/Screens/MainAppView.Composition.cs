@@ -943,7 +943,7 @@ namespace NekoPlayer.App.Screens
                                     {
                                         Padding = new MarginPadding()
                                         {
-                                            Top = 90,
+                                            Top = 96,
                                             Bottom = 6,
                                         },
                                         RelativeSizeAxes = Axes.Both,
@@ -998,7 +998,7 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
-                                    Height = 90 + 24,
+                                    Height = 96 + 24,
                                 },
                                 new Container
                                 {
