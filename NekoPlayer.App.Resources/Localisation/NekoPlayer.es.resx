@@ -788,7 +788,7 @@
     <value>Mostrar siempre el control del jugador</value>
   </data>
   <data name="karaoke_mode" xml:space="preserve">
-    <value>Remover vocal (Experimental)</value>
+    <value>Modo Karaoke (Experimental)</value>
   </data>
   <data name="chorus_effect" xml:space="preserve">
     <value>Coro</value>

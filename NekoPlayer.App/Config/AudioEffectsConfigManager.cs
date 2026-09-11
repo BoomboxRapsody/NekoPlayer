@@ -44,7 +44,7 @@ namespace NekoPlayer.App.Config
             SetDefault(AudioEffectsSetting.DistortionDrive, 0f, 0f, 5f, 0.1f);
 
             SetDefault(AudioEffectsSetting.KaraokeEnabled, false);
-            SetDefault(AudioEffectsSetting.KaraokeVocalVolume, 1f, 0f, 1f, 0.1f);
+            SetDefault(AudioEffectsSetting.KaraokeVocalVolume, 0f, 0f, 1f, 0.1f);
 
             SetDefault(AudioEffectsSetting.ChorusEnabled, false);
             SetDefault(AudioEffectsSetting.ChorusDryMix, 2f, 0f, 4f, 0.01f);
