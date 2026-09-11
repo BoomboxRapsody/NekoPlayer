@@ -1,3 +1,5 @@
+**English** | [한국어](README_ko.md)
+
 <h1 align="center">NekoPlayer</h1>
 <p align="center"><img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Remake.png"></p>
 <p align="center">A new era of YouTube Video Player with a focus on design and creativity.</p>
@@ -57,8 +59,6 @@ You should load the solution via one of the platform-specific `.slnf` files, rat
 - `NekoPlayer.Desktop.slnf` (Linux and other platform)
 
 Run configurations for the recommended IDEs (listed above) are included. You should use the provided Build/Run functionality of your IDE to get things going. When testing or building new components, it's highly encouraged you use the `NekoPlayer (Tests)` project/configuration. More information on this is provided [below](#contributing).
-
-To build for mobile platforms, you will likely need to run `sudo dotnet workload restore` if you haven't done so previously.
 
 #### From CLI
 

@@ -1,0 +1,87 @@
+[English](README.md) | **한국어**
+
+<h1 align="center">NekoPlayer</h1>
+<p align="center"><img width="250" alt="NekoPlayer Logo" src="assets/NekoPlayer_LiquidGlass_Remake.png"></p>
+<p align="center">디자인과 창의성에 중점을 둔 새로운 시대의 YouTube 동영상 플레이어</p>
+<p align="center">이 앱의 일부 리소스(samples)는 <a href="https://github.com/ppy/osu-resources">ppy/osu-resources</a>를 사용하고 있습니다.</p>
+
+<p align="center">
+<a href="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="빌드 상태"></a>
+<a href="https://github.com/BoomboxRapsody/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/BoomboxRapsody/NekoPlayer.svg" alt="GitHub 릴리스"></a>
+<img src="https://img.shields.io/badge/made_in-korea-0F64CD.svg?labelColor=CD2E3A" alt="Made In Korea">
+<a href="https://github.com/BoomboxRapsody/NekoPlayer/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/BoomboxRapsody/NekoPlayer.svg" alt="라이선스"></a>
+<a href="https://discord.gg/UZWDqQ29ch"><img src="https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield" alt="dev chat"></a>
+<a href="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer"><img src="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge" alt="CodeFactor"></a>
+</p>
+
+## 앱 다운로드 및 설치
+
+### 최신 릴리스:
+
+| [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
+|--------------------------------------------------------------------------------------|
+
+YouTube API Daily Quota는 매우 빠르게 차버립니다(구글은 10,000단위의 엄격한 제한을 두고 있습니다). 이에 대해 묻지 마세요.
+
+## NekoPlayer 개발
+
+### 사전 조건
+
+다음 사전 조건을 반드시 확인해 주세요:
+
+- 데스크톱 플랫폼과 [.NET 10.0 SDK](https://dotnet.microsoft.com/download)가 설치되있어야 합니다.
+- 리눅스에서 실행할 때는 비디오 디코딩을 지원할 수 있도록 시스템 전체에 FFmpeg가 설치되어 있어야 합니다.
+
+코드베이스를 다룰 때는 최신 버전의 [Visual Studio](https://visualstudio.microsoft.com/vs/), [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)와 [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) 플러그인이 설치된 [Visual Studio Code](https://code.visualstudio.com/) 같은 지능형 코드 완성 및 문법 강조 기능이 있는 IDE 사용을 권장합니다.
+
+### 소스 코드 다운로드
+
+서브모듈을 포함해 저장소를 복제합니다:
+
+```shell
+git clone --recurse-submodules https://github.com/BoomboxRapsody/NekoPlayer
+cd NekoPlayer
+```
+
+`NekoPlayer` 디렉터리 안에서 다음 명령어를 실행해 소스 코드를 최신 커밋으로 업데이트하세요:
+
+```shell
+git pull --recurse-submodules
+```
+
+### 빌드하기
+
+#### IDE에서
+
+주요 `.sln` 파일 대신 플랫폼별 `.slnf` 파일 중 하나를 통해 솔루션을 로드해야 합니다. 이렇게 하면 의존성을 줄이고 신경 쓰지 않는 플랫폼을 숨길 수 있습니다. 유효한 `.slnf` 파일은 다음과 같습니다:
+
+- `NekoPlayer.Desktop.Windows.slnf` (WinRT 확장 기능이 포함된 Windows 플랫폼, 가장 일반적)
+- `NekoPlayer.Desktop.slnf` (Linux 및 기타 플랫폼)
+
+위에 나열된 권장 IDE들의 실행 설정도 포함되어 있습니다. IDE에서 제공하는 Build/Run 기능을 사용해서 작업을 시작해야 합니다. 새 컴포넌트를 테스트하거나 빌드할 때는 `NekoPlayer (Tests)` 프로젝트나 설정을 사용하는 것을 강력히 권장합니다. 이에 대한 자세한 정보는 [아래](#contributing)에 제공되어 있습니다.
+
+#### CLI에서
+
+또한 명령어 한 줄로 커맨드라인에서 *NekoPlayer*를 빌드하고 실행할 수 있습니다:
+
+```shell
+dotnet run --project NekoPlayer.Desktop.Windows (for Windows)
+dotnet run --project NekoPlayer.Desktop (for Linux and other platform)
+```
+
+로컬에서 성능 테스트를 할 때는 빌드 명령어에 `-c Release` 옵션을 꼭 추가하세요. 기본 `Debug` 설정으로 실행하면 오버헤드가 클 수 있기 때문입니다(특히 로컬 프레임워크 수정 테스트 시).
+
+If the build fails, try to restore NuGet packages with `dotnet restore`.
+
+## 기여하기
+
+프로젝트에 기여하는 방법으로는 문제를 보고하거나 풀 리퀘스트를 제출하는 두 가지가 있습니다. 가장 효과적으로 도움을 줄 수 있는 방법을 이해하려면 [기여 지침](CONTRIBUTING.md)을 참고해 주세요.
+
+## 라이선스
+
+*NekoPlayer*의 코드는 [MIT 라이선스](https://opensource.org/licenses/MIT) 하에 배포됩니다. 자세한 내용은 [라이선스 파일](LICENCE)을 참고해 주세요. [요약](https://tldrlegal.com/license/mit-license)하자면, 소프트웨어나 소스의 어떤 복사본에든 원본 저작권과 라이선스 고지를 포함하는 한 원하는 대로 자유롭게 사용할 수 있습니다.
+
+**참고:** FFmpeg 바이너리는 원본 라이선스(GPL/LGPL) 하에 소스에서 배포됩니다.
+자세한 내용은 [FFmpeg 라이선스](https://www.ffmpeg.org/legal.html)를 참고해 주세요.
+
+또한 앱 리소스는 별도의 라이선스가 적용된다는 점도 참고해 주세요. 자세한 내용은 [라이선스 파일](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md)을 참고해 주세요.
