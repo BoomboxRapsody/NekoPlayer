@@ -152,6 +152,9 @@ namespace NekoPlayer.App.Screens
 
         private FillFlowContainer likeButtonForeground, dislikeButtonForeground;
 
+        private RoundedAdaptiveButtonV2 subscribeButton;
+        private ProfileImage profileImage;
+
         private Container userInterfaceContainer;
 
         private Bindable<bool> alwaysUseOriginalAudio;

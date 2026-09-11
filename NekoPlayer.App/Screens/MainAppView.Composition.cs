@@ -943,7 +943,7 @@ namespace NekoPlayer.App.Screens
                                     {
                                         Padding = new MarginPadding()
                                         {
-                                            Top = 108,
+                                            Top = 90,
                                             Bottom = 6,
                                         },
                                         RelativeSizeAxes = Axes.Both,
@@ -998,189 +998,254 @@ namespace NekoPlayer.App.Screens
                                     Name = "masking of overlay",
                                     RelativeSizeAxes = Axes.X,
                                     Colour = ColourInfo.GradientVertical(overlayColourProvider.Background5, overlayColourProvider.Background5.Opacity(0)),
-                                    Height = 128,
+                                    Height = 90 + 24,
                                 },
-                                new FillFlowContainer
+                                new Container
                                 {
-                                    RelativeSizeAxes = Axes.Both,
                                     Padding = new MarginPadding(6),
-                                    Spacing = new Vector2(0, 5),
-                                    Direction = FillDirection.Vertical,
-                                    Children = new Drawable[]
+                                    RelativeSizeAxes = Axes.X,
+                                    AutoSizeAxes = Axes.Y,
+                                    Child = new Container
                                     {
-                                        videoMetadataDisplayDetails = new VideoMetadataDisplay
+                                        RelativeSizeAxes = Axes.X,
+                                        AutoSizeAxes = Axes.Y,
+                                        Masking = true,
+                                        CornerRadius = new CornersInfo(16),
+                                        Children = new Drawable[]
                                         {
-                                            RelativeSizeAxes = Axes.X,
-                                            Height = 60,
-                                            Origin = Anchor.TopLeft,
-                                            Anchor = Anchor.TopLeft,
-                                            AlwaysPresent = true,
-                                        },
-                                        new FillFlowContainer
-                                        {
-                                            RelativeSizeAxes = Axes.X,
-                                            AutoSizeAxes = Axes.Y,
-                                            Direction = FillDirection.Horizontal,
-                                            Spacing = new Vector2(2, 0),
-                                            Children = new Drawable[]
+                                            new Box
                                             {
-                                                likeButton = new RoundedButtonContainer
+                                                RelativeSizeAxes = Axes.Both,
+                                                Colour = overlayColourProvider.Background4,
+                                            },
+                                            new FillFlowContainer
+                                            {
+                                                RelativeSizeAxes = Axes.X,
+                                                AutoSizeAxes = Axes.Y,
+                                                Padding = new MarginPadding(6),
+                                                Children = new Drawable[]
                                                 {
-                                                    AutoSizeAxes = Axes.X,
-                                                    Height = 32,
-                                                    CornerRadius = new CornersInfo(16, 16, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f),
-                                                    Masking = true,
-                                                    AlwaysPresent = true,
-                                                    Children = new Drawable[]
+                                                    new Container
                                                     {
-                                                        new Container
+                                                        RelativeSizeAxes = Axes.X,
+                                                        AutoSizeAxes = Axes.Y,
+                                                        Children = new Drawable[]
                                                         {
-                                                            RelativeSizeAxes = Axes.Both,
-                                                            Children = new Drawable[] {
-                                                                likeButtonBackground = new Box
+                                                            new Container
+                                                            {
+                                                                RelativeSizeAxes = Axes.X,
+                                                                AutoSizeAxes = Axes.Y,
+                                                                Child = videoMetadataDisplayDetails = new VideoMetadataDisplay
                                                                 {
-                                                                    RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Background3,
-                                                                    Alpha = 1f,
-                                                                },
-                                                                likeButtonBackgroundSelected = new Box
-                                                                {
-                                                                    RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Content2,
-                                                                    Alpha = 0f,
+                                                                    RelativeSizeAxes = Axes.X,
+                                                                    Height = 40,
+                                                                    Origin = Anchor.TopLeft,
+                                                                    Anchor = Anchor.TopLeft,
+                                                                    AlwaysPresent = true,
                                                                 },
                                                             },
-                                                        },
-                                                        likeButtonForeground = new FillFlowContainer
-                                                        {
-                                                            AutoSizeAxes = Axes.X,
-                                                            RelativeSizeAxes = Axes.Y,
-                                                            Direction = FillDirection.Horizontal,
-                                                            Spacing = new Vector2(4, 0),
-                                                            Padding = new MarginPadding(8),
-                                                            Colour = overlayColourProvider.Content2,
-                                                            Children = new Drawable[]
+                                                            new Box
                                                             {
-                                                                new SpriteIcon
-                                                                {
-                                                                    Width = 15,
-                                                                    Height = 15,
-                                                                    Icon = FontAwesome.Solid.ThumbsUp,
-                                                                },
-                                                                likeCount = new ProjectYomiSpriteText
-                                                                {
-                                                                    Text = "0",
-                                                                },
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                dislikeButton = new RoundedButtonContainer
-                                                {
-                                                    AutoSizeAxes = Axes.X,
-                                                    Height = 32,
-                                                    CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 16, 16),
-                                                    Masking = true,
-                                                    AlwaysPresent = true,
-                                                    Children = new Drawable[]
-                                                    {
-                                                        new Container
-                                                        {
-                                                            RelativeSizeAxes = Axes.Both,
-                                                            Children = new Drawable[] {
-                                                                dislikeButtonBackground = new Box
-                                                                {
-                                                                    RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Background3,
-                                                                    Alpha = 1f,
-                                                                },
-                                                                dislikeButtonBackgroundSelected = new Box
-                                                                {
-                                                                    RelativeSizeAxes = Axes.Both,
-                                                                    Colour = overlayColourProvider.Content2,
-                                                                    Alpha = 0f,
-                                                                },
+                                                                Name = "masking of overlay",
+                                                                Colour = ColourInfo.GradientHorizontal(overlayColourProvider.Background4.Opacity(0), overlayColourProvider.Background4),
+                                                                RelativeSizeAxes = Axes.Y,
+                                                                Width = 100,
+                                                                Anchor = Anchor.CentreRight,
+                                                                Origin = Anchor.CentreRight,
                                                             },
                                                         },
-                                                        dislikeButtonForeground = new FillFlowContainer
-                                                        {
-                                                            AutoSizeAxes = Axes.X,
-                                                            RelativeSizeAxes = Axes.Y,
-                                                            Direction = FillDirection.Horizontal,
-                                                            Spacing = new Vector2(4, 0),
-                                                            Padding = new MarginPadding(8),
-                                                            Colour = overlayColourProvider.Content2,
-                                                            Children = new Drawable[]
-                                                            {
-                                                                new SpriteIcon
-                                                                {
-                                                                    Width = 15,
-                                                                    Height = 15,
-                                                                    Icon = FontAwesome.Solid.ThumbsDown,
-                                                                },
-                                                                dislikeCount = new ProjectYomiSpriteText
-                                                                {
-                                                                    Text = "0",
-                                                                },
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                commentOpenButtonDetails = new RoundedButtonContainer
-                                                {
-                                                    AutoSizeAxes = Axes.X,
-                                                    Height = 32,
-                                                    CornerRadius = 16,
-                                                    Masking = true,
-                                                    AlwaysPresent = true,
-                                                    ClickAction = f =>
-                                                    {
-                                                        if (commentsDisabled)
-                                                            return;
-
-                                                        hideOverlays();
-                                                        showOverlayContainer(commentsContainer);
                                                     },
-                                                    Children = new Drawable[]
+                                                    new FillFlowContainer
                                                     {
-                                                        new Container
+                                                        RelativeSizeAxes = Axes.X,
+                                                        AutoSizeAxes = Axes.Y,
+                                                        Direction = FillDirection.Horizontal,
+                                                        Spacing = new Vector2(2, 0),
+                                                        Children = new Drawable[]
                                                         {
-                                                            RelativeSizeAxes = Axes.Both,
-                                                            CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
-                                                            Child = new Box
+                                                            profileImage = new ProfileImage(32),
+                                                            subscribeButton = new RoundedAdaptiveButtonV2
                                                             {
-                                                                RelativeSizeAxes = Axes.Both,
-                                                                Colour = overlayColourProvider.Background3,
-                                                                Alpha = 1f,
+                                                                Enabled = { Value = true },
+                                                                Width = 90,
+                                                                Height = 32,
+                                                                Text = NekoPlayerStrings.Subscribe,
                                                             },
-                                                        },
-                                                        new FillFlowContainer
-                                                        {
-                                                            AutoSizeAxes = Axes.X,
-                                                            RelativeSizeAxes = Axes.Y,
-                                                            Direction = FillDirection.Horizontal,
-                                                            Spacing = new Vector2(4, 0),
-                                                            Padding = new MarginPadding(8),
-                                                            Children = new Drawable[]
+                                                            likeButton = new RoundedButtonContainer
                                                             {
-                                                                new SpriteIcon
+                                                                AutoSizeAxes = Axes.X,
+                                                                Height = 32,
+                                                                CornerRadius = new CornersInfo(16, 16, NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f),
+                                                                Masking = true,
+                                                                AlwaysPresent = true,
+                                                                Children = new Drawable[]
                                                                 {
-                                                                    Width = 15,
-                                                                    Height = 15,
-                                                                    Icon = FontAwesome.Regular.CommentAlt,
-                                                                    Colour = overlayColourProvider.Content2,
-                                                                },
-                                                                commentCount = new ProjectYomiSpriteText
+                                                                    new Container
+                                                                    {
+                                                                        RelativeSizeAxes = Axes.Both,
+                                                                        Children = new Drawable[] {
+                                                                            likeButtonBackground = new Box
+                                                                            {
+                                                                                RelativeSizeAxes = Axes.Both,
+                                                                                Colour = overlayColourProvider.Background3,
+                                                                                Alpha = 1f,
+                                                                            },
+                                                                            likeButtonBackgroundSelected = new Box
+                                                                            {
+                                                                                RelativeSizeAxes = Axes.Both,
+                                                                                Colour = overlayColourProvider.Content2,
+                                                                                Alpha = 0f,
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                    likeButtonForeground = new FillFlowContainer
+                                                                    {
+                                                                        AutoSizeAxes = Axes.X,
+                                                                        RelativeSizeAxes = Axes.Y,
+                                                                        Direction = FillDirection.Horizontal,
+                                                                        Spacing = new Vector2(4, 0),
+                                                                        Padding = new MarginPadding(8),
+                                                                        Colour = overlayColourProvider.Content2,
+                                                                        Children = new Drawable[]
+                                                                        {
+                                                                            new SpriteIcon
+                                                                            {
+                                                                                Width = 15,
+                                                                                Height = 15,
+                                                                                Icon = FontAwesome.Solid.ThumbsUp,
+                                                                            },
+                                                                            likeCount = new ProjectYomiSpriteText
+                                                                            {
+                                                                                Text = "0",
+                                                                            },
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            dislikeButton = new RoundedButtonContainer
+                                                            {
+                                                                AutoSizeAxes = Axes.X,
+                                                                Height = 32,
+                                                                CornerRadius = new CornersInfo(NekoPlayerApp.UI_CORNER_RADIUS / 3f, NekoPlayerApp.UI_CORNER_RADIUS / 3f, 16, 16),
+                                                                Masking = true,
+                                                                AlwaysPresent = true,
+                                                                Children = new Drawable[]
                                                                 {
-                                                                    Text = "0",
-                                                                    Colour = overlayColourProvider.Content2,
+                                                                    new Container
+                                                                    {
+                                                                        RelativeSizeAxes = Axes.Both,
+                                                                        Children = new Drawable[] {
+                                                                            dislikeButtonBackground = new Box
+                                                                            {
+                                                                                RelativeSizeAxes = Axes.Both,
+                                                                                Colour = overlayColourProvider.Background3,
+                                                                                Alpha = 1f,
+                                                                            },
+                                                                            dislikeButtonBackgroundSelected = new Box
+                                                                            {
+                                                                                RelativeSizeAxes = Axes.Both,
+                                                                                Colour = overlayColourProvider.Content2,
+                                                                                Alpha = 0f,
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                    dislikeButtonForeground = new FillFlowContainer
+                                                                    {
+                                                                        AutoSizeAxes = Axes.X,
+                                                                        RelativeSizeAxes = Axes.Y,
+                                                                        Direction = FillDirection.Horizontal,
+                                                                        Spacing = new Vector2(4, 0),
+                                                                        Padding = new MarginPadding(8),
+                                                                        Colour = overlayColourProvider.Content2,
+                                                                        Children = new Drawable[]
+                                                                        {
+                                                                            new SpriteIcon
+                                                                            {
+                                                                                Width = 15,
+                                                                                Height = 15,
+                                                                                Icon = FontAwesome.Solid.ThumbsDown,
+                                                                            },
+                                                                            dislikeCount = new ProjectYomiSpriteText
+                                                                            {
+                                                                                Text = "0",
+                                                                            },
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            commentOpenButtonDetails = new RoundedButtonContainer
+                                                            {
+                                                                AutoSizeAxes = Axes.X,
+                                                                Height = 32,
+                                                                CornerRadius = 16,
+                                                                Masking = true,
+                                                                AlwaysPresent = true,
+                                                                ClickAction = f =>
+                                                                {
+                                                                    if (commentsDisabled)
+                                                                        return;
+
+                                                                    hideOverlays();
+                                                                    showOverlayContainer(commentsContainer);
                                                                 },
-                                                            }
+                                                                Children = new Drawable[]
+                                                                {
+                                                                    new Container
+                                                                    {
+                                                                        RelativeSizeAxes = Axes.Both,
+                                                                        CornerRadius = NekoPlayerApp.UI_CORNER_RADIUS / 1.5f,
+                                                                        Child = new Box
+                                                                        {
+                                                                            RelativeSizeAxes = Axes.Both,
+                                                                            Colour = overlayColourProvider.Background3,
+                                                                            Alpha = 1f,
+                                                                        },
+                                                                    },
+                                                                    new FillFlowContainer
+                                                                    {
+                                                                        AutoSizeAxes = Axes.X,
+                                                                        RelativeSizeAxes = Axes.Y,
+                                                                        Direction = FillDirection.Horizontal,
+                                                                        Spacing = new Vector2(4, 0),
+                                                                        Padding = new MarginPadding(8),
+                                                                        Children = new Drawable[]
+                                                                        {
+                                                                            new SpriteIcon
+                                                                            {
+                                                                                Width = 15,
+                                                                                Height = 15,
+                                                                                Icon = FontAwesome.Regular.CommentAlt,
+                                                                                Colour = overlayColourProvider.Content2,
+                                                                            },
+                                                                            commentCount = new ProjectYomiSpriteText
+                                                                            {
+                                                                                Text = "0",
+                                                                                Colour = overlayColourProvider.Content2,
+                                                                            },
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
                                                         }
-                                                    }
-                                                },
+                                                    },
+                                                }
                                             }
                                         },
+                                    },
+                                },
+                                new IconButton
+                                {
+                                    Enabled = { Value = true },
+                                    Origin = Anchor.TopRight,
+                                    Anchor = Anchor.TopRight,
+                                    Size = new Vector2(35, 35),
+                                    IconScale = new Vector2(0.8f),
+                                    Margin = new MarginPadding(14),
+                                    Icon = FontAwesome.Solid.Times,
+                                    BackgroundColour = overlayColourProvider.Background3,
+                                    Action = () =>
+                                    {
+                                        hideOverlayContainer(videoDescriptionContainer);
                                     }
                                 },
                             }

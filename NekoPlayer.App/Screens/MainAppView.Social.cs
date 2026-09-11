@@ -558,6 +558,19 @@ namespace NekoPlayer.App.Screens
             });
         }
 
+        public void UpdateChannelSubscribeState(string channelId)
+        {
+            Task.Run(async () =>
+            {
+                bool response = await api.IsChannelSubscribed(channelId);
+
+                if (response == true)
+                    Schedule(() => subscribeButton.Text = NekoPlayerStrings.Unsubscribe);
+                else
+                    Schedule(() => subscribeButton.Text = NekoPlayerStrings.Subscribe);
+            });
+        }
+
         public void GetPalette(Google.Apis.YouTube.v3.Data.Video video)
         {
             Task.Run(async () =>
@@ -712,7 +725,9 @@ namespace NekoPlayer.App.Screens
                 // metadata area
                 videoData = api.GetVideo(videoId);
                 channelData = api.GetChannel(videoData.Snippet.ChannelId);
+                profileImage.UpdateProfileImage(videoData.Snippet.ChannelId);
                 updateRatingButtons(videoId, videoData.Statistics.LikeCount != null);
+                UpdateChannelSubscribeState(videoData.Snippet.ChannelId);
 
                 Schedule(() => GetPalette(videoData));
                 Schedule(() => commentOpenButton.Enabled.Value = videoData.Statistics.CommentCount != null);
@@ -786,7 +801,7 @@ namespace NekoPlayer.App.Screens
                 {
                     updatePresence(discordRichPresence.Value);
 
-                    videoMetadataDisplayDetails.SubscribeClickAction = () =>
+                    subscribeButton.Action = () =>
                     {
                         Task.Run(async () =>
                         {
@@ -819,7 +834,7 @@ namespace NekoPlayer.App.Screens
                                     Schedule(() => onScreenDisplay.Display(toast));
                                     */
                                     notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.SignOutAlt, Color4.Red, NekoPlayerStrings.SubscriptionRemoved, api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))));
-                                    Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
+                                    Schedule(() => UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
                                 };
 
                                 Schedule(() =>
@@ -840,7 +855,7 @@ namespace NekoPlayer.App.Screens
                                 Schedule(() => onScreenDisplay.Display(toast));
                                 */
                                 notificationOverlay.Push(new PushNotificationContainer(FontAwesome.Solid.SignInAlt, Color4.Green, NekoPlayerStrings.SubscriptionAdded, api.GetLocalizedChannelTitle(api.GetChannel(videoData.Snippet.ChannelId))));
-                                Schedule(() => videoMetadataDisplayDetails.UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
+                                Schedule(() => UpdateChannelSubscribeState(videoData.Snippet.ChannelId));
                             }
                         });
                     };
