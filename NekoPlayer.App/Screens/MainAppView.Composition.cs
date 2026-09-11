@@ -2195,6 +2195,23 @@ namespace NekoPlayer.App.Screens
                                                             Current = karaokeEnabled,
                                                             Hotkey = new Hotkey(GlobalAction.ToggleKaraokeEffect),
                                                         }),
+                                                        karaokeSettings = new FillFlowContainer
+                                                        {
+                                                            Direction = FillDirection.Vertical,
+                                                            RelativeSizeAxes = Axes.X,
+                                                            AutoSizeAxes = Axes.Y,
+                                                            Masking = true,
+                                                            Spacing = new Vector2(0, 4),
+                                                            Children = new Drawable[]
+                                                            {
+                                                                new SettingsItemV2(new FormSliderBar<float>
+                                                                {
+                                                                    Caption = NekoPlayerStrings.KaraokeVocalVolume,
+                                                                    Current = audioEffectsConfig.GetBindable<float>(AudioEffectsSetting.KaraokeVocalVolume),
+                                                                    DisplayAsPercentage = true,
+                                                                }),
+                                                            }
+                                                        },
                                                         new SettingsItemV2(new FormCheckBox
                                                         {
                                                             Caption = NekoPlayerStrings.ChorusEffect,
@@ -3585,6 +3602,15 @@ namespace NekoPlayer.App.Screens
                 updateAudioEffectsVisibility();
             });
 
+            karaokeEnabled.BindValueChanged(_ =>
+            {
+                karaokeSettings.ClearTransforms();
+                karaokeSettings.AutoSizeDuration = 400;
+                karaokeSettings.AutoSizeEasing = Easing.OutQuint;
+
+                updateAudioEffectsVisibility();
+            });
+
             chorusEnabled.BindValueChanged(_ =>
             {
                 chorusSettings.ClearTransforms();
@@ -3645,6 +3671,12 @@ namespace NekoPlayer.App.Screens
                         distortionSettings.ResizeHeightTo(0, 400, Easing.OutQuint);
 
                     distortionSettings.AutoSizeAxes = distortionEnabled.Value != false ? Axes.Y : Axes.None;
+
+                    //distortion
+                    if (karaokeEnabled.Value == false)
+                        karaokeSettings.ResizeHeightTo(0, 400, Easing.OutQuint);
+
+                    karaokeSettings.AutoSizeAxes = karaokeEnabled.Value != false ? Axes.Y : Axes.None;
 
                     //chorus
                     if (chorusEnabled.Value == false)

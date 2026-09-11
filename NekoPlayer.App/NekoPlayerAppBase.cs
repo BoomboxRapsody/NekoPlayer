@@ -638,6 +638,8 @@ namespace NekoPlayer.App
             #endregion
 
             #region Karaoke
+            KaraokeVocalVolume = AudioEffectsConfig.GetBindable<float>(AudioEffectsSetting.KaraokeVocalVolume);
+
             _karaokeDsp = new DSPProcedure(KaraokeDsp);
 
             karaokeModeEnabled = AudioEffectsConfig.GetBindable<bool>(AudioEffectsSetting.KaraokeEnabled);
@@ -717,30 +719,29 @@ namespace NekoPlayer.App
         }
         #endregion
 
+        public Bindable<float> KaraokeVocalVolume { get; set; }
+
         private unsafe void KaraokeDsp(int handle, int channel, IntPtr buffer, int length, IntPtr user)
         {
-            // 16비트(short) 오디오 샘플 배열로 변환
-            int sampleCount = length / 2; // byte 단위를 short 단위 개수로 변환
+            int sampleCount = length / 2;
             short[] samples = new short[sampleCount];
-
-            // 버퍼에서 데이터를 C# 배열로 복사
             Marshal.Copy(buffer, samples, 0, sampleCount);
 
-            // 스테레오 데이터 처리 (L, R, L, R 순서로 배열되어 있음)
             for (int i = 0; i < sampleCount; i += 2)
             {
                 short left = samples[i];
                 short right = samples[i + 1];
 
-                // ⚠️ 핵심 원리: L - R 연산으로 중앙의 보컬 제거
+                // 보컬이 제거된 반주 소리 (L-R 연산)
                 short karaokeSample = (short)((left - right) / 2);
 
-                // 결과를 L채널과 R채널 모두에 할당하여 모노 형태로 출력
-                samples[i] = karaokeSample;     // Left
-                samples[i + 1] = karaokeSample; // Right
+                // ⚠️ 볼륨 믹싱 로직
+                // VocalVolume이 1.0이면 원본 소리(left/right) 출력
+                // VocalVolume이 0.0이면 보컬 제거 소리(karaokeSample) 출력
+                samples[i] = (short)(left * KaraokeVocalVolume.Value + karaokeSample * (1f - KaraokeVocalVolume.Value));
+                samples[i + 1] = (short)(right * KaraokeVocalVolume.Value + karaokeSample * (1f - KaraokeVocalVolume.Value));
             }
 
-            // 변조된 데이터를 다시 오디오 버퍼로 복사
             Marshal.Copy(samples, 0, buffer, sampleCount);
         }
 

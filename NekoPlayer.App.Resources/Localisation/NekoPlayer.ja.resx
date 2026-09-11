@@ -902,4 +902,7 @@ On にすることを推奨します。問題が発生している場合のみ O
   <data name="audio_tracks" xml:space="preserve">
     <value>音声トラック</value>
   </data>
+  <data name="karaoke_vocal_volume" xml:space="preserve">
+    <value>声の大きさ</value>
+  </data>
 </root>

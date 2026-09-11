@@ -902,4 +902,7 @@
   <data name="audio_tracks" xml:space="preserve">
     <value>오디오 트랙</value>
   </data>
+  <data name="karaoke_vocal_volume" xml:space="preserve">
+    <value>보컬 음량</value>
+  </data>
 </root>
