@@ -33,5 +33,7 @@ namespace NekoPlayer.App.Config
         Hakgyoansim_ManitoR,
         [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.OwnglyphDaisy))]
         OwnglyphDaisy,
+        [LocalisableDescription(typeof(CaptionFontStrings), nameof(CaptionFontStrings.OwnglyphYuntaeng))]
+        OwnglyphYuntaeng,
     }
 }

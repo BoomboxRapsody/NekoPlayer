@@ -97,4 +97,7 @@
   <data name="OwnglyphDaisy" xml:space="preserve">
     <value>Ownglyph Daisy</value>
   </data>
+  <data name="OwnglyphYuntaeng" xml:space="preserve">
+    <value>Ownglyph Yuntaeng</value>
+  </data>
 </root>

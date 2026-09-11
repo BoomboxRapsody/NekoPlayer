@@ -178,6 +178,11 @@ namespace NekoPlayer.App.Graphics.Caption
                         textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.OwnglyphDaisy.With(size: 24);
                         break;
                     }
+                    case CaptionFonts.OwnglyphYuntaeng:
+                    {
+                        textCreationParameters = spriteText => spriteText.Font = NekoPlayerApp.Fonts.OwnglyphYuntaeng.With(size: 24);
+                        break;
+                    }
                 }
                 RefreshFont();
             }, true);

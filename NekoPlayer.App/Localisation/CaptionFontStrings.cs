@@ -76,6 +76,11 @@ namespace NekoPlayer.App.Localisation
         /// </summary>
         public static LocalisableString OwnglyphDaisy => new TranslatableString(getKey(@"OwnglyphDaisy"), "Ownglyph Daisy");
 
+        /// <summary>
+        /// "Ownglyph Yuntaeng"
+        /// </summary>
+        public static LocalisableString OwnglyphYuntaeng => new TranslatableString(getKey(@"OwnglyphYuntaeng"), "Ownglyph Yuntaeng");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

@@ -94,4 +94,7 @@
   <data name="OwnglyphDaisy" xml:space="preserve">
     <value>온글잎 데이지</value>
   </data>
+  <data name="OwnglyphYuntaeng" xml:space="preserve">
+    <value>온글잎 윤탱체</value>
+  </data>
 </root>

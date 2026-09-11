@@ -358,6 +358,11 @@ namespace NekoPlayer.App.Graphics.UserInterfaceV2
                             label.Font = NekoPlayerApp.Fonts.OwnglyphDaisy;
                             break;
                         }
+                        case CaptionFonts.OwnglyphYuntaeng:
+                        {
+                            label.Font = NekoPlayerApp.Fonts.OwnglyphYuntaeng;
+                            break;
+                        }
                     }
                 }, true);
 
