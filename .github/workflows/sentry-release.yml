@@ -22,8 +22,8 @@ jobs:
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: boomboxrapsody
-          SENTRY_PROJECT: youtube-player-ex
+          SENTRY_ORG: zeromayo
+          SENTRY_PROJECT: nekoplayer
         with:
           environment: production
           version: yt-player-ex@${{ github.ref_name }}
