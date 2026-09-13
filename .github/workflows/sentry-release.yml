@@ -22,7 +22,7 @@ jobs:
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: zeromayo
+          SENTRY_ORG: boomboxrapsody
           SENTRY_PROJECT: nekoplayer
         with:
           environment: production
