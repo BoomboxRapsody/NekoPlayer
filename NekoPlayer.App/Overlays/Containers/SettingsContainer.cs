@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
+﻿// Copyright (c) 2026 ZeroMayo <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
 #nullable disable
@@ -1192,7 +1192,7 @@ namespace NekoPlayer.App.Overlays.Containers
 
             if (game.IsDeployedBuild)
             {
-                gameVersion.AddLink(game.Version, $"https://github.com/BoomboxRapsody/NekoPlayer/releases/{game.Version}", tooltipText: NekoPlayerStrings.ViewChangelog(game.Version));
+                gameVersion.AddLink(game.Version, $"https://github.com/ZeroMayo/NekoPlayer/releases/{game.Version}", tooltipText: NekoPlayerStrings.ViewChangelog(game.Version));
             }
             else
             {
@@ -1200,7 +1200,7 @@ namespace NekoPlayer.App.Overlays.Containers
             }
 
             madeByText.AddText("made by ");
-            madeByText.AddLink("Mayo_0x0 (BoomboxRapsody)", "https://github.com/BoomboxRapsody/", NekoPlayerStrings.ViewGitHubProfile);
+            madeByText.AddLink("Mayo_0x0 (ZeroMayo)", "https://github.com/ZeroMayo/", NekoPlayerStrings.ViewGitHubProfile);
 
             if (discordRPC != null)
             {

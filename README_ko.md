@@ -6,19 +6,19 @@
 <p align="center">이 앱의 일부 리소스(samples)는 <a href="https://github.com/ppy/osu-resources">ppy/osu-resources</a>를 사용하고 있습니다.</p>
 
 <p align="center">
-<a href="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="빌드 상태"></a>
-<a href="https://github.com/BoomboxRapsody/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/BoomboxRapsody/NekoPlayer.svg" alt="GitHub 릴리스"></a>
+<a href="https://github.com/ZeroMayo/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/ZeroMayo/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="빌드 상태"></a>
+<a href="https://github.com/ZeroMayo/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/ZeroMayo/NekoPlayer.svg" alt="GitHub 릴리스"></a>
 <img src="https://img.shields.io/badge/made_in-korea-0F64CD.svg?labelColor=CD2E3A" alt="Made In Korea">
-<a href="https://github.com/BoomboxRapsody/NekoPlayer/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/BoomboxRapsody/NekoPlayer.svg" alt="라이선스"></a>
+<a href="https://github.com/ZeroMayo/NekoPlayer/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/ZeroMayo/NekoPlayer.svg" alt="라이선스"></a>
 <a href="https://discord.gg/UZWDqQ29ch"><img src="https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield" alt="dev chat"></a>
-<a href="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer"><img src="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge" alt="CodeFactor"></a>
+<a href="https://www.codefactor.io/repository/github/ZeroMayo/NekoPlayer"><img src="https://www.codefactor.io/repository/github/ZeroMayo/NekoPlayer/badge" alt="CodeFactor"></a>
 </p>
 
 ## 앱 다운로드 및 설치
 
 ### 최신 릴리스:
 
-| [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
+| [Windows 10+ (x64)](https://github.com/ZeroMayo/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
 |--------------------------------------------------------------------------------------|
 
 YouTube API Daily Quota는 매우 빠르게 차버립니다(구글은 10,000단위의 엄격한 제한을 두고 있습니다). 이에 대해 묻지 마세요.
@@ -39,7 +39,7 @@ YouTube API Daily Quota는 매우 빠르게 차버립니다(구글은 10,000단�
 서브모듈을 포함해 저장소를 복제합니다:
 
 ```shell
-git clone --recurse-submodules https://github.com/BoomboxRapsody/NekoPlayer
+git clone --recurse-submodules https://github.com/ZeroMayo/NekoPlayer
 cd NekoPlayer
 ```
 
@@ -84,4 +84,4 @@ dotnet run --project NekoPlayer.Desktop (for Linux and other platform)
 **참고:** FFmpeg 바이너리는 원본 라이선스(GPL/LGPL) 하에 소스에서 배포됩니다.
 자세한 내용은 [FFmpeg 라이선스](https://www.ffmpeg.org/legal.html)를 참고해 주세요.
 
-또한 앱 리소스는 별도의 라이선스가 적용된다는 점도 참고해 주세요. 자세한 내용은 [라이선스 파일](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md)을 참고해 주세요.
+또한 앱 리소스는 별도의 라이선스가 적용된다는 점도 참고해 주세요. 자세한 내용은 [라이선스 파일](https://github.com/ZeroMayo/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md)을 참고해 주세요.

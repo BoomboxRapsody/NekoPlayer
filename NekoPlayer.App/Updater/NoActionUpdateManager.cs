@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
+﻿// Copyright (c) 2026 ZeroMayo <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
 #nullable enable
@@ -29,7 +29,7 @@ namespace NekoPlayer.App.Updater
         {
             try
             {
-                NekoPlayerJsonWebRequest<GitHubRelease[]> releasesRequest = new NekoPlayerJsonWebRequest<GitHubRelease[]>("https://api.github.com/repos/BoomboxRapsody/YouTubePlayerEX/releases?per_page=10&page=1");
+                NekoPlayerJsonWebRequest<GitHubRelease[]> releasesRequest = new NekoPlayerJsonWebRequest<GitHubRelease[]>("https://api.github.com/repos/ZeroMayo/NekoPlayer/releases?per_page=10&page=1");
                 await releasesRequest.PerformAsync(cancellationToken).ConfigureAwait(false);
 
                 GitHubRelease[] releases = releasesRequest.ResponseObject;

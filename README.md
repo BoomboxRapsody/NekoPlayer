@@ -6,19 +6,19 @@
 <p align="center">Some resources(samples) in this app are using <a href="https://github.com/ppy/osu-resources">ppy/osu-resources</a>.</p>
 
 <p align="center">
-<a href="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/BoomboxRapsody/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="Build status"></a>
-<a href="https://github.com/BoomboxRapsody/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/BoomboxRapsody/NekoPlayer.svg" alt="GitHub release"></a>
+<a href="https://github.com/ZeroMayo/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/ZeroMayo/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="Build status"></a>
+<a href="https://github.com/ZeroMayo/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/ZeroMayo/NekoPlayer.svg" alt="GitHub release"></a>
 <img src="https://img.shields.io/badge/made_in-korea-0F64CD.svg?labelColor=CD2E3A" alt="Made In Korea">
-<a href="https://github.com/BoomboxRapsody/NekoPlayer/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/BoomboxRapsody/NekoPlayer.svg" alt="Licence"></a>
+<a href="https://github.com/ZeroMayo/NekoPlayer/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/ZeroMayo/NekoPlayer.svg" alt="Licence"></a>
 <a href="https://discord.gg/UZWDqQ29ch"><img src="https://discordapp.com/api/guilds/1474931183854026812/widget.png?style=shield" alt="dev chat"></a>
-<a href="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer"><img src="https://www.codefactor.io/repository/github/BoomboxRapsody/NekoPlayer/badge" alt="CodeFactor"></a>
+<a href="https://www.codefactor.io/repository/github/ZeroMayo/NekoPlayer"><img src="https://www.codefactor.io/repository/github/ZeroMayo/NekoPlayer/badge" alt="CodeFactor"></a>
 </p>
 
 ## Downloading and installing the app
 
 ### Latest release:
 
-| [Windows 10+ (x64)](https://github.com/BoomboxRapsody/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
+| [Windows 10+ (x64)](https://github.com/ZeroMayo/NekoPlayer/releases/latest/download/NekoPlayer-win-Setup.exe) |
 |--------------------------------------------------------------------------------------|
 
 The YouTube API Daily Quota fills up very fast (Google has a hard limit of 10,000 units). Please do not ask about this.
@@ -39,7 +39,7 @@ When working with the codebase, we recommend using an IDE with intelligent code 
 Clone the repository including submodules:
 
 ```shell
-git clone --recurse-submodules https://github.com/BoomboxRapsody/NekoPlayer
+git clone --recurse-submodules https://github.com/ZeroMayo/NekoPlayer
 cd NekoPlayer
 ```
 
@@ -84,4 +84,4 @@ When it comes to contributing to the project, the two main things you can do to 
 **Note:** FFmpeg binaries are distributed under their original licenses (GPL/LGPL) from the source.
 Please refer to [FFmpeg License](https://www.ffmpeg.org/legal.html) for details.
 
-Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/BoomboxRapsody/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md) for more information.
+Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/ZeroMayo/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md) for more information.

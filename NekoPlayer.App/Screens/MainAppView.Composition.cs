@@ -1,4 +1,4 @@
-// Copyright (c) 2026 BoomboxRapsody <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
+// Copyright (c) 2026 ZeroMayo <boomboxrapsody@gmail.com>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
 #nullable disable
@@ -903,7 +903,7 @@ namespace NekoPlayer.App.Screens
                            {
                                 if (game.UpdateManager is NoActionUpdateManager)
                                 {
-                                    host.OpenUrlExternally(@"https://github.com/BoomboxRapsody/NekoPlayer/releases");
+                                    host.OpenUrlExternally(@"https://github.com/ZeroMayo/NekoPlayer/releases");
                                 }
                                 else
                                 {
