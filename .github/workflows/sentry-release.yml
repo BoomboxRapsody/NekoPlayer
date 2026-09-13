@@ -1,0 +1,29 @@
+name: Add Release to Sentry
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  sentry_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+          fetch-depth: 0
+
+      - name: Create Sentry Release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: boomboxrapsody
+          SENTRY_PROJECT: youtube-player-ex
+        with:
+          environment: production
+          version: yt-player-ex@${{ github.ref_name }}
