@@ -6,7 +6,7 @@ updates:
       - /NekoPlayer.Desktop
       - /NekoPlayer.Desktop.Windows
   schedule:
-      interval: weekly
+      interval: daily
   commit-message:
       prefix: deps
   labels:
