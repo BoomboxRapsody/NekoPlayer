@@ -6,6 +6,7 @@
 <p align="center">이 앱의 일부 리소스(samples)는 <a href="https://github.com/ppy/osu-resources">ppy/osu-resources</a>를 사용하고 있습니다.</p>
 
 <p align="center">
+<a href="https://github.com/ZeroMayo/ZeroMayo/blob/main/docs/project-status.md"><img src="https://img.shields.io/badge/status-active-47c219.svg" alt="상태"></a>
 <a href="https://github.com/ZeroMayo/NekoPlayer/actions/workflows/ci.yml"><img src="https://github.com/ZeroMayo/NekoPlayer/actions/workflows/ci.yml/badge.svg?branch=master&event=push" alt="빌드 상태"></a>
 <a href="https://github.com/ZeroMayo/NekoPlayer/releases/latest"><img src="https://img.shields.io/github/release/ZeroMayo/NekoPlayer.svg" alt="GitHub 릴리스"></a>
 <img src="https://img.shields.io/badge/made_in-korea-0F64CD.svg?labelColor=CD2E3A" alt="Made In Korea">
