@@ -1,8 +1,14 @@
 version: 2
 updates:
 - package-ecosystem: nuget
-  directory: "/"
+  directories:
+      - /NekoPlayer.App
+      - /NekoPlayer.Desktop
+      - /NekoPlayer.Desktop.Windows
   schedule:
-    interval: monthly
-    time: "17:00"
-  open-pull-requests-limit: 0 # disabled until https://github.com/dependabot/dependabot-core/issues/369 is resolved
+      interval: weekly
+  commit-message:
+      prefix: deps
+  labels:
+      - dependencies
+  open-pull-requests-limit: 5
