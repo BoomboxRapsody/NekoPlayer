@@ -85,3 +85,13 @@ dotnet run --project NekoPlayer.Desktop (for Linux and other platform)
 자세한 내용은 [FFmpeg 라이선스](https://www.ffmpeg.org/legal.html)를 참고해 주세요.
 
 또한 앱 리소스는 별도의 라이선스가 적용된다는 점도 참고해 주세요. 자세한 내용은 [라이선스 파일](https://github.com/ZeroMayo/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md)을 참고해 주세요.
+
+## 즐겨찾기 기록
+
+<a href="https://www.star-history.com/?repos=ZeroMayo%2FNekoPlayer&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=ZeroMayo/NekoPlayer&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=ZeroMayo/NekoPlayer&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=ZeroMayo/NekoPlayer&type=date&legend=top-left" />
+ </picture>
+</a>

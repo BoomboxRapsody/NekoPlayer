@@ -85,3 +85,13 @@ When it comes to contributing to the project, the two main things you can do to 
 Please refer to [FFmpeg License](https://www.ffmpeg.org/legal.html) for details.
 
 Please also note that app resources are covered by a separate licence. Please see [the licence file](https://github.com/ZeroMayo/NekoPlayer/blob/master/NekoPlayer.App.Resources/LICENSE.md) for more information.
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=ZeroMayo%2FNekoPlayer&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=ZeroMayo/NekoPlayer&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=ZeroMayo/NekoPlayer&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=ZeroMayo/NekoPlayer&type=date&legend=top-left" />
+ </picture>
+</a>
